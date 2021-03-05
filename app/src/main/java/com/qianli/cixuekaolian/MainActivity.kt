@@ -41,7 +41,7 @@ class MainActivity : BaseActivity() {
      * 初始化Fragment
      */
     private fun initFragments() {
-
+        bottom_navigation.selectedItemId = R.id.navigation_huo
     }
 
 

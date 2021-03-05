@@ -2,9 +2,10 @@
     <string name="app_name">词学练考100分</string>
 
     <string name="activity_main_content_bottom_menu_ci">Words</string>
-    <string name="activity_main_content_bottom_menu_xue">Learn</string>
-    <string name="activity_main_content_bottom_menu_lian">Exercise</string>
-    <string name="activity_main_content_bottom_menu_kao">Test</string>
+    <string name="activity_main_content_bottom_menu_xue">Study</string>
+    <string name="activity_main_content_bottom_menu_lian">Exercises</string>
+    <string name="activity_main_content_bottom_menu_kao">Exams</string>
+    <string name="activity_main_content_bottom_menu_huo">Passion</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
