@@ -1,8 +1,8 @@
 package com.qianli.cixuekaolian.http
 
-import com.qianli.cixuekaolian.http.beans.Article
-import com.qianli.cixuekaolian.http.beans.Banner
-import com.qianli.cixuekaolian.http.beans.BaseBean
+import com.qianli.cixuekaolian.beans.Article
+import com.qianli.cixuekaolian.beans.Banner
+import com.qianli.cixuekaolian.beans.BaseBean
 import com.qianli.cixuekaolian.http.interceptor.AddCookiesInterceptor
 import com.qianli.cixuekaolian.http.interceptor.ReceivedCookiesInterceptor
 import com.yechaoa.yutilskt.LogUtilKt

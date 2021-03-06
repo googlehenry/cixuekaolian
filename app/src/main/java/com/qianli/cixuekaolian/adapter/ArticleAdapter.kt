@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
-import com.qianli.cixuekaolian.http.beans.ArticleDetail
+import com.qianli.cixuekaolian.beans.ArticleDetail
 
 /**
  * Created by yechao on 2020/1/17/017.

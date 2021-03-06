@@ -8,11 +8,11 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.qianli.cixuekaolian.adapter.ArticleAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
+import com.qianli.cixuekaolian.beans.Article
+import com.qianli.cixuekaolian.beans.ArticleDetail
+import com.qianli.cixuekaolian.beans.Banner
+import com.qianli.cixuekaolian.beans.BaseBean
 import com.qianli.cixuekaolian.http.RemoteAPI
-import com.qianli.cixuekaolian.http.beans.Article
-import com.qianli.cixuekaolian.http.beans.ArticleDetail
-import com.qianli.cixuekaolian.http.beans.Banner
-import com.qianli.cixuekaolian.http.beans.BaseBean
 import com.qianli.cixuekaolian.module.huo.*
 import com.qianli.cixuekaolian.utils.GlideImageLoader
 import com.qianli.cixuekaolian.utils.and

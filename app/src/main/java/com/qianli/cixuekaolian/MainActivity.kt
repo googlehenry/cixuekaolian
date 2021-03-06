@@ -1,12 +1,8 @@
 package com.qianli.cixuekaolian
 
-import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
@@ -66,31 +62,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-//        setBadge()
         initListener()
-    }
-
-    /**
-     * 给BottomNavigationView 设置Badge 小红点
-     *
-     * BottomNavigationMenuView中的每一个Tab是一个FrameLayout，所以可以在上面随意添加View、这样就可以实现角标了
-     */
-    private fun setBadge() {
-        //获取底部菜单view
-        val menuView = bottom_navigation.getChildAt(0) as BottomNavigationMenuView
-        //获取第2个itemView
-        val itemView = menuView.getChildAt(1) as BottomNavigationItemView
-        //引入badgeView
-        val badgeView =
-            LayoutInflater.from(this).inflate(R.layout.layout_badge_view, menuView, false)
-        //把badgeView添加到itemView中
-        itemView.addView(badgeView)
-        //获取子view并设置显示数目
-        val count = badgeView.findViewById<TextView>(R.id.tv_badge)
-        count.text = "2"
-
-        //不显示则隐藏
-        //count.visibility=View.GONE
     }
 
     private fun initListener() {
