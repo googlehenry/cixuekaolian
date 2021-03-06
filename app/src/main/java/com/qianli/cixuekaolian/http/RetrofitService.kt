@@ -40,7 +40,6 @@ object RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(API.BASE_URL)
             .build()
-
         apiServer = retrofit.create(API.WAZApi::class.java)
     }
 
