@@ -7,7 +7,7 @@ import com.qianli.cixuekaolian.base.BaseView
  * Created by yechao on 2020/1/9/009.
  * Describe :
  */
-interface IHomeView : BaseView {
+interface IHuoView : BaseView {
 
     fun getBanner(banners: BaseBean<MutableList<Banner>>)
 

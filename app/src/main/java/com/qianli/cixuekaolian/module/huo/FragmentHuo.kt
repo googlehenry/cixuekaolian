@@ -15,7 +15,7 @@ import com.yechaoa.yutilskt.ToastUtilKt
 import com.yechaoa.yutilskt.YUtilsKt
 import com.youth.banner.BannerConfig
 import com.youth.banner.listener.OnBannerListener
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_huo.*
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreListener,
+class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListener,
     OnItemClickListener,
     OnItemChildClickListener {
 
@@ -33,18 +33,18 @@ class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreList
         private var CURRENT_PAGE = 0//当前加载页数
     }
 
-    private lateinit var mHomePresenter: HomePresenter
+    private lateinit var mPresenterHuo: PresenterHuo
     private lateinit var mDataList: MutableList<ArticleDetail>
     private lateinit var bannerList: List<Banner>
     private lateinit var mArticleAdapter: ArticleAdapter
     private var mPosition: Int = 0
 
     override fun createPresenter() {
-        mHomePresenter = HomePresenter(this)
+        mPresenterHuo = PresenterHuo(this)
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_home
+        return R.layout.fragment_huo
     }
 
     override fun initView() {
@@ -52,8 +52,8 @@ class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreList
     }
 
     override fun initData() {
-        mHomePresenter.getBanner()
-        mHomePresenter.getArticleList(CURRENT_PAGE)
+        mPresenterHuo.getBanner()
+        mPresenterHuo.getArticleList(CURRENT_PAGE)
     }
 
     override fun getBanner(banners: BaseBean<MutableList<Banner>>) {
@@ -91,11 +91,11 @@ class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreList
         mArticleAdapter = ArticleAdapter().apply {
             animationEnable = true
             //item点击事件
-            setOnItemClickListener(this@HomeFragment)
+            setOnItemClickListener(this@FragmentHuo)
             //item子view点击事件
-            setOnItemChildClickListener(this@HomeFragment)
+            setOnItemChildClickListener(this@FragmentHuo)
             //加载更多
-            loadMoreModule.setOnLoadMoreListener(this@HomeFragment)
+            loadMoreModule.setOnLoadMoreListener(this@FragmentHuo)
         }
 
         recycler_view.adapter = mArticleAdapter
@@ -165,7 +165,7 @@ class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreList
                 mArticleAdapter.loadMoreModule.loadMoreEnd(true)
             } else {
                 CURRENT_PAGE++
-                mHomePresenter.getArticleMoreList(CURRENT_PAGE)
+                mPresenterHuo.getArticleMoreList(CURRENT_PAGE)
             }
         }, 1000)
     }
@@ -181,9 +181,9 @@ class HomeFragment : BaseFragment(), IHomeView, OnBannerListener, OnLoadMoreList
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         mPosition = position
         if (mDataList[position].collect) {
-            mHomePresenter.unCollect(mDataList[position].id)
+            mPresenterHuo.unCollect(mDataList[position].id)
         } else {
-            mHomePresenter.collect(mDataList[position].id)
+            mPresenterHuo.collect(mDataList[position].id)
         }
     }
 

@@ -12,9 +12,9 @@ import io.reactivex.schedulers.Schedulers
  * Created by yechao on 2020/1/9/009.
  * Describe :
  */
-class HomePresenter(homeView: IHomeView) {
+class PresenterHuo(huoView: IHuoView) {
 
-    private var mIHomeView: IHomeView = homeView
+    private var mIHuoView: IHuoView = huoView
 
     fun getArticleList(page: Int) {
 
@@ -33,12 +33,12 @@ class HomePresenter(homeView: IHomeView) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mIHomeView.getArticleList(t)
+                    mIHuoView.getArticleList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHomeView.getArticleError("获取失败(°∀°)ﾉ" + e.message)
+                    mIHuoView.getArticleError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -60,12 +60,12 @@ class HomePresenter(homeView: IHomeView) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mIHomeView.getArticleMoreList(t)
+                    mIHuoView.getArticleMoreList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHomeView.getArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
+                    mIHuoView.getArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -86,12 +86,12 @@ class HomePresenter(homeView: IHomeView) {
 
                 override fun onNext(t: BaseBean<MutableList<Banner>>) {
                     LogUtilKt.i("onNext")
-                    mIHomeView.getBanner(t)
+                    mIHuoView.getBanner(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHomeView.getBannerError("获取失败(°∀°)ﾉ" + e.message)
+                    mIHuoView.getBannerError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -108,9 +108,9 @@ class HomePresenter(homeView: IHomeView) {
 
                 override fun onNext(t: BaseBean<String>) {
                     if (-1001 == t.errorCode) {
-                        mIHomeView.login(t.errorMsg + "(°∀°)ﾉ")
+                        mIHuoView.login(t.errorMsg + "(°∀°)ﾉ")
                     } else {
-                        mIHomeView.collect("收藏成功 (°∀°)ﾉ")
+                        mIHuoView.collect("收藏成功 (°∀°)ﾉ")
                     }
                 }
 
@@ -131,7 +131,7 @@ class HomePresenter(homeView: IHomeView) {
                 override fun onSubscribe(d: Disposable) {}
 
                 override fun onNext(t: BaseBean<String>) {
-                    mIHomeView.unCollect("取消成功 (°∀°)ﾉ")
+                    mIHuoView.unCollect("取消成功 (°∀°)ﾉ")
                 }
 
                 override fun onError(e: Throwable) {
