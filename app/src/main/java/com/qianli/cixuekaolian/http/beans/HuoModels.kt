@@ -1,4 +1,4 @@
-package com.qianli.cixuekaolian.module.huo
+package com.qianli.cixuekaolian.http.beans
 
 data class Banner(
     val desc: String,

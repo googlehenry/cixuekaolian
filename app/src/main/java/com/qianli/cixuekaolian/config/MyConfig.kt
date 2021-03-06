@@ -7,11 +7,8 @@ package com.qianli.cixuekaolian.config
 class MyConfig {
 
     companion object {
-
         const val IS_LOGIN = "isLogin"
-
         const val COOKIE = "cookie"
-
     }
 
 }

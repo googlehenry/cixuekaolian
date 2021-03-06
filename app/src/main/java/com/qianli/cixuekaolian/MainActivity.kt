@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.module.huo.HuoFragment
-import com.qianli.cixuekaolian.module.huo.simple.MyHuoFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_main.*
@@ -56,7 +55,7 @@ class MainActivity : BaseActivity() {
         val viewPagerAdapter = CommonViewPagerAdapter(supportFragmentManager).apply {
             addFragment(HuoFragment())
             addFragment(HuoFragment())
-            addFragment(MyHuoFragment())
+            addFragment(HuoFragment())
             addFragment(HuoFragment())
             addFragment(HuoFragment())
         }

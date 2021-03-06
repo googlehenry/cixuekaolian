@@ -1,7 +1,6 @@
 package com.qianli.cixuekaolian.http.interceptor
 
 import com.qianli.cixuekaolian.config.MyConfig
-import com.yechaoa.yutilskt.LogUtilKt
 import com.yechaoa.yutilskt.SpUtilKt
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -19,7 +18,6 @@ class AddCookiesInterceptor : Interceptor {
         val stringSet = SpUtilKt.getStringSet(MyConfig.COOKIE)
         for (cookie in stringSet) {
             builder.addHeader("Cookie", cookie)
-            LogUtilKt.i("Adding Header: $cookie")
         }
         return chain.proceed(builder.build())
     }

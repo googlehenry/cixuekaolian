@@ -1,4 +1,4 @@
-package com.qianli.cixuekaolian.base
+package com.qianli.cixuekaolian.http.beans
 
 data class BaseBean<T>(
     val data: T,

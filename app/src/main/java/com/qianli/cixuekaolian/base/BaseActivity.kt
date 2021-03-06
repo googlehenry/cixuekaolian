@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.yechaoa.yutilskt.YUtilsKt
 
 /**
  * Created by yechao on 2020/1/3/003.
  * Describe :
  */
-abstract class BaseActivity : AppCompatActivity(), DataUpdater {
+abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,18 +27,6 @@ abstract class BaseActivity : AppCompatActivity(), DataUpdater {
     protected abstract fun getLayoutId(): Int
     protected abstract fun createPresenter()
     protected abstract fun initView()
-
-    override fun showLoading() {
-        YUtilsKt.showLoading(this, "加载中")
-    }
-
-    override fun hideLoading() {
-        YUtilsKt.hideLoading()
-    }
-
-    override fun onErrorCode(bean: BaseBean<Any>) {
-
-    }
 
     /**
      * 统一处理返回键

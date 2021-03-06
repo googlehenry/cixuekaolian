@@ -1,4 +1,4 @@
-package com.qianli.cixuekaolian.module.huo
+package com.qianli.cixuekaolian.adapter
 
 import android.text.Html
 import com.bumptech.glide.Glide
@@ -6,12 +6,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.http.beans.ArticleDetail
 
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class AdapterArticle : BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.item_article),
+class ArticleAdapter : BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.item_article),
     LoadMoreModule {
 
     init {
