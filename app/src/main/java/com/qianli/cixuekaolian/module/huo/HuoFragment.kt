@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ArticleAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
 import com.qianli.cixuekaolian.beans.Article
@@ -35,6 +36,10 @@ class HuoFragment : BaseFragment(), OnBannerListener, OnLoadMoreListener,
         private const val TOTAL_COUNTER = 20//每次加载数量
         private var CURRENT_SIZE = 0//当前加载数量
         private var CURRENT_PAGE = 0//当前加载页数
+    }
+
+    override fun id(): Int {
+        return R.layout.fragment_huo
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.qianli.cixuekaolian.R
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 
@@ -18,7 +17,7 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_huo, container, false)
+        val view: View = inflater.inflate(id(), container, false)
         mContext = ActivityUtilKt.currentActivity!!
         return view
     }
@@ -31,6 +30,7 @@ abstract class BaseFragment : Fragment() {
     /*
     Sub class could override below abstract method to load data or anyother
      */
+    abstract fun id(): Int
     abstract fun afterViewCreated(view: View, savedInstanceState: Bundle?)
 
     fun apiCallFailure(msg: String) {

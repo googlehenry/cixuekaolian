@@ -37,4 +37,11 @@
         <item name="android:background">@color/line</item>
     </style>
 
+    <style name="rectangle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@drawable/style_button_round_cornor</item>
+    </style>
 </resources>
