@@ -8,14 +8,14 @@ import io.reactivex.observers.DisposableObserver
  */
 abstract class BaseObserver<T> : DisposableObserver<T?> {
 
-    protected var view: BaseView?
+    protected var view: DataUpdater?
     private var isShowDialog = false
 
-    constructor(view: BaseView?) {
+    constructor(view: DataUpdater?) {
         this.view = view
     }
 
-    constructor(view: BaseView?, isShowDialog: Boolean) {
+    constructor(view: DataUpdater?, isShowDialog: Boolean) {
         this.view = view
         this.isShowDialog = isShowDialog
     }

@@ -23,9 +23,8 @@ import kotlin.math.roundToInt
 /**
  * A simple [Fragment] subclass.
  */
-class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListener,
-    OnItemClickListener,
-    OnItemChildClickListener {
+class HuoFragment : BaseFragment(), HuoDataUpdater, OnBannerListener, OnLoadMoreListener,
+    OnItemClickListener, OnItemChildClickListener {
 
     companion object {
         private const val TOTAL_COUNTER = 20//每次加载数量
@@ -33,14 +32,14 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
         private var CURRENT_PAGE = 0//当前加载页数
     }
 
-    private lateinit var mPresenterHuo: PresenterHuo
+    private lateinit var mHuoDataFetcher: HuoDataFetcher
     private lateinit var mDataList: MutableList<ArticleDetail>
     private lateinit var bannerList: List<Banner>
-    private lateinit var mArticleAdapter: ArticleAdapter
+    private lateinit var mAdapterArticle: AdapterArticle
     private var mPosition: Int = 0
 
-    override fun createPresenter() {
-        mPresenterHuo = PresenterHuo(this)
+    override fun registerDataFetcher() {
+        mHuoDataFetcher = HuoDataFetcher(this)
     }
 
     override fun getLayoutId(): Int {
@@ -52,8 +51,8 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     }
 
     override fun initData() {
-        mPresenterHuo.getBanner()
-        mPresenterHuo.getArticleList(CURRENT_PAGE)
+        mHuoDataFetcher.getBanner()
+        mHuoDataFetcher.getArticleList(CURRENT_PAGE)
     }
 
     override fun getBanner(banners: BaseBean<MutableList<Banner>>) {
@@ -88,18 +87,18 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     override fun getArticleList(article: BaseBean<Article>) {
         CURRENT_SIZE = article.data.datas.size
         mDataList = article.data.datas
-        mArticleAdapter = ArticleAdapter().apply {
+        mAdapterArticle = AdapterArticle().apply {
             animationEnable = true
             //item点击事件
-            setOnItemClickListener(this@FragmentHuo)
+            setOnItemClickListener(this@HuoFragment)
             //item子view点击事件
-            setOnItemChildClickListener(this@FragmentHuo)
+            setOnItemChildClickListener(this@HuoFragment)
             //加载更多
-            loadMoreModule.setOnLoadMoreListener(this@FragmentHuo)
+            loadMoreModule.setOnLoadMoreListener(this@HuoFragment)
         }
 
-        recycler_view.adapter = mArticleAdapter
-        mArticleAdapter.setList(mDataList)
+        recycler_view.adapter = mAdapterArticle
+        mAdapterArticle.setList(mDataList)
     }
 
     override fun getArticleError(msg: String) {
@@ -109,8 +108,8 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     override fun getArticleMoreList(article: BaseBean<Article>) {
         mDataList.addAll(article.data.datas)
         CURRENT_SIZE = article.data.datas.size
-        mArticleAdapter.addData(article.data.datas)
-        mArticleAdapter.loadMoreModule.loadMoreComplete()
+        mAdapterArticle.addData(article.data.datas)
+        mAdapterArticle.loadMoreModule.loadMoreComplete()
     }
 
     override fun getArticleMoreError(msg: String) {
@@ -136,13 +135,13 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     override fun collect(msg: String) {
         ToastUtilKt.showCenterToast(msg)
         mDataList[mPosition].collect = true
-        mArticleAdapter.notifyDataSetChanged()
+        mAdapterArticle.notifyDataSetChanged()
     }
 
     override fun unCollect(msg: String) {
         ToastUtilKt.showCenterToast(msg)
         mDataList[mPosition].collect = false
-        mArticleAdapter.notifyDataSetChanged()
+        mAdapterArticle.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
@@ -162,10 +161,10 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     override fun onLoadMore() {
         recycler_view.postDelayed({
             if (CURRENT_SIZE < TOTAL_COUNTER) {
-                mArticleAdapter.loadMoreModule.loadMoreEnd(true)
+                mAdapterArticle.loadMoreModule.loadMoreEnd(true)
             } else {
                 CURRENT_PAGE++
-                mPresenterHuo.getArticleMoreList(CURRENT_PAGE)
+                mHuoDataFetcher.getArticleMoreList(CURRENT_PAGE)
             }
         }, 1000)
     }
@@ -181,9 +180,9 @@ class FragmentHuo : BaseFragment(), IHuoView, OnBannerListener, OnLoadMoreListen
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         mPosition = position
         if (mDataList[position].collect) {
-            mPresenterHuo.unCollect(mDataList[position].id)
+            mHuoDataFetcher.unCollect(mDataList[position].id)
         } else {
-            mPresenterHuo.collect(mDataList[position].id)
+            mHuoDataFetcher.collect(mDataList[position].id)
         }
     }
 

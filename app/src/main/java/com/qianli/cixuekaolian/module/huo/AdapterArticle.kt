@@ -11,7 +11,7 @@ import com.qianli.cixuekaolian.R
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class ArticleAdapter : BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.item_article),
+class AdapterArticle : BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.item_article),
     LoadMoreModule {
 
     init {

@@ -1,4 +1,4 @@
-package com.qianli.cixuekaolian.module.huo
+package com.qianli.cixuekaolian.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

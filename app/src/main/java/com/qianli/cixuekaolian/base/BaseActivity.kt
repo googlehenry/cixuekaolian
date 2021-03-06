@@ -11,7 +11,7 @@ import com.yechaoa.yutilskt.YUtilsKt
  * Created by yechao on 2020/1/3/003.
  * Describe :
  */
-abstract class BaseActivity : AppCompatActivity(), BaseView {
+abstract class BaseActivity : AppCompatActivity(), DataUpdater {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

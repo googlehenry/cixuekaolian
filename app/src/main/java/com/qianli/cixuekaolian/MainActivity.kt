@@ -8,9 +8,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
-import com.qianli.cixuekaolian.module.huo.CommonViewPagerAdapter
-import com.qianli.cixuekaolian.module.huo.FragmentHuo
+import com.qianli.cixuekaolian.module.huo.HuoFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,11 +53,11 @@ class MainActivity : BaseActivity() {
      */
     private fun initFragments() {
         val viewPagerAdapter = CommonViewPagerAdapter(supportFragmentManager).apply {
-            addFragment(FragmentHuo())
-            addFragment(FragmentHuo())
-            addFragment(FragmentHuo())
-            addFragment(FragmentHuo())
-            addFragment(FragmentHuo())
+            addFragment(HuoFragment())
+            addFragment(HuoFragment())
+            addFragment(HuoFragment())
+            addFragment(HuoFragment())
+            addFragment(HuoFragment())
         }
         view_pager.offscreenPageLimit = 1
         view_pager.adapter = viewPagerAdapter

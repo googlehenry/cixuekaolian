@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
  * Created by yechao on 2020/1/9/009.
  * Describe :
  */
-open class BasePresenter<V : BaseView?> {
+open class BasePresenter<V : DataUpdater?> {
 
     private var compositeDisposable: CompositeDisposable? = null
     var mBaseView: V? = null

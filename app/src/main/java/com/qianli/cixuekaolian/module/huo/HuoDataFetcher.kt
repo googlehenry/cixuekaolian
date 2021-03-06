@@ -8,13 +8,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-/**
- * Created by yechao on 2020/1/9/009.
- * Describe :
- */
-class PresenterHuo(huoView: IHuoView) {
+class HuoDataFetcher(huo: HuoDataUpdater) {
 
-    private var mIHuoView: IHuoView = huoView
+    private var mHuoDataUpdater: HuoDataUpdater = huo
 
     fun getArticleList(page: Int) {
 
@@ -33,12 +29,12 @@ class PresenterHuo(huoView: IHuoView) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mIHuoView.getArticleList(t)
+                    mHuoDataUpdater.getArticleList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHuoView.getArticleError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.getArticleError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -60,12 +56,12 @@ class PresenterHuo(huoView: IHuoView) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mIHuoView.getArticleMoreList(t)
+                    mHuoDataUpdater.getArticleMoreList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHuoView.getArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.getArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -86,12 +82,12 @@ class PresenterHuo(huoView: IHuoView) {
 
                 override fun onNext(t: BaseBean<MutableList<Banner>>) {
                     LogUtilKt.i("onNext")
-                    mIHuoView.getBanner(t)
+                    mHuoDataUpdater.getBanner(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mIHuoView.getBannerError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.getBannerError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -108,9 +104,9 @@ class PresenterHuo(huoView: IHuoView) {
 
                 override fun onNext(t: BaseBean<String>) {
                     if (-1001 == t.errorCode) {
-                        mIHuoView.login(t.errorMsg + "(°∀°)ﾉ")
+                        mHuoDataUpdater.login(t.errorMsg + "(°∀°)ﾉ")
                     } else {
-                        mIHuoView.collect("收藏成功 (°∀°)ﾉ")
+                        mHuoDataUpdater.collect("收藏成功 (°∀°)ﾉ")
                     }
                 }
 
@@ -131,7 +127,7 @@ class PresenterHuo(huoView: IHuoView) {
                 override fun onSubscribe(d: Disposable) {}
 
                 override fun onNext(t: BaseBean<String>) {
-                    mIHuoView.unCollect("取消成功 (°∀°)ﾉ")
+                    mHuoDataUpdater.unCollect("取消成功 (°∀°)ﾉ")
                 }
 
                 override fun onError(e: Throwable) {

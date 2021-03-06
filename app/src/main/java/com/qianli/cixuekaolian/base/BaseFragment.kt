@@ -13,7 +13,7 @@ import com.yechaoa.yutilskt.YUtilsKt
  * Created by yechao on 2020/1/13/013.
  * Describe :
  */
-abstract class BaseFragment : Fragment(), BaseView {
+abstract class BaseFragment : Fragment(), DataUpdater {
 
     protected lateinit var mContext: Context
 
@@ -24,7 +24,7 @@ abstract class BaseFragment : Fragment(), BaseView {
     ): View? {
         val view: View = inflater.inflate(getLayoutId(), container, false)
         mContext = ActivityUtilKt.currentActivity!!
-        createPresenter()
+        registerDataFetcher()
         return view
     }
 
@@ -47,7 +47,7 @@ abstract class BaseFragment : Fragment(), BaseView {
 //        if (hidden) initData()
     }
 
-    protected abstract fun createPresenter()
+    protected abstract fun registerDataFetcher()
 
     protected abstract fun getLayoutId(): Int
 
