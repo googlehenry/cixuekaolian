@@ -29,12 +29,12 @@ class HuoDataFetcher(huo: HuoDataUpdater) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mHuoDataUpdater.getArticleList(t)
+                    mHuoDataUpdater.updateArticleList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mHuoDataUpdater.getArticleError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.updateArticleError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -56,12 +56,12 @@ class HuoDataFetcher(huo: HuoDataUpdater) {
 
                 override fun onNext(t: BaseBean<Article>) {
                     LogUtilKt.i("onNext")
-                    mHuoDataUpdater.getArticleMoreList(t)
+                    mHuoDataUpdater.updateArticleMoreList(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mHuoDataUpdater.getArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.updateArticleMoreError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }
@@ -82,12 +82,12 @@ class HuoDataFetcher(huo: HuoDataUpdater) {
 
                 override fun onNext(t: BaseBean<MutableList<Banner>>) {
                     LogUtilKt.i("onNext")
-                    mHuoDataUpdater.getBanner(t)
+                    mHuoDataUpdater.updateBanner(t)
                 }
 
                 override fun onError(e: Throwable) {
                     LogUtilKt.i("onError")
-                    mHuoDataUpdater.getBannerError("获取失败(°∀°)ﾉ" + e.message)
+                    mHuoDataUpdater.updateBannerError("获取失败(°∀°)ﾉ" + e.message)
                 }
             })
     }

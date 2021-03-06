@@ -9,17 +9,17 @@ import com.qianli.cixuekaolian.base.DataUpdater
  */
 interface HuoDataUpdater : DataUpdater {
 
-    fun getBanner(banners: BaseBean<MutableList<Banner>>)
+    fun updateBanner(banners: BaseBean<MutableList<Banner>>)
 
-    fun getBannerError(msg: String)
+    fun updateBannerError(msg: String)
 
-    fun getArticleList(article: BaseBean<Article>)
+    fun updateArticleList(article: BaseBean<Article>)
 
-    fun getArticleError(msg: String)
+    fun updateArticleError(msg: String)
 
-    fun getArticleMoreList(article: BaseBean<Article>)
+    fun updateArticleMoreList(article: BaseBean<Article>)
 
-    fun getArticleMoreError(msg: String)
+    fun updateArticleMoreError(msg: String)
 
     fun login(msg: String)
 

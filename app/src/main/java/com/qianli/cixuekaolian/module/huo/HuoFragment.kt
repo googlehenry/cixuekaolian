@@ -55,7 +55,7 @@ class HuoFragment : BaseFragment(), HuoDataUpdater, OnBannerListener, OnLoadMore
         mHuoDataFetcher.getArticleList(CURRENT_PAGE)
     }
 
-    override fun getBanner(banners: BaseBean<MutableList<Banner>>) {
+    override fun updateBanner(banners: BaseBean<MutableList<Banner>>) {
         bannerList = banners.data
 
         val images: MutableList<String> = ArrayList()
@@ -80,11 +80,11 @@ class HuoFragment : BaseFragment(), HuoDataUpdater, OnBannerListener, OnLoadMore
     }
 
 
-    override fun getBannerError(msg: String) {
+    override fun updateBannerError(msg: String) {
         ToastUtilKt.showCenterToast(msg)
     }
 
-    override fun getArticleList(article: BaseBean<Article>) {
+    override fun updateArticleList(article: BaseBean<Article>) {
         CURRENT_SIZE = article.data.datas.size
         mDataList = article.data.datas
         mAdapterArticle = AdapterArticle().apply {
@@ -101,18 +101,18 @@ class HuoFragment : BaseFragment(), HuoDataUpdater, OnBannerListener, OnLoadMore
         mAdapterArticle.setList(mDataList)
     }
 
-    override fun getArticleError(msg: String) {
+    override fun updateArticleError(msg: String) {
         ToastUtilKt.showCenterToast(msg)
     }
 
-    override fun getArticleMoreList(article: BaseBean<Article>) {
+    override fun updateArticleMoreList(article: BaseBean<Article>) {
         mDataList.addAll(article.data.datas)
         CURRENT_SIZE = article.data.datas.size
         mAdapterArticle.addData(article.data.datas)
         mAdapterArticle.loadMoreModule.loadMoreComplete()
     }
 
-    override fun getArticleMoreError(msg: String) {
+    override fun updateArticleMoreError(msg: String) {
         ToastUtilKt.showCenterToast(msg)
     }
 
