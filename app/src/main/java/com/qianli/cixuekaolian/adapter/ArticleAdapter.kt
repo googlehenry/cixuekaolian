@@ -12,7 +12,8 @@ import com.qianli.cixuekaolian.beans.ArticleDetail
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class ArticleAdapter : BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.item_article),
+class ArticleAdapter :
+    BaseQuickAdapter<ArticleDetail, BaseViewHolder>(R.layout.fragment_huo_item_article),
     LoadMoreModule {
 
     init {
