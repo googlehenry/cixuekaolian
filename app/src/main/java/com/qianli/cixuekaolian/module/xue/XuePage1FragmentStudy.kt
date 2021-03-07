@@ -34,6 +34,10 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
         return iv
     }
 
+    override fun touchEventAware(): Boolean {
+        return true
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return detector!!.onTouchEvent(event)
     }

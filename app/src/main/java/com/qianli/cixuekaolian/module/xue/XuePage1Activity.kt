@@ -1,15 +1,17 @@
 package com.qianli.cixuekaolian.module.xue
 
 import android.view.MotionEvent
+import com.google.android.material.tabs.TabLayout
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
+import com.qianli.cixuekaolian.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_xue_page.*
 
 
 class XuePage1Activity : BaseActivity() {
-    var xuePage1FragmentStudy = XuePage1FragmentStudy()
-    var xuePage1FragmentTeach = XuePage1FragmentTeach()
+
+    var currentFragment: BaseFragment? = null
 
     override fun getLayoutId(): Int {
         return R.layout.activity_xue_page
@@ -20,21 +22,37 @@ class XuePage1Activity : BaseActivity() {
     }
 
     override fun initView() {
+        supportActionBar?.hide()
+
         project_tab_layout.setupWithViewPager(non_scrollable_view_pager)
 
         val commonViewPagerAdapter =
             CommonViewPagerAdapter(supportFragmentManager, mutableListOf("书本学习", "讲解分析")).apply {
-                addFragment(xuePage1FragmentStudy)
-                addFragment(xuePage1FragmentTeach)
+                addFragment(XuePage1FragmentStudy())
+                addFragment(XuePage1FragmentTeach())
             }
 
+        val currentIdx = 0
         non_scrollable_view_pager.adapter = commonViewPagerAdapter
-        non_scrollable_view_pager.currentItem = 0
-        non_scrollable_view_pager.isScrollble = false
+        non_scrollable_view_pager.currentItem = currentIdx
+        currentFragment = commonViewPagerAdapter.getItem(currentIdx) as BaseFragment
+
+        project_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                currentFragment = commonViewPagerAdapter.getItem(tab!!.position) as BaseFragment
+                non_scrollable_view_pager.isScrollble =
+                    !(currentFragment?.touchEventAware() == true)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return xuePage1FragmentStudy.onTouchEvent(event)
+        return currentFragment?.let { if (it.touchEventAware()) it.onTouchEvent(event) else null }
+            ?: super.onTouchEvent(event)
     }
 
 }

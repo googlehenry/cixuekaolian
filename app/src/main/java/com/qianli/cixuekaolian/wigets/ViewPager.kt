@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager
 Support to forbid viewpager to scroll tabs
  */
 class ViewPager : ViewPager {
-    var isScrollble = true
+    var isScrollble = false
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
