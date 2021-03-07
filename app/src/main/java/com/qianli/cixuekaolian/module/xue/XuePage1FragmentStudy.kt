@@ -24,8 +24,16 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
     private fun setUpImageViewFlipper() {
 
         detector = GestureDetector(this)
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_01));
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_02));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_03));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_04));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_05));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_06));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_07));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_08));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_09));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_10));
+        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_11));
     }
 
     private fun addImageView(id: Int): View? {

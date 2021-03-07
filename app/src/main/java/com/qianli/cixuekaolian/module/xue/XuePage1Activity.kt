@@ -6,6 +6,7 @@ import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.base.BaseFragment
+import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_xue_page.*
 
 
@@ -48,6 +49,8 @@ class XuePage1Activity : BaseActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+        header_back.setOnClickListener { onBackPressed() }
+        header_action.setOnClickListener { ToastUtilKt.showCenterToast("去换章节页面") }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
