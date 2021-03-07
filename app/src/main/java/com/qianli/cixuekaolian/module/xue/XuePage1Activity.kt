@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian.module.xue
 
+import android.media.MediaPlayer
 import android.view.MotionEvent
 import com.google.android.material.tabs.TabLayout
 import com.qianli.cixuekaolian.R
@@ -51,6 +52,24 @@ class XuePage1Activity : BaseActivity() {
 
         header_back.setOnClickListener { onBackPressed() }
         header_action.setOnClickListener { ToastUtilKt.showCenterToast("去换章节页面") }
+
+        play_pause.setOnClickListener {
+            if (mediaPlayer?.isPlaying == true) {
+                play_pause.setImageResource(R.drawable.player_icon_play)
+                mediaPlayer?.stop()
+            } else {
+                play_pause.setImageResource(R.drawable.player_icon_pause)
+                plyDemoMp3Reading()
+            }
+        }
+
+    }
+
+    var mediaPlayer: MediaPlayer? = null
+
+    private fun plyDemoMp3Reading() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.demo_eng_textbook_reading_3_1_pep)
+        mediaPlayer?.start()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

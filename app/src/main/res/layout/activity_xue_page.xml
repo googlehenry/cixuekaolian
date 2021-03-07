@@ -110,7 +110,7 @@
                         android:layout_weight="2"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="暂停"
-                        android:src="@drawable/player_icon_pause" />
+                        android:src="@drawable/player_icon_play" />
 
                     <ImageView
                         android:id="@+id/next"

@@ -93,6 +93,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="5dp"
         android:orientation="horizontal">
 
         <Button
