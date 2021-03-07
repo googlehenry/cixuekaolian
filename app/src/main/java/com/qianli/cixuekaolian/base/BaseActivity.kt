@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.yechaoa.yutilskt.ToastUtilKt
 
 /**
  * Created by yechao on 2020/1/3/003.
@@ -27,6 +28,10 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun getLayoutId(): Int
     protected abstract fun createPresenter()
     protected abstract fun initView()
+
+    fun apiCallFailure(msg: String) {
+        ToastUtilKt.showCenterToast(msg)
+    }
 
     /**
      * 统一处理返回键

@@ -3,6 +3,7 @@ package com.qianli.cixuekaolian.base
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -35,5 +36,9 @@ abstract class BaseFragment : Fragment() {
 
     fun apiCallFailure(msg: String) {
         ToastUtilKt.showCenterToast(msg)
+    }
+
+    open fun onTouchEvent(event: MotionEvent?): Boolean {
+        return false
     }
 }

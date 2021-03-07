@@ -59,7 +59,7 @@
                 android:text="章节数量 : 6" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_xue_start"
                 style="@style/rectangle"
                 android:text="马上开始" />
         </LinearLayout>
