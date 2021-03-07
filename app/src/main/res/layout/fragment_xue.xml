@@ -11,13 +11,11 @@
     <LinearLayout
         android:id="@+id/linearLayout_upper"
         android:layout_width="match_parent"
-        android:layout_height="155dp"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:background="@drawable/side_nav_bar"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-
+        android:padding="@dimen/dp_10"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
@@ -31,7 +29,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content">
 
             <TextView
@@ -59,27 +57,22 @@
                 android:text="章节数量 : 6" />
 
             <Button
-                android:id="@+id/btn_xue_start"
+                android:id="@+id/btn_xue_change_book"
                 style="@style/rectangle"
-                android:text="马上开始" />
+                android:text="换书" />
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout_middle"
-        android:layout_below="@id/linearLayout_upper"
-        android:orientation="vertical"
-        android:background="@drawable/style_curve_line"
-        android:layout_height="10dp"
-        android:layout_width="match_parent"></LinearLayout>
 
     <LinearLayout
-        android:layout_below="@id/linearLayout_middle"
+        android:layout_below="@id/linearLayout_upper"
         android:orientation="vertical"
         android:layout_margin="@dimen/dp_10"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent">
 
         <ImageView
@@ -94,4 +87,19 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_xue_start"
+            style="@style/rectangle"
+            android:layout_width="@dimen/dp_160"
+            android:layout_height="@dimen/dp_40"
+            android:text="马上开始" />
+    </LinearLayout>
 </LinearLayout>
