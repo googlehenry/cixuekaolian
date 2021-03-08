@@ -15,15 +15,11 @@ class XuePage1Activity : BaseActivity() {
 
     var currentFragment: BaseFragment? = null
 
-    override fun getLayoutId(): Int {
+    override fun id(): Int {
         return R.layout.activity_xue_page
     }
 
-    override fun createPresenter() {
-
-    }
-
-    override fun initView() {
+    override fun afterCreated() {
         supportActionBar?.hide()
 
         project_tab_layout.setupWithViewPager(non_scrollable_view_pager)

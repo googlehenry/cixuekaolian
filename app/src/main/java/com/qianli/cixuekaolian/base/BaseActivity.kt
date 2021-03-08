@@ -16,18 +16,17 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        setContentView(LayoutInflater.from(this).inflate(getLayoutId(), null))
-        createPresenter()
-        initView()
+        setContentView(LayoutInflater.from(this).inflate(id(), null))
+        afterCreated()
     }
+
 
     protected fun setMyTitle(title: String) {
         supportActionBar?.title = title
     }
 
-    protected abstract fun getLayoutId(): Int
-    protected abstract fun createPresenter()
-    protected abstract fun initView()
+    protected abstract fun id(): Int
+    protected abstract fun afterCreated()
 
     fun apiCallFailure(msg: String) {
         ToastUtilKt.showCenterToast(msg)

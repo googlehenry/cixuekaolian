@@ -15,15 +15,11 @@ import kotlinx.android.synthetic.main.activity_main_content.*
 
 class MainActivity : BaseActivity() {
 
-    override fun getLayoutId(): Int {
+    override fun id(): Int {
         return R.layout.activity_main
     }
 
-    override fun createPresenter() {
-
-    }
-
-    override fun initView() {
+    override fun afterCreated() {
 
         toolbar.title = resources.getString(R.string.app_name)
         setSupportActionBar(toolbar)
