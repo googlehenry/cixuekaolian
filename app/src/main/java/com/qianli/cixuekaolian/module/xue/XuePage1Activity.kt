@@ -24,8 +24,12 @@ class XuePage1Activity : BaseActivity() {
         project_tab_layout.setupWithViewPager(non_scrollable_view_pager)
 
         val commonViewPagerAdapter =
-            CommonViewPagerAdapter(supportFragmentManager, mutableListOf("书本学习", "讲解分析")).apply {
+            CommonViewPagerAdapter(
+                supportFragmentManager,
+                mutableListOf("教材学习", "单词列表", "讲解分析")
+            ).apply {
                 addFragment(XuePage1FragmentStudy())
+                addFragment(XuePage1FragmentWords())
                 addFragment(XuePage1FragmentTeach())
             }
 

@@ -13,6 +13,19 @@
         android:orientation="vertical"
         tools:context=".module.xue.XuePage1Activity">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_40"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:background="@drawable/side_nav_bar"
+            android:text="三年级上(人教版) 第1单元"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -141,7 +154,7 @@
             android:layout_marginLeft="2dp"
             android:layout_alignParentLeft="true"
             android:tooltipText="返回上一级"
-            android:src="@drawable/shape_arrow_back_dark" />
+            android:src="@drawable/shape_arrow_back_light" />
 
 
         <!--        <ImageView-->
