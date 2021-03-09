@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".module.xue.XuePage0Activity"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout_upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:background="@drawable/side_nav_bar"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+
+        <ImageView
+            android:contentDescription="@null"
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="140dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/demo_eng_pep_3_1" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_10"
+                android:text="人教版英语(三上)"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="课程类型 : 教材" />
+
+            <TextView
+                android:id="@+id/textView_chapters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="章节数量 : 6" />
+
+            <Button
+                android:id="@+id/btn_xue_change_book"
+                style="@style/rectangle"
+                android:text="换书" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/linearLayout_upper"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:contentDescription="@null"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/demo_eng_pep_3_1_sample" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_xue_start"
+            style="@style/rectangle"
+            android:layout_width="@dimen/dp_160"
+            android:layout_height="@dimen/dp_40"
+            android:text="马上开始" />
+    </LinearLayout>
+</LinearLayout>
