@@ -37,11 +37,19 @@
         <item name="android:background">@color/line</item>
     </style>
 
-    <style name="rectangle">
+    <style name="rectangle_blue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/dp_30</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:background">@drawable/style_button_round_cornor</item>
+        <item name="android:background">@drawable/style_button_round_cornor_blue</item>
+    </style>
+
+    <style name="rectangle_orange">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@drawable/style_button_round_cornor_orange</item>
     </style>
 </resources>

@@ -141,17 +141,17 @@
             android:layout_marginLeft="2dp"
             android:layout_alignParentLeft="true"
             android:tooltipText="返回上一级"
-            android:src="@drawable/shape_arrow_back" />
+            android:src="@drawable/shape_arrow_back_dark" />
 
 
-        <ImageView
-            android:id="@+id/header_action"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="2dp"
-            android:layout_alignParentRight="true"
-            android:tooltipText="这里换章节"
-            android:src="@drawable/ic_project" />
+        <!--        <ImageView-->
+        <!--            android:id="@+id/header_action"-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:layout_marginRight="2dp"-->
+        <!--            android:layout_alignParentRight="true"-->
+        <!--            android:tooltipText="这里换章节"-->
+        <!--            android:src="@drawable/ic_project" />-->
 
 
     </RelativeLayout>

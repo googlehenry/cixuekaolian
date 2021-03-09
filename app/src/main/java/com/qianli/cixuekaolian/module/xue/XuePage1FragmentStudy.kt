@@ -8,12 +8,12 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.base.BaseFragment
-import kotlinx.android.synthetic.main.activity_xue_page_frag_study.*
+import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_study.*
 
 class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener {
 
     override fun id(): Int {
-        return R.layout.activity_xue_page_frag_study
+        return R.layout.activity_xue_detail_page_frag_study
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {

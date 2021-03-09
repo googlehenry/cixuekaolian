@@ -25,7 +25,7 @@
 
         <Button
             android:id="@+id/btn_xue_start"
-            style="@style/rectangle"
+            style="@style/rectangle_blue"
             android:layout_width="@dimen/dp_160"
             android:layout_height="@dimen/dp_40"
             android:text="教材选好了" />

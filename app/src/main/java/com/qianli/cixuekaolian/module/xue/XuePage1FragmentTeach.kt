@@ -6,12 +6,12 @@ import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ExpandableTextAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
 import com.qianli.cixuekaolian.beans.TeachItem
-import kotlinx.android.synthetic.main.activity_xue_page_frag_teach.*
+import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_teach.*
 
 class XuePage1FragmentTeach : BaseFragment() {
 
     override fun id(): Int {
-        return R.layout.activity_xue_page_frag_teach
+        return R.layout.activity_xue_detail_page_frag_teach
     }
     var teachItemAdapter = ExpandableTextAdapter()
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
