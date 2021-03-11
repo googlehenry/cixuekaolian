@@ -6,7 +6,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
+import com.qianli.cixuekaolian.module.ci.CiFragment
 import com.qianli.cixuekaolian.module.huo.HuoFragment
+import com.qianli.cixuekaolian.module.lian.LianFragment
 import com.qianli.cixuekaolian.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
@@ -46,15 +48,14 @@ class MainActivity : BaseActivity() {
      */
     private fun initFragments() {
         val viewPagerAdapter = CommonViewPagerAdapter(supportFragmentManager).apply {
-            addFragment(HuoFragment())
+            addFragment(CiFragment())
             addFragment(XueFragment())
             addFragment(HuoFragment())
-            addFragment(HuoFragment())
+            addFragment(LianFragment())
             addFragment(HuoFragment())
         }
         view_pager.offscreenPageLimit = 1
         view_pager.adapter = viewPagerAdapter
-        bottom_navigation.selectedItemId = R.id.navigation_huo
     }
 
     override fun onResume() {
@@ -97,7 +98,8 @@ class MainActivity : BaseActivity() {
         /**
          * bottom_navigation 点击事件
          */
-        bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_ci -> {
@@ -123,6 +125,8 @@ class MainActivity : BaseActivity() {
             }
             false
         }
+        bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+        bottom_navigation.selectedItemId = R.id.navigation_huo
     }
 
     /**
