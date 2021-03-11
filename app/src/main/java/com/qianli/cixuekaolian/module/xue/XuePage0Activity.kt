@@ -35,6 +35,7 @@ class XuePage0Activity : BaseActivity() {
         val currentIdx = 0
         scrollable_view_pager.adapter = commonViewPagerAdapter
         scrollable_view_pager.currentItem = currentIdx
+        scrollable_view_pager.offscreenPageLimit = 1
 
         header_back.setOnClickListener { onBackPressed() }
 

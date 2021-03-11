@@ -36,6 +36,7 @@ class XuePage1Activity : BaseActivity() {
         val currentIdx = 0
         non_scrollable_view_pager.adapter = commonViewPagerAdapter
         non_scrollable_view_pager.currentItem = currentIdx
+        non_scrollable_view_pager.offscreenPageLimit = 1
         currentFragment = commonViewPagerAdapter.getItem(currentIdx) as BaseFragment
 
         project_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
