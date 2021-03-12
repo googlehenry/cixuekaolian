@@ -16,20 +16,21 @@ class BrandTextView : androidx.appcompat.widget.AppCompatTextView {
     constructor(context: Context?) : super(context)
 
     override fun setTypeface(tf: Typeface?, style: Int) {
-        if (style == Typeface.BOLD) {
-            super.setTypeface(
-                Typeface.createFromAsset(
-                    context.assets,
-                    "fonts/mononoki-Regular.ttf"
-                )
-            )
-        } else {
-            super.setTypeface(
-                Typeface.createFromAsset(
-                    context.assets,
-                    "fonts/mononoki-Regular.ttf"
-                )
-            )
-        }
+        super.setTypeface(tf, style)
+//        if (style == Typeface.BOLD) {
+//            super.setTypeface(
+//                Typeface.createFromAsset(
+//                    context.assets,
+//                    "fonts/mononoki-Regular.ttf"
+//                )
+//            )
+//        } else {
+//            super.setTypeface(
+//                Typeface.createFromAsset(
+//                    context.assets,
+//                    "fonts/mononoki-Regular.ttf"
+//                )
+//            )
+//        }
     }
 }

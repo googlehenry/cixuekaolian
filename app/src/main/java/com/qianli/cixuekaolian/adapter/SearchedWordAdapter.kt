@@ -1,6 +1,6 @@
 package com.qianli.cixuekaolian.adapter
 
-import com.bumptech.glide.Glide
+import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
@@ -22,14 +22,15 @@ class SearchedWordAdapter :
 //        holder.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/english.ttf"));
         holder.setText(R.id.ci_word, item.word)
         holder.setText(R.id.ci_source, item.source)
+        holder.getView<LinearLayout>(R.id.searched_word_item_holder).setOnClickListener(null)
 
-        if (item.collect) {
-            Glide.with(context).load(R.drawable.ic_like_checked)
-                .into(holder.getView(R.id.article_favorite))
-        } else {
-            Glide.with(context).load(R.drawable.ic_like_normal)
-                .into(holder.getView(R.id.article_favorite))
-        }
+//        if (item.collect) {
+//            Glide.with(context).load(R.drawable.ic_like_checked)
+//                .into(holder.getView(R.id.article_favorite))
+//        } else {
+//            Glide.with(context).load(R.drawable.ic_like_normal)
+//                .into(holder.getView(R.id.article_favorite))
+//        }
     }
 
 }

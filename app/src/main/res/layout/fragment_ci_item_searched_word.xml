@@ -5,10 +5,12 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/searched_word_item_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/selector_button_round_corner_dark">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,10 +48,11 @@
 
         <ImageView
             android:id="@+id/article_favorite"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_like_normal" />
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_20"
+            android:contentDescription="进入词条"
+            android:src="@drawable/shape_arrow_forward_dark" />
 
     </LinearLayout>
 
