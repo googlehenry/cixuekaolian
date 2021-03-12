@@ -29,6 +29,7 @@ class MainActivity : BaseActivity() {
         initActionBarDrawer()
 
         initFragments()
+        initListener()
     }
 
     private fun initActionBarDrawer() {
@@ -60,7 +61,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        initListener()
+
     }
 
     private fun initListener() {

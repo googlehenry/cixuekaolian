@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian.module.ci
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_ci.*
 import java.util.*
 
 
-class CiFragment : BaseFragment() {
+class CiFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var mSearchedWordAdapter: SearchedWordAdapter
     private val data = ArrayList<SearchedWord>()
@@ -29,8 +30,7 @@ class CiFragment : BaseFragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
-        mSearchedWordAdapter = SearchedWordAdapter()
+        mSearchedWordAdapter = SearchedWordAdapter(this)
         mSearchedWordAdapter.data = data
         recycler_view.adapter = mSearchedWordAdapter
 
@@ -48,6 +48,7 @@ class CiFragment : BaseFragment() {
             }
 
         })
+
 
     }
 
@@ -78,6 +79,13 @@ class CiFragment : BaseFragment() {
         data.add(SearchedWord("zxcsds", "testing"))
         data.add(SearchedWord("wesd", "testing"))
         data.add(SearchedWord("adtd", "testing"))
+    }
+
+
+    override fun onClick(v: View?) {
+        startActivity(
+            Intent(mContext, CiPage0Activity::class.java)
+        )
     }
 
 }
