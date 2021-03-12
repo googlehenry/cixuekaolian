@@ -87,12 +87,12 @@ class HuoFragment : BaseFragment(), OnBannerListener, OnLoadMoreListener,
             loadMoreModule.setOnLoadMoreListener(this@HuoFragment)
         }
 
-        recycler_view.adapter = mArticleAdapter
+        recycler_view_high.adapter = mArticleAdapter
         mArticleAdapter.setList(mDataList)
     }
 
     override fun onLoadMore() {
-        recycler_view.postDelayed({
+        recycler_view_high.postDelayed({
             if (CURRENT_SIZE < TOTAL_COUNTER) {
                 mArticleAdapter.loadMoreModule.loadMoreEnd(true)
             } else {

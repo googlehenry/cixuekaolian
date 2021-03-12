@@ -14,7 +14,7 @@
         tools:context=".module.xue.XuePage1Activity">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/title_high"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp_40"

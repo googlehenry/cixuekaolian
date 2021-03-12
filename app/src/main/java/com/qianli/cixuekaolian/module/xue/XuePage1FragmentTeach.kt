@@ -15,7 +15,7 @@ class XuePage1FragmentTeach : BaseFragment() {
     }
     var teachItemAdapter = ExpandableTextAdapter()
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
-        recycler_view.adapter = teachItemAdapter
+        recycler_view_high.adapter = teachItemAdapter
         teachItemAdapter.data = mutableListOf(
             TeachItem(
                 1, "如何与别人打招呼", "下面让我们来看一看它们的具体使用语境:\n" +

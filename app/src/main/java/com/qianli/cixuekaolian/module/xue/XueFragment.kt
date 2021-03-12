@@ -17,9 +17,9 @@ class XueFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
-        recycler_view.layoutManager = GridLayoutManager(mContext, 3)
-        recycler_view2.layoutManager = GridLayoutManager(mContext, 3)
-        recycler_view3.layoutManager = GridLayoutManager(mContext, 3)
+        recycler_view_high.layoutManager = GridLayoutManager(mContext, 3)
+        recycler_view_middle.layoutManager = GridLayoutManager(mContext, 3)
+        recycler_primary.layoutManager = GridLayoutManager(mContext, 3)
         var adapter = BookItemAdapter(this)
         var adapter2 = BookItemAdapter(this)
         var adapter3 = BookItemAdapter(this)
@@ -38,9 +38,9 @@ class XueFragment : BaseFragment(), View.OnClickListener {
             BookItem(1, "三年级下", -1),
             BookItem(1, "四年级上", -1)
         )
-        recycler_view.adapter = adapter
-        recycler_view2.adapter = adapter2
-        recycler_view3.adapter = adapter3
+        recycler_view_high.adapter = adapter
+        recycler_view_middle.adapter = adapter2
+        recycler_primary.adapter = adapter3
 
     }
 

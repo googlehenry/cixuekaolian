@@ -18,7 +18,7 @@ class ExpandableTextAdapter :
 
     override fun convert(holder: BaseViewHolder, item: TeachItem) {
         var content = holder.getView<ExpandableTextView>(R.id.expand_text_view)
-        var title = holder.getView<TextView>(R.id.title)
+        var title = holder.getView<TextView>(R.id.title_high)
 
         title.text = item.id.toString() + "." + item.title
         content.text = item.content

@@ -24,7 +24,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //https://www.jianshu.com/p/e68a0b5fd383
-        recycler_view.addItemDecoration(
+        recycler_view_high.addItemDecoration(
             DividerItemDecoration(
                 mContext,
                 DividerItemDecoration.VERTICAL
@@ -32,7 +32,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
         )
         mSearchedWordAdapter = SearchedWordAdapter(this)
         mSearchedWordAdapter.data = data
-        recycler_view.adapter = mSearchedWordAdapter
+        recycler_view_high.adapter = mSearchedWordAdapter
 
         loadData()
 
@@ -63,7 +63,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     // 更新数据
     fun updateLayout(obj: List<SearchedWord>) {
         mSearchedWordAdapter.data = obj.toMutableList()
-        recycler_view.adapter = mSearchedWordAdapter
+        recycler_view_high.adapter = mSearchedWordAdapter
     }
 
     // 测试数据
