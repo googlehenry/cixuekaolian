@@ -48,11 +48,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/article_favorite"
+            android:id="@+id/ci_goin"
             android:layout_width="@dimen/dp_16"
             android:layout_height="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_20"
             android:contentDescription="进入词条"
+            android:clickable="true"
             android:src="@drawable/shape_arrow_forward_dark" />
 
     </LinearLayout>

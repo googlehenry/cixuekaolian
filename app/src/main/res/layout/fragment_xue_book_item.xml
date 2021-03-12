@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/book_item_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/book_cover_image"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:background="@drawable/demo_eng_pep_3_1" />
+
+    <TextView
+        android:id="@+id/book_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="人教版三年级上" />
+
+
+</LinearLayout>
+

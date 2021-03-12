@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/fragment_huo_item_article" />
+            tools:listitem="@layout/fragment_ci_item_searched_word" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
