@@ -51,12 +51,15 @@ class XuePage1Activity : BaseActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        header_back.setOnClickListener { onBackPressed() }
+        header_back.setOnClickListener {
+            mediaPlayer?.stop()
+            onBackPressed()
+        }
 
         play_pause.setOnClickListener {
             if (mediaPlayer?.isPlaying == true) {
                 play_pause.setImageResource(R.drawable.player_icon_play)
-                mediaPlayer?.stop()
+                mediaPlayer?.pause()
             } else {
                 play_pause.setImageResource(R.drawable.player_icon_pause)
                 plyDemoMp3Reading()
@@ -68,7 +71,8 @@ class XuePage1Activity : BaseActivity() {
     var mediaPlayer: MediaPlayer? = null
 
     private fun plyDemoMp3Reading() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.demo_eng_textbook_reading_3_1_pep)
+        mediaPlayer =
+            mediaPlayer ?: MediaPlayer.create(this, R.raw.demo_eng_textbook_reading_3_1_pep)
         mediaPlayer?.start()
     }
 
