@@ -13,7 +13,7 @@ import com.qianli.cixuekaolian.beans.TeachItem
  * Describe :
  */
 class ExpandableTextAdapter :
-    BaseQuickAdapter<TeachItem, BaseViewHolder>(R.layout.wiget_teach_item),
+    BaseQuickAdapter<TeachItem, BaseViewHolder>(R.layout.fragment_xue_item_teach_item),
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: TeachItem) {

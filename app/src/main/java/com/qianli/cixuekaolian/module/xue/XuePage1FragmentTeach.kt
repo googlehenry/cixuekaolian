@@ -2,6 +2,7 @@ package com.qianli.cixuekaolian.module.xue
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ExpandableTextAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
@@ -16,6 +17,14 @@ class XuePage1FragmentTeach : BaseFragment() {
     var teachItemAdapter = ExpandableTextAdapter()
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
         recycler_view_high.adapter = teachItemAdapter
+        //https://www.jianshu.com/p/e68a0b5fd383
+        recycler_view_high.addItemDecoration(
+            DividerItemDecoration(
+                mContext,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
         teachItemAdapter.data = mutableListOf(
             TeachItem(
                 1, "如何与别人打招呼", "下面让我们来看一看它们的具体使用语境:\n" +

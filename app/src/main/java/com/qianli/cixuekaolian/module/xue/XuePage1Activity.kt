@@ -26,9 +26,10 @@ class XuePage1Activity : BaseActivity() {
         val commonViewPagerAdapter =
             CommonViewPagerAdapter(
                 supportFragmentManager,
-                mutableListOf("教材学习", "单词列表", "讲解分析")
+                mutableListOf("教材", "双语", "单词", "精解")
             ).apply {
                 addFragment(XuePage1FragmentStudy())
+                addFragment(XuePage1FragmentTranscript())
                 addFragment(XuePage1FragmentWords())
                 addFragment(XuePage1FragmentTeach())
             }

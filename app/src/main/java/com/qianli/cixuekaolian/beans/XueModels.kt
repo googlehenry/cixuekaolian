@@ -11,3 +11,16 @@ data class BookItem(
     val title: String,
     val coverImg: Int
 )
+
+data class TranscriptItem(
+    val id: Int,
+    val seq: String? = null,
+    val transcriptEnglish: String? = null,
+    val transcriptChinese: String? = null,
+    val title: Boolean = false
+)
+
+data class WordLine(
+    val id: Int,
+    val wordLine: String
+)

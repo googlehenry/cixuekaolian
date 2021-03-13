@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/transcript_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_5"
+    android:background="@drawable/selector_background_light">
+
+    <TextView
+        android:id="@+id/transcript_seq"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_16"
+        android:text="1.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/transcript_english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_16"
+        android:textAlignment="viewStart"
+        android:singleLine="false"
+        android:text="english texyt"
+        android:paddingRight="50dp"
+        app:layout_constraintLeft_toRightOf="@id/transcript_seq"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/transcript_chinese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_16"
+        android:singleLine="false"
+        android:text="中文"
+        android:textColor="#087E19"
+        android:paddingRight="50dp"
+        app:layout_constraintLeft_toRightOf="@id/transcript_seq"
+        app:layout_constraintTop_toBottomOf="@id/transcript_english" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
