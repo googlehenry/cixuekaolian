@@ -51,10 +51,7 @@ class XuePage1Activity : BaseActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        header_back.setOnClickListener {
-            mediaPlayer?.stop()
-            onBackPressed()
-        }
+        header_back.setOnClickListener { onBackPressed() }
 
         play_pause.setOnClickListener {
             if (mediaPlayer?.isPlaying == true) {
@@ -79,6 +76,11 @@ class XuePage1Activity : BaseActivity() {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return currentFragment?.let { if (it.touchEventAware()) it.onTouchEvent(event) else null }
             ?: super.onTouchEvent(event)
+    }
+
+    override fun onBackPressed() {
+        mediaPlayer?.stop()
+        super.onBackPressed()
     }
 
 }
