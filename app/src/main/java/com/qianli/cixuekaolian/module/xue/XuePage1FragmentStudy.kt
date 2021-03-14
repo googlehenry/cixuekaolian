@@ -34,10 +34,12 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_09));
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_10));
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_11));
+
     }
 
     private fun addImageView(id: Int): View? {
         val iv = ImageView(context)
+        iv.id = id
         iv.setImageResource(id)
         return iv
     }
@@ -73,6 +75,12 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
     }
 
     override fun onLongPress(e: MotionEvent?) {
+        if (flipper.currentView.id == R.drawable.demo_eng_pep_3_1_06) {
+            toast("切换到当前页播放")
+            val mediaPlayer = (mContext as XuePage1Activity).mediaPlayer
+            mediaPlayer?.seekTo(88_000)
+            mediaPlayer?.start()
+        }
     }
 
     override fun onScroll(

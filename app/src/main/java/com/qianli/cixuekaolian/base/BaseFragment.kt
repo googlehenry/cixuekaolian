@@ -38,8 +38,13 @@ abstract class BaseFragment : Fragment() {
         ToastUtilKt.showCenterToast(msg)
     }
 
+    fun toast(msg: String) {
+        ToastUtilKt.showCenterToast(msg)
+    }
+
     open fun touchEventAware(): Boolean = false
     open fun onTouchEvent(event: MotionEvent?): Boolean {
         return false
     }
+
 }
