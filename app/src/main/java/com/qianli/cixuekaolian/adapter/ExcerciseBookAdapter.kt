@@ -24,19 +24,9 @@ class ExcerciseBookAdapter(var itemClickListener: View.OnClickListener) :
         bookItemHolder.setOnClickListener {
             itemClickListener.onClick(it)
         }
-//        bookItemHolder.setOnTouchListener { view: View, motionEvent: MotionEvent ->
-//            when (motionEvent.action) {
-//                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> bookItemHolder.setBackgroundColor(
-//                    Color.WHITE
-//                )
-//                MotionEvent.ACTION_UP -> {
-//                    bookItemHolder.setBackgroundColor(Color.parseColor("#CCCCCC"))
-//                    itemClickListener.onClick(view)
-//                }
-//                else -> bookItemHolder.setBackgroundColor(Color.parseColor("#CCCCCC"))
-//            }
-//            true
-//        }
     }
 
+
 }
+
+
