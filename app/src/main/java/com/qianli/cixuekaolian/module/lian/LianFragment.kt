@@ -221,8 +221,8 @@ class LianFragment : BaseFragment(), View.OnClickListener {
         )
         list.add(primarySchool)//︹︺︵︶
 
-        var fakeForUI = ExcerciseBook(-1, "")
-        list.add(fakeForUI)
+//        var fakeForUI = ExcerciseBook(-1, "")
+//        list.add(fakeForUI)
 
         return list
     }

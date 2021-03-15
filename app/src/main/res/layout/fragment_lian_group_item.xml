@@ -3,43 +3,48 @@
     android:id="@+id/nav_group_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/selector_button_round_corner_dark">
+    android:background="@drawable/selector_button_round_corner_dark"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/nav_group_seq"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="@dimen/sp_16"
-        android:padding="5dp"
-        android:background="@drawable/shape_blue_round_cycle"
-        android:textColor="#FFFFFF"
-        android:text="1" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/nav_group_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="@dimen/sp_16" />
+        <TextView
+            android:id="@+id/nav_group_seq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_blue_round_cycle"
+            android:padding="5dp"
+            android:text="1"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_16" />
 
-    <TextView
-        android:id="@+id/nav_group_total"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="10dp"
-        android:textSize="@dimen/sp_16" />
+        <TextView
+            android:id="@+id/nav_group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/sp_16" />
 
-    <ImageView
-        android:id="@+id/excercise_goin"
-        android:layout_width="@dimen/dp_16"
-        android:layout_height="@dimen/dp_16"
-        android:layout_marginRight="@dimen/dp_20"
-        android:contentDescription="进入学习"
-        android:clickable="true"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/shape_arrow_forward_dark" />
+        <TextView
+            android:id="@+id/nav_group_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/sp_16" />
 
+        <ImageView
+            android:id="@+id/excercise_goin"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dp_20"
+            android:clickable="true"
+            android:contentDescription="进入学习"
+            android:src="@drawable/selector_button_start_excercise" />
+    </LinearLayout>
 </LinearLayout>
