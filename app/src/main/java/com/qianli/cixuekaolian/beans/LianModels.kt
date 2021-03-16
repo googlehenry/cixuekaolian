@@ -1,5 +1,7 @@
 package com.qianli.cixuekaolian.beans
 
+import java.util.*
+
 data class ExcerciseBook(
     var id: Int,
     var shortName: String,
@@ -16,7 +18,9 @@ data class ExcerciseByType(
     var shortName: String,
     var name: String? = null,
     var description: String? = null,
-    var total: Int = 0
+    var total: Int = 100,
+    var error: Int = Random().nextInt(40),
+    var done: Int = Math.max(Random().nextInt(total), error)
 )
 
 //category 2: textbooks' excercises
@@ -33,6 +37,8 @@ data class ExcerciseByUnit(
     var shortName: String,
     var name: String? = null,
     var description: String? = null,
-    var total: Int = 0
+    var total: Int = 100,
+    var error: Int = Random().nextInt(40),
+    var done: Int = Math.max(Random().nextInt(total), error)
 )
 

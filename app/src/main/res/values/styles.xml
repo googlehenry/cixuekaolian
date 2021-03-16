@@ -52,4 +52,10 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:background">@drawable/selector_button_round_cornor_orange</item>
     </style>
+
+    <style name="base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">20dp</item>
+    </style>
 </resources>

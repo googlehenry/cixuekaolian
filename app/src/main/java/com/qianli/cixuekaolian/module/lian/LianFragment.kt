@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.postDelayed
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ExcerciseBookAdapter
 import com.qianli.cixuekaolian.adapter.ExcerciseByTypeAdapter
@@ -31,12 +30,12 @@ class LianFragment : BaseFragment(), View.OnClickListener {
         recycler_view_excercise_navs.adapter = adapter
 
         //https://www.jianshu.com/p/e68a0b5fd383
-        recycler_view_excercise_nav_groups.addItemDecoration(
-            DividerItemDecoration(
-                mContext,
-                DividerItemDecoration.VERTICAL
-            )
-        )
+//        recycler_view_excercise_nav_groups.addItemDecoration(
+//            DividerItemDecoration(
+//                mContext,
+//                DividerItemDecoration.VERTICAL
+//            )
+//        )
 
         recycler_view_excercise_navs.postDelayed(100) {
             recycler_view_excercise_navs.getChildAt(0).performClick()
