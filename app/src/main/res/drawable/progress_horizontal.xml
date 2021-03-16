@@ -20,7 +20,7 @@
             <corners android:radius="5dp" />
             <stroke
                 android:width="2dp"
-                android:color="#ffffb600" />
+                android:color="#2ea5ef" />
             <!--            <gradient-->
             <!--                    android:startColor="#fffff"-->
             <!--                    android:centerColor="#ffffff"-->
@@ -32,15 +32,15 @@
     </item>
 
     <item android:id="@android:id/secondaryProgress">
-        <clip>
+        <clip android:layout_width="match_parent">
             <shape>
                 <corners android:radius="5dp" />
                 <gradient
-                    android:startColor="#80ffd300"
-                    android:centerColor="#80ffb600"
+                    android:angle="270"
+                    android:centerColor="#3eb5ff"
                     android:centerY="0.75"
-                    android:endColor="#a0ffcb00"
-                    android:angle="270" />
+                    android:endColor="#1e95cf"
+                    android:startColor="#1e95cf" />
             </shape>
         </clip>
     </item>
@@ -50,10 +50,10 @@
             <shape>
                 <corners android:radius="5dp" />
                 <gradient
-                    android:startColor="#efefd300"
-                    android:centerColor="#efefb600"
+                    android:startColor="#ff0000"
+                    android:centerColor="#ff6666"
                     android:centerY="0.75"
-                    android:endColor="#efefcb00"
+                    android:endColor="#ff0000"
                     android:angle="270" />
             </shape>
         </clip>
