@@ -50,6 +50,7 @@
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp_10"
                 android:clickable="true"
                 android:contentDescription="进入学习"
                 android:src="@drawable/selector_button_start_excercise" />
