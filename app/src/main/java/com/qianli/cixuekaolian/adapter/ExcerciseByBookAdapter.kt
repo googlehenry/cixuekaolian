@@ -35,7 +35,7 @@ class ExcerciseByBookAdapter() :
             val unitAdapter = ExcerciseByUnitAdapter()
             unitAdapter.data = it
             recyclerViewUnits.adapter = unitAdapter
-            recyclerViewUnits.layoutManager = GridLayoutManager(context, 3)
+            recyclerViewUnits.layoutManager = GridLayoutManager(context, 2)
         }
 
 
