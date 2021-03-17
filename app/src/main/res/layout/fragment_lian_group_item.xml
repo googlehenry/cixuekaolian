@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_group_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
     android:layout_marginLeft="5dp"
-    app:cardCornerRadius="@dimen/dp_5"
+    android:layout_marginTop="5dp"
     android:background="@drawable/selector_button_round_corner_dark"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/dp_5"
     app:cardElevation="@dimen/dp_2">
 
 
@@ -21,8 +22,8 @@
             android:id="@+id/title_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -59,10 +60,10 @@
         <LinearLayout
             android:id="@+id/progress_holder"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,20 +101,32 @@
             <ProgressBar
                 android:id="@+id/nav_group_progress"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="8dp"
                 android:layout_gravity="center_vertical"
-                android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-                android:indeterminateOnly="false"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
+                android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+                android:indeterminateOnly="false"
                 android:max="100"
-                android:maxHeight="10dp"
-                android:minHeight="10dp"
                 android:mirrorForRtl="true"
                 android:progress="20"
                 android:progressDrawable="@drawable/progress_horizontal"
                 android:secondaryProgress="60" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_10"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/fragment_lian_nav_item_units_in_book" />
         </LinearLayout>
     </LinearLayout>
 

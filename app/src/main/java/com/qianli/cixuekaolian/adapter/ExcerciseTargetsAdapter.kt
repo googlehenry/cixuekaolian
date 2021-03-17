@@ -1,0 +1,32 @@
+package com.qianli.cixuekaolian.adapter
+
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.beans.ExcerciseTarget
+
+/**
+ * Created by yechao on 2020/1/17/017.
+ * Describe :
+ */
+class ExcerciseTargetsAdapter(var itemClickListener: View.OnClickListener) :
+    BaseQuickAdapter<ExcerciseTarget, BaseViewHolder>(R.layout.fragment_lian_nav_target_item),
+    LoadMoreModule {
+
+    override fun convert(holder: BaseViewHolder, item: ExcerciseTarget) {
+        holder.setText(R.id.nav_target_name, item.shortName)
+
+        var bookItemHolder = holder.getView<ConstraintLayout>(R.id.excercise_nav_item_holder)
+        bookItemHolder.setTag(R.id.excercise_nav_item_holder, item)
+        bookItemHolder.setOnClickListener {
+            itemClickListener.onClick(it)
+        }
+    }
+
+
+}
+
+

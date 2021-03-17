@@ -1,7 +1,6 @@
 package com.qianli.cixuekaolian.adapter
 
-import android.widget.ProgressBar
-import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -13,23 +12,17 @@ import com.qianli.cixuekaolian.beans.ExcerciseByUnit
  * Describe :
  */
 class ExcerciseByUnitAdapter() :
-    BaseQuickAdapter<ExcerciseByUnit, BaseViewHolder>(R.layout.fragment_lian_group_item),
+    BaseQuickAdapter<ExcerciseByUnit, BaseViewHolder>(R.layout.fragment_lian_nav_item_units_in_book),
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: ExcerciseByUnit) {
-        holder.setText(R.id.nav_group_seq, item.id.toString())
-        holder.setText(R.id.nav_group_title, item.shortName)
-        holder.setText(R.id.nav_group_error, "已错:" + item.error.toString())
-        holder.setText(R.id.nav_group_done, "已做:" + item.done.toString())
-        holder.setText(R.id.nav_group_total, "共计:" + item.total.toString())
+        holder.setText(R.id.unit_title, item.shortName.toString())
+        holder.setText(R.id.nav_unit_error, "(" + item.error.toString())
+        holder.setText(R.id.nav_unit_done, "/" + item.done.toString())
+        holder.setText(R.id.nav_unit_total, "/" + item.total.toString() + ")")
 
-        var progressBar = holder.getView<ProgressBar>(R.id.nav_group_progress)
-        progressBar.max = item.total
-        progressBar.progress = item.error
-        progressBar.secondaryProgress = item.done
-
-        var bookItemHolder = holder.getView<CardView>(R.id.nav_group_holder)
-        bookItemHolder.setTag(R.id.nav_group_holder, item)
+        var bookItemHolder = holder.getView<ConstraintLayout>(R.id.unit_line_holder)
+        bookItemHolder.setTag(R.id.unit_line_holder, item)
         bookItemHolder.setOnClickListener { null }
     }
 

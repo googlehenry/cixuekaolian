@@ -2,13 +2,13 @@ package com.qianli.cixuekaolian.beans
 
 import java.util.*
 
-data class ExcerciseBook(
+data class ExcerciseTarget(
     var id: Int,
     var shortName: String,
     var name: String? = null,
     var description: String? = null,
     var types: MutableList<ExcerciseByType>? = null,
-    var chapters: MutableList<ExcerciseByChapter>? = null
+    var books: MutableList<ExcerciseByBook>? = null
 
 )
 
@@ -24,12 +24,15 @@ data class ExcerciseByType(
 )
 
 //category 2: textbooks' excercises
-data class ExcerciseByChapter(
+data class ExcerciseByBook(
     var id: Int,
     var shortName: String,
     var name: String? = null,
     var description: String? = null,
-    var units: MutableList<ExcerciseByUnit>? = null
+    var units: MutableList<ExcerciseByUnit>? = null,
+    var total: Int = 100,
+    var error: Int = Random().nextInt(40),
+    var done: Int = Math.max(Random().nextInt(total), error)
 )
 
 data class ExcerciseByUnit(
