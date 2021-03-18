@@ -48,14 +48,13 @@
                 android:textSize="@dimen/sp_18" />
 
             <ImageView
-                android:id="@+id/excercise_goin"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="@dimen/dp_30"
+                android:id="@+id/excercise_expand_collapse"
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_10"
-                android:clickable="true"
                 android:contentDescription="进入学习"
-                android:src="@drawable/selector_button_start_excercise" />
+                android:src="@drawable/icon_button_expand" />
         </LinearLayout>
 
         <LinearLayout
@@ -124,6 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/fragment_lian_nav_item_units_in_book" />

@@ -3,9 +3,12 @@ package com.qianli.cixuekaolian.module.lian
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.recyclerview.widget.RecyclerView
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ExcerciseByBookAdapter
 import com.qianli.cixuekaolian.adapter.ExcerciseByTypeAdapter
@@ -74,7 +77,16 @@ class LianFragment : BaseFragment(), View.OnClickListener {
         }
 
         target.books?.let {
-            var adapterBooks = ExcerciseByBookAdapter()
+            var adapterBooks = ExcerciseByBookAdapter(object : View.OnClickListener {
+                override fun onClick(v: View?) {//onclick books
+                    val unitHolder = v?.findViewById<RecyclerView>(R.id.recycler_units)
+                    val folderImageView = v?.findViewById<ImageView>(R.id.excercise_expand_collapse)
+                    unitHolder?.visibility =
+                        if (unitHolder?.isVisible == true) View.GONE else View.VISIBLE
+                    folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_collapse else R.drawable.icon_button_expand)
+                }
+
+            })
             adapterBooks.data = it
             recycler_view_excercise_nav_groups.adapter = adapterBooks
 

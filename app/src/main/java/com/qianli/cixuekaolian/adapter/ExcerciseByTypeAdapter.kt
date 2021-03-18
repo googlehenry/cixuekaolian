@@ -1,5 +1,7 @@
 package com.qianli.cixuekaolian.adapter
 
+import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.cardview.widget.CardView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,6 +24,9 @@ class ExcerciseByTypeAdapter() :
         holder.setText(R.id.nav_group_error, "已错:" + item.error.toString())
         holder.setText(R.id.nav_group_done, "已做:" + item.done.toString())
         holder.setText(R.id.nav_group_total, "共计:" + item.total.toString())
+
+        var expandIcon = holder.getView<ImageView>(R.id.excercise_expand_collapse)
+        expandIcon.visibility = View.GONE
 
         var progressBar = holder.getView<ProgressBar>(R.id.nav_group_progress)
         progressBar.max = item.total

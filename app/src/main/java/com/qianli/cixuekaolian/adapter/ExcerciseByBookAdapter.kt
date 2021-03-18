@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian.adapter
 
+import android.view.View
 import android.widget.ProgressBar
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,7 +15,7 @@ import com.qianli.cixuekaolian.beans.ExcerciseByBook
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class ExcerciseByBookAdapter() :
+class ExcerciseByBookAdapter(var itemClickListener: View.OnClickListener) :
     BaseQuickAdapter<ExcerciseByBook, BaseViewHolder>(R.layout.fragment_lian_group_item),
     LoadMoreModule {
 
@@ -41,7 +42,7 @@ class ExcerciseByBookAdapter() :
 
         var bookItemHolder = holder.getView<CardView>(R.id.nav_group_holder)
         bookItemHolder.setTag(R.id.nav_group_holder, item)
-        bookItemHolder.setOnClickListener { null }
+        bookItemHolder.setOnClickListener { itemClickListener.onClick(it) }
     }
 
 }
