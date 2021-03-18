@@ -1,7 +1,7 @@
 package com.qianli.cixuekaolian.adapter
 
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.cardview.widget.CardView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -19,7 +19,9 @@ class ExcerciseTargetsAdapter(var itemClickListener: View.OnClickListener) :
     override fun convert(holder: BaseViewHolder, item: ExcerciseTarget) {
         holder.setText(R.id.nav_target_name, item.shortName)
 
-        var bookItemHolder = holder.getView<ConstraintLayout>(R.id.excercise_nav_item_holder)
+        var bookItemHolder = holder.getView<CardView>(R.id.excercise_nav_item_holder)
+        bookItemHolder.setBackgroundResource(R.drawable.shape_button_half_rounded)
+
         bookItemHolder.setTag(R.id.excercise_nav_item_holder, item)
         bookItemHolder.setOnClickListener {
             itemClickListener.onClick(it)

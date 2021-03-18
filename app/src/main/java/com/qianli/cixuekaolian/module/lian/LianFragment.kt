@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.cardview.widget.CardView
 import androidx.core.view.postDelayed
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.ExcerciseByBookAdapter
@@ -43,7 +43,7 @@ class LianFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    var lastSelectedItem: ConstraintLayout? = null
+    var lastSelectedItem: CardView? = null
     override fun onClick(v: View?) {
         val excerciseTarget: ExcerciseTarget? =
             v?.getTag(R.id.excercise_nav_item_holder) as ExcerciseTarget
@@ -59,8 +59,8 @@ class LianFragment : BaseFragment(), View.OnClickListener {
             }
             v?.setBackgroundResource(R.drawable.shape_button_all_rounded_white)
             v?.findViewById<TextView>(R.id.nav_target_name)
-                ?.setTextColor(Color.parseColor("#7C4DFF"))
-            lastSelectedItem = v as ConstraintLayout
+                ?.setTextColor(Color.parseColor("#000000"))
+            lastSelectedItem = v as CardView
         } else {
             toast("没有更多内容了")
         }
