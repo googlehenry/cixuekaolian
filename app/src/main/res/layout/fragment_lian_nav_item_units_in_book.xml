@@ -9,16 +9,25 @@
     android:padding="@dimen/dp_5"
     android:background="@drawable/selector_button_round_corner_card_lian">
 
+    <ImageView
+        android:id="@+id/start_excercise"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
+        android:layout_gravity="center"
+        android:contentDescription="进入学习"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/icon_richeng_time_start" />
+
     <TextView
         android:id="@+id/unit_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1.2"
         android:textSize="@dimen/sp_14"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginLeft="@dimen/dp_2"
+        app:layout_constraintStart_toEndOf="@id/start_excercise"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/nav_unit_error"

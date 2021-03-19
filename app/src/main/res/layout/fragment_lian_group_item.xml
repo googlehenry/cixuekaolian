@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/fragment_lian_nav_item_units_in_book" />
         </LinearLayout>
