@@ -8,10 +8,11 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/selector_button_round_corner_dark"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/dp_5"
-    app:cardElevation="@dimen/dp_2">
+    app:cardElevation="@dimen/dp_5">
     <!--    app:cardBackgroundColor="#ddFFFFFF"-->
 
     <LinearLayout
@@ -76,6 +77,7 @@
                 android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
                 android:indeterminateOnly="false"
                 android:max="100"
+                android:visibility="gone"
                 android:mirrorForRtl="true"
                 android:progress="20"
                 android:progressDrawable="@drawable/progress_horizontal"
