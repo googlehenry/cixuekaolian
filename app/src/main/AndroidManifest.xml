@@ -27,6 +27,7 @@
         <activity android:name=".module.ci.CiPage0Activity" />
         <activity android:name=".module.xue.XuePage0Activity" />
         <activity android:name=".module.xue.XuePage1Activity" />
+        <activity android:name=".module.lian.LianPage0Activity" />
     </application>
 
 </manifest>

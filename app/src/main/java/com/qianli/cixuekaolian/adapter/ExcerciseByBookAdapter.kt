@@ -10,12 +10,17 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.beans.ExcerciseByBook
+import com.qianli.cixuekaolian.beans.ExcerciseTarget
+import com.qianli.cixuekaolian.module.lian.OnExcercistStartListener
 
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class ExcerciseByBookAdapter(var itemClickListener: View.OnClickListener) :
+class ExcerciseByBookAdapter(
+    var itemClickListener: View.OnClickListener,
+    val excerciseListener: OnExcercistStartListener, val excercistTarget: ExcerciseTarget
+) :
     BaseQuickAdapter<ExcerciseByBook, BaseViewHolder>(R.layout.fragment_lian_group_item),
     LoadMoreModule {
 
@@ -33,7 +38,7 @@ class ExcerciseByBookAdapter(var itemClickListener: View.OnClickListener) :
 
         item.units?.let {
             var recyclerViewUnits = holder.getView<RecyclerView>(R.id.recycler_units)
-            val unitAdapter = ExcerciseByUnitAdapter()
+            val unitAdapter = ExcerciseByUnitAdapter(excerciseListener, item)
             unitAdapter.data = it
             recyclerViewUnits.adapter = unitAdapter
             recyclerViewUnits.layoutManager = GridLayoutManager(context, 2)

@@ -5,13 +5,18 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.beans.ExcerciseByBook
 import com.qianli.cixuekaolian.beans.ExcerciseByUnit
+import com.qianli.cixuekaolian.module.lian.OnExcercistStartListener
 
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class ExcerciseByUnitAdapter() :
+class ExcerciseByUnitAdapter(
+    val excerciseListener: OnExcercistStartListener,
+    val book: ExcerciseByBook
+) :
     BaseQuickAdapter<ExcerciseByUnit, BaseViewHolder>(R.layout.fragment_lian_nav_item_units_in_book),
     LoadMoreModule {
 
@@ -23,7 +28,9 @@ class ExcerciseByUnitAdapter() :
 
         var bookItemHolder = holder.getView<ConstraintLayout>(R.id.unit_line_holder)
         bookItemHolder.setTag(R.id.unit_line_holder, item)
-        bookItemHolder.setOnClickListener { null }
+        bookItemHolder.setOnClickListener {
+            excerciseListener.start(book, it.getTag(R.id.unit_line_holder) as ExcerciseByUnit)
+        }
     }
 
 }

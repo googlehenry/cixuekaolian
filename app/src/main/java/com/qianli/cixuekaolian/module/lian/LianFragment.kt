@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian.module.lian
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -20,7 +21,7 @@ import com.qianli.cixuekaolian.beans.ExcerciseByUnit
 import com.qianli.cixuekaolian.beans.ExcerciseTarget
 import kotlinx.android.synthetic.main.fragment_lian.*
 
-class LianFragment : BaseFragment(), View.OnClickListener {
+class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
 
 
     override fun id(): Int {
@@ -31,14 +32,6 @@ class LianFragment : BaseFragment(), View.OnClickListener {
         var adapter = ExcerciseTargetsAdapter(this)
         adapter.data = prepareData()
         recycler_view_excercise_navs.adapter = adapter
-
-        //https://www.jianshu.com/p/e68a0b5fd383
-//        recycler_view_excercise_nav_groups.addItemDecoration(
-//            DividerItemDecoration(
-//                mContext,
-//                DividerItemDecoration.VERTICAL
-//            )
-//        )
 
         recycler_view_excercise_navs.postDelayed(100) {
             recycler_view_excercise_navs.getChildAt(0).performClick()
@@ -71,7 +64,7 @@ class LianFragment : BaseFragment(), View.OnClickListener {
 
     private fun loadBook(target: ExcerciseTarget) {
         target.types?.let {
-            var adapterTypes = ExcerciseByTypeAdapter()
+            var adapterTypes = ExcerciseByTypeAdapter(this, target)
             adapterTypes.data = it
             recycler_view_excercise_nav_groups.adapter = adapterTypes
         }
@@ -83,10 +76,10 @@ class LianFragment : BaseFragment(), View.OnClickListener {
                     val folderImageView = v?.findViewById<ImageView>(R.id.excercise_expand_collapse)
                     unitHolder?.visibility =
                         if (unitHolder?.isVisible == true) View.GONE else View.VISIBLE
-                    folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_collapse else R.drawable.icon_button_expand)
+                    folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_minus else R.drawable.icon_button_plus)
                 }
 
-            })
+            }, this, target)
             adapterBooks.data = it
             recycler_view_excercise_nav_groups.adapter = adapterBooks
 
@@ -100,33 +93,8 @@ class LianFragment : BaseFragment(), View.OnClickListener {
                     book.done += it.done
                     book.total += it.total
                 }
-
             }
         }
-
-//        targets.books?.let {
-//            var adapterChapters = ExcerciseByUnitAdapter()
-//            var units = mutableListOf<ExcerciseByUnit>()
-//
-//            it.forEach { chap ->
-//                chap.units?.forEach { unit ->
-//                    units.add(
-//                        ExcerciseByUnit(
-//                            0,
-//                            "${chap.shortName} _ ${unit.shortName}",
-//                            total = unit.total
-//                        )
-//                    )
-//                }!!
-//            }
-//
-//
-//            adapterChapters.data = units.mapIndexed { index, excerciseByUnit ->
-//                excerciseByUnit.id = index + 1
-//                excerciseByUnit
-//            }.toMutableList()
-//            recycler_view_excercise_nav_groups.adapter = adapterChapters
-//        }
     }
 
     private fun prepareData(): MutableList<ExcerciseTarget> {
@@ -251,11 +219,25 @@ class LianFragment : BaseFragment(), View.OnClickListener {
         )
         list.add(primarySchool)//︹︺︵︶
 
-//        var fakeForUI = ExcerciseBook(-1, "")
-//        list.add(fakeForUI)
-
         return list
     }
 
+    override fun start(book: ExcerciseByBook, excerciseByUnit: ExcerciseByUnit) {
+        startActivity(
+            Intent(mContext, LianPage0Activity::class.java)
+        )
+    }
 
+    override fun start(target: ExcerciseTarget, excerciseByType: ExcerciseByType) {
+        startActivity(
+            Intent(mContext, LianPage0Activity::class.java)
+        )
+    }
+
+
+}
+
+interface OnExcercistStartListener {
+    fun start(book: ExcerciseByBook, excerciseByUnit: ExcerciseByUnit)
+    fun start(target: ExcerciseTarget, excerciseByType: ExcerciseByType)
 }

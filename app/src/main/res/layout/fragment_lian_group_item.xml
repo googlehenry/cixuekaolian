@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
     android:background="@drawable/selector_button_round_corner_dark"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/dp_5"
     app:cardElevation="@dimen/dp_2">
-
+    <!--    app:cardBackgroundColor="#ddFFFFFF"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,13 +30,14 @@
 
             <TextView
                 android:id="@+id/nav_group_seq"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_5"
                 android:background="@drawable/shape_blue_round_cycle"
                 android:gravity="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
             <TextView
@@ -54,7 +56,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_10"
                 android:contentDescription="进入学习"
-                android:src="@drawable/icon_button_expand" />
+                android:src="@drawable/icon_button_plus" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,43 +66,10 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_10">
-
-
-                <TextView
-                    android:id="@+id/nav_group_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:textColor="#ff0000"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/nav_group_done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:textColor="#2ea5ef"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/nav_group_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_16" />
-
-            </LinearLayout>
-
             <ProgressBar
                 android:id="@+id/nav_group_progress"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="4dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
@@ -111,6 +80,41 @@
                 android:progress="20"
                 android:progressDrawable="@drawable/progress_horizontal"
                 android:secondaryProgress="60" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/dp_10">
+
+
+                <TextView
+                    android:id="@+id/nav_group_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="#ccff0000"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/nav_group_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="#cc2ea5ef"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/nav_group_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="#cc000000"
+                    android:textSize="@dimen/sp_16" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
