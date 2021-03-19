@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/start_excercise"
         android:layout_width="@dimen/dp_16"
-        android:layout_height="@dimen/dp_16"
+        android:layout_height="@dimen/dp_18"
         android:layout_gravity="center"
         android:contentDescription="进入学习"
         app:layout_constraintStart_toStartOf="parent"
