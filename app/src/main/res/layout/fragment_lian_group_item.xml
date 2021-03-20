@@ -31,8 +31,8 @@
 
             <TextView
                 android:id="@+id/nav_group_seq"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/dp_5"
                 android:layout_marginLeft="@dimen/dp_5"
@@ -48,7 +48,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:textColor="#222222"
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_16" />
 
             <ImageView
                 android:id="@+id/excercise_expand_collapse"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:textColor="#ccff0000"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_12" />
 
                 <TextView
                     android:id="@+id/nav_group_done"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:textColor="#cc2ea5ef"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_12" />
 
                 <TextView
                     android:id="@+id/nav_group_total"
@@ -113,7 +113,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:textColor="#cc000000"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_12" />
 
             </LinearLayout>
 
