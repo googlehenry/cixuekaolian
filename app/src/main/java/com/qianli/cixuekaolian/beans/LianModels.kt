@@ -45,3 +45,31 @@ data class ExcerciseByUnit(
     var done: Int = Math.max(Random().nextInt(total), error)
 )
 
+data class LianItem(
+    var id: Int,
+    var type: String,
+    var requirement: String?,
+    var itemMainText: String? = null,//阅读,完形填空 etc
+    var itemMainAudio: String? = null,//听力 etc
+    var questions: MutableList<LianItemQuestion>?,
+    var reviews: String? = null
+)
+
+data class LianItemQuestion(
+    var id: Int,
+    var type: String,
+    var questionMainText: String? = null,
+    var optionLians: MutableList<LianQuestionOption>? = null,
+    var answerLians: MutableList<LianQuestionAnswer>? = null
+)
+
+data class LianQuestionAnswer(
+    var id: Int,
+    var answerMainText: String
+)
+
+data class LianQuestionOption(
+    var id: Int,
+    var optionMainText: String,
+    var correct: Boolean = false
+)
