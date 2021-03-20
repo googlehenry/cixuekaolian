@@ -1,5 +1,7 @@
 package com.qianli.cixuekaolian.adapter
 
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,8 @@ class LianItemQuestionAdapter() :
         holder.setText(R.id.lian_item_question_main_seq, item.id.toString())
         holder.setText(R.id.lian_item_question_main_text, item.questionMainText)
 
+        var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
+        questionMainText.visibility = if (item.questionMainText == null) View.GONE else View.VISIBLE
 
         var questionHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)

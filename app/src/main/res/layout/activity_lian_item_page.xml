@@ -27,6 +27,7 @@
 
             <TextView
                 android:id="@+id/lian_item_requirment"
+                android:textColor="#333333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
