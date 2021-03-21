@@ -25,10 +25,6 @@ class LianPage0Activity : BaseActivity() {
         header_back.setOnClickListener { onBackPressed() }
 
         var lianItem: LianItem? = null
-//        val lianItem = prepareDateReading()//阅读理解
-//        val lianItem = prepareCompletion()//完形填空
-//        val lianItem = prepareDataListnening()
-//        Toast.makeText(this, TempUtil.counter.toString(), Toast.LENGTH_SHORT).show()
         lianItem = when (TempUtil.counter % 7) {
             0 -> prepareDateReading()
             1 -> prepareCompletion()
@@ -58,7 +54,7 @@ class LianPage0Activity : BaseActivity() {
             else -> recycler_view_lian_item_questions.layoutManager = LinearLayoutManager(this)
         }
 
-        var adapter = LianItemQuestionAdapter()
+        var adapter = LianItemQuestionAdapter(lianItem, recycler_view_lian_item_questions)
         adapter.data = lianItem.questions!!
         recycler_view_lian_item_questions.adapter = adapter
 
@@ -79,6 +75,10 @@ class LianPage0Activity : BaseActivity() {
 
         lian_item_main_audio_start.setOnClickListener { plyDemoMp3Reading() }
 
+        lian_item_result_submit.setOnClickListener {
+            lianItem.submitted = true
+            recycler_view_lian_item_questions.adapter?.notifyDataSetChanged()
+        }
     }
 
     var mediaPlayer: MediaPlayer? = null
@@ -223,61 +223,61 @@ class LianPage0Activity : BaseActivity() {
             LianItemQuestion(
                 1, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "grow", mutableListOf("has grown"))
+                    LianQuestionAnswer(1, "grow", mutableSetOf("has grown"))
                 )
             ),
             LianItemQuestion(
                 2, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "", mutableListOf("the"))
+                    LianQuestionAnswer(1, "", mutableSetOf("the"))
                 )
             ),
             LianItemQuestion(
                 3, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "actual", mutableListOf("actually"))
+                    LianQuestionAnswer(1, "actual", mutableSetOf("actually"))
                 )
             ),
             LianItemQuestion(
                 4, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "improve", mutableListOf("to improve"))
+                    LianQuestionAnswer(1, "improve", mutableSetOf("to improve"))
                 )
             ),
             LianItemQuestion(
                 5, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "", mutableListOf("than"))
+                    LianQuestionAnswer(1, "", mutableSetOf("than"))
                 )
             ),
             LianItemQuestion(
                 6, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "pollute", mutableListOf("pollution"))
+                    LianQuestionAnswer(1, "pollute", mutableSetOf("pollution"))
                 )
             ),
             LianItemQuestion(
                 7, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "globe", mutableListOf("global"))
+                    LianQuestionAnswer(1, "globe", mutableSetOf("global"))
                 )
             ),
             LianItemQuestion(
                 8, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "start", mutableListOf("started"))
+                    LianQuestionAnswer(1, "start", mutableSetOf("started"))
                 )
             ),
             LianItemQuestion(
                 9, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "", mutableListOf("that", "which"))
+                    LianQuestionAnswer(1, "", mutableSetOf("that", "which"))
                 )
             ),
             LianItemQuestion(
                 10, LianItemQuestionType.FILL_ONE_LEN40, null,
                 answerLians = mutableListOf(
-                    LianQuestionAnswer(1, "feed", mutableListOf("feeding"))
+                    LianQuestionAnswer(1, "feed", mutableSetOf("feeding"))
                 )
             ),
 
@@ -325,7 +325,7 @@ class LianPage0Activity : BaseActivity() {
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. Take your time "),
                     LianQuestionOption(2, "B. You're right "),
-                    LianQuestionOption(3, "C. Whatever you say "),
+                    LianQuestionOption(3, "C. Whatever you say ", correctOption = true),
                     LianQuestionOption(4, "D. Take it easy "),
                 )
             ),
@@ -336,7 +336,7 @@ class LianPage0Activity : BaseActivity() {
                     Would you like to ____ with us to the film tonight?
                 """.trimIndent(),
                 optionLians = mutableListOf(
-                    LianQuestionOption(1, "A. come along"),
+                    LianQuestionOption(1, "A. come along", correctOption = true),
                     LianQuestionOption(2, "B. come off"),
                     LianQuestionOption(3, "C. come across "),
                     LianQuestionOption(4, "D. come through "),
@@ -350,7 +350,7 @@ class LianPage0Activity : BaseActivity() {
                 """.trimIndent(),
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. but"),
-                    LianQuestionOption(2, "B. and"),
+                    LianQuestionOption(2, "B. and", correctOption = true),
                     LianQuestionOption(3, "C. so"),
                     LianQuestionOption(4, "D. or"),
                 )
@@ -364,7 +364,7 @@ class LianPage0Activity : BaseActivity() {
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. what   "),
                     LianQuestionOption(2, "B. when"),
-                    LianQuestionOption(3, "C. where"),
+                    LianQuestionOption(3, "C. where", correctOption = true),
                     LianQuestionOption(4, "D. which"),
                 )
             ),
@@ -378,7 +378,7 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(1, "A. caught"),
                     LianQuestionOption(2, "B. to have caught"),
                     LianQuestionOption(3, "C. to catch"),
-                    LianQuestionOption(4, "D. having caught"),
+                    LianQuestionOption(4, "D. having caught", correctOption = true),
                 )
             ),
         )
@@ -427,7 +427,7 @@ class LianPage0Activity : BaseActivity() {
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A."),
                     LianQuestionOption(2, "B."),
-                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(3, "C.", correctOption = true),
                     LianQuestionOption(4, "D."),
                     LianQuestionOption(5, "E."),
                     LianQuestionOption(6, "F."),
@@ -441,7 +441,7 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(2, "B."),
                     LianQuestionOption(3, "C."),
                     LianQuestionOption(4, "D."),
-                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(5, "E.", correctOption = true),
                     LianQuestionOption(6, "F."),
                     LianQuestionOption(7, "G.")
                 )
@@ -450,7 +450,7 @@ class LianPage0Activity : BaseActivity() {
                 3, LianItemQuestionType.SELECT_ONE_LEN2, null,
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A."),
-                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(2, "B.", correctOption = true),
                     LianQuestionOption(3, "C."),
                     LianQuestionOption(4, "D."),
                     LianQuestionOption(5, "E."),
@@ -467,13 +467,13 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(4, "D."),
                     LianQuestionOption(5, "E."),
                     LianQuestionOption(6, "F."),
-                    LianQuestionOption(7, "G.")
+                    LianQuestionOption(7, "G.", correctOption = true)
                 )
             ),
             LianItemQuestion(
                 5, LianItemQuestionType.SELECT_ONE_LEN2, null,
                 optionLians = mutableListOf(
-                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(1, "A.", correctOption = true),
                     LianQuestionOption(2, "B."),
                     LianQuestionOption(3, "C."),
                     LianQuestionOption(4, "D."),

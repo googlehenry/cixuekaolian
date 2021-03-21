@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.beans.LianItem
 import com.qianli.cixuekaolian.beans.LianItemQuestion
 import com.qianli.cixuekaolian.beans.LianItemQuestionType
 
@@ -16,7 +17,7 @@ import com.qianli.cixuekaolian.beans.LianItemQuestionType
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class LianItemQuestionAdapter() :
+class LianItemQuestionAdapter(var lianItem: LianItem, var questionsHolder: RecyclerView) :
     BaseQuickAdapter<LianItemQuestion, BaseViewHolder>(R.layout.fragment_lian_item_queston_selection_single),
     LoadMoreModule {
 
@@ -31,7 +32,7 @@ class LianItemQuestionAdapter() :
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
 
         item.optionLians?.let {
-            var adapter = LianQuestionOptionAdapter()
+            var adapter = LianQuestionOptionAdapter(item, questionHolder, lianItem, questionHolder)
             adapter.data = it
             questionHolder.adapter = adapter
             when (item.type) {
@@ -46,7 +47,7 @@ class LianItemQuestionAdapter() :
         }
 
         item.answerLians?.let {
-            var adapter = LianQuestionAnswerAdapter()
+            var adapter = LianQuestionAnswerAdapter(item, questionHolder, lianItem, questionHolder)
             adapter.data = it
             questionHolder.adapter = adapter
             when (item.type) {

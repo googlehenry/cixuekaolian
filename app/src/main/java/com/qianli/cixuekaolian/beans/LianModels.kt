@@ -53,7 +53,8 @@ data class LianItem(
     var itemMainText: String? = null,//阅读,完形填空 etc
     var itemMainAudio: String? = null,//听力 etc
     var questions: MutableList<LianItemQuestion>?,
-    var reviews: String? = null
+    var reviews: String? = null,
+    var submitted: Boolean = false
 )
 
 data class LianItemQuestion(
@@ -61,19 +62,21 @@ data class LianItemQuestion(
     var type: LianItemQuestionType,
     var questionMainText: String? = null,
     var optionLians: MutableList<LianQuestionOption>? = null,
-    var answerLians: MutableList<LianQuestionAnswer>? = null
+    var answerLians: MutableList<LianQuestionAnswer>? = null,
+    var userSelectedOptions: MutableSet<Int>? = null,
+    var userAnsweredReplies: MutableSet<String>? = null
 )
 
 data class LianQuestionAnswer(
     var id: Int,
     var answerTemplate: String? = null,
-    var answersCorrect: MutableList<String>? = null
+    var correctAnswers: MutableSet<String>? = null
 )
 
 data class LianQuestionOption(
     var id: Int,
     var optionMainText: String,
-    var correct: Boolean = false
+    var correctOption: Boolean = false
 )
 
 enum class LianItemQuestionType {
