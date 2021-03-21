@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.beans.LianItemQuestion
+import com.qianli.cixuekaolian.beans.LianItemQuestionType
 
 /**
  * Created by yechao on 2020/1/17/017.
@@ -33,10 +34,14 @@ class LianItemQuestionAdapter() :
             var adapter = LianQuestionOptionAdapter()
             adapter.data = it
             questionHolder.adapter = adapter
-            if (item.questionMainText == null) {
-                questionHolder.layoutManager = GridLayoutManager(context, 2)
-            } else {
-                questionHolder.layoutManager = LinearLayoutManager(context)
+            when (item.type) {
+                LianItemQuestionType.SELECT_ONE_LEN1 -> questionHolder.layoutManager =
+                    GridLayoutManager(context, 8)
+                LianItemQuestionType.SELECT_ONE_LEN2 -> questionHolder.layoutManager =
+                    GridLayoutManager(context, 4)
+                LianItemQuestionType.SELECT_ONE_LEN10 -> questionHolder.layoutManager =
+                    GridLayoutManager(context, 2)
+                else -> questionHolder.layoutManager = LinearLayoutManager(context)
             }
         }
         questionHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)

@@ -49,7 +49,7 @@ class ExcerciseByTypeAdapter(
 
         var bookItemHolder = holder.getView<CardView>(R.id.nav_group_holder)
 //        bookItemHolder.setTag(R.id.nav_group_holder, item)
-        bookItemHolder.setOnClickListener { null }
+//        bookItemHolder.setOnClickListener { null }
     }
 
 }

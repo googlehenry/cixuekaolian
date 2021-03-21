@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian.module.lian
 
+import android.media.MediaPlayer
 import android.view.View
 import androidx.core.view.isVisible
 import com.qianli.cixuekaolian.R
@@ -7,7 +8,9 @@ import com.qianli.cixuekaolian.adapter.LianItemQuestionAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.beans.LianItem
 import com.qianli.cixuekaolian.beans.LianItemQuestion
+import com.qianli.cixuekaolian.beans.LianItemQuestionType
 import com.qianli.cixuekaolian.beans.LianQuestionOption
+import com.qianli.cixuekaolian.utils.TempUtil
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
 
 class LianPage0Activity : BaseActivity() {
@@ -16,19 +19,37 @@ class LianPage0Activity : BaseActivity() {
         return R.layout.activity_lian_item_page
     }
 
+
     override fun afterCreated() {
         supportActionBar?.hide()
 
         header_back.setOnClickListener { onBackPressed() }
 
-        val lianItem = if (Math.random() >= 0.5) prepareDateReading() else prepareCompletion()
+        var lianItem: LianItem? = null
 //        val lianItem = prepareDateReading()//阅读理解
 //        val lianItem = prepareCompletion()//完形填空
-//
-
+//        val lianItem = prepareDataListnening()
+//        Toast.makeText(this, TempUtil.counter.toString(), Toast.LENGTH_SHORT).show()
+        lianItem = when (TempUtil.counter % 5) {
+            0 -> prepareDateReading()
+            1 -> prepareCompletion()
+            2 -> prepareDataListnening()
+            3 -> prepareDataSelectSentences()
+            4 -> prepareDataSelectSingleOption()
+            else -> null
+        }
+        lianItem = lianItem!!
+        TempUtil.counter += 1
 
         lian_item_requirment.text = lianItem.requirement
         lian_item_main_text.text = lianItem.itemMainText
+
+        lian_item_main_text.visibility =
+            if (lianItem.itemMainAudio != null) View.GONE else View.VISIBLE
+        lian_item_main_audio_start.visibility =
+            if (lianItem.itemMainAudio != null) View.VISIBLE else View.GONE
+        lian_item_main_holder.visibility =
+            if (lianItem.itemMainAudio == null && lianItem.itemMainText == null) View.GONE else View.VISIBLE
 
         var adapter = LianItemQuestionAdapter()
         adapter.data = lianItem.questions!!
@@ -37,13 +58,333 @@ class LianPage0Activity : BaseActivity() {
         lian_item_show_review_btn.setOnClickListener {
             lian_item_explanations.visibility =
                 if (lian_item_explanations.isVisible) View.INVISIBLE else View.VISIBLE
+            if (!lian_item_main_text.isVisible) {
+                lian_item_main_text.visibility = View.VISIBLE
+            }
+            if (!lian_item_main_holder.isVisible) {
+                lian_item_main_holder.visibility =
+                    if (lianItem.itemMainAudio == null && lianItem.itemMainText == null) View.GONE else View.VISIBLE
+            }
         }
 
         lian_item_explanations.visibility = View.INVISIBLE
-        lian_item_explanations.text = """
+        lian_item_explanations.text = lianItem.reviews
+
+        lian_item_main_audio_start.setOnClickListener { plyDemoMp3Reading() }
+
+    }
+
+    var mediaPlayer: MediaPlayer? = null
+
+    private fun plyDemoMp3Reading() {
+        mediaPlayer =
+            mediaPlayer ?: MediaPlayer.create(this, R.raw.demo_2018_national_test_vol2_section1)
+        mediaPlayer?.start()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        mediaPlayer?.stop()
+    }
+
+    private fun prepareDataSelectSingleOption(): LianItem {
+        val requirement = """
+            单项填空
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
+            1.【答案】D 
+              【解析】考查交际用语。根据后句“人无完人”可知，前一个人犯错误了，应叫他take it easy（放松）。
+            2.【答案】A 
+              【解析】考查动词短语辨析。根据句意，与我们一道去看电影，故选A。come along with…与…一道。
+            3.【答案】A 
+              【解析】考查并列连词。根据句意：再次见到Jenny我很高兴，但我不想整天都和她一起度过。
+            4.【答案】C 
+              【解析】考查定语从句。定语从句中stay为不及物动词，故不缺主干成分，用关系副词；先行词为house，指地点，故用关系副词where。
+            5.【答案】D 
+              【解析】考查非谓语动词。根据句意，因为我赶上了7:30的车，所以那天我更早地到了办公室，可知赶车发生在到办公室之前，且与主语I之间为主动关系，故使用现在分词完成体表主动完成。
+        """.trimIndent()
+        val itemMainText = null
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                """
+                    --I'm sorry I made a mistake! 
+                    --____ Nobody is perfect.    
+                """.trimIndent(),
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. Take your time "),
+                    LianQuestionOption(2, "B. You're right "),
+                    LianQuestionOption(3, "C. Whatever you say "),
+                    LianQuestionOption(4, "D. Take it easy "),
+                )
+            ),
+            LianItemQuestion(
+                2,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                """
+                    Would you like to ____ with us to the film tonight?
+                """.trimIndent(),
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. come along"),
+                    LianQuestionOption(2, "B. come off"),
+                    LianQuestionOption(3, "C. come across "),
+                    LianQuestionOption(4, "D. come through "),
+                )
+            ),
+            LianItemQuestion(
+                3,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                """
+                    I was glad to meet Jenny again, ____ I didn't want to spend all day with her.
+                """.trimIndent(),
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. but"),
+                    LianQuestionOption(2, "B. and"),
+                    LianQuestionOption(3, "C. so"),
+                    LianQuestionOption(4, "D. or"),
+                )
+            ),
+            LianItemQuestion(
+                4,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                """
+                    When I arrived, Bryan took me to see the house ____ I would be staying.
+                """.trimIndent(),
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. what   "),
+                    LianQuestionOption(2, "B. when"),
+                    LianQuestionOption(3, "C. where"),
+                    LianQuestionOption(4, "D. which"),
+                )
+            ),
+            LianItemQuestion(
+                5,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                """
+                    I got to the office earlier that day, ____ the 7:30 train from Paddington
+                """.trimIndent(),
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. caught"),
+                    LianQuestionOption(2, "B. to have caught"),
+                    LianQuestionOption(3, "C. to catch"),
+                    LianQuestionOption(4, "D. having caught"),
+                )
+            ),
+        )
+
+
+        return LianItem(
+            1, "单选", requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
+    }
+
+    private fun prepareDataSelectSentences(): LianItem {
+        val requirement = """
+            根据短文内容，从短文后的选项中选出能填入空白处的最佳选项。选项中有两项为多余选项。 
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
             
         """.trimIndent()
+        val itemMainText = """
+            
+        If you are already making the time to exercise, it is good indeed! With such busy lives, it can be hard to try and find the time to work out.   1____   Working out in the morning provides additional benefits beyond being physically fit. 
+             Your productivity is improved. Exercising makes you more awake and ready to handle whatever is ahead of you for the day.   2____   
+             Your metabolism(新陈代谢) gets a head start.   3____   If you work out in the mornings, then you will be getting the calorie(卡路里) burning benefits for the whole day, not in your sleep. 
+             4____   Studies found that people who woke up early for exercise slept better than those who exercised in the evening. Exercise energizes you, so it is more difficult to relax and have a peaceful sleep when you are very excited. 
+             5____   If you work out bright and early in the morning, you will be more likely to stick to healthy food choices throughout the day. Who would want to ruin their good workout by eating junk food? You will want to continue to focus on positive choices. 
+        There are a lot of benefits to working out, especially in the mornings. Set your alarm clock an hour early and push yourself to work out! You will feel energized all day long. 
 
+        A. You will stick to your diet. 
+        B. Your quality of sleep improves. 
+        C. You prefer healthy food to fast food. 
+        D. There is no reason you should exercise in the morning. 
+        E. You can keep your head clear for 4-10 hours after exercise. 
+        F. After you exercise, you continue to burn calories throughout the day. 
+        G. If you are planning to do exercise regularly, or you’re doing it now, then listen up! 
+
+        """.trimIndent()
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1, LianItemQuestionType.SELECT_ONE_LEN2, null,
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(4, "D."),
+                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(6, "F."),
+                    LianQuestionOption(7, "G.")
+                )
+            ),
+            LianItemQuestion(
+                2, LianItemQuestionType.SELECT_ONE_LEN2, null,
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(4, "D."),
+                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(6, "F."),
+                    LianQuestionOption(7, "G.")
+                )
+            ),
+            LianItemQuestion(
+                3, LianItemQuestionType.SELECT_ONE_LEN2, null,
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(4, "D."),
+                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(6, "F."),
+                    LianQuestionOption(7, "G.")
+                )
+            ),
+            LianItemQuestion(
+                4, LianItemQuestionType.SELECT_ONE_LEN2, null,
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(4, "D."),
+                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(6, "F."),
+                    LianQuestionOption(7, "G.")
+                )
+            ),
+            LianItemQuestion(
+                5, LianItemQuestionType.SELECT_ONE_LEN2, null,
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A."),
+                    LianQuestionOption(2, "B."),
+                    LianQuestionOption(3, "C."),
+                    LianQuestionOption(4, "D."),
+                    LianQuestionOption(5, "E."),
+                    LianQuestionOption(6, "F."),
+                    LianQuestionOption(7, "G.")
+                )
+            )
+        )
+
+
+        return LianItem(
+            1, "听力", requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
+    }
+
+    private fun prepareDataListnening(): LianItem {
+        val requirement = """
+            听下面5短对话，每段对话后有一个小题，从题中给的A、B、C三个选项中选出最佳选项。听完每段对话后，你都有10秒钟的时间来回答有关小题和阅读下一小题。每段对话仅读一遍。
+            例：How much is the shirt? 
+            A. ￡19.15.  B. ￡9.18. C. ￡9.15. 
+        """.trimIndent()
+        val itemMainAudio = "R.raw.demo_2018_national_test_vol2_section1"
+
+        val reviews = """
+            
+        """.trimIndent()
+        val itemMainText = """
+            Text 1  
+            W: So, how is your German class going, John? 
+            M: Well, not bad. The pronunciation is fine with me, and its vocabulary is similar to English. But I’m finding the grammar awful.  
+            W: Well, it takes a while to get it right. 
+
+            Text 2  
+            W: I hope you can come to the party on Saturday. 
+            M: I didn’t know I was invited. 
+            W: Sure you are. Everyone in our office is invited. 
+
+            Text 3 
+            W: May I help you? 
+            M: Yes. When is the next train to London? 
+            W: Oh, let me check. It leaves in twenty minutes. 
+            M: One ticket, please. 
+
+            Text 4  
+            W: Charlie, do you know a restaurant called Bravo? 
+            M: Bravo…I know the name. But I’m not sure where it is. 
+            W: It’s on George Street. The food there is excellent. 
+
+            Text 5 
+            W: Brian, I just had an interview. They said they would make a decision soon.  
+            M: What are your chances of getting the job? 
+            W: Quite good. I think the interview went very well. 
+        """.trimIndent()
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "What does John find difficult in learning German?",
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. Pronunciation. "),
+                    LianQuestionOption(2, "B. Vocabulary. "),
+                    LianQuestionOption(3, "C. Grammar. ", true),
+                )
+            ),
+            LianItemQuestion(
+                2,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "What is the probable relationship between the speakers?",
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. Colleagues. "),
+                    LianQuestionOption(2, "B. Brother and sister.  "),
+                    LianQuestionOption(3, "C. Teacher and student. ", true)
+                )
+            ),
+            LianItemQuestion(
+                3,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "Where does the conversation probably take place? ",
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. In a bank. "),
+                    LianQuestionOption(2, "B. At a ticket office."),
+                    LianQuestionOption(3, "C. On a train. ", true)
+                )
+            ),
+            LianItemQuestion(
+                4, LianItemQuestionType.SELECT_ONE_LEN40, "What are the speakers talking about? ",
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. restaurant. "),
+                    LianQuestionOption(2, "B. street. "),
+                    LianQuestionOption(3, "C. dish. ", true)
+                )
+            ),
+            LianItemQuestion(
+                5,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "What does the woman think of her interview? ",
+                optionLians = mutableListOf(
+                    LianQuestionOption(1, "A. It was tough. "),
+                    LianQuestionOption(2, "B. It was interesting."),
+                    LianQuestionOption(3, "C. It was successful.", true)
+                )
+            )
+        )
+
+
+        return LianItem(
+            1, "听力", requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
     }
 
     private fun prepareCompletion(): LianItem {
@@ -63,7 +404,7 @@ class LianPage0Activity : BaseActivity() {
         """.trimIndent()
         val questions = mutableListOf<LianItemQuestion>(
             LianItemQuestion(
-                1, "单选", null, mutableListOf(
+                1, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. relief "),
                     LianQuestionOption(2, "B. target"),
                     LianQuestionOption(3, "C. reason", true),
@@ -71,7 +412,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                2, "单选", null, mutableListOf(
+                2, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. admit "),
                     LianQuestionOption(2, "B. believe"),
                     LianQuestionOption(3, "C. mean", true),
@@ -79,7 +420,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                3, "单选", null, mutableListOf(
+                3, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. gradually "),
                     LianQuestionOption(2, "B. constantly"),
                     LianQuestionOption(3, "C. temporarily", true),
@@ -87,7 +428,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                4, "单选", null, mutableListOf(
+                4, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. result "),
                     LianQuestionOption(2, "B. danger"),
                     LianQuestionOption(3, "C. method", true),
@@ -95,7 +436,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                5, "单选", null, mutableListOf(
+                5, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. merely "),
                     LianQuestionOption(2, "B. slightly"),
                     LianQuestionOption(3, "C. hardly", true),
@@ -103,7 +444,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                6, "单选", null, mutableListOf(
+                6, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. reviewing "),
                     LianQuestionOption(2, "B. approving"),
                     LianQuestionOption(3, "C. receiving", true),
@@ -111,7 +452,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                7, "单选", null, mutableListOf(
+                7, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. win out "),
                     LianQuestionOption(2, "B. give up"),
                     LianQuestionOption(3, "C. wake up", true),
@@ -119,7 +460,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                8, "单选", null, mutableListOf(
+                8, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. dream "),
                     LianQuestionOption(2, "B. lie"),
                     LianQuestionOption(3, "C. fantasy", true),
@@ -127,7 +468,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                9, "单选", null, mutableListOf(
+                9, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. parents "),
                     LianQuestionOption(2, "B. twins"),
                     LianQuestionOption(3, "C. colleagues", true),
@@ -135,7 +476,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                10, "单选", null, mutableListOf(
+                10, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. restrictions "),
                     LianQuestionOption(2, "B. explanations"),
                     LianQuestionOption(3, "C. differences", true),
@@ -143,7 +484,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                11, "单选", null, mutableListOf(
+                11, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. demand "),
                     LianQuestionOption(2, "B. fear"),
                     LianQuestionOption(3, "C. desire", true),
@@ -151,7 +492,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                12, "单选", null, mutableListOf(
+                12, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. physical "),
                     LianQuestionOption(2, "B. biological"),
                     LianQuestionOption(3, "C. spiritual", true),
@@ -159,7 +500,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                13, "单选", null, mutableListOf(
+                13, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. traditional "),
                     LianQuestionOption(2, "B. important"),
                     LianQuestionOption(3, "C. double", true),
@@ -167,7 +508,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                14, "单选", null, mutableListOf(
+                14, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. life "),
                     LianQuestionOption(2, "B. time"),
                     LianQuestionOption(3, "C. reply", true),
@@ -175,7 +516,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                15, "单选", null, mutableListOf(
+                15, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. by comparison with "),
                     LianQuestionOption(2, "B. in addition to "),
                     LianQuestionOption(3, "C. regardless of ", true),
@@ -183,7 +524,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                16, "单选", null, mutableListOf(
+                16, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. get hold of "),
                     LianQuestionOption(2, "B. stare at "),
                     LianQuestionOption(3, "C. knock on ", true),
@@ -191,7 +532,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                17, "单选", null, mutableListOf(
+                17, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. real "),
                     LianQuestionOption(2, "B. typical"),
                     LianQuestionOption(3, "C. similar", true),
@@ -199,7 +540,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                18, "单选", null, mutableListOf(
+                18, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. safety rule "),
                     LianQuestionOption(2, "B. comfort zone "),
                     LianQuestionOption(3, "C. bottom line ", true),
@@ -207,7 +548,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                19, "单选", null, mutableListOf(
+                19, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. delay "),
                     LianQuestionOption(2, "B. regret"),
                     LianQuestionOption(3, "C. enjoy", true),
@@ -215,7 +556,7 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                20, "单选", null, mutableListOf(
+                20, LianItemQuestionType.SELECT_ONE_LEN10, null, mutableListOf(
                     LianQuestionOption(1, "A. hurry "),
                     LianQuestionOption(2, "B. decide"),
                     LianQuestionOption(3, "C. hesitate", true),
@@ -228,7 +569,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "阅读理解", requirement = requirement,
+            1, "完形填空", requirement = requirement,
             itemMainText = itemMainText,
             questions = questions,
             reviews = reviews
@@ -259,7 +600,9 @@ class LianPage0Activity : BaseActivity() {
         """.trimIndent()
         val questions = mutableListOf<LianItemQuestion>(
             LianItemQuestion(
-                1, "单选", "Why are race walkers conditioned athletes?",
+                1,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "Why are race walkers conditioned athletes?",
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. They must run long distances."),
                     LianQuestionOption(2, "B. They are qualified for the marathon."),
@@ -268,7 +611,9 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                2, "单选", "What advantage does race walking have over running?",
+                2,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "What advantage does race walking have over running?",
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. It’s more popular at the Olympics."),
                     LianQuestionOption(2, "B. It’s less challenging physically."),
@@ -277,7 +622,9 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                3, "单选", "What is Dr. Norberg’s suggestion for someone trying race walking?",
+                3,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "What is Dr. Norberg’s suggestion for someone trying race walking?",
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. Getting experts’ opinions."),
                     LianQuestionOption(2, "B. Having a medical checkup."),
@@ -286,7 +633,9 @@ class LianPage0Activity : BaseActivity() {
                 )
             ),
             LianItemQuestion(
-                4, "单选", "Which word best describes the author’s attitude to race walking?",
+                4,
+                LianItemQuestionType.SELECT_ONE_LEN40,
+                "Which word best describes the author’s attitude to race walking?",
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. Skeptical."),
                     LianQuestionOption(2, "B. Objective."),

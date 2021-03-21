@@ -57,7 +57,7 @@ data class LianItem(
 
 data class LianItemQuestion(
     var id: Int,
-    var type: String,
+    var type: LianItemQuestionType,
     var questionMainText: String? = null,
     var optionLians: MutableList<LianQuestionOption>? = null,
     var answerLians: MutableList<LianQuestionAnswer>? = null
@@ -73,3 +73,7 @@ data class LianQuestionOption(
     var optionMainText: String,
     var correct: Boolean = false
 )
+
+enum class LianItemQuestionType {
+    SELECT_ONE_LEN40, SELECT_ONE_LEN10, SELECT_ONE_LEN2, SELECT_ONE_LEN1
+}
