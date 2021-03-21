@@ -47,7 +47,8 @@ data class ExcerciseByUnit(
 
 data class LianItem(
     var id: Int,
-    var type: String,
+    var category: String,
+    var type: LianItemType,
     var requirement: String?,
     var itemMainText: String? = null,//阅读,完形填空 etc
     var itemMainAudio: String? = null,//听力 etc
@@ -65,7 +66,8 @@ data class LianItemQuestion(
 
 data class LianQuestionAnswer(
     var id: Int,
-    var answerMainText: String
+    var answerTemplate: String? = null,
+    var answersCorrect: MutableList<String>? = null
 )
 
 data class LianQuestionOption(
@@ -75,5 +77,12 @@ data class LianQuestionOption(
 )
 
 enum class LianItemQuestionType {
-    SELECT_ONE_LEN40, SELECT_ONE_LEN10, SELECT_ONE_LEN2, SELECT_ONE_LEN1
+    SELECT_ONE_LEN40, SELECT_ONE_LEN10, SELECT_ONE_LEN2, SELECT_ONE_LEN1,
+    FILL_ONE_LEN10, FILL_ONE_LEN40
+}
+
+enum class LianItemType {
+    SELECT_ONE_LEN40,
+    FILL_ONE_LEN40,
+    FILL_ONE_LEN10
 }

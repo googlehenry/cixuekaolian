@@ -44,8 +44,21 @@ class LianItemQuestionAdapter() :
                 else -> questionHolder.layoutManager = LinearLayoutManager(context)
             }
         }
+
+        item.answerLians?.let {
+            var adapter = LianQuestionAnswerAdapter()
+            adapter.data = it
+            questionHolder.adapter = adapter
+            when (item.type) {
+                LianItemQuestionType.FILL_ONE_LEN10 -> questionHolder.layoutManager =
+                    GridLayoutManager(context, 2)
+                else -> questionHolder.layoutManager = LinearLayoutManager(context)
+            }
+        }
+
+
         questionHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
-//        questionHolder.setOnClickListener { null }
+
 
     }
 

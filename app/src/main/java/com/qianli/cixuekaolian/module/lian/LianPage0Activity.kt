@@ -3,13 +3,12 @@ package com.qianli.cixuekaolian.module.lian
 import android.media.MediaPlayer
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.adapter.LianItemQuestionAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
-import com.qianli.cixuekaolian.beans.LianItem
-import com.qianli.cixuekaolian.beans.LianItemQuestion
-import com.qianli.cixuekaolian.beans.LianItemQuestionType
-import com.qianli.cixuekaolian.beans.LianQuestionOption
+import com.qianli.cixuekaolian.beans.*
 import com.qianli.cixuekaolian.utils.TempUtil
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
 
@@ -30,18 +29,20 @@ class LianPage0Activity : BaseActivity() {
 //        val lianItem = prepareCompletion()//完形填空
 //        val lianItem = prepareDataListnening()
 //        Toast.makeText(this, TempUtil.counter.toString(), Toast.LENGTH_SHORT).show()
-        lianItem = when (TempUtil.counter % 5) {
+        lianItem = when (TempUtil.counter % 7) {
             0 -> prepareDateReading()
             1 -> prepareCompletion()
             2 -> prepareDataListnening()
             3 -> prepareDataSelectSentences()
             4 -> prepareDataSelectSingleOption()
+            5 -> prepareDataAnswerSingleWord()
+            6 -> prepareDataAnswerCorrectSentence()
             else -> null
         }
         lianItem = lianItem!!
         TempUtil.counter += 1
 
-        lian_item_requirment.text = lianItem.requirement
+        lian_item_requirment.text = lianItem.category + "\n" + lianItem.requirement
         lian_item_main_text.text = lianItem.itemMainText
 
         lian_item_main_text.visibility =
@@ -50,6 +51,12 @@ class LianPage0Activity : BaseActivity() {
             if (lianItem.itemMainAudio != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (lianItem.itemMainAudio == null && lianItem.itemMainText == null) View.GONE else View.VISIBLE
+
+        when (lianItem.type) {
+            LianItemType.FILL_ONE_LEN10 -> recycler_view_lian_item_questions.layoutManager =
+                GridLayoutManager(this, 2)
+            else -> recycler_view_lian_item_questions.layoutManager = LinearLayoutManager(this)
+        }
 
         var adapter = LianItemQuestionAdapter()
         adapter.data = lianItem.questions!!
@@ -87,9 +94,209 @@ class LianPage0Activity : BaseActivity() {
         mediaPlayer?.stop()
     }
 
+    private fun prepareDataAnswerCorrectSentence(): LianItem {
+        val requirement = """
+            将每一句的正确形式写在每句话的下面。
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
+            
+        """.trimIndent()
+        val itemMainText = """
+            
+            When I was little, Friday’s night was our family game night. After supper, we would play card games of all sort in the sitting room. As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me. They would say to us that playing card games would help my brain. Still I unwilling to play the games for them sometimes. I didn’t realize how right my parents are until I entered high school. The games my parents taught me where I was a child turned out to be very useful later in my life.
+            
+        """.trimIndent()
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "When I was little, Friday’s night was our family game night. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "When I was little, Friday’s night was our family game night. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                2,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "After supper, we would play card games of all sort in the sitting room. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "After supper, we would play card games of all sort in the sitting room. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                3,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                4,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "They would say to us that playing card games would help my brain. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "They would say to us that playing card games would help my brain. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                5,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "Still I unwilling to play the games for them sometimes. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "Still I unwilling to play the games for them sometimes. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                6,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "I didn’t realize how right my parents are until I entered high school. ",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "I didn’t realize how right my parents are until I entered high school. "
+                    )
+                )
+            ),
+            LianItemQuestion(
+                7,
+                LianItemQuestionType.FILL_ONE_LEN40,
+                "The games my parents taught me where I was a child turned out to be very useful later in my life.",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        "The games my parents taught me where I was a child turned out to be very useful later in my life."
+                    )
+                )
+            ),
+        )
+
+
+        return LianItem(
+            1, "短文改错", LianItemType.FILL_ONE_LEN40, requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
+    }
+
+    private fun prepareDataAnswerSingleWord(): LianItem {
+        val requirement = """
+            阅读下面短文，在空白处填入1个适当的单词或括号内单词的正确形式。 
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
+            
+        """.trimIndent()
+        val itemMainText = """
+            
+            Diets have changed in China — and so too has its top crop. Since 2011, the country   1____（grow）more corn than rice. Corn production has jumped nearly 125 percent over   2____   past 25 years, while rice has increased only 7 percent. 
+            
+            A taste for meat is   3____ (actual) behind the change: An important part of its corn is used to feed chickens, pigs, and cattle. Another reason for corn’s rise: The government encourages farmers to grow corn instead of rice 
+            
+            4____  (improve) water quality. Corn uses less water   5____   rice and creates less fertilizer(化肥) runoff. This switch has decreased   6____   (pollute) in the country’s major lakes and reservoirs and made drinking water safer for people. 
+            
+            According to the World Bank, China accounts for about 30 percent of total   7____  (globe) fertilizer consumption. The Chinese Ministry of Agriculture finds that between 2005 — when the government   8____  (start) a soil-testing program   9____   gives specific fertilizer recommendations to farmers — and 2011, fertilizer use dropped by 7.7 million tons. That prevented the emission(排放) of 51.8 million tons of carbon dioxide. China’s approach to protecting its environment while   10____  (feed) its citizens ＂offers useful lessons for agriculture and food policymakers worldwide.＂ says the bank’s Juergen Voegele. 
+        """.trimIndent()
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "grow", mutableListOf("has grown"))
+                )
+            ),
+            LianItemQuestion(
+                2, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "", mutableListOf("the"))
+                )
+            ),
+            LianItemQuestion(
+                3, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "actual", mutableListOf("actually"))
+                )
+            ),
+            LianItemQuestion(
+                4, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "improve", mutableListOf("to improve"))
+                )
+            ),
+            LianItemQuestion(
+                5, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "", mutableListOf("than"))
+                )
+            ),
+            LianItemQuestion(
+                6, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "pollute", mutableListOf("pollution"))
+                )
+            ),
+            LianItemQuestion(
+                7, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "globe", mutableListOf("global"))
+                )
+            ),
+            LianItemQuestion(
+                8, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "start", mutableListOf("started"))
+                )
+            ),
+            LianItemQuestion(
+                9, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "", mutableListOf("that", "which"))
+                )
+            ),
+            LianItemQuestion(
+                10, LianItemQuestionType.FILL_ONE_LEN40, null,
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, "feed", mutableListOf("feeding"))
+                )
+            ),
+
+            )
+
+
+        return LianItem(
+            1, "语法填空", LianItemType.FILL_ONE_LEN10, requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
+    }
+
+
     private fun prepareDataSelectSingleOption(): LianItem {
         val requirement = """
-            单项填空
+            选择正确的选项填空
         """.trimIndent()
         val itemMainAudio = null
 
@@ -178,7 +385,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "单选", requirement = requirement,
+            1, "单项选择", LianItemType.SELECT_ONE_LEN40, requirement = requirement,
             itemMainText = itemMainText,
             itemMainAudio = itemMainAudio,
             questions = questions,
@@ -279,7 +486,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "听力", requirement = requirement,
+            1, "短文填空", LianItemType.SELECT_ONE_LEN40, requirement = requirement,
             itemMainText = itemMainText,
             itemMainAudio = itemMainAudio,
             questions = questions,
@@ -379,7 +586,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "听力", requirement = requirement,
+            1, "听力测试", LianItemType.SELECT_ONE_LEN40, requirement = requirement,
             itemMainText = itemMainText,
             itemMainAudio = itemMainAudio,
             questions = questions,
@@ -569,7 +776,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "完形填空", requirement = requirement,
+            1, "完形填空", LianItemType.SELECT_ONE_LEN40, requirement = requirement,
             itemMainText = itemMainText,
             questions = questions,
             reviews = reviews
@@ -647,7 +854,7 @@ class LianPage0Activity : BaseActivity() {
 
 
         return LianItem(
-            1, "阅读理解", requirement = requirement,
+            1, "阅读理解", LianItemType.SELECT_ONE_LEN40, requirement = requirement,
             itemMainText = itemMainText,
             questions = questions,
             reviews = reviews

@@ -1,6 +1,8 @@
 package com.qianli.cixuekaolian.adapter
 
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -17,6 +19,9 @@ class LianQuestionOptionAdapter() :
 
     override fun convert(holder: BaseViewHolder, item: LianQuestionOption) {
         holder.setText(R.id.lian_item_option_main, item.optionMainText)
+
+        var itemAnswer = holder.getView<TextView>(R.id.lian_item_answer_main)
+        itemAnswer.visibility = View.GONE
 
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.lian_item_option_holder)
