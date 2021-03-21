@@ -3,8 +3,7 @@
     android:id="@+id/lian_item_option_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dp_5"
-    android:padding="@dimen/dp_5"
+    android:layout_marginTop="@dimen/dp_5"
     android:background="@drawable/selector_button_round_corner_dark"
     android:orientation="horizontal">
 
