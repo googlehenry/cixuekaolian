@@ -50,11 +50,27 @@ class LianQuestionAnswerAdapter(
                     answerOption.setTextColor(Color.parseColor("#ff0000"))
                 }
             }
+            if (question.userAnsweredReplies == null && item.answerTemplate != null) {
+                answerOption.setText(
+                    item.answerTemplate?.toCharArray(),
+                    0,
+                    item.answerTemplate!!.length
+                )
+            }
         } else {
             indicator.visibility = View.GONE
             answerOption.setTextColor(Color.parseColor("#333333"))
+
             question.userAnsweredReplies?.let {
                 answerOption.setText(it.first().toCharArray(), 0, it.first().length)
+            }
+
+            if (question.userAnsweredReplies == null && item.answerTemplate != null) {
+                answerOption.setText(
+                    item.answerTemplate?.toCharArray(),
+                    0,
+                    item.answerTemplate!!.length
+                )
             }
         }
 
