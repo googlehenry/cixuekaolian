@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:inputType="textMultiLine"
-        android:maxLines="3"
+        android:maxLines="5"
         android:textColor="#333333"
         android:textSize="@dimen/sp_14" />
 
