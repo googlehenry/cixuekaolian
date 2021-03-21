@@ -42,11 +42,11 @@ class LianQuestionAnswerAdapter(
                 answerOption.setText(it.first().toCharArray(), 0, it.first().length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE
-                    indicator.setImageResource(R.drawable.icon_lian_result_tick)
+                    indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                     answerOption.setTextColor(Color.parseColor("#2ea5ef"))
                 } else {
                     indicator.visibility = View.VISIBLE
-                    indicator.setImageResource(R.drawable.icon_lian_result_cross)
+                    indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                     answerOption.setTextColor(Color.parseColor("#ff0000"))
                 }
             }

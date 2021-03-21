@@ -47,17 +47,17 @@ class LianQuestionOptionAdapter(
                 if (it.contains(item.id)) {
                     if (item.correctOption) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
-                        indicator.setImageResource(R.drawable.icon_lian_result_tick)
+                        indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
                     } else {
                         itemOption.setTextColor(Color.parseColor("#FF0000"))
-                        indicator.setImageResource(R.drawable.icon_lian_result_cross)
+                        indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                         indicator.visibility = View.VISIBLE
                     }
                 } else {
                     if (item.correctOption) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
-                        indicator.setImageResource(R.drawable.icon_lian_result_tick)
+                        indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
                     } else {
                         indicator.visibility = View.GONE
