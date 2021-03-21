@@ -24,8 +24,11 @@ class LianPage0Activity : BaseActivity() {
 
         header_back.setOnClickListener { onBackPressed() }
 
+        var category = intent?.let {
+            it.getStringExtra("category")
+        }
         var lianItem: LianItem? = null
-        lianItem = when (TempUtil.counter % 7) {
+        lianItem = when (TempUtil.categoryMap[category] ?: TempUtil.counter % 7) {
             0 -> prepareDateReading()
             1 -> prepareCompletion()
             2 -> prepareDataListnening()

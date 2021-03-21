@@ -194,28 +194,29 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
         var highSchool = ExcerciseTarget(1, "高考︹全国︺")
         highSchool.types = mutableListOf(
-            ExcerciseByType(1, "单句改错", total = 64),
+            ExcerciseByType(1, "短文改错", total = 64),
             ExcerciseByType(2, "语法填空", total = 147),
-            ExcerciseByType(3, "短文改错", total = 231),
-            ExcerciseByType(4, "阅读理解", total = 638),
-            ExcerciseByType(5, "完形填空", total = 854),
-            ExcerciseByType(6, "书面表达", total = 45)
+            ExcerciseByType(3, "单项选择", total = 231),
+            ExcerciseByType(4, "短文填空", total = 638),
+            ExcerciseByType(5, "听力测试", total = 854),
+            ExcerciseByType(6, "完形填空", total = 45),
+            ExcerciseByType(7, "阅读理解", total = 345)
         )
         list.add(highSchool)//︹︺︵︶
 
         var middleSchool = ExcerciseTarget(2, "中考︹全国︺")
         middleSchool.types = mutableListOf(
-            ExcerciseByType(1, "单句改错", total = 432),
-            ExcerciseByType(2, "短文改错", total = 134),
+            ExcerciseByType(1, "短文改错", total = 432),
+            ExcerciseByType(2, "语法填空", total = 134),
             ExcerciseByType(3, "阅读理解", total = 636),
-            ExcerciseByType(4, "书面表达", total = 89)
+            ExcerciseByType(4, "听力测试", total = 89)
         )
         list.add(middleSchool)//︹︺︵︶
 
         var primarySchool = ExcerciseTarget(3, "小升初︹全国︺")
         primarySchool.types = mutableListOf(
-            ExcerciseByType(1, "单句填空", total = 576),
-            ExcerciseByType(2, "单句改错", total = 873),
+            ExcerciseByType(1, "单项选择", total = 576),
+            ExcerciseByType(2, "听力测试", total = 873),
         )
         list.add(primarySchool)//︹︺︵︶
 
@@ -229,9 +230,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun start(target: ExcerciseTarget, excerciseByType: ExcerciseByType) {
-        startActivity(
-            Intent(mContext, LianPage0Activity::class.java)
-        )
+        var intent = Intent(mContext, LianPage0Activity::class.java)
+        intent.putExtra("category", excerciseByType.shortName)
+        startActivity(intent)
     }
 
 
