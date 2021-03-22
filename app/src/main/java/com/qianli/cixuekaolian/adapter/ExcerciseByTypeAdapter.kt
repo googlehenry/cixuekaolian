@@ -38,18 +38,23 @@ class ExcerciseByTypeAdapter(
         progressBar.secondaryProgress = item.done
 
 
-        expandIcon.setTag(R.id.nav_group_holder, item)
-        expandIcon.setOnClickListener {
+//        expandIcon.setTag(R.id.icon_richeng_time_start, item)
+//        expandIcon.setOnClickListener {
+//            excerciseListener.start(
+//                excercistTarget,
+//                it.getTag(R.id.nav_group_holder) as ExcerciseByType
+//            )
+//        }
+
+
+        var bookItemHolder = holder.getView<CardView>(R.id.nav_group_holder)
+        bookItemHolder.setTag(R.id.nav_group_holder, item)
+        bookItemHolder.setOnClickListener {
             excerciseListener.start(
                 excercistTarget,
                 it.getTag(R.id.nav_group_holder) as ExcerciseByType
             )
         }
-
-
-        var bookItemHolder = holder.getView<CardView>(R.id.nav_group_holder)
-//        bookItemHolder.setTag(R.id.nav_group_holder, item)
-//        bookItemHolder.setOnClickListener { null }
     }
 
 }
