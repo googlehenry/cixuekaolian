@@ -28,16 +28,19 @@ class LianPage0Activity : BaseActivity() {
             it.getStringExtra("category")
         }
         var lianItem: LianItem? = null
-        lianItem = when (TempUtil.categoryMap[category] ?: TempUtil.counter % 7) {
-            0 -> prepareDateReading()
-            1 -> prepareCompletion()
-            2 -> prepareDataListnening()
-            3 -> prepareDataSelectSentences()
-            4 -> prepareDataSelectSingleOption()
-            5 -> prepareDataAnswerSingleWord()
-            6 -> prepareDataAnswerCorrectSentence()
-            else -> null
-        }
+        lianItem =
+            when (TempUtil.categoryMap[category] ?: TempUtil.counter % TempUtil.categoryMap.size) {
+                0 -> prepareDateReading()
+                1 -> prepareCompletion()
+                2 -> prepareDataListnening()
+                3 -> prepareDataSelectSentences()
+                4 -> prepareDataSelectSingleOption()
+                5 -> prepareDataAnswerSingleWord()
+                6 -> prepareDataAnswerCorrectSentence()
+                7 -> prepareDataAnswerCorectFormsByChinesewords()
+                8 -> prepareDataAnswerByChineseTranslation()
+                else -> null
+            }
         lianItem = lianItem!!
         TempUtil.counter += 1
 
@@ -95,6 +98,162 @@ class LianPage0Activity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         mediaPlayer?.stop()
+    }
+
+    private fun prepareDataAnswerByChineseTranslation(): LianItem {
+        val requirement = """
+            根据汉语提示完成句子
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
+            
+        """.trimIndent()
+//        val itemMainText = """
+//
+//        """.trimIndent()
+        val itemMainText = null
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1, LianItemQuestionType.FILL_ONE_LEN10,
+                """
+                    他的棒球在床下
+                    His baseball ____ ____ the bed.
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("is")),
+                    LianQuestionAnswer(2, correctAnswers = mutableSetOf("under", "below"))
+                )
+            ),
+            LianItemQuestion(
+                2, LianItemQuestionType.FILL_ONE_LEN10,
+                """
+                    你的父母现在在哪里?
+                    ____ ____ your parents now?
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("Where")),
+                    LianQuestionAnswer(2, correctAnswers = mutableSetOf("are"))
+                )
+            ),
+            LianItemQuestion(
+                3, LianItemQuestionType.FILL_ONE_LEN10,
+                """
+                    盒子里有一些橙子。
+                    Some oranges ____ ____ the box.
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("are")),
+                    LianQuestionAnswer(2, correctAnswers = mutableSetOf("in"))
+                )
+            ),
+            LianItemQuestion(
+                4, LianItemQuestionType.FILL_ONE_LEN10,
+                """
+                    我认为这本书是吉娜的。
+                    I ____ the book is ____.
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("think")),
+                    LianQuestionAnswer(2, correctAnswers = mutableSetOf("Gina's"))
+                )
+            ),
+            LianItemQuestion(
+                5, LianItemQuestionType.FILL_ONE_LEN10,
+                """
+                    我不认识这位老师。
+                    I ____ ____ the teacher.
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("don't")),
+                    LianQuestionAnswer(2, correctAnswers = mutableSetOf("know"))
+                )
+            ),
+
+            )
+
+
+        return LianItem(
+            1, "汉语提示完成句子", LianItemType.FILL_ONE_LEN40, requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
+    }
+
+    private fun prepareDataAnswerCorectFormsByChinesewords(): LianItem {
+        val requirement = """
+            根据句意以及汉语提示填写单词
+        """.trimIndent()
+        val itemMainAudio = null
+
+        val reviews = """
+            
+        """.trimIndent()
+//        val itemMainText = """
+//
+//        """.trimIndent()
+        val itemMainText = null
+
+        val questions = mutableListOf<LianItemQuestion>(
+            LianItemQuestion(
+                1, LianItemQuestionType.FILL_ONE_LEN40,
+                "I ____(认为) the ruler is in the pencil box.",
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("think"))
+                )
+            ),
+            LianItemQuestion(
+                2, LianItemQuestionType.FILL_ONE_LEN40,
+                """
+                    -Where are my books?
+                    -They're ____(在...下) the desk.
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("under", "below"))
+                )
+            ),
+            LianItemQuestion(
+                3, LianItemQuestionType.FILL_ONE_LEN40,
+                """
+                   Those are Li Lei's and Li Ming's ____(椅子).
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("chairs"))
+                )
+            ),
+            LianItemQuestion(
+                4, LianItemQuestionType.FILL_ONE_LEN40,
+                """
+                   Your hat in on your ____(头).
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("head"))
+                )
+            ),
+            LianItemQuestion(
+                5, LianItemQuestionType.FILL_ONE_LEN40,
+                """
+                   -What's her telephone number?
+                   -Sorry, I don't ____(知道).
+                """.trimIndent(),
+                answerLians = mutableListOf(
+                    LianQuestionAnswer(1, correctAnswers = mutableSetOf("know"))
+                )
+            ),
+
+            )
+
+
+        return LianItem(
+            1, "汉语提示填写单词", LianItemType.FILL_ONE_LEN40, requirement = requirement,
+            itemMainText = itemMainText,
+            itemMainAudio = itemMainAudio,
+            questions = questions,
+            reviews = reviews
+        )
     }
 
     private fun prepareDataAnswerCorrectSentence(): LianItem {

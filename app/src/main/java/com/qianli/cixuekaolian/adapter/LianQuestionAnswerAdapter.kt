@@ -36,10 +36,10 @@ class LianQuestionAnswerAdapter(
         itemOption.visibility = View.GONE
 
         if (lianItem.submitted) {
-            question.userAnsweredReplies?.let {
-                var correct: Boolean =
-                    it.any { anser -> item.correctAnswers?.let { it.contains(anser) } ?: false }
-                answerOption.setText(it.first().toCharArray(), 0, it.first().length)
+            //current part answer check
+            question.userAnsered?.get(item.id)?.let {
+                var correct: Boolean = item.correctAnswers?.let { ans -> ans.contains(it) } ?: false
+                answerOption.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
@@ -50,7 +50,7 @@ class LianQuestionAnswerAdapter(
                     answerOption.setTextColor(Color.parseColor("#ff0000"))
                 }
             }
-            if (question.userAnsweredReplies == null && item.answerTemplate != null) {
+            if (question.userAnsered?.get(item.id) == null && item.answerTemplate != null) {
                 answerOption.setText(
                     item.answerTemplate?.toCharArray(),
                     0,
@@ -61,11 +61,11 @@ class LianQuestionAnswerAdapter(
             indicator.visibility = View.GONE
             answerOption.setTextColor(Color.parseColor("#333333"))
 
-            question.userAnsweredReplies?.let {
-                answerOption.setText(it.first().toCharArray(), 0, it.first().length)
+            question.userAnsered?.get(item.id)?.let {
+                answerOption.setText(it.toCharArray(), 0, it.length)
             }
 
-            if (question.userAnsweredReplies == null && item.answerTemplate != null) {
+            if (question.userAnsered?.get(item.id) == null && item.answerTemplate != null) {
                 answerOption.setText(
                     item.answerTemplate?.toCharArray(),
                     0,
@@ -78,7 +78,11 @@ class LianQuestionAnswerAdapter(
         var answerInput = holder.getView<EditText>(R.id.lian_item_answer_main)
         answerInput.setTag(R.id.lian_item_answer_main, item)
         answerInput.addTextChangedListener {
-            question.userAnsweredReplies = mutableSetOf(answerInput.text.toString().trim())
+//            question.userAnsweredReplies = mutableSetOf(answerInput.text.toString().trim())
+            var answerMap: MutableMap<Int, String> =
+                question.userAnsered ?: mutableMapOf<Int, String>()
+            answerMap[item.id] = answerInput.text.toString().trim()
+            question.userAnsered = answerMap
             lianItem.submitted = false
         }
     }

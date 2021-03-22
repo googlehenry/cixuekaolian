@@ -209,7 +209,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(1, "短文改错", total = 432),
             ExcerciseByType(2, "语法填空", total = 134),
             ExcerciseByType(3, "阅读理解", total = 636),
-            ExcerciseByType(4, "听力测试", total = 89)
+            ExcerciseByType(4, "听力测试", total = 89),
+            ExcerciseByType(5, "汉语提示填写单词", total = 56),
+            ExcerciseByType(6, "汉语提示完成句子", total = 92)
         )
         list.add(middleSchool)//︹︺︵︶
 
