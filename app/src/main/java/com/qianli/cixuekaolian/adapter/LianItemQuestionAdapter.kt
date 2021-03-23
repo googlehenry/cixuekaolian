@@ -24,6 +24,8 @@ class LianItemQuestionAdapter(var lianItem: LianItem, var questionsHolder: Recyc
     override fun convert(holder: BaseViewHolder, item: LianItemQuestion) {
         holder.setText(R.id.lian_item_question_main_seq, item.id.toString())
         holder.setText(R.id.lian_item_question_main_text, item.questionMainText)
+        holder.setText(R.id.lian_item_question_answer_reviewed, item.answerReviewed)
+        holder.setText(R.id.lian_item_question_answer_explained, item.answerExplained)
 
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
         questionMainText.visibility = if (item.questionMainText == null) View.GONE else View.VISIBLE
@@ -56,6 +58,12 @@ class LianItemQuestionAdapter(var lianItem: LianItem, var questionsHolder: Recyc
                 else -> questionHolder.layoutManager = LinearLayoutManager(context)
             }
         }
+
+        var answerReviewed = holder.getView<TextView>(R.id.lian_item_question_answer_reviewed)
+        var answerExplained = holder.getView<TextView>(R.id.lian_item_question_answer_explained)
+
+        answerReviewed.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
+        answerExplained.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
 
 
         questionHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)

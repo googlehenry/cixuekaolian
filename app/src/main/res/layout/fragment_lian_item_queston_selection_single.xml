@@ -49,6 +49,22 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/fragment_lian_item_queston_option_text" />
+
+            <TextView
+                android:id="@+id/lian_item_question_answer_reviewed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textStyle="italic"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/lian_item_question_answer_explained"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textStyle="italic"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
 

@@ -275,68 +275,81 @@ class LianPage0Activity : BaseActivity() {
             LianItemQuestion(
                 1,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "When I was little, Friday’s night was our family game night. ",
+                "When I was little, Friday’s night was our family game night.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "When I was little, Friday’s night was our family game night. "
+                        "When I was little, Friday’s night was our family game night.",
+                        correctAnswers = mutableSetOf("When I was little, Friday night was our family game night.")
                     )
-                )
+                ),
+                answerReviewed = "答案: Friday's->Friday"
             ),
             LianItemQuestion(
                 2,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "After supper, we would play card games of all sort in the sitting room. ",
+                "After supper, we would play card games of all sort in the sitting room.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "After supper, we would play card games of all sort in the sitting room. "
+                        "After supper, we would play card games of all sort in the sitting room.",
+                        correctAnswers = mutableSetOf("After supper, we would play card games of all sorts in the sitting room.")
                     )
-                )
+                ),
+                answerReviewed = "答案: sort->sorts"
             ),
             LianItemQuestion(
                 3,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me. ",
+                "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me. "
+                        "As the kid, I loved to watch cartoons, but no matter how many times I asked to watching them, my parents would not to let me.",
+                        correctAnswers = mutableSetOf("As a kid, I loved to watch cartoons, but no matter how many times I asked to watch them, my parents would not let me.")
+
                     )
-                )
+                ),
+                answerReviewed = "答案: As the kid -> As a kid ; watching->watch ; would not to let me -> would not let me"
             ),
             LianItemQuestion(
                 4,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "They would say to us that playing card games would help my brain. ",
+                "They would say to us that playing card games would help my brain.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "They would say to us that playing card games would help my brain. "
+                        "They would say to us that playing card games would help my brain.",
+                        correctAnswers = mutableSetOf("They would say to me that playing card games would help my brain.")
                     )
-                )
+                ),
+                answerReviewed = "答案: us->me"
             ),
             LianItemQuestion(
                 5,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "Still I unwilling to play the games for them sometimes. ",
+                "Still I unwilling to play the games for them sometimes.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "Still I unwilling to play the games for them sometimes. "
+                        "Still I unwilling to play the games for them sometimes.",
+                        correctAnswers = mutableSetOf("Still I was unwilling to play the games with them sometimes.")
                     )
-                )
+                ),
+                answerReviewed = "答案: I unwilling -> I was unwilling ; games for them-> games with them"
             ),
             LianItemQuestion(
                 6,
                 LianItemQuestionType.FILL_ONE_LEN40,
-                "I didn’t realize how right my parents are until I entered high school. ",
+                "I didn’t realize how right my parents are until I entered high school.",
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "I didn’t realize how right my parents are until I entered high school. "
+                        "I didn’t realize how right my parents are until I entered high school.",
+                        correctAnswers = mutableSetOf("I didn’t realize how right my parents were until I entered high school.")
                     )
-                )
+                ),
+                answerReviewed = "答案: are -> were"
             ),
             LianItemQuestion(
                 7,
@@ -345,9 +358,11 @@ class LianPage0Activity : BaseActivity() {
                 answerLians = mutableListOf(
                     LianQuestionAnswer(
                         1,
-                        "The games my parents taught me where I was a child turned out to be very useful later in my life."
+                        "The games my parents taught me where I was a child turned out to be very useful later in my life.",
+                        correctAnswers = mutableSetOf("The games my parents taught me when I was a child turned out to be very useful later in my life.")
                     )
-                )
+                ),
+                answerReviewed = "答案: where -> when"
             ),
         )
 
@@ -462,8 +477,8 @@ class LianPage0Activity : BaseActivity() {
         """.trimIndent()
         val itemMainAudio = null
 
-        val reviews = """
-            1.【答案】D 
+        /*
+        1.【答案】D 
               【解析】考查交际用语。根据后句“人无完人”可知，前一个人犯错误了，应叫他take it easy（放松）。
             2.【答案】A 
               【解析】考查动词短语辨析。根据句意，与我们一道去看电影，故选A。come along with…与…一道。
@@ -473,7 +488,10 @@ class LianPage0Activity : BaseActivity() {
               【解析】考查定语从句。定语从句中stay为不及物动词，故不缺主干成分，用关系副词；先行词为house，指地点，故用关系副词where。
             5.【答案】D 
               【解析】考查非谓语动词。根据句意，因为我赶上了7:30的车，所以那天我更早地到了办公室，可知赶车发生在到办公室之前，且与主语I之间为主动关系，故使用现在分词完成体表主动完成。
-        """.trimIndent()
+
+         */
+        val reviews = """
+                    """.trimIndent()
         val itemMainText = null
 
         val questions = mutableListOf<LianItemQuestion>(
@@ -487,9 +505,11 @@ class LianPage0Activity : BaseActivity() {
                 optionLians = mutableListOf(
                     LianQuestionOption(1, "A. Take your time "),
                     LianQuestionOption(2, "B. You're right "),
-                    LianQuestionOption(3, "C. Whatever you say ", correctOption = true),
-                    LianQuestionOption(4, "D. Take it easy "),
-                )
+                    LianQuestionOption(3, "C. Whatever you say "),
+                    LianQuestionOption(4, "D. Take it easy ", correctOption = true),
+                ),
+                answerReviewed = "【答案】D ",
+                answerExplained = "【解析】考查交际用语。根据后句“人无完人”可知，前一个人犯错误了，应叫他take it easy（放松）。"
             ),
             LianItemQuestion(
                 2,
@@ -502,7 +522,9 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(2, "B. come off"),
                     LianQuestionOption(3, "C. come across "),
                     LianQuestionOption(4, "D. come through "),
-                )
+                ),
+                answerReviewed = "【答案】A ",
+                answerExplained = "【解析】考查动词短语辨析。根据句意，与我们一道去看电影，故选A。come along with…与…一道。"
             ),
             LianItemQuestion(
                 3,
@@ -511,11 +533,13 @@ class LianPage0Activity : BaseActivity() {
                     I was glad to meet Jenny again, ____ I didn't want to spend all day with her.
                 """.trimIndent(),
                 optionLians = mutableListOf(
-                    LianQuestionOption(1, "A. but"),
-                    LianQuestionOption(2, "B. and", correctOption = true),
+                    LianQuestionOption(1, "A. but", correctOption = true),
+                    LianQuestionOption(2, "B. and"),
                     LianQuestionOption(3, "C. so"),
                     LianQuestionOption(4, "D. or"),
-                )
+                ),
+                answerReviewed = "【答案】A ",
+                answerExplained = "【解析】考查并列连词。根据句意：再次见到Jenny我很高兴，但我不想整天都和她一起度过。"
             ),
             LianItemQuestion(
                 4,
@@ -528,7 +552,9 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(2, "B. when"),
                     LianQuestionOption(3, "C. where", correctOption = true),
                     LianQuestionOption(4, "D. which"),
-                )
+                ),
+                answerReviewed = "【答案】C ",
+                answerExplained = "【解析】考查定语从句。定语从句中stay为不及物动词，故不缺主干成分，用关系副词；先行词为house，指地点，故用关系副词where。"
             ),
             LianItemQuestion(
                 5,
@@ -541,7 +567,9 @@ class LianPage0Activity : BaseActivity() {
                     LianQuestionOption(2, "B. to have caught"),
                     LianQuestionOption(3, "C. to catch"),
                     LianQuestionOption(4, "D. having caught", correctOption = true),
-                )
+                ),
+                answerReviewed = "【答案】D ",
+                answerExplained = "【解析】考查非谓语动词。根据句意，因为我赶上了7:30的车，所以那天我更早地到了办公室，可知赶车发生在到办公室之前，且与主语I之间为主动关系，故使用现在分词完成体表主动完成。"
             ),
         )
 

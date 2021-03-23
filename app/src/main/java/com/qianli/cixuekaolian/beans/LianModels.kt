@@ -75,9 +75,11 @@ data class LianItemQuestion(
     var optionLians: MutableList<LianQuestionOption>? = null,
     var answerLians: MutableList<LianQuestionAnswer>? = null,
     var userSelectedOptions: MutableSet<Int>? = null,
-//    var userAnsweredReplies: MutableSet<String>? = null,
-    var userAnsered: MutableMap<Int, String>? = null
+    var userAnsered: MutableMap<Int, String>? = null,
 
+    //provide correct answer for each question when checked answers
+    var answerReviewed: String? = null,
+    var answerExplained: String? = null,
 )
 
 data class LianQuestionAnswer(
