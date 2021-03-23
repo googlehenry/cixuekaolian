@@ -22,7 +22,7 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
 
     private var detector: GestureDetector? = null
     private fun setUpImageViewFlipper() {
-
+//但是如果我希望HorizontalScrollView可以想ViewPager一样，既可以绑定数据集（动态改变图片），还能做到不管多少图片都不会OOM（ViewPager内部一直初始化，回收，最多保持3个View）。
         detector = GestureDetector(this)
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_02));
         flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_03));

@@ -8,8 +8,19 @@ data class ExcerciseTarget(
     var name: String? = null,
     var description: String? = null,
     var types: MutableList<ExcerciseByType>? = null,
-    var books: MutableList<ExcerciseByBook>? = null
+    var books: MutableList<ExcerciseByBook>? = null,
+    var blocks: MutableList<ExcerciseByBlock>? = null,
+)
 
+data class ExcerciseByBlock(
+    var id: Int,
+    var shortName: String,
+    var name: String? = null,
+    var description: String? = null,
+    var categories: MutableSet<String>? = null,
+    var total: Int = 100,
+    var error: Int = Random().nextInt(40),
+    var done: Int = Math.max(Random().nextInt(total), error)
 )
 
 //category 1:exam/separate books for

@@ -9,16 +9,16 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.adapter.ExcerciseByBlockAdapter
 import com.qianli.cixuekaolian.adapter.ExcerciseByBookAdapter
 import com.qianli.cixuekaolian.adapter.ExcerciseByTypeAdapter
 import com.qianli.cixuekaolian.adapter.ExcerciseTargetsAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
-import com.qianli.cixuekaolian.beans.ExcerciseByBook
-import com.qianli.cixuekaolian.beans.ExcerciseByType
-import com.qianli.cixuekaolian.beans.ExcerciseByUnit
-import com.qianli.cixuekaolian.beans.ExcerciseTarget
+import com.qianli.cixuekaolian.beans.*
 import kotlinx.android.synthetic.main.fragment_lian.*
 
 class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
@@ -46,7 +46,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
         if (excerciseTarget?.id!! >= 0) {
 
-            excerciseTarget?.let { loadBook(it) }
+            excerciseTarget?.let { loadTarget(it) }
 
             lastSelectedItem?.let {
                 it.setBackgroundResource(R.drawable.shape_button_half_rounded)
@@ -62,10 +62,24 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         }
     }
 
-    private fun loadBook(target: ExcerciseTarget) {
+    private fun loadTarget(target: ExcerciseTarget) {
+
+        target.blocks?.let {
+            var adapterBlock = ExcerciseByBlockAdapter(this, target)
+            adapterBlock.data = it
+            recycler_view_excercise_nav_blocks.layoutManager =
+                GridLayoutManager(context, 3)
+            recycler_view_excercise_nav_blocks.adapter = adapterBlock
+            recycler_view_excercise_nav_blocks.visibility = View.VISIBLE
+        } ?: run {
+            recycler_view_excercise_nav_blocks.visibility = View.GONE
+        }
+
         target.types?.let {
             var adapterTypes = ExcerciseByTypeAdapter(this, target)
             adapterTypes.data = it
+//            recycler_view_excercise_nav_groups.layoutManager =
+//                GridLayoutManager(context, 2)
             recycler_view_excercise_nav_groups.adapter = adapterTypes
         }
 
@@ -81,6 +95,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
             }, this, target)
             adapterBooks.data = it
+            recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
             recycler_view_excercise_nav_groups.adapter = adapterBooks
 
             it.forEach { book ->
@@ -202,6 +217,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(6, "完形填空", total = 45),
             ExcerciseByType(7, "阅读理解", total = 345)
         )
+        highSchool.blocks = mutableListOf(
+            ExcerciseByBlock(1, "高考词汇", categories = mutableSetOf("短文改错")),
+            ExcerciseByBlock(1, "高考语法", categories = mutableSetOf("语法填空")),
+            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
+        )
         list.add(highSchool)//︹︺︵︶
 
         var middleSchool = ExcerciseTarget(2, "中考︹全国︺")
@@ -213,6 +233,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(5, "汉语提示填写单词", total = 56),
             ExcerciseByType(6, "汉语提示完成句子", total = 92)
         )
+        middleSchool.blocks = mutableListOf(
+            ExcerciseByBlock(1, "中考词汇", categories = mutableSetOf("短文改错")),
+            ExcerciseByBlock(1, "中考语法", categories = mutableSetOf("语法填空")),
+            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
+        )
         list.add(middleSchool)//︹︺︵︶
 
         var primarySchool = ExcerciseTarget(3, "小升初︹全国︺")
@@ -220,6 +245,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(1, "单项选择", total = 576),
             ExcerciseByType(2, "听力测试", total = 873),
         )
+
         list.add(primarySchool)//︹︺︵︶
 
         return list
@@ -237,10 +263,16 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         startActivity(intent)
     }
 
+    override fun start(target: ExcerciseTarget, excerciseByBlock: ExcerciseByBlock) {
+        var intent = Intent(mContext, LianPage0Activity::class.java)
+        intent.putExtra("category", excerciseByBlock.categories?.first())
+        startActivity(intent)
+    }
 
 }
 
 interface OnExcercistStartListener {
     fun start(book: ExcerciseByBook, excerciseByUnit: ExcerciseByUnit)
     fun start(target: ExcerciseTarget, excerciseByType: ExcerciseByType)
+    fun start(target: ExcerciseTarget, excerciseByBlock: ExcerciseByBlock)
 }
