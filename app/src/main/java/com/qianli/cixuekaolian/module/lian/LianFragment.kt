@@ -78,8 +78,8 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         target.types?.let {
             var adapterTypes = ExcerciseByTypeAdapter(this, target)
             adapterTypes.data = it
-            recycler_view_excercise_nav_groups.layoutManager =
-                GridLayoutManager(context, 2)
+//            recycler_view_excercise_nav_groups.layoutManager =
+//                GridLayoutManager(context, 2)
             recycler_view_excercise_nav_groups.adapter = adapterTypes
         }
 
