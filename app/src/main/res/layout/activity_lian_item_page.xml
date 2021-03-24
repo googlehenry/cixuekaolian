@@ -142,7 +142,8 @@
                     <TextView
                         android:id="@+id/lian_item_explanations"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/sp_14" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
