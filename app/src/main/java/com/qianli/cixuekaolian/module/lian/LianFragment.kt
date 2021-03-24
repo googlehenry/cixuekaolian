@@ -78,8 +78,8 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         target.types?.let {
             var adapterTypes = ExcerciseByTypeAdapter(this, target)
             adapterTypes.data = it
-//            recycler_view_excercise_nav_groups.layoutManager =
-//                GridLayoutManager(context, 2)
+            recycler_view_excercise_nav_groups.layoutManager =
+                GridLayoutManager(context, 2)
             recycler_view_excercise_nav_groups.adapter = adapterTypes
         }
 
@@ -207,7 +207,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         )
         list.add(textBooks)
 
-        var highSchool = ExcerciseTarget(1, "高考︹全国︺")
+        var highSchool = ExcerciseTarget(1, "高考︹全国︺", name = "全国高考")
         highSchool.types = mutableListOf(
             ExcerciseByType(1, "短文改错", total = 64),
             ExcerciseByType(2, "语法填空", total = 147),
@@ -217,14 +217,14 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(6, "完形填空", total = 45),
             ExcerciseByType(7, "阅读理解", total = 345)
         )
-        highSchool.blocks = mutableListOf(
-            ExcerciseByBlock(1, "高考词汇", categories = mutableSetOf("短文改错")),
-            ExcerciseByBlock(1, "高考语法", categories = mutableSetOf("语法填空")),
-            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
-        )
+//        highSchool.blocks = mutableListOf(
+//            ExcerciseByBlock(1, "高考词汇", categories = mutableSetOf("短文改错")),
+//            ExcerciseByBlock(1, "高考语法", categories = mutableSetOf("语法填空")),
+//            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
+//        )
         list.add(highSchool)//︹︺︵︶
 
-        var middleSchool = ExcerciseTarget(2, "中考︹全国︺")
+        var middleSchool = ExcerciseTarget(2, "中考︹全国︺", name = "全国中考")
         middleSchool.types = mutableListOf(
             ExcerciseByType(1, "短文改错", total = 432),
             ExcerciseByType(2, "语法填空", total = 134),
@@ -233,39 +233,45 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             ExcerciseByType(5, "汉语提示填写单词", total = 56),
             ExcerciseByType(6, "汉语提示完成句子", total = 92)
         )
-        middleSchool.blocks = mutableListOf(
-            ExcerciseByBlock(1, "中考词汇", categories = mutableSetOf("短文改错")),
-            ExcerciseByBlock(1, "中考语法", categories = mutableSetOf("语法填空")),
-            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
-        )
+//        middleSchool.blocks = mutableListOf(
+//            ExcerciseByBlock(1, "中考词汇", categories = mutableSetOf("短文改错")),
+//            ExcerciseByBlock(1, "中考语法", categories = mutableSetOf("语法填空")),
+//            ExcerciseByBlock(1, "句型搭配", categories = mutableSetOf("完形填空")),
+//        )
         list.add(middleSchool)//︹︺︵︶
 
-        var primarySchool = ExcerciseTarget(3, "小升初︹全国︺")
-        primarySchool.types = mutableListOf(
-            ExcerciseByType(1, "单项选择", total = 576),
-            ExcerciseByType(2, "听力测试", total = 873),
-        )
-
-        list.add(primarySchool)//︹︺︵︶
+//        var primarySchool = ExcerciseTarget(3, "小升初︹全国︺")
+//        primarySchool.types = mutableListOf(
+//            ExcerciseByType(1, "单项选择", total = 576),
+//            ExcerciseByType(2, "听力测试", total = 873),
+//        )
+//
+//        list.add(primarySchool)//︹︺︵︶
 
         return list
     }
 
     override fun start(book: ExcerciseByBook, excerciseByUnit: ExcerciseByUnit) {
-        startActivity(
-            Intent(mContext, LianPage0Activity::class.java)
-        )
+        var intent = Intent(mContext, LianPage0Activity::class.java)
+        excerciseByUnit.types?.let {
+            intent.putExtra("category", it.first().shortName)
+        }
+        intent.putExtra("target", book.shortName)
+
+        startActivity(intent)
     }
 
     override fun start(target: ExcerciseTarget, excerciseByType: ExcerciseByType) {
         var intent = Intent(mContext, LianPage0Activity::class.java)
         intent.putExtra("category", excerciseByType.shortName)
+        intent.putExtra("target", target.name)
         startActivity(intent)
     }
 
     override fun start(target: ExcerciseTarget, excerciseByBlock: ExcerciseByBlock) {
         var intent = Intent(mContext, LianPage0Activity::class.java)
         intent.putExtra("category", excerciseByBlock.categories?.first())
+        intent.putExtra("target", target.name)
         startActivity(intent)
     }
 

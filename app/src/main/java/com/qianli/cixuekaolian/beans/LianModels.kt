@@ -51,6 +51,7 @@ data class ExcerciseByUnit(
     var shortName: String,
     var name: String? = null,
     var description: String? = null,
+    var types: MutableList<ExcerciseByType>? = null,
     var total: Int = 100,
     var error: Int = Random().nextInt(40),
     var done: Int = Math.max(Random().nextInt(total), error)

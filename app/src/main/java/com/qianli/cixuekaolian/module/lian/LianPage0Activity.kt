@@ -27,6 +27,9 @@ class LianPage0Activity : BaseActivity() {
         var category = intent?.let {
             it.getStringExtra("category")
         }
+        var target = intent?.let {
+            it.getStringExtra("target")
+        }
         var lianItem: LianItem? = null
         lianItem =
             when (TempUtil.categoryMap[category] ?: TempUtil.counter % TempUtil.categoryMap.size) {
@@ -44,7 +47,8 @@ class LianPage0Activity : BaseActivity() {
         lianItem = lianItem!!
         TempUtil.counter += 1
 
-        lian_item_requirment.text = lianItem.category + "\n" + lianItem.requirement
+        lian_item_category.text = (target?.let { "$it>" } ?: "") + lianItem.category
+        lian_item_requirment.text = lianItem.requirement
         lian_item_main_text.text = lianItem.itemMainText
 
         lian_item_main_text.visibility =

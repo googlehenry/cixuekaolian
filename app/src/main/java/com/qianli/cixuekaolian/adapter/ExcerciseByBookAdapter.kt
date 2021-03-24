@@ -1,6 +1,7 @@
 package com.qianli.cixuekaolian.adapter
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,9 +28,13 @@ class ExcerciseByBookAdapter(
     override fun convert(holder: BaseViewHolder, item: ExcerciseByBook) {
         holder.setText(R.id.nav_group_seq, item.id.toString())
         holder.setText(R.id.nav_group_title, item.shortName)
-        holder.setText(R.id.nav_group_error, "已错:" + item.error.toString())
-        holder.setText(R.id.nav_group_done, "已做:" + item.done.toString())
-        holder.setText(R.id.nav_group_total, "共计:" + item.total.toString())
+        holder.setBackgroundResource(R.id.nav_lian_group_icon, R.drawable.demo_eng_pep_3_1_snippet)
+        holder.setText(R.id.nav_group_error, "错:" + item.error.toString())
+        holder.setText(R.id.nav_group_done, "做:" + item.done.toString())
+        holder.setText(R.id.nav_group_total, "共:" + item.total.toString())
+
+        var groupIcon = holder.getView<ImageView>(R.id.nav_lian_group_icon)
+        groupIcon.visibility = View.VISIBLE
 
         var progressBar = holder.getView<ProgressBar>(R.id.nav_group_progress)
         progressBar.max = item.total
