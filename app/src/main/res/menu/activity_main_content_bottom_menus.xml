@@ -11,11 +11,11 @@
         android:icon="@drawable/tc_xue"
         android:title="@string/activity_main_content_bottom_menu_xue" />
 
-    <item
-        android:id="@+id/navigation_huo"
-        android:icon="@drawable/tc_huo"
-        android:iconTint="@color/red"
-        android:title="@string/activity_main_content_bottom_menu_huo" />
+    <!--    <item-->
+    <!--        android:id="@+id/navigation_huo"-->
+    <!--        android:icon="@drawable/tc_huo"-->
+    <!--        android:iconTint="@color/red"-->
+    <!--        android:title="@string/activity_main_content_bottom_menu_huo" />-->
 
     <item
         android:id="@+id/navigation_lian"

@@ -51,7 +51,6 @@ class MainActivity : BaseActivity() {
         val viewPagerAdapter = CommonViewPagerAdapter(supportFragmentManager).apply {
             addFragment(CiFragment())
             addFragment(XueFragment())
-            addFragment(HuoFragment())
             addFragment(LianFragment())
             addFragment(HuoFragment())
         }
@@ -61,7 +60,6 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-
     }
 
     private fun initListener() {
@@ -86,10 +84,8 @@ class MainActivity : BaseActivity() {
                     1 -> toolbar.title =
                         resources.getString(R.string.activity_main_content_bottom_menu_xue)
                     2 -> toolbar.title =
-                        resources.getString(R.string.activity_main_content_bottom_menu_huo)
-                    3 -> toolbar.title =
                         resources.getString(R.string.activity_main_content_bottom_menu_lian)
-                    4 -> toolbar.title =
+                    3 -> toolbar.title =
                         resources.getString(R.string.activity_main_content_bottom_menu_kao)
                     else -> toolbar.title = resources.getString(R.string.app_name)
                 }
@@ -111,23 +107,19 @@ class MainActivity : BaseActivity() {
                     view_pager.currentItem = 1
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.navigation_huo -> {
+                R.id.navigation_lian -> {
                     view_pager.currentItem = 2
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.navigation_lian -> {
-                    view_pager.currentItem = 3
-                    return@setOnNavigationItemSelectedListener true
-                }
                 R.id.navigation_kao -> {
-                    view_pager.currentItem = 4
+                    view_pager.currentItem = 3
                     return@setOnNavigationItemSelectedListener true
                 }
             }
             false
         }
         bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
-        bottom_navigation.selectedItemId = R.id.navigation_huo
+        bottom_navigation.selectedItemId = R.id.navigation_ci
     }
 
     /**
