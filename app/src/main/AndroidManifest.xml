@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--由于 Android P 限制了明文流量的网络请求，非加密的流量请求都会被系统禁止掉 https://www.jianshu.com/p/02956bdddd2d-->
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -14,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:largeHeap="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -28,6 +30,7 @@
         <activity android:name=".module.xue.XuePage0Activity" />
         <activity android:name=".module.xue.XuePage1Activity" />
         <activity android:name=".module.lian.LianPage0Activity" />
+        <activity android:name=".module.leftnav.NavPageVpnActivity" />
     </application>
 
 </manifest>

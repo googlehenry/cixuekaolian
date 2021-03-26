@@ -8,7 +8,15 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:openDrawer="start">
-    <!--Drawer Page-->
+
+
+    <!--Main First Page-->
+    <include
+        layout="@layout/activity_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--Drawer Page:必须在最底下下也就是视图最上方 https://www.jianshu.com/p/c6c72862d777-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -17,12 +25,4 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/activity_main_drawer_header"
         app:menu="@menu/activity_main_drawer_menus" />
-
-    <!--Main First Page-->
-    <include
-        layout="@layout/activity_main_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

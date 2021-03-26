@@ -5,12 +5,7 @@ import com.qianli.cixuekaolian.beans.Banner
 import com.qianli.cixuekaolian.beans.BaseBean
 import com.qianli.cixuekaolian.http.interceptor.AddCookiesInterceptor
 import com.qianli.cixuekaolian.http.interceptor.ReceivedCookiesInterceptor
-import com.yechaoa.yutilskt.LogUtilKt
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -152,41 +147,41 @@ class RemoteAPI {
             apis = retrofit.create(APIS::class.java)
         }
 
-        inline fun <T> call(
-            api: () -> Observable<T>,
-            crossinline success: (T) -> Unit,
-            crossinline fail: (String) -> Unit
-        ) {
-            exec(api.invoke(), success, fail)
-        }
+//        inline fun <T> call(
+//            api: () -> Observable<T>,
+//            crossinline success: (T) -> Unit,
+//            crossinline fail: (String) -> Unit
+//        ) {
+//            exec(api.invoke(), success, fail)
+//        }
 
-        inline fun <T> exec(
-            observable: Observable<T>,
-            crossinline success: (T) -> Unit,
-            crossinline fail: (String) -> Unit
-        ) {
-            observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<T> {
-                    override fun onComplete() {
-                        LogUtilKt.i("onComplete")
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                        LogUtilKt.i("onSubscribe")
-                    }
-
-                    override fun onNext(t: T) {
-                        LogUtilKt.i("onNext")
-                        success.invoke(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        LogUtilKt.i("onError", e.message ?: "null")
-                        fail.invoke("获取失败(°∀°)ﾉ" + e.message)
-                    }
-                })
-        }
+//        inline fun <T> exec(
+//            observable: Observable<T>,
+//            crossinline success: (T) -> Unit,
+//            crossinline fail: (String) -> Unit
+//        ) {
+//            observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(object : Observer<T> {
+//                    override fun onComplete() {
+//                        LogUtilKt.i("onComplete")
+//                    }
+//
+//                    override fun onSubscribe(d: Disposable) {
+//                        LogUtilKt.i("onSubscribe")
+//                    }
+//
+//                    override fun onNext(t: T) {
+//                        LogUtilKt.i("onNext")
+//                        success.invoke(t)
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        LogUtilKt.i("onError", e.message ?: "null")
+//                        fail.invoke("获取失败(°∀°)ﾉ" + e.message)
+//                    }
+//                })
+//        }
 
     }
 }

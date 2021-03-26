@@ -1,5 +1,6 @@
 package com.qianli.cixuekaolian
 
+import android.content.Intent
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
@@ -8,6 +9,7 @@ import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.module.ci.CiFragment
 import com.qianli.cixuekaolian.module.huo.HuoFragment
+import com.qianli.cixuekaolian.module.leftnav.NavPageVpnActivity
 import com.qianli.cixuekaolian.module.lian.LianFragment
 import com.qianli.cixuekaolian.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
@@ -63,6 +65,21 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initListener() {
+
+        nav_view.setNavigationItemSelectedListener {
+            // Handle navigation view item clicks here.
+            when (it.itemId) {
+                R.id.nav_vpn_manage -> {
+                    var intent = Intent(this, NavPageVpnActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            //关闭侧边栏
+            drawer_layout.closeDrawer(GravityCompat.START)
+
+            true
+        }
 
         view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
