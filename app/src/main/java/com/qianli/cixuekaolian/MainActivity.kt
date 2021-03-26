@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
             addFragment(LianFragment())
             addFragment(HuoFragment())
         }
-        view_pager.offscreenPageLimit = 1
+        view_pager.offscreenPageLimit = 3
         view_pager.adapter = viewPagerAdapter
     }
 
