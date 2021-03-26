@@ -18,10 +18,7 @@ class NavPageVpnActivity : BaseActivity() {
 
         vpn_start.setOnClickListener {
             RemoteAPIVpnService.apis.vpnSart()
-                .and(success = {
-                    vpn_logs.text = it.string()
-                    showVpnStatus()
-                }, fail = { apiCallFailure(it) })
+                .and(success = { vpn_logs.text = it.string() }, fail = { apiCallFailure(it) })
         }
         vpn_status.setOnClickListener {
             RemoteAPIVpnService.apis.getVpnStatus()
@@ -29,10 +26,7 @@ class NavPageVpnActivity : BaseActivity() {
         }
         vpn_stop.setOnClickListener {
             RemoteAPIVpnService.apis.vpnStop()
-                .and(success = {
-                    vpn_logs.text = it.string()
-                    showVpnStatus()
-                }, fail = { apiCallFailure(it) })
+                .and(success = { vpn_logs.text = it.string() }, fail = { apiCallFailure(it) })
         }
 
         //init with vpn status logs
