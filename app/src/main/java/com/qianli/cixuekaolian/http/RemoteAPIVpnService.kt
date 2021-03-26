@@ -14,14 +14,18 @@ import java.util.concurrent.TimeUnit
 
 class RemoteAPIVpnService {
 
+    /*
+    Retrofit请求数据返回String
+    https://www.jianshu.com/p/64bbae45e479
+     */
     interface APIS {
-        @GET("vpn/status")
+        @GET("vpn/status?token=cixueliankao")
         fun getVpnStatus(): Observable<ResponseBody>
 
-        @GET("vpn/start")
+        @GET("vpn/start?token=cixueliankao")
         fun vpnSart(): Observable<ResponseBody>
 
-        @GET("vpn/stop")
+        @GET("vpn/stop?token=cixueliankao")
         fun vpnStop(): Observable<ResponseBody>
     }
 
