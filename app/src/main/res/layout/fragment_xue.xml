@@ -41,8 +41,8 @@
                         android:textSize="20sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
                         android:clickable="true"
                         android:src="@drawable/selector_menu_more_dark" />
 
@@ -86,8 +86,8 @@
                         android:textSize="20sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
                         android:clickable="true"
                         android:src="@drawable/selector_menu_more_dark" />
                 </LinearLayout>
@@ -130,8 +130,8 @@
                         android:textSize="20sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
                         android:clickable="true"
                         android:src="@drawable/selector_menu_more_dark" />
                 </LinearLayout>

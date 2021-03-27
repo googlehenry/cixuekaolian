@@ -20,16 +20,15 @@
             android:id="@+id/article_image"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_launcher" />
+            android:contentDescription="@null" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
-            android:layout_marginLeft="@dimen/dp_15"
+
             android:layout_marginEnd="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
+
             android:layout_weight="1"
             android:orientation="vertical">
 

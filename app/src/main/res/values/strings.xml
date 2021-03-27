@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">词学练考100分</string>
+    <string name="app_name">词学练考</string>
 
     <string name="activity_main_content_bottom_menu_ci">词汇</string>
     <string name="activity_main_content_bottom_menu_xue">教材</string>
