@@ -2,10 +2,13 @@ package com.qianli.cixuekaolian.module.kao
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.qianli.cixuekaolian.R
+import com.qianli.cixuekaolian.adapter.TestPaperAdapter
 import com.qianli.cixuekaolian.base.BaseFragment
 import com.qianli.cixuekaolian.beans.Grade
 import com.qianli.cixuekaolian.beans.Province
+import com.qianli.cixuekaolian.beans.TestPaper
 import com.qianli.cixuekaolian.beans.TestType
 import kotlinx.android.synthetic.main.fragment_kao.*
 
@@ -17,6 +20,19 @@ class KaoFragment : BaseFragment() {
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        var adapter = TestPaperAdapter()
+        adapter.data = prepareTestPapers()
+        recycler_view_test_papers.adapter = adapter
+
+        //https://www.jianshu.com/p/e68a0b5fd383
+        recycler_view_test_papers.addItemDecoration(
+            DividerItemDecoration(
+                mContext,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
 
         var provinces = chinaProvinces()
 
@@ -73,6 +89,22 @@ class KaoFragment : BaseFragment() {
         val datasetGrade: List<String> =
             provinces.first().testTypes!!.first().grades!!.map { it.shortName }
         spin_test_grade.attachDataSource(datasetGrade)
+    }
+
+    private fun prepareTestPapers(): MutableList<TestPaper> {
+
+        return mutableListOf<TestPaper>(
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+            TestPaper(1, "2021届四川上学期高一英语练习试题"),
+        )
+
     }
 
     private fun chinaProvinces() = mutableListOf(

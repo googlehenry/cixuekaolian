@@ -17,3 +17,9 @@ data class Grade(
     var phase: String,
     var shortName: String
 )
+
+data class TestPaper(
+    var id: Int,
+    var title: String,
+    var tags: MutableList<String>? = null,
+)
