@@ -8,8 +8,8 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.module.ci.CiFragment
-import com.qianli.cixuekaolian.module.huo.HuoFragment
-import com.qianli.cixuekaolian.module.leftnav.NavPageVpnActivity
+import com.qianli.cixuekaolian.module.drawer.NavPageVpnActivity
+import com.qianli.cixuekaolian.module.kao.KaoFragment
 import com.qianli.cixuekaolian.module.lian.LianFragment
 import com.qianli.cixuekaolian.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
@@ -54,7 +54,7 @@ class MainActivity : BaseActivity() {
             addFragment(CiFragment())
             addFragment(XueFragment())
             addFragment(LianFragment())
-            addFragment(HuoFragment())
+            addFragment(KaoFragment())
         }
         view_pager.offscreenPageLimit = 3
         view_pager.adapter = viewPagerAdapter

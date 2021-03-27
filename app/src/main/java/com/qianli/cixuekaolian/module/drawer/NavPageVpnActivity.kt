@@ -1,4 +1,4 @@
-package com.qianli.cixuekaolian.module.leftnav
+package com.qianli.cixuekaolian.module.drawer
 
 import com.qianli.cixuekaolian.R
 import com.qianli.cixuekaolian.base.BaseActivity

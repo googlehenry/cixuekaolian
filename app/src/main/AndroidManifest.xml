@@ -30,7 +30,7 @@
         <activity android:name=".module.xue.XuePage0Activity" />
         <activity android:name=".module.xue.XuePage1Activity" />
         <activity android:name=".module.lian.LianPage0Activity" />
-        <activity android:name=".module.leftnav.NavPageVpnActivity" />
+        <activity android:name=".module.drawer.NavPageVpnActivity" />
     </application>
 
 </manifest>
