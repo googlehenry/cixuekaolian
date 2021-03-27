@@ -36,8 +36,8 @@ class KaoFragment : BaseFragment() {
                 if (typeOptions.contains(oldType)) {
                     spin_test_type.selectedIndex = typeOptions.indexOf(oldType)
                 }
-
-                it.first().grades?.let {
+                oldType = spin_test_type.selectedItem
+                typesAvailabeForSelected.find { it.shortName == oldType }?.grades?.let {
                     var gradeOptions = it.map { it.shortName }
                     spin_test_grade.attachDataSource(gradeOptions)
                     if (gradeOptions.contains(oldGrade)) {
