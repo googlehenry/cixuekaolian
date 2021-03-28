@@ -58,20 +58,20 @@ data class ExcerciseByUnit(
 )
 
 data class LianItem(
-    var id: Int,
-    var category: String,
-    var type: LianItemType,
-    var requirement: String?,
+    var id: Int = 0,
+    var category: String? = null,
+    var type: LianItemType? = null,
+    var requirement: String? = null,
     var itemMainText: String? = null,//阅读,完形填空 etc
     var itemMainAudio: String? = null,//听力 etc
-    var questions: MutableList<LianItemQuestion>?,
+    var questions: MutableList<LianItemQuestion>? = null,
     var reviews: String? = null,
     var submitted: Boolean = false
 )
 
 data class LianItemQuestion(
-    var id: Int,
-    var type: LianItemQuestionType,
+    var id: Int? = null,
+    var type: LianItemQuestionType? = null,
     var questionMainText: String? = null,
     var optionLians: MutableList<LianQuestionOption>? = null,
     var answerLians: MutableList<LianQuestionAnswer>? = null,
@@ -97,11 +97,23 @@ data class LianQuestionOption(
 
 enum class LianItemQuestionType {
     SELECT_ONE_LEN40, SELECT_ONE_LEN10, SELECT_ONE_LEN2, SELECT_ONE_LEN1,
-    FILL_ONE_LEN10, FILL_ONE_LEN40
+    FILL_ONE_LEN10, FILL_ONE_LEN40;
+
+    companion object {
+        fun get(name: String): LianItemQuestionType? {
+            return values().find { it.name == name }
+        }
+    }
 }
 
 enum class LianItemType {
     SELECT_ONE_LEN40,
     FILL_ONE_LEN40,
-    FILL_ONE_LEN10
+    FILL_ONE_LEN10;
+
+    companion object {
+        fun get(name: String): LianItemType? {
+            return values().find { it.name == name }
+        }
+    }
 }

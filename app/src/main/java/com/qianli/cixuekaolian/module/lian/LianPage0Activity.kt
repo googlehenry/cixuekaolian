@@ -11,6 +11,8 @@ import com.qianli.cixuekaolian.base.BaseActivity
 import com.qianli.cixuekaolian.beans.*
 import com.qianli.cixuekaolian.utils.TempUtil
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class LianPage0Activity : BaseActivity() {
 
@@ -32,7 +34,7 @@ class LianPage0Activity : BaseActivity() {
         }
         var lianItem: LianItem? = null
         lianItem =
-            when (TempUtil.categoryMap[category] ?: TempUtil.counter % TempUtil.categoryMap.size) {
+            when (TempUtil.categoryMap[category]) {
                 0 -> prepareDateReading()
                 1 -> prepareCompletion()
                 2 -> prepareDataListnening()
@@ -42,7 +44,7 @@ class LianPage0Activity : BaseActivity() {
                 6 -> prepareDataAnswerCorrectSentence()
                 7 -> prepareDataAnswerCorectFormsByChinesewords()
                 8 -> prepareDataAnswerByChineseTranslation()
-                else -> null
+                else -> Fill_Single_One_Question()
             }
         lianItem = lianItem!!
         TempUtil.counter += 1
@@ -102,6 +104,57 @@ class LianPage0Activity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         mediaPlayer?.stop()
+    }
+
+    private fun Fill_Single_One_Question(): LianItem? {
+
+        var lianItem = LianItem()
+
+        val lines =
+            BufferedReader(InputStreamReader(getResources().openRawResource(R.raw.demo_excercise_1))).readLines()
+
+        lianItem.questions = mutableListOf()
+
+        var tempQuestion = LianItemQuestion()
+
+        lines.forEach { x ->
+            var line = x.replace("<br>", "\\n")
+
+            if (line.startsWith("#Category:", ignoreCase = true)) {
+                lianItem.category = line.substring(10).trim()
+            } else if (line.startsWith("#QType:", ignoreCase = true)) {
+                lianItem.type = LianItemType.get(line.substring(6).trim())
+            } else if (line.startsWith("#Requirement:", ignoreCase = true)) {
+                lianItem.requirement = line.substring(13).trim()
+            } else if (line.startsWith("#Review:", ignoreCase = true)) {
+                lianItem.reviews = line.substring(8).trim()
+            } else if (line.startsWith("##Q:", ignoreCase = true)) {
+                //##Q:1:$
+                tempQuestion.id = line.substring(0, line.indexOf("$")).split(":")[1].toInt()
+                tempQuestion.questionMainText = line.substring(line.indexOf("$") + 1).trim()
+            } else if (line.startsWith("##A_Type:", ignoreCase = true)) {
+                tempQuestion.type =
+                    LianItemQuestionType.get(line.substring(line.indexOf("$") + 1).trim())
+            } else if (line.startsWith("##A_Correct:", ignoreCase = true)) {
+                tempQuestion.answerReviewed = line.substring(line.indexOf("$") + 1).trim()
+                tempQuestion.answerLians = mutableListOf(
+                    LianQuestionAnswer(
+                        1,
+                        null,
+                        correctAnswers = mutableSetOf(tempQuestion!!.answerReviewed!!)
+                    )
+                )
+                tempQuestion.type
+            } else if (line.startsWith("##A_Review:", ignoreCase = true)) {
+                tempQuestion.answerExplained = line.substring(line.indexOf("$") + 1).trim()
+            } else if (line.startsWith("##Q_END", ignoreCase = true)) {
+                lianItem.questions!!.add(tempQuestion)
+                tempQuestion = LianItemQuestion()
+            }
+        }
+
+        return lianItem
+
     }
 
     private fun prepareDataAnswerByChineseTranslation(): LianItem {

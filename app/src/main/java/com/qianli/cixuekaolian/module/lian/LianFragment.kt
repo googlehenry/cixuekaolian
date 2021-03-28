@@ -258,9 +258,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
     override fun start(book: ExcerciseByBook, excerciseByUnit: ExcerciseByUnit) {
         var intent = Intent(mContext, LianPage0Activity::class.java)
-        excerciseByUnit.types?.let {
-            intent.putExtra("category", it.first().shortName)
-        }
+        intent.putExtra("category", "demo")
         intent.putExtra("target", book.shortName)
 
         startActivity(intent)
