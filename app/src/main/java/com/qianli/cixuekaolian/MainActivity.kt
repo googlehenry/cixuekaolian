@@ -32,6 +32,7 @@ class MainActivity : BaseActivity() {
 
         initFragments()
         initListener()
+
     }
 
     private fun initActionBarDrawer() {
