@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase
     version = 1,
     exportSchema = false
 )
-abstract class DB : RoomDatabase() {
+abstract class RoomDB : RoomDatabase() {
     abstract fun section(): SectionDao
     abstract fun questionTemplate(): QuestionTemplateDao
     abstract fun question(): QuestionDao
@@ -31,13 +31,13 @@ abstract class DB : RoomDatabase() {
 
     companion object {
         @Volatile
-        var db: DB? = null
+        private var roomDb: RoomDB? = null
 
-        fun get(applicationContext: Context, dbName: String): DB {
-            return db ?: (Room.databaseBuilder(
+        fun get(applicationContext: Context, dbName: String = "local_db_01"): RoomDB {
+            return roomDb ?: (Room.databaseBuilder(
                 applicationContext,
-                DB::class.java, dbName
-            ).fallbackToDestructiveMigration().build().also { db = it })
+                RoomDB::class.java, dbName
+            ).fallbackToDestructiveMigration().build().also { roomDb = it })
         }
     }
 }

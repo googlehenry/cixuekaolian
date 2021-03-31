@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.yechaoa.yutilskt.ToastUtilKt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 /**
  * Created by yechao on 2020/1/3/003.
@@ -58,4 +62,13 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    //Kotlin coroutine, to load data async
+    fun <T> doAsync(dataAction: () -> T, uiAction: (result: T) -> Unit) {
+        CoroutineScope(Dispatchers.Main).launch {
+            var rs = async(Dispatchers.IO) {
+                dataAction.invoke()
+            }.await()
+            uiAction.invoke(rs)
+        }
+    }
 }

@@ -1,12 +1,14 @@
 package com.qianli.cixuekaolian
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.qianli.cixuekaolian.adapter.CommonViewPagerAdapter
 import com.qianli.cixuekaolian.base.BaseActivity
+import com.qianli.cixuekaolian.db.RoomDB
 import com.qianli.cixuekaolian.module.ci.CiFragment
 import com.qianli.cixuekaolian.module.drawer.NavPageVpnActivity
 import com.qianli.cixuekaolian.module.kao.KaoFragment
@@ -33,7 +35,14 @@ class MainActivity : BaseActivity() {
         initFragments()
         initListener()
 
+
+        doAsync(
+            dataAction = { RoomDB.get(this).section().getAll() },
+            uiAction = { Toast.makeText(this, "result:$it", Toast.LENGTH_SHORT).show() }
+        )
+
     }
+
 
     private fun initActionBarDrawer() {
         val toggle = ActionBarDrawerToggle(
