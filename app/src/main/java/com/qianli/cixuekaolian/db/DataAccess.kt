@@ -6,69 +6,69 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface SectionDao {
-    @Query("SELECT * FROM Section")
-    fun getAll(): List<Section>
+interface PracticeSectionDao {
+    @Query("SELECT * FROM PracticeSection")
+    fun getAll(): List<PracticeSection>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: Section)
+    fun insert(item: PracticeSection)
 
     @Delete
-    fun delete(item: Section)
+    fun delete(item: PracticeSection)
 }
 
 @Dao
-interface QuestionTemplateDao {
-    @Query("SELECT * FROM QuestionTemplate")
-    fun getAll(): List<QuestionTemplate>
+interface PracticeQuestionTemplateDao {
+    @Query("SELECT * FROM PracticeQuestionTemplate")
+    fun getAll(): List<PracticeQuestionTemplate>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: QuestionTemplate)
+    fun insert(item: PracticeQuestionTemplate)
 
     @Delete
-    fun delete(item: QuestionTemplate)
-}
-
-
-@Dao
-interface QuestionDao {
-    @Query("SELECT * FROM Question")
-    fun getAll(): List<Question>
-
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
-    @Insert
-    fun insert(item: Question)
-
-    @Delete
-    fun delete(item: Question)
+    fun delete(item: PracticeQuestionTemplate)
 }
 
 
 @Dao
-interface AnswerOptionDao {
-    @Query("SELECT * FROM AnswerOption")
-    fun getAll(): List<AnswerOption>
+interface PracticeQuestionDao {
+    @Query("SELECT * FROM PracticeQuestion")
+    fun getAll(): List<PracticeQuestion>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: AnswerOption)
+    fun insert(item: PracticeQuestion)
 
     @Delete
-    fun delete(item: AnswerOption)
+    fun delete(item: PracticeQuestion)
+}
+
+
+@Dao
+interface PracticeAnswerOptionDao {
+    @Query("SELECT * FROM PracticeAnswerOption")
+    fun getAll(): List<PracticeAnswerOption>
+
+    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
+//    fun loadAllByIds(userIds: IntArray): List<User>
+//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
+//    fun findByName(first: String, last: String): User
+    @Insert
+    fun insert(item: PracticeAnswerOption)
+
+    @Delete
+    fun delete(item: PracticeAnswerOption)
 }
 
 
@@ -90,36 +90,36 @@ interface DictionaryConfigDao {
 
 
 @Dao
-interface TextBookPracticeDao {
-    @Query("SELECT * FROM TextBookPractice")
-    fun getAll(): List<TextBookPractice>
+interface PracticeTargetDao {
+    @Query("SELECT * FROM PracticeTarget")
+    fun getAll(): List<PracticeTarget>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: TextBookPractice)
+    fun insert(item: PracticeTarget)
 
     @Delete
-    fun delete(item: TextBookPractice)
+    fun delete(item: PracticeTarget)
 }
 
 
 @Dao
-interface ExamByTypePracticeDao {
-    @Query("SELECT * FROM ExamByTypePractice")
-    fun getAll(): List<ExamByTypePractice>
+interface PracticeBookDao {
+    @Query("SELECT * FROM PracticeBook")
+    fun getAll(): List<PracticeBook>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: ExamByTypePractice)
+    fun insert(item: PracticeBook)
 
     @Delete
-    fun delete(item: ExamByTypePractice)
+    fun delete(item: PracticeBook)
 }
 
 
@@ -141,19 +141,19 @@ interface ExamSimulationDao {
 
 
 @Dao
-interface TextBookDao {
-    @Query("SELECT * FROM TextBook")
-    fun getAll(): List<TextBook>
+interface BookDao {
+    @Query("SELECT * FROM Book")
+    fun getAll(): List<Book>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: TextBook)
+    fun insert(item: Book)
 
     @Delete
-    fun delete(item: TextBook)
+    fun delete(item: Book)
 }
 
 
@@ -192,36 +192,36 @@ interface BookUnitDao {
 
 
 @Dao
-interface UnitWordsDao {
-    @Query("SELECT * FROM UnitWords")
-    fun getAll(): List<UnitWords>
+interface BookUnitWordsDao {
+    @Query("SELECT * FROM BookUnitWords")
+    fun getAll(): List<BookUnitWords>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: UnitWords)
+    fun insert(item: BookUnitWords)
 
     @Delete
-    fun delete(item: UnitWords)
+    fun delete(item: BookUnitWords)
 }
 
 
 @Dao
-interface UnitPagesDao {
-    @Query("SELECT * FROM UnitPages")
-    fun getAll(): List<UnitPages>
+interface BookUnitPagesDao {
+    @Query("SELECT * FROM BookUnitPages")
+    fun getAll(): List<BookUnitPages>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: UnitPages)
+    fun insert(item: BookUnitPages)
 
     @Delete
-    fun delete(item: UnitPages)
+    fun delete(item: BookUnitPages)
 }
 
 
@@ -242,35 +242,35 @@ interface BookPageDao {
 }
 
 @Dao
-interface TeachingPointDao {
-    @Query("SELECT * FROM TeachingPoint")
-    fun getAll(): List<TeachingPoint>
+interface BookTeachingPointDao {
+    @Query("SELECT * FROM BookTeachingPoint")
+    fun getAll(): List<BookTeachingPoint>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: TeachingPoint)
+    fun insert(item: BookTeachingPoint)
 
     @Delete
-    fun delete(item: TeachingPoint)
+    fun delete(item: BookTeachingPoint)
 }
 
 @Dao
-interface TranslationDao {
-    @Query("SELECT * FROM Translation")
-    fun getAll(): List<Translation>
+interface BookTranslationDao {
+    @Query("SELECT * FROM BookTranslation")
+    fun getAll(): List<BookTranslation>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert
-    fun insert(item: Translation)
+    fun insert(item: BookTranslation)
 
     @Delete
-    fun delete(item: Translation)
+    fun delete(item: BookTranslation)
 }
 
 @Dao

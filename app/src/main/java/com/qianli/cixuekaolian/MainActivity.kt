@@ -37,7 +37,7 @@ class MainActivity : BaseActivity() {
 
 
         doAsync(
-            dataAction = { RoomDB.get(this).section().getAll() },
+            dataAction = { RoomDB.get(this).practiceSection().getAll() },
             uiAction = { Toast.makeText(this, "result:$it", Toast.LENGTH_SHORT).show() }
         )
 

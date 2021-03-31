@@ -6,27 +6,32 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Section::class, QuestionTemplate::class, Question::class, AnswerOption::class, DictionaryConfig::class, TextBookPractice::class, ExamByTypePractice::class, ExamSimulation::class, TextBook::class, BookAppendix::class, BookUnit::class, UnitWords::class, UnitPages::class, BookPage::class, TeachingPoint::class, Translation::class, BookWord::class],
-    version = 1,
+    entities = [PracticeSection::class,
+        PracticeQuestionTemplate::class,
+        PracticeQuestion::class,
+        PracticeAnswerOption::class,
+        DictionaryConfig::class, PracticeTarget::class,
+        PracticeBook::class, ExamSimulation::class, Book::class, BookAppendix::class, BookUnit::class, BookUnitWords::class, BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class],
+    version = 2,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
-    abstract fun section(): SectionDao
-    abstract fun questionTemplate(): QuestionTemplateDao
-    abstract fun question(): QuestionDao
-    abstract fun answerOption(): AnswerOptionDao
+    abstract fun practiceSection(): PracticeSectionDao
+    abstract fun practiceQuestionTemplate(): PracticeQuestionTemplateDao
+    abstract fun practiceQuestion(): PracticeQuestionDao
+    abstract fun practiceAnswerOption(): PracticeAnswerOptionDao
     abstract fun dictionaryConfig(): DictionaryConfigDao
-    abstract fun textBookPractice(): TextBookPracticeDao
-    abstract fun examByTypePractice(): ExamByTypePracticeDao
+    abstract fun practiceTarget(): PracticeTargetDao
+    abstract fun practiceBook(): PracticeBookDao
     abstract fun examSimulation(): ExamSimulationDao
-    abstract fun textBook(): TextBookDao
+    abstract fun book(): BookDao
     abstract fun bookAppendix(): BookAppendixDao
     abstract fun bookUnit(): BookUnitDao
-    abstract fun unitWords(): UnitWordsDao
-    abstract fun unitPages(): UnitPagesDao
+    abstract fun bookUnitWords(): BookUnitWordsDao
+    abstract fun bookUnitPages(): BookUnitPagesDao
     abstract fun bookPage(): BookPageDao
-    abstract fun teachingPoint(): TeachingPointDao
-    abstract fun translation(): TranslationDao
+    abstract fun bookTeachingPoint(): BookTeachingPointDao
+    abstract fun bookTranslation(): BookTranslationDao
     abstract fun bookWord(): BookWordDao
 
     companion object {

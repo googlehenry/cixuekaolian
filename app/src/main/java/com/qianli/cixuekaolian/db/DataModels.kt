@@ -6,97 +6,6 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.File
 
-//Core models
-@Entity
-data class Section(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var seq: Int,//User can specify sequenceS
-    @ColumnInfo
-    var browseMode: String,
-    @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var score: Double,
-    @ColumnInfo
-    var totalTimeInMinutes: Double,
-) {
-    @Ignore
-    var questionTemplates: MutableList<QuestionTemplate>? = null
-}
-
-@Entity
-data class QuestionTemplate(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var category: String?,
-    @ColumnInfo
-    var requirement: String?,
-    @ColumnInfo
-    var hints: String?,
-    @ColumnInfo
-    var keyPoints: String?,
-    @ColumnInfo
-    var layoutQuestionsPerRow: Int = 1,
-    @ColumnInfo
-    var totalScore: Double,
-    @ColumnInfo
-    var totalTimeInMinutes: Double
-) {
-    @Ignore
-    var questions: MutableList<Question>? = null
-}
-
-@Entity
-data class Question(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var type: String,//QuestionType,//FILL, SELECT
-    @ColumnInfo
-    var text: String?,
-    @ColumnInfo
-    var layoutOptionsPerRow: Int = 1,
-    @ColumnInfo
-    var requireAnsweredOptionsNo: Int = 1,
-    @ColumnInfo
-    var userAnsersJson: String?,
-) {
-    @Ignore
-    var options: MutableList<AnswerOption>? = null
-
-    //Used to hold user's input/selected value
-    @Ignore
-    var usersAnswers: MutableMap<Int, String?>? = null
-
-    @Ignore
-    var correctAnswers: MutableMap<Int, MutableList<String>>? = null
-}
-
-@Entity
-data class AnswerOption(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var layoutUI: String?,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
-    @ColumnInfo
-    var displayText: String?,//label value,place holder value,description for image
-)
-
-enum class BrowseMode {
-    SEQUENCE, RANDOM
-}
-
-enum class QuestionType {
-    FILL, SELECT
-}
-
-enum class AnswerOptionUI {
-    EDIT_TEXT, TEXT_VIEW, IMAGE_VIEW
-}
-
 
 //Section 1: Embed a sample dictionary .mdd .mdx
 @Entity
@@ -118,70 +27,14 @@ data class DictionaryConfig(
     var dictFile: File? = null
 }
 
-//Section 3: Practice
-@Entity
-data class TextBookPractice(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var description: String?,
-    @ColumnInfo
-    var coverImagePath: String?,
-
-    ) {
-    @Ignore
-    var coverImage: File? = null
-
-    @Ignore
-    var sections: MutableList<Section>? = null
-}
-
-@Entity
-data class ExamByTypePractice(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var description: String?,
-
-    ) {
-    @Ignore
-    var section: Section? = null
-}
-
-//Section 4: Tests
-@Entity
-data class ExamSimulation(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var province: String,
-    @ColumnInfo
-    var testType: String,
-    @ColumnInfo
-    var grade: String,
-    @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var totalDifficultyLevel: Double,
-    @ColumnInfo
-    var totalScore: Double,
-    @ColumnInfo
-    var totalTimeInMinutes: Double,
-
-    ) {
-    @Ignore
-    var sections: MutableList<Section>? = null
-}
 
 //Section 2:
 @Entity
-data class TextBook(
+data class Book(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+    @ColumnInfo
+    var phase: String?,//初中,高中
     @ColumnInfo
     var publishedBy: String,
     @ColumnInfo
@@ -191,11 +44,13 @@ data class TextBook(
     @ColumnInfo
     var title: String,
     @ColumnInfo
-    var bookCoverImage: String?,
+    var type: String,//Textbook,GrammarBook
+    @ColumnInfo
+    var bookCoverImagePath: String?,
 
     ) {
     @Ignore
-    var bookCover: File? = null
+    var bookCoverImage: File? = null
 
     @Ignore
     var bookUnits: MutableList<BookUnit>? = null
@@ -235,14 +90,14 @@ data class BookUnit(
     var unitCover: File? = null
 
     @Ignore
-    var unitPages: UnitPages? = null
+    var bookUnitPages: BookUnitPages? = null
 
     @Ignore
-    var unitWords: UnitWords? = null
+    var bookUnitWords: BookUnitWords? = null
 }
 
 @Entity
-data class UnitWords(
+data class BookUnitWords(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
@@ -257,7 +112,7 @@ data class UnitWords(
 }
 
 @Entity
-data class UnitPages(
+data class BookUnitPages(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
@@ -290,14 +145,14 @@ data class BookPage(
     var pageImage: File? = null
 
     @Ignore
-    var translations: MutableList<Translation>? = null
+    var bookTranslations: MutableList<BookTranslation>? = null
 
     @Ignore
-    var teachingPoints: MutableList<TeachingPoint>? = null
+    var bookTeachingPoints: MutableList<BookTeachingPoint>? = null
 }
 
 @Entity
-data class TeachingPoint(
+data class BookTeachingPoint(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
@@ -309,7 +164,7 @@ data class TeachingPoint(
 )
 
 @Entity
-data class Translation(
+data class BookTranslation(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
@@ -347,6 +202,158 @@ enum class TeachingPointType {
 enum class WordImportance {
     NORMAL, OPTIONAL, IMPORTANT
 }
+
+
+//Section 3: Practice
+@Entity
+data class PracticeBook(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var name: String,
+    @ColumnInfo
+    var description: String?,
+    @ColumnInfo
+    var coverImagePath: String?,
+
+    ) {
+    @Ignore
+    var coverImage: File? = null
+
+    @Ignore
+    var practiceSections: MutableList<PracticeSection>? = null
+}
+
+
+@Entity
+data class PracticeTarget(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var name: String,
+    @ColumnInfo
+    var description: String?
+) {
+    @Ignore
+    var books: MutableList<PracticeBook>? = null
+}
+
+//Core models
+@Entity
+data class PracticeSection(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var seq: Int,//User can specify sequenceS
+    @ColumnInfo
+    var browseMode: String,
+    @ColumnInfo
+    var name: String,
+    @ColumnInfo
+    var score: Double,
+    @ColumnInfo
+    var totalTimeInMinutes: Double,
+) {
+    @Ignore
+    var practiceQuestionTemplates: MutableList<PracticeQuestionTemplate>? = null
+}
+
+@Entity
+data class PracticeQuestionTemplate(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var category: String?,
+    @ColumnInfo
+    var requirement: String?,
+    @ColumnInfo
+    var hints: String?,
+    @ColumnInfo
+    var keyPoints: String?,
+    @ColumnInfo
+    var layoutQuestionsPerRow: Int = 1,
+    @ColumnInfo
+    var totalScore: Double,
+    @ColumnInfo
+    var totalTimeInMinutes: Double
+) {
+    @Ignore
+    var practiceQuestions: MutableList<PracticeQuestion>? = null
+}
+
+@Entity
+data class PracticeQuestion(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var type: String,//QuestionType,//FILL, SELECT
+    @ColumnInfo
+    var text: String?,
+    @ColumnInfo
+    var layoutOptionsPerRow: Int = 1,
+    @ColumnInfo
+    var requireAnsweredOptionsNo: Int = 1,
+    @ColumnInfo
+    var userAnsersJson: String?,
+) {
+    @Ignore
+    var optionPractices: MutableList<PracticeAnswerOption>? = null
+
+    //Used to hold user's input/selected value
+    @Ignore
+    var usersAnswers: MutableMap<Int, String?>? = null
+
+    @Ignore
+    var correctAnswers: MutableMap<Int, MutableList<String>>? = null
+}
+
+@Entity
+data class PracticeAnswerOption(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var layoutUI: String?,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
+    @ColumnInfo
+    var displayText: String?,//label value,place holder value,description for image
+)
+
+enum class BrowseMode {
+    SEQUENCE, RANDOM
+}
+
+enum class QuestionType {
+    FILL, SELECT
+}
+
+enum class AnswerOptionUI {
+    EDIT_TEXT, TEXT_VIEW, IMAGE_VIEW
+}
+
+//Section 4: Tests
+@Entity
+data class ExamSimulation(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var province: String,
+    @ColumnInfo
+    var testType: String,
+    @ColumnInfo
+    var grade: String,
+    @ColumnInfo
+    var name: String,
+    @ColumnInfo
+    var totalDifficultyLevel: Double,
+    @ColumnInfo
+    var totalScore: Double,
+    @ColumnInfo
+    var totalTimeInMinutes: Double,
+
+    ) {
+    @Ignore
+    var practiceSections: MutableList<PracticeSection>? = null
+}
+
 
 
 
