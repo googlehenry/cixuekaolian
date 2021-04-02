@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
+import kotlinx.coroutines.*
 
 abstract class BaseFragment : Fragment() {
     lateinit var mContext: Context
@@ -45,6 +46,17 @@ abstract class BaseFragment : Fragment() {
     open fun touchEventAware(): Boolean = false
     open fun onTouchEvent(event: MotionEvent?): Boolean {
         return false
+    }
+
+    //Kotlin coroutine, to load data async
+    fun <T> doAsync(delay: Long = 0, dataAction: () -> T, uiAction: (result: T) -> Unit) {
+        CoroutineScope(Dispatchers.Main).launch {
+            var rs = async(Dispatchers.IO) {
+                if (delay > 0) delay(delay)
+                dataAction.invoke()
+            }.await()
+            uiAction.invoke(rs)
+        }
     }
 
 }

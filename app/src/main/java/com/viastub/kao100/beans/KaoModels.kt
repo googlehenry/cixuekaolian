@@ -14,7 +14,6 @@ data class TestType(
 
 data class Grade(
     var id: Int,
-    var phase: String,
     var shortName: String
 )
 

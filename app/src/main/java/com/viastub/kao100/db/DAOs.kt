@@ -12,7 +12,7 @@ interface PracticeSectionDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeSection)
 
     @Delete
@@ -28,7 +28,7 @@ interface PracticeQuestionTemplateDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeQuestionTemplate)
 
     @Delete
@@ -45,7 +45,7 @@ interface PracticeQuestionDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeQuestion)
 
     @Delete
@@ -62,7 +62,7 @@ interface PracticeAnswerOptionDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeAnswerOption)
 
     @Delete
@@ -79,7 +79,7 @@ interface DictionaryConfigDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: DictionaryConfig)
 
     @Delete
@@ -96,7 +96,7 @@ interface PracticeTargetDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeTarget)
 
     @Delete
@@ -113,7 +113,7 @@ interface PracticeBookDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeBook)
 
     @Delete
@@ -124,13 +124,20 @@ interface PracticeBookDao {
 @Dao
 interface ExamSimulationDao {
     @Query("SELECT * FROM ExamSimulation")
-    fun getAll(): List<ExamSimulation>
+    fun getAll(): List<ExamSimulation>?
+
+    @Query("SELECT * FROM ExamSimulation where province like :province AND testType like :type AND grade like :grade ")
+    fun filterByFilters(
+        province: String, //1=1 when null
+        type: String, //1=1 when null
+        grade: String // //1=1 when null
+    ): List<ExamSimulation>?
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: ExamSimulation)
 
     @Delete
@@ -147,7 +154,7 @@ interface BookDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: Book)
 
     @Delete
@@ -164,7 +171,7 @@ interface BookAppendixDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookAppendix)
 
     @Delete
@@ -181,7 +188,7 @@ interface BookUnitDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookUnit)
 
     @Delete
@@ -198,7 +205,7 @@ interface BookUnitWordsDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookUnitWords)
 
     @Delete
@@ -215,7 +222,7 @@ interface BookUnitPagesDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookUnitPages)
 
     @Delete
@@ -232,7 +239,7 @@ interface BookPageDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookPage)
 
     @Delete
@@ -248,7 +255,7 @@ interface BookTeachingPointDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookTeachingPoint)
 
     @Delete
@@ -264,7 +271,7 @@ interface BookTranslationDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookTranslation)
 
     @Delete
@@ -280,7 +287,7 @@ interface BookWordDao {
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: BookWord)
 
     @Delete
@@ -288,20 +295,38 @@ interface BookWordDao {
 }
 
 @Dao
-interface GlobalConfigDao {
-    @Query("SELECT * FROM GlobalConfig")
-    fun getAll(): MutableList<GlobalConfig>
+interface GlobalConfigKaoFiltersProvinceDao {
+    @Query("SELECT * FROM GlobalConfigKaoFiltersProvince")
+    fun getAll(): MutableList<GlobalConfigKaoFiltersProvince>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: GlobalConfig)
+    fun insert(item: GlobalConfigKaoFiltersProvince)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(items: MutableList<GlobalConfig>)
+    fun insert(items: MutableList<GlobalConfigKaoFiltersProvince>)
 
     @Delete
-    fun delete(item: GlobalConfig)
+    fun delete(item: GlobalConfigKaoFiltersProvince)
 
     @Delete
-    fun delete(items: MutableList<GlobalConfig>)
+    fun delete(items: MutableList<GlobalConfigKaoFiltersProvince>)
+}
+
+@Dao
+interface GlobalConfigKaoFiltersTypeDao {
+    @Query("SELECT * FROM GlobalConfigKaoFiltersType")
+    fun getAll(): MutableList<GlobalConfigKaoFiltersType>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: GlobalConfigKaoFiltersType)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<GlobalConfigKaoFiltersType>)
+
+    @Delete
+    fun delete(item: GlobalConfigKaoFiltersType)
+
+    @Delete
+    fun delete(items: MutableList<GlobalConfigKaoFiltersType>)
 }
 

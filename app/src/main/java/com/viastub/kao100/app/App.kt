@@ -1,9 +1,15 @@
 package com.viastub.kao100.app
 
 import android.app.Application
+import com.viastub.kao100.config.db.init.ConfigGlobalLoader
+import com.viastub.kao100.config.db.init.TestDataLoader
+import com.viastub.kao100.db.RoomDB
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.LogUtilKt
 import com.yechaoa.yutilskt.YUtilsKt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class App : Application() {
 
@@ -12,12 +18,13 @@ class App : Application() {
         YUtilsKt.initialize(this)
         LogUtilKt.setIsLog(true)
         registerActivityLifecycleCallbacks(ActivityUtilKt.activityLifecycleCallbacks)
-//        CoroutineScope(Dispatchers.Default).launch {
-//            var db: DB = DB.get(applicationContext, "local_db_01")
-//            db.sectionDao().delete(Section(1,2,"RANDOM","第一单元", 0.0,0.0))
-//            db.section().insert(Section(1,2,"RANDOM","第一单元", 0.0,0.0))
-//            LogUtilKt.i("db.record.0:" + DB.db!!.section().getAll().get(0).name)
-//        }
+        CoroutineScope(Dispatchers.IO).launch {
+            RoomDB.get(applicationContext).let {
+                ConfigGlobalLoader().load(it)
+                TestDataLoader().load(it)
+            }
+        }
+
     }
 
 }

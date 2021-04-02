@@ -1,14 +1,12 @@
 package com.viastub.kao100
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
-import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
@@ -36,10 +34,10 @@ class MainActivity : BaseActivity() {
         initListener()
 
 
-        doAsync(
-            dataAction = { RoomDB.get(this).practiceSection().getAll() },
-            uiAction = { Toast.makeText(this, "result:$it", Toast.LENGTH_SHORT).show() }
-        )
+//        doAsync(
+//            dataAction = { RoomDB.get(this).practiceSection().getAll() },
+//            uiAction = { Toast.makeText(this, "result:$it", Toast.LENGTH_SHORT).show() }
+//        )
 
     }
 

@@ -11,8 +11,13 @@ import androidx.room.RoomDatabase
         PracticeQuestion::class,
         PracticeAnswerOption::class,
         DictionaryConfig::class, PracticeTarget::class,
-        PracticeBook::class, ExamSimulation::class, Book::class, BookAppendix::class, BookUnit::class, BookUnitWords::class, BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class],
-    version = 1,
+        PracticeBook::class,
+        ExamSimulation::class,
+        Book::class, BookAppendix::class, BookUnit::class, BookUnitWords::class,
+        BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class,
+        GlobalConfigKaoFiltersProvince::class,
+        GlobalConfigKaoFiltersType::class],
+    version = 2,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -33,18 +38,20 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun bookTeachingPoint(): BookTeachingPointDao
     abstract fun bookTranslation(): BookTranslationDao
     abstract fun bookWord(): BookWordDao
-    abstract fun globalConfig(): GlobalConfigDao
+    abstract fun globalConfigKaoFiltersProvinces(): GlobalConfigKaoFiltersProvinceDao
+    abstract fun globalConfigKaoFiltersTypes(): GlobalConfigKaoFiltersTypeDao
 
     companion object {
         @Volatile
         private var roomDb: RoomDB? = null
 
         fun get(applicationContext: Context, dbName: String = "local_db_01"): RoomDB {
-            applicationContext.deleteDatabase("local_db_01")
+//            applicationContext.deleteDatabase(dbName)
             return roomDb ?: (Room.databaseBuilder(
                 applicationContext,
                 RoomDB::class.java, dbName
             ).fallbackToDestructiveMigration().build().also { roomDb = it })
         }
+
     }
 }

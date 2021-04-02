@@ -10,6 +10,8 @@ import com.viastub.kao100.beans.Grade
 import com.viastub.kao100.beans.Province
 import com.viastub.kao100.beans.TestPaper
 import com.viastub.kao100.beans.TestType
+import com.viastub.kao100.db.RoomDB
+import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_kao.*
 
 class KaoFragment : BaseFragment() {
@@ -21,10 +23,6 @@ class KaoFragment : BaseFragment() {
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        var adapter = TestPaperAdapter()
-        adapter.data = prepareTestPapers()
-        recycler_view_test_papers.adapter = adapter
-
         //https://www.jianshu.com/p/e68a0b5fd383
         recycler_view_test_papers.addItemDecoration(
             DividerItemDecoration(
@@ -34,15 +32,66 @@ class KaoFragment : BaseFragment() {
         )
 
 
-        var provinces = chinaProvinces()
 
+        doAsync(0,
+            {
+                val roomDB = RoomDB.get(mContext)
+                roomDB.examSimulation().getAll()
+            },
+            {
+                var testPapers = it?.map { exam ->
+                    TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
+                }?.toMutableList()
+
+                testPapers?.let {
+                    var adapter = TestPaperAdapter()
+                    adapter.data = it
+                    recycler_view_test_papers.adapter = adapter
+                }
+            })
+
+
+        doAsync(0,
+            {
+                val roomDB = RoomDB.get(mContext)
+                Pair(
+                    roomDB.globalConfigKaoFiltersProvinces().getAll(),
+                    roomDB.globalConfigKaoFiltersTypes().getAll()
+                )
+            },
+            {
+                val provincesFromTable = it.first
+                var typesFromTable = it.second
+
+                var provinces = provincesFromTable.mapIndexed { provinceIdx, province ->
+                    var testTypesDb = province.types().map { typeStr ->
+                        var typeDB = typesFromTable.find { it.type == typeStr }!!
+
+                        var gradeModels = typeDB?.grades()?.mapIndexed { gradeIdx, gradeDbName ->
+                            Grade(gradeIdx + 1, gradeDbName)
+                        }.toMutableList()
+
+                        TestType(typeDB.id, typeDB.type, gradeModels)
+                    }.toMutableList()
+
+                    Province(provinceIdx + 1, province.province, testTypesDb)
+                }.toMutableList()
+
+                applyToUi(provinces)
+            }
+        )
+
+
+    }
+
+    fun applyToUi(provinces: MutableList<Province>) {
         val datasetProvince: List<String> = provinces.map { it.shortName }
         spin_test_province.attachDataSource(datasetProvince)
         spin_test_province.setOnSpinnerItemSelectedListener { parent, view, position, id ->
 
-            var newProvince = spin_test_province.selectedItem
-            var oldType = spin_test_type.selectedItem
-            var oldGrade = spin_test_grade.selectedItem
+            var newProvince = spin_test_province.selectedItem as String
+            var oldType = spin_test_type.selectedItem as String
+            var oldGrade = spin_test_grade.selectedItem as String
 
             var typesAvailabeForSelected =
                 provinces.find { it.shortName == newProvince }?.testTypes
@@ -52,7 +101,7 @@ class KaoFragment : BaseFragment() {
                 if (typeOptions.contains(oldType)) {
                     spin_test_type.selectedIndex = typeOptions.indexOf(oldType)
                 }
-                oldType = spin_test_type.selectedItem
+                oldType = spin_test_type.selectedItem as String
                 typesAvailabeForSelected.find { it.shortName == oldType }?.grades?.let {
                     var gradeOptions = it.map { it.shortName }
                     spin_test_grade.attachDataSource(gradeOptions)
@@ -65,14 +114,17 @@ class KaoFragment : BaseFragment() {
             }
 
 
+            filterTestPapers(newProvince, oldType, oldGrade)
+
+
         }
 
         val datasetType: List<String> = provinces.first().testTypes?.map { it.shortName }!!
         spin_test_type.attachDataSource(datasetType)
         spin_test_type.setOnSpinnerItemSelectedListener { parent, view, position, id ->
             var oldProvince = provinces[spin_test_province.selectedIndex]
-            var oldGrade = spin_test_grade.selectedItem
-            var newType = spin_test_type.selectedItem
+            var oldGrade = spin_test_grade.selectedItem as String
+            var newType = spin_test_type.selectedItem as String
 
             var selectedType = oldProvince.testTypes?.find { it.shortName == newType }
             selectedType?.let {
@@ -83,12 +135,46 @@ class KaoFragment : BaseFragment() {
                 }
             }
 
+            filterTestPapers(oldProvince.shortName, newType, oldGrade)
+
         }
 
 
         val datasetGrade: List<String> =
             provinces.first().testTypes!!.first().grades!!.map { it.shortName }
         spin_test_grade.attachDataSource(datasetGrade)
+        spin_test_grade.setOnSpinnerItemSelectedListener { parent, view, position, id ->
+            var province = spin_test_province.selectedItem as String
+            var grade = spin_test_grade.selectedItem as String
+            var type = spin_test_type.selectedItem as String
+
+            filterTestPapers(province, type, grade)
+        }
+    }
+
+    private fun filterTestPapers(province: String?, type: String?, grade: String?) {
+        doAsync(0,
+            {
+                val roomDB = RoomDB.get(mContext)
+                LogUtilKt.i("$province $type $grade")
+                roomDB.examSimulation().filterByFilters(
+                    province?.replace("全国", "%") ?: "%",
+                    type?.replace("全部测试", "%") ?: "%",
+                    grade?.replace("所有年级", "%") ?: "%"
+                )
+            },
+            {
+                var testPapers = it?.map { exam ->
+                    TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
+                }?.toMutableList()
+
+                testPapers?.let {
+                    var adapter = TestPaperAdapter()
+                    adapter.data = it
+                    recycler_view_test_papers.adapter = adapter
+                }
+            })
+
     }
 
     private fun prepareTestPapers(): MutableList<TestPaper> {
@@ -106,126 +192,6 @@ class KaoFragment : BaseFragment() {
         )
 
     }
-
-    private fun chinaProvinces() = mutableListOf(
-        province(1, "全国"),
-        provinceShanghai(1, "上海"),
-        province(1, "新疆"),
-        province(1, "青海"),
-        province(1, "西藏"),
-        province(1, "湖南"),
-        province(1, "湖北"),
-        province(1, "河南"),
-        province(1, "河北"),
-        province(1, "陕西"),
-        province(1, "内蒙古"),
-        province(1, "山东"),
-        province(1, "山西"),
-        province(1, "北京"),
-        province(1, "天津"),
-        province(1, "黑龙江"),
-        province(1, "吉林"),
-        province(1, "辽宁"),
-        province(1, "江苏"),
-        province(1, "上海"),
-        province(1, "浙江"),
-        province(1, "山西"),
-        province(1, "广西"),
-        province(1, "广东"),
-        province(1, "云南"),
-        province(1, "贵州"),
-        province(1, "海南"),
-        province(1, "台湾"),
-        province(1, "香港"),
-        province(1, "澳门"),
-    )
-
-    private fun provinceShanghai(id: Int, shortName: String) = Province(
-        id, shortName, mutableListOf<TestType>(
-            TestType(
-                0, "全部测试", five4grades()
-            ),
-            TestType(
-                1, "高考", naCEEGrades()
-            ),
-            TestType(
-                2, "中考", naHEEGrades()
-            ),
-            TestType(
-                3, "期末考试", five4grades()
-            ),
-            TestType(
-                4, "期中考试", five4grades()
-            )
-        )
-    )
-
-    private fun province(id: Int, shortName: String) = Province(
-        id, shortName, mutableListOf<TestType>(
-            TestType(
-                0, "全部测试", six3grades()
-            ),
-            TestType(
-                1, "高考", naCEEGrades()
-            ),
-            TestType(
-                2, "中考", naHEEGrades()
-            ),
-            TestType(
-                3, "期末考试", six3grades()
-            ),
-            TestType(
-                4, "期中考试", six3grades()
-            )
-        )
-    )
-
-//    private fun defaultGrades() = mutableListOf<Grade>(
-//        Grade(0, "K12", "不分年级")
-//    )
-
-    private fun naCEEGrades() = mutableListOf<Grade>(
-        Grade(0, "K12", "不分年级"),
-        Grade(0, "K12", "不分年级")
-    )
-
-    private fun naHEEGrades() = mutableListOf<Grade>(
-        Grade(0, "K12", "不分年级"),
-        Grade(0, "K12", "不分年级")
-    )
-
-    private fun five4grades() = mutableListOf<Grade>(
-        Grade(0, "K12", "所有年级"),
-        Grade(1, "小学", "1年级"),
-        Grade(2, "小学", "2年级"),
-        Grade(3, "小学", "3年级"),
-        Grade(4, "小学", "4年级"),
-        Grade(5, "小学", "5年级"),
-        Grade(6, "小升初", "预备班"),
-        Grade(7, "初中", "初1"),
-        Grade(8, "初中", "初2"),
-        Grade(9, "初中", "初3"),
-        Grade(10, "高中", "高1"),
-        Grade(11, "高中", "高2"),
-        Grade(12, "高中", "高3")
-    )
-
-
-    private fun six3grades() = mutableListOf<Grade>(
-        Grade(0, "K12", "所有年级"),
-        Grade(1, "小学", "1年级"),
-        Grade(2, "小学", "2年级"),
-        Grade(3, "小学", "3年级"),
-        Grade(4, "小学", "4年级"),
-        Grade(5, "小学", "5年级"),
-        Grade(6, "小学", "6年级"),
-        Grade(7, "初中", "初1"),
-        Grade(8, "初中", "初2"),
-        Grade(9, "初中", "初3"),
-        Grade(10, "高中", "高1"),
-        Grade(11, "高中", "高2"),
-        Grade(12, "高中", "高3")
-    )
 
 
 }

@@ -246,16 +246,19 @@ data class PracticeSection(
     @ColumnInfo
     var seq: Int,//User can specify sequenceS
     @ColumnInfo
-    var browseMode: String,
+    var browseMode: String,//SEQUENCE, RANDOM
     @ColumnInfo
     var name: String,
     @ColumnInfo
     var score: Double,
     @ColumnInfo
     var totalTimeInMinutes: Double,
+    @ColumnInfo
+    var practiceQuestionTemplateIds: String?
 ) {
-    @Ignore
-    var practiceQuestionTemplates: MutableList<PracticeQuestionTemplate>? = null
+    fun practiceQuestionTemplates(): MutableList<Int>? {
+        return practiceQuestionTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    }
 }
 
 @Entity
@@ -275,10 +278,13 @@ data class PracticeQuestionTemplate(
     @ColumnInfo
     var totalScore: Double,
     @ColumnInfo
-    var totalTimeInMinutes: Double
+    var totalTimeInMinutes: Double,
+    @ColumnInfo
+    var practiceQuestionIds: String?
 ) {
-    @Ignore
-    var practiceQuestions: MutableList<PracticeQuestion>? = null
+    fun practiceQuestions(): MutableList<Int>? {
+        return practiceQuestionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    }
 }
 
 @Entity
@@ -294,17 +300,15 @@ data class PracticeQuestion(
     @ColumnInfo
     var requireAnsweredOptionsNo: Int = 1,
     @ColumnInfo
-    var userAnsersJson: String?,
+    var practiceAnswerOptionIds: String?
 ) {
-    @Ignore
-    var optionPractices: MutableList<PracticeAnswerOption>? = null
+    fun optionPractices(): MutableList<Int>? {
+        return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    }
 
     //Used to hold user's input/selected value
     @Ignore
     var usersAnswers: MutableMap<Int, String?>? = null
-
-    @Ignore
-    var correctAnswers: MutableMap<Int, MutableList<String>>? = null
 }
 
 @Entity
@@ -315,7 +319,13 @@ data class PracticeAnswerOption(
     var layoutUI: String?,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
     @ColumnInfo
     var displayText: String?,//label value,place holder value,description for image
-)
+    @ColumnInfo
+    var correctAnswers: String?
+) {
+    fun correctAnswers(): MutableList<String>? {
+        return correctAnswers?.split(",")?.toMutableList()
+    }
+}
 
 enum class BrowseMode {
     SEQUENCE, RANDOM
@@ -343,32 +353,59 @@ data class ExamSimulation(
     @ColumnInfo
     var grade: String?,
     @ColumnInfo
-    var name: String?,
+    var name: String,
+    @ColumnInfo
+    var tags: String?,
     @ColumnInfo
     var totalDifficultyLevel: Double?,
     @ColumnInfo
     var totalScore: Double?,
     @ColumnInfo
     var totalTimeInMinutes: Double?,
+    @ColumnInfo
+    var practiceSectionIds: String?
 
-    ) {
-    @Ignore
-    var practiceSections: MutableList<PracticeSection>? = null
+) {
+    fun practiceSections(): MutableList<Int>? {
+        return practiceSectionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    }
 }
 
+
 @Entity
-data class GlobalConfig(
+data class GlobalConfigKaoFiltersProvince(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var module: String?,
+    var province: String,
     @ColumnInfo
-    var key: String?,
+    var types: String,
     @ColumnInfo
-    var value: String?,
+    var description: String? = null
+) {
+    fun types(): MutableList<String> {
+        return types.split(",").toMutableList()
+    }
+
+}
+
+@Entity
+data class GlobalConfigKaoFiltersType(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
     @ColumnInfo
-    var description: String?
-)
+    var type: String,
+    @ColumnInfo
+    var grades: String,
+    @ColumnInfo
+    var description: String? = null
+) {
+    fun grades(): MutableList<String> {
+        return grades.split(",").toMutableList()
+    }
+}
+
+
 
 
 
