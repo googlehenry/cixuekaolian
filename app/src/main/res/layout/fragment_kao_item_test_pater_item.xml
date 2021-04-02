@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.qianli.cixuekaolian.wigets.BrandTextView
+            <com.viastub.kao100.wigets.BrandTextView
                 android:id="@+id/test_paper_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

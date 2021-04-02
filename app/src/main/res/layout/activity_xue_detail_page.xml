@@ -67,7 +67,7 @@
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
                 app:tabTextColor="@color/gray" />
 
-            <com.qianli.cixuekaolian.wigets.ViewPager
+            <com.viastub.kao100.wigets.ViewPager
                 android:id="@+id/non_scrollable_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
