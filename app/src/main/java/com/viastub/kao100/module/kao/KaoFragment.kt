@@ -10,8 +10,9 @@ import com.viastub.kao100.beans.Grade
 import com.viastub.kao100.beans.Province
 import com.viastub.kao100.beans.TestPaper
 import com.viastub.kao100.beans.TestType
+import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
-import com.yechaoa.yutilskt.LogUtilKt
+import com.viastub.kao100.utils.Constants
 import kotlinx.android.synthetic.main.fragment_kao.*
 
 class KaoFragment : BaseFragment() {
@@ -39,15 +40,7 @@ class KaoFragment : BaseFragment() {
                 roomDB.examSimulation().getAll()
             },
             {
-                var testPapers = it?.map { exam ->
-                    TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
-                }?.toMutableList()
-
-                testPapers?.let {
-                    var adapter = TestPaperAdapter()
-                    adapter.data = it
-                    recycler_view_test_papers.adapter = adapter
-                }
+                updateTestPaperList(it)
             })
 
 
@@ -84,6 +77,18 @@ class KaoFragment : BaseFragment() {
 
     }
 
+    private fun updateTestPaperList(it: List<ExamSimulation>?) {
+        var testPapers = it?.map { exam ->
+            TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
+        }?.toMutableList()
+
+        testPapers?.let {
+            var adapter = TestPaperAdapter()
+            adapter.data = it
+            recycler_view_test_papers.adapter = adapter
+        }
+    }
+
     fun applyToUi(provinces: MutableList<Province>) {
         val datasetProvince: List<String> = provinces.map { it.shortName }
         spin_test_province.attachDataSource(datasetProvince)
@@ -109,7 +114,6 @@ class KaoFragment : BaseFragment() {
                         spin_test_grade.selectedIndex = gradeOptions.indexOf(oldGrade)
                     }
                 }
-
 
             }
 
@@ -156,42 +160,16 @@ class KaoFragment : BaseFragment() {
         doAsync(0,
             {
                 val roomDB = RoomDB.get(mContext)
-                LogUtilKt.i("$province $type $grade")
-                roomDB.examSimulation().filterByFilters(
-                    province?.replace("全国", "%") ?: "%",
-                    type?.replace("全部测试", "%") ?: "%",
-                    grade?.replace("所有年级", "%") ?: "%"
+                roomDB.examSimulation().testPapersByFilters(
+                    province?.replace(Constants.kao_province_all, "%") ?: "%",
+                    type?.replace(Constants.kao_testType_all, "%") ?: "%",
+                    grade?.replace(Constants.kao_grade_all, "%") ?: "%"
                 )
             },
             {
-                var testPapers = it?.map { exam ->
-                    TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
-                }?.toMutableList()
-
-                testPapers?.let {
-                    var adapter = TestPaperAdapter()
-                    adapter.data = it
-                    recycler_view_test_papers.adapter = adapter
-                }
+                updateTestPaperList(it)
             })
 
     }
-
-    private fun prepareTestPapers(): MutableList<TestPaper> {
-
-        return mutableListOf<TestPaper>(
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-            TestPaper(1, "2021届四川上学期高一英语练习试题"),
-        )
-
-    }
-
 
 }

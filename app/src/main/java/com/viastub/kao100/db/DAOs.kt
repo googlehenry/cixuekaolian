@@ -127,7 +127,7 @@ interface ExamSimulationDao {
     fun getAll(): List<ExamSimulation>?
 
     @Query("SELECT * FROM ExamSimulation where province like :province AND testType like :type AND grade like :grade ")
-    fun filterByFilters(
+    fun testPapersByFilters(
         province: String, //1=1 when null
         type: String, //1=1 when null
         grade: String // //1=1 when null
