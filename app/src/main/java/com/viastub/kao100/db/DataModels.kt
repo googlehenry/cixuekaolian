@@ -1,9 +1,11 @@
 package com.viastub.kao100.db
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 import java.io.File
 
 
@@ -340,6 +342,7 @@ enum class AnswerOptionUI {
 }
 
 //Section 4: Tests
+@Parcelize
 @Entity
 data class ExamSimulation(
     @PrimaryKey(autoGenerate = true)
@@ -365,7 +368,7 @@ data class ExamSimulation(
     @ColumnInfo
     var practiceSectionIds: String?
 
-) {
+) : Parcelable {
     fun practiceSections(): MutableList<Int>? {
         return practiceSectionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }

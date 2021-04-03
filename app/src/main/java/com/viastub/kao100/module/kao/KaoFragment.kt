@@ -170,6 +170,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
         v?.let {
             var exam = it.getTag(R.id.paper_holder) as ExamSimulation
             var intent = Intent(mContext, KaoExamSummayrActivity::class.java)
+            intent.putExtra("exam", exam)
             startActivity(intent)
         }
     }

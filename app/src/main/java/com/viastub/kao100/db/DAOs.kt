@@ -8,6 +8,9 @@ interface PracticeSectionDao {
     @Query("SELECT * FROM PracticeSection")
     fun getAll(): List<PracticeSection>
 
+    @Query("SELECT * FROM PracticeSection where id in (:ids)")
+    fun getByIds(ids: MutableList<Int>): List<PracticeSection>
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -17,6 +20,7 @@ interface PracticeSectionDao {
 
     @Delete
     fun delete(item: PracticeSection)
+
 }
 
 @Dao
