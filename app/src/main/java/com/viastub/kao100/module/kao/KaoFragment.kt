@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.viastub.kao100.R
-import com.viastub.kao100.adapter.TestPaperAdapter
+import com.viastub.kao100.adapter.TestExamAdapter
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.beans.Grade
 import com.viastub.kao100.beans.Province
-import com.viastub.kao100.beans.TestPaper
 import com.viastub.kao100.beans.TestType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
@@ -77,16 +76,21 @@ class KaoFragment : BaseFragment() {
 
     }
 
-    private fun updateTestPaperList(it: List<ExamSimulation>?) {
-        var testPapers = it?.map { exam ->
-            TestPaper(exam.id, exam.name, exam.tags?.split(",")?.toMutableList())
-        }?.toMutableList()
+    private fun updateTestPaperList(exams: List<ExamSimulation>?) {
+//        var testPapers = it?.map { exam ->
+//            var tags = mutableListOf<String>()
+//            exam.province?.let { tags?.add(it) }
+//            exam.testType?.let { tags?.add(it) }
+//            exam.grade?.let { tags?.add(it) }
+//            exam.tags?.split(",")?.let { tags.addAll(it) }
+//            TestPaper(exam.id, exam.name, tags)
+//        }?.toMutableList()
 
-        testPapers?.let {
-            var adapter = TestPaperAdapter()
-            adapter.data = it
-            recycler_view_test_papers.adapter = adapter
-        }
+//        testPapers?.let {
+        var adapter = TestExamAdapter()
+        adapter.data = exams?.toMutableList() ?: mutableListOf()
+        recycler_view_test_papers.adapter = adapter
+//        }
     }
 
     fun applyToUi(provinces: MutableList<Province>) {

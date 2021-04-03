@@ -369,6 +369,15 @@ data class ExamSimulation(
     fun practiceSections(): MutableList<Int>? {
         return practiceSectionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
+
+    fun tags(): MutableList<String> {
+        var data = mutableListOf<String>()
+        province?.let { data?.add(it) }
+        testType?.let { data?.add(it) }
+        grade?.let { data?.add(it) }
+        tags?.split(",")?.let { data.addAll(it) }
+        return data
+    }
 }
 
 

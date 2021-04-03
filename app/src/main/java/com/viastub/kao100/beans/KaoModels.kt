@@ -22,3 +22,8 @@ data class TestPaper(
     var title: String,
     var tags: MutableList<String>? = null,
 )
+
+data class TestPaperTag(
+    var id: Int,
+    var name: String
+)

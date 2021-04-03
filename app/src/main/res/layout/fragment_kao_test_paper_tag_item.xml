@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/test_paper_tag"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/selector_button_round_cornor_blue_boarder"
+    android:includeFontPadding="false"
+    android:padding="5dp"
+    android:paddingTop="@dimen/dp_2"
+    android:layout_marginRight="5dp"
+    android:text="高考一卷"
+    android:textColor="#2ea5ef"
+    android:textSize="@dimen/sp_10" />

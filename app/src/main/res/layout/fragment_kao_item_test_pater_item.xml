@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/paper_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_10"
     android:background="@drawable/selector_button_round_corner_dark"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dp_10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,20 +34,11 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_16" />
 
-
-            <TextView
-                android:id="@+id/test_paper_tags"
-                android:layout_width="wrap_content"
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tag_flow_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:includeFontPadding="false"
-                android:paddingTop="@dimen/dp_2"
-                android:text="高考一卷"
-                android:padding="5dp"
-                android:background="@drawable/selector_button_round_cornor_blue_boarder"
-                android:textColor="#2ea5ef"
-                android:textSize="@dimen/sp_10" />
-
+                app:max_select="1" />
 
         </LinearLayout>
 
