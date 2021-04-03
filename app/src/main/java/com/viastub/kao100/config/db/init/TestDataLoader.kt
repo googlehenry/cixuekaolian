@@ -47,7 +47,7 @@ class TestDataLoader : DataLoader {
             city = "广元市",
             testType = "期中考试",
             grade = "高1年级",
-            name = "高一英语第一单元阶段测试",
+            name = "2020-2021学年上学期广元市静安区高一上学期一模试卷",
             tags = "基础训练,XYZ模拟高考",
             totalDifficultyLevel = 3.0,
             totalScore = 2.0,

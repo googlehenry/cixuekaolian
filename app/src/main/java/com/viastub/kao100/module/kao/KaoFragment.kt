@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.kao
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,7 +15,7 @@ import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Constants
 import kotlinx.android.synthetic.main.fragment_kao.*
 
-class KaoFragment : BaseFragment() {
+class KaoFragment : BaseFragment(), View.OnClickListener {
 
 
     override fun id(): Int {
@@ -77,20 +78,9 @@ class KaoFragment : BaseFragment() {
     }
 
     private fun updateTestPaperList(exams: List<ExamSimulation>?) {
-//        var testPapers = it?.map { exam ->
-//            var tags = mutableListOf<String>()
-//            exam.province?.let { tags?.add(it) }
-//            exam.testType?.let { tags?.add(it) }
-//            exam.grade?.let { tags?.add(it) }
-//            exam.tags?.split(",")?.let { tags.addAll(it) }
-//            TestPaper(exam.id, exam.name, tags)
-//        }?.toMutableList()
-
-//        testPapers?.let {
-        var adapter = TestExamAdapter()
+        var adapter = TestExamAdapter(this)
         adapter.data = exams?.toMutableList() ?: mutableListOf()
         recycler_view_test_papers.adapter = adapter
-//        }
     }
 
     fun applyToUi(provinces: MutableList<Province>) {
@@ -174,6 +164,14 @@ class KaoFragment : BaseFragment() {
                 updateTestPaperList(it)
             })
 
+    }
+
+    override fun onClick(v: View?) {
+        v?.let {
+            var exam = it.getTag(R.id.paper_holder) as ExamSimulation
+            var intent = Intent(mContext, KaoExamSummayrActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

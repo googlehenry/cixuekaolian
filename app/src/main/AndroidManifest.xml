@@ -31,6 +31,7 @@
         <activity android:name="com.viastub.kao100.module.xue.XuePage1Activity" />
         <activity android:name="com.viastub.kao100.module.lian.LianPage0Activity" />
         <activity android:name="com.viastub.kao100.module.drawer.NavPageVpnActivity" />
+        <activity android:name="com.viastub.kao100.module.kao.KaoExamSummayrActivity" />
     </application>
 
 </manifest>

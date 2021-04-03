@@ -17,12 +17,6 @@ data class Grade(
     var shortName: String
 )
 
-data class TestPaper(
-    var id: Int,
-    var title: String,
-    var tags: MutableList<String>? = null,
-)
-
 data class TestPaperTag(
     var id: Int,
     var name: String
