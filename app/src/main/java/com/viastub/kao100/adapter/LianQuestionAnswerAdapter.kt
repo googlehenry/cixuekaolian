@@ -35,7 +35,7 @@ class LianQuestionAnswerAdapter(
         if (lianItem.submitted) {
             //current part answer check
             question.usersAnswers?.get(item.id)?.let {
-                var correct: Boolean = item.correctAnswers?.let { ans -> ans.contains(it) } ?: false
+                var correct: Boolean = item.correctAnswers?.let { ans -> (ans == it) } ?: false
                 answerOption.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE
