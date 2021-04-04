@@ -12,6 +12,7 @@ import com.viastub.kao100.db.PracticeQuestion
 import com.viastub.kao100.db.PracticeQuestionTemplate
 import com.viastub.kao100.utils.Constants
 
+
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
@@ -26,30 +27,44 @@ class LianItemQuestionAdapter(
     override fun convert(holder: BaseViewHolder, item: PracticeQuestion) {
         holder.setText(R.id.lian_item_question_main_seq, item.id.toString())
         holder.setText(R.id.lian_item_question_main_text, item.text)
-        holder.setText(R.id.lian_item_question_answer_reviewed, item.answerStandard)
-        holder.setText(R.id.lian_item_question_answer_explained, item.answerKeyPoints)
+        holder.setText(R.id.lian_item_question_answer_reviewed, "答案: " + item.answerStandard)
+        holder.setText(R.id.lian_item_question_answer_explained, "解析: " + item.answerKeyPoints)
 
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
         questionMainText.visibility = if (item.text == null) View.GONE else View.VISIBLE
 
-        var questionHolder =
+        var questionOptionsHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
-
-
 
         item.optionsDb?.let {
             if (item.type == Constants.practice_question_type_fill) {
                 var adapter =
-                    LianQuestionAnswerAdapter(item, questionHolder, lianItem, questionHolder)
+                    LianQuestionAnswerAdapter(
+                        item,
+                        questionOptionsHolder,
+                        lianItem,
+                        questionsHolder
+                    )
                 adapter.data = it
-                questionHolder.adapter = adapter
-                questionHolder.layoutManager = GridLayoutManager(context, item.layoutOptionsPerRow)
+                questionOptionsHolder.adapter = adapter
+                questionOptionsHolder.layoutManager = GridLayoutManager(
+                    context,
+                    item.layoutOptionsPerRow
+                )
             } else if (item.type == Constants.practice_question_type_select) {
                 var adapter =
-                    LianQuestionOptionAdapter(item, questionHolder, lianItem, questionHolder)
+                    LianQuestionOptionAdapter(
+                        item,
+                        questionOptionsHolder,
+                        lianItem,
+                        questionsHolder
+                    )
                 adapter.data = it
-                questionHolder.adapter = adapter
-                questionHolder.layoutManager = GridLayoutManager(context, item.layoutOptionsPerRow)
+                questionOptionsHolder.adapter = adapter
+                questionOptionsHolder.layoutManager = GridLayoutManager(
+                    context,
+                    item.layoutOptionsPerRow
+                )
             }
         }
 
@@ -60,9 +75,7 @@ class LianItemQuestionAdapter(
         answerExplained.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
 
 
-        questionHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
-
+        questionOptionsHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
 
     }
-
 }

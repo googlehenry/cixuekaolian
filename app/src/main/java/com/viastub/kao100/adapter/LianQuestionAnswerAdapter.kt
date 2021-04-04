@@ -24,6 +24,7 @@ class LianQuestionAnswerAdapter(
     BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
     LoadMoreModule {
 
+
     override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
         var answerOption = holder.getView<EditText>(R.id.lian_item_answer_main)
@@ -79,7 +80,11 @@ class LianQuestionAnswerAdapter(
             answerMap[item.id] = answerInput.text.toString().trim()
             question.usersAnswers = answerMap
             lianItem.submitted = false
+
         }
+
+        item.layoutUIObject = answerInput//clear focus when select other places
+
     }
 
 }

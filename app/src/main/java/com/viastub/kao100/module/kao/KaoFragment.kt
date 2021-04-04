@@ -169,7 +169,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         v?.let {
             var exam = it.getTag(R.id.paper_holder) as ExamSimulation
-            var intent = Intent(mContext, KaoExamSummayrActivity::class.java)
+            var intent = Intent(mContext, KaoExamSummaryActivity::class.java)
             intent.putExtra("exam", exam)
             startActivity(intent)
         }

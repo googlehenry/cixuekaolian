@@ -1,6 +1,7 @@
 package com.viastub.kao100.db
 
 import android.os.Parcelable
+import android.view.View
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -296,6 +297,10 @@ data class PracticeQuestionTemplate(
         return practiceQuestionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
 
+    @Ignore
+    var questionsDb: MutableList<PracticeQuestion>? = null
+
+
 }
 
 @Entity
@@ -340,6 +345,9 @@ data class PracticeAnswerOption(
     @ColumnInfo
     var correctAnswers: String?
 ) {
+    @Ignore
+    var layoutUIObject: View? = null
+
     fun correctAnswers(): MutableList<String>? {
         return correctAnswers?.split(",")?.toMutableList()
     }

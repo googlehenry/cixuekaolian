@@ -55,12 +55,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
+                android:focusable="true"
                 android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:id="@+id/lian_item_question_answer_explained"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:textColor="#000000"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
