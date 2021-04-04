@@ -15,7 +15,7 @@ class TestSectionAdapter(var itemClickListener: View.OnClickListener) :
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: PracticeSection) {
-        holder.setText(R.id.section_seq, item.id.toString())
+        holder.setText(R.id.section_seq, item.displaySeq.toString())
         holder.setText(
             R.id.section_title,
             "${item.name}(总分:${item.score}分,时间:${item.totalTimeInMinutes}分钟)"

@@ -42,11 +42,15 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         exam.let {
             summary_exam_name.text = exam.name
             summary_exam_description.text =
-                "困难度:${exam.totalDifficultyLevel},总分:${exam.totalScore}分,时间:${exam.totalTimeInMinutes}分钟"
+                "总分:${exam.totalScore}分,时间:${exam.totalTimeInMinutes}分钟"
             exam.practiceSections()?.let {
                 doAsync(
                     dataAction = {
                         RoomDB.get(applicationContext).practiceSection().getByIds(it)
+                            ?.mapIndexed { index, practiceSection ->
+                                practiceSection.displaySeq = index + 1
+                                practiceSection
+                            }
                     },
                     uiAction = {
                         updateUI(it)

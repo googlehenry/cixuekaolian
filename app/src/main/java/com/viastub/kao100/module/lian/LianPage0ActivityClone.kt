@@ -86,7 +86,7 @@ class LianPage0ActivityClone : BaseActivity() {
             loseFocusForEditable(questionTemplate)
         }
 
-        lian_item_explanations.visibility = View.INVISIBLE
+        lian_item_explanations.visibility = View.GONE
         lian_item_explanations.text = questionTemplate.keyPoints
 
         lian_item_main_audio_start.setOnClickListener { plyDemoMp3Reading() }
@@ -185,7 +185,7 @@ class LianPage0ActivityClone : BaseActivity() {
                 if (questionTemplate.itemMainAudio == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
-            lian_item_explanations.visibility = View.INVISIBLE
+            lian_item_explanations.visibility = View.GONE
             lian_item_main_text.visibility = View.INVISIBLE
             lian_item_main_holder.visibility = View.GONE
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)

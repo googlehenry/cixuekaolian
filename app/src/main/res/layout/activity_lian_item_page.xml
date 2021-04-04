@@ -39,8 +39,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/dp_5"
+                android:layout_weight="1"
                 android:focusable="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/sp_16" />
@@ -60,7 +60,8 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_lian_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,9 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:focusable="true"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_10"
+                    android:focusable="true"
                     android:textColor="#000000"
                     android:textSize="@dimen/sp_14" />
 
@@ -91,8 +92,8 @@
                         android:id="@+id/lian_item_main_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/dp_5"
                         android:focusable="true"
+                        android:padding="@dimen/dp_5"
                         android:textColor="#000000"
                         android:textIsSelectable="true"
                         android:textSize="@dimen/sp_14" />
@@ -102,8 +103,8 @@
                         android:layout_width="@dimen/dp_40"
                         android:layout_height="@dimen/dp_40"
                         android:layout_gravity="right"
-                        android:focusable="true"
                         android:background="@drawable/selector_button_round_corner_dark"
+                        android:focusable="true"
                         android:src="@drawable/shape_speaker_light"
                         android:tooltipText="播放听力" />
                 </FrameLayout>
@@ -120,45 +121,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp">
-
-                    <Button
-                        android:id="@+id/lian_item_switch_prev_btn"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:focusable="true"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/selector_button_round_cornor_grayed"
-                        android:text="上一大题" />
-
-                    <Button
-                        android:id="@+id/lian_item_switch_next_btn"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:focusable="true"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/selector_button_round_cornor_grayed"
-                        android:text="下一大题" />
-
-                    <Button
-                        android:id="@+id/lian_item_result_submit"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:focusable="true"
-                        android:layout_weight="2"
-                        android:textColor="#ffffff"
-                        android:background="@drawable/selector_button_round_cornor_blue"
-                        android:text="提交答案" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_margin="10dp">
 
                     <TextView
@@ -169,9 +131,48 @@
                         android:textColor="#000000"
                         android:textSize="@dimen/sp_14" />
                 </LinearLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <Button
+                android:id="@+id/lian_item_switch_prev_btn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_button_round_cornor_grayed"
+                android:focusable="true"
+                android:text="上一大题"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/lian_item_switch_next_btn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_button_round_cornor_grayed"
+                android:focusable="true"
+                android:text="下一大题"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/lian_item_result_submit"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:background="@drawable/selector_button_round_cornor_blue"
+                android:focusable="true"
+                android:text="提交答案"
+                android:textColor="#ffffff" />
+        </LinearLayout>
 
     </LinearLayout>
 

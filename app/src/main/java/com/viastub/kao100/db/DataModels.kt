@@ -263,6 +263,9 @@ data class PracticeSection(
     fun practiceQuestionTemplates(): MutableList<Int>? {
         return practiceQuestionTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
+
+    @Ignore
+    var displaySeq: Int = 0
 }
 
 @Entity
@@ -357,6 +360,10 @@ data class PracticeAnswerOption(
 
     @Ignore
     var displaySeq: Int = 0
+}
+
+enum class LayoutUI {
+    EDIT_TEXT, TEXT_VIEW, IMAGE_VIEW
 }
 
 enum class BrowseMode {
