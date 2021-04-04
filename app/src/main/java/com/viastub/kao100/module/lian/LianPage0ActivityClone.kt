@@ -137,8 +137,10 @@ class LianPage0ActivityClone : BaseActivity() {
                 })
 
         }
-        mediaPlayer = MediaPlayer.create(this, File(questionTemplate.itemMainAudioPath).toUri())
-        mediaPlayer?.prepareAsync()
+        questionTemplate.itemMainAudioPath?.let {
+            mediaPlayer = MediaPlayer.create(this, File(it).toUri())
+        }
+
 
         questionTemplate.countDownTimer =
             setUpTimer((questionTemplate.totalTimeInMinutes * 60 * 1000).toLong())
