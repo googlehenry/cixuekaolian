@@ -16,6 +16,8 @@ class TestDataLoader : DataLoader {
                 (原句)Eat more fruit and it will do you good.
                 (改为)Eat more fruit and it will ____.
             """.trimIndent(),
+            "do good to you",
+            "do good to sb./do sb. good 对某人有好处(反义短语: do harm to sb./do sb. harm)",
             2,
             1,
             "1"
@@ -23,6 +25,8 @@ class TestDataLoader : DataLoader {
 
         var testQuestionTemplate1 = PracticeQuestionTemplate(
             1, "同义句转换", "修改原句为同义句",
+            null,
+            null,
             hints = null,
             keyPoints = "do good to sb./do sb. good 对某人有好处(反义短语: do harm to sb./do sb. harm)",
             1,

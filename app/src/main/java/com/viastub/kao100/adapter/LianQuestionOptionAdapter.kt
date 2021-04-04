@@ -10,31 +10,27 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
-import com.viastub.kao100.beans.LianItem
-import com.viastub.kao100.beans.LianItemQuestion
-import com.viastub.kao100.beans.LianQuestionOption
+import com.viastub.kao100.db.PracticeAnswerOption
+import com.viastub.kao100.db.PracticeQuestion
+import com.viastub.kao100.db.PracticeQuestionTemplate
 
-/**
- * Created by yechao on 2020/1/17/017.
- * Describe :
- */
 class LianQuestionOptionAdapter(
-    var question: LianItemQuestion,
+    var question: PracticeQuestion,
     var optionsHolder: RecyclerView,
-    var lianItem: LianItem,
+    var lianItem: PracticeQuestionTemplate,
     var questionsHolder: RecyclerView
 ) :
-    BaseQuickAdapter<LianQuestionOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
+    BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: LianQuestionOption) {
+    override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
         var itemOption = holder.getView<TextView>(R.id.lian_item_option_main)
-        itemOption.text = item.optionMainText
+        itemOption.text = item.displayText
 
         if (!lianItem.submitted) {
             indicator.visibility = View.GONE
-            question.userSelectedOptions?.let {
+            question.usersAnswers?.let {
                 if (it.contains(item.id)) {
                     itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                 } else {
@@ -42,10 +38,10 @@ class LianQuestionOptionAdapter(
                 }
             }
         } else {
-            question.userSelectedOptions?.let {
+            question.usersAnswers?.let {
 
                 if (it.contains(item.id)) {
-                    if (item.correctOption) {
+                    if (item.correctAnswers() != null) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
@@ -55,7 +51,7 @@ class LianQuestionOptionAdapter(
                         indicator.visibility = View.VISIBLE
                     }
                 } else {
-                    if (item.correctOption) {
+                    if (item.correctAnswers() != null) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
@@ -75,9 +71,12 @@ class LianQuestionOptionAdapter(
         var bookItemHolder = holder.getView<LinearLayout>(R.id.lian_item_option_holder)
         bookItemHolder.setTag(R.id.lian_item_option_holder, item)
         bookItemHolder.setOnClickListener {
+            var answerMap: MutableMap<Int, String> =
+                question.usersAnswers ?: mutableMapOf<Int, String>()
+            answerMap[item.id] = "selected"
+            question.usersAnswers = answerMap
             lianItem.submitted = false
-            question.userSelectedOptions =
-                mutableSetOf((it.getTag(R.id.lian_item_option_holder) as LianQuestionOption).id)
+
             optionsHolder.adapter?.notifyDataSetChanged()
         }
     }

@@ -1,5 +1,7 @@
 package com.viastub.kao100.adapter
 
+import android.graphics.Color
+import android.view.MotionEvent
 import android.view.View
 import androidx.cardview.widget.CardView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,19 +24,20 @@ class TestSectionAdapter(var itemClickListener: View.OnClickListener) :
         var sectionHolder = holder.getView<CardView>(R.id.section_item_holder)
         sectionHolder.setTag(R.id.section_item_holder, item)
         sectionHolder.setOnClickListener { null }
-//        examHolder.setOnTouchListener { view: View, motionEvent: MotionEvent ->
-//            when (motionEvent.action) {
-//                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> examHolder.setBackgroundColor(
-//                    Color.LTGRAY
-//                )
-//                MotionEvent.ACTION_UP -> {
-//                    examHolder.setBackgroundColor(Color.WHITE)
-//                    itemClickListener.onClick(view)
-//                }
-//                else -> examHolder.setBackgroundColor(Color.WHITE)
-//            }
-//            true
-//        }
+
+        sectionHolder.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> sectionHolder.setBackgroundColor(
+                    Color.LTGRAY
+                )
+                MotionEvent.ACTION_UP -> {
+                    sectionHolder.setBackgroundColor(Color.WHITE)
+                    itemClickListener.onClick(view)
+                }
+                else -> sectionHolder.setBackgroundColor(Color.WHITE)
+            }
+            true
+        }
     }
 
 }

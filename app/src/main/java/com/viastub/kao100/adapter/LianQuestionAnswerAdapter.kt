@@ -11,24 +11,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
-import com.viastub.kao100.beans.LianItem
-import com.viastub.kao100.beans.LianItemQuestion
-import com.viastub.kao100.beans.LianQuestionAnswer
+import com.viastub.kao100.db.PracticeAnswerOption
+import com.viastub.kao100.db.PracticeQuestion
+import com.viastub.kao100.db.PracticeQuestionTemplate
 
-/**
- * Created by yechao on 2020/1/17/017.
- * Describe :
- */
 class LianQuestionAnswerAdapter(
-    var question: LianItemQuestion,
+    var question: PracticeQuestion,
     var optionsHolder: RecyclerView,
-    var lianItem: LianItem,
+    var lianItem: PracticeQuestionTemplate,
     var questionsHolder: RecyclerView
 ) :
-    BaseQuickAdapter<LianQuestionAnswer, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
+    BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: LianQuestionAnswer) {
+    override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
         var answerOption = holder.getView<EditText>(R.id.lian_item_answer_main)
 
@@ -37,7 +33,7 @@ class LianQuestionAnswerAdapter(
 
         if (lianItem.submitted) {
             //current part answer check
-            question.userAnsered?.get(item.id)?.let {
+            question.usersAnswers?.get(item.id)?.let {
                 var correct: Boolean = item.correctAnswers?.let { ans -> ans.contains(it) } ?: false
                 answerOption.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
@@ -50,26 +46,26 @@ class LianQuestionAnswerAdapter(
                     answerOption.setTextColor(Color.parseColor("#ff0000"))
                 }
             }
-            if (question.userAnsered?.get(item.id) == null && item.answerTemplate != null) {
+            if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
                 answerOption.setText(
-                    item.answerTemplate?.toCharArray(),
+                    item.displayText?.toCharArray(),
                     0,
-                    item.answerTemplate!!.length
+                    item.displayText!!.length
                 )
             }
         } else {
             indicator.visibility = View.GONE
             answerOption.setTextColor(Color.parseColor("#333333"))
 
-            question.userAnsered?.get(item.id)?.let {
+            question.usersAnswers?.get(item.id)?.let {
                 answerOption.setText(it.toCharArray(), 0, it.length)
             }
 
-            if (question.userAnsered?.get(item.id) == null && item.answerTemplate != null) {
+            if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
                 answerOption.setText(
-                    item.answerTemplate?.toCharArray(),
+                    item.displayText?.toCharArray(),
                     0,
-                    item.answerTemplate!!.length
+                    item.displayText!!.length
                 )
             }
         }
@@ -78,11 +74,10 @@ class LianQuestionAnswerAdapter(
         var answerInput = holder.getView<EditText>(R.id.lian_item_answer_main)
         answerInput.setTag(R.id.lian_item_answer_main, item)
         answerInput.addTextChangedListener {
-//            question.userAnsweredReplies = mutableSetOf(answerInput.text.toString().trim())
             var answerMap: MutableMap<Int, String> =
-                question.userAnsered ?: mutableMapOf<Int, String>()
+                question.usersAnswers ?: mutableMapOf<Int, String>()
             answerMap[item.id] = answerInput.text.toString().trim()
-            question.userAnsered = answerMap
+            question.usersAnswers = answerMap
             lianItem.submitted = false
         }
     }

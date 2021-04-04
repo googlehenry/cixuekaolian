@@ -28,6 +28,12 @@ interface PracticeQuestionTemplateDao {
     @Query("SELECT * FROM PracticeQuestionTemplate")
     fun getAll(): List<PracticeQuestionTemplate>
 
+    @Query("SELECT * FROM PracticeQuestionTemplate where id in (:ids)")
+    fun getByIds(ids: MutableList<Int>): List<PracticeQuestionTemplate>
+
+    @Query("SELECT * FROM PracticeQuestionTemplate where id=:id")
+    fun getById(id: Int): PracticeQuestionTemplate
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -44,6 +50,9 @@ interface PracticeQuestionTemplateDao {
 interface PracticeQuestionDao {
     @Query("SELECT * FROM PracticeQuestion")
     fun getAll(): List<PracticeQuestion>
+
+    @Query("SELECT * FROM PracticeQuestion where id in (:ids)")
+    fun getByIds(ids: MutableList<Int>): List<PracticeQuestion>
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
@@ -62,6 +71,9 @@ interface PracticeAnswerOptionDao {
     @Query("SELECT * FROM PracticeAnswerOption")
     fun getAll(): List<PracticeAnswerOption>
 
+    @Query("SELECT * FROM PracticeAnswerOption where id in(:ids)")
+    fun getByIds(ids: MutableList<Int>): List<PracticeAnswerOption>
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -71,6 +83,7 @@ interface PracticeAnswerOptionDao {
 
     @Delete
     fun delete(item: PracticeAnswerOption)
+
 }
 
 

@@ -17,7 +17,7 @@ import androidx.room.RoomDatabase
         BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class,
         GlobalConfigKaoFiltersProvince::class,
         GlobalConfigKaoFiltersType::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {

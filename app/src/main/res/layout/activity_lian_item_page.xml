@@ -143,15 +143,5 @@
 
     </LinearLayout>
 
-    <!--    <TextView-->
-    <!--        android:layout_width="64dp"-->
-    <!--        android:layout_height="64dp"-->
-    <!--        android:layout_gravity="right"-->
-    <!--        android:textColor="#FF0000"-->
-    <!--        android:gravity="center"-->
-    <!--        android:layout_marginTop="@dimen/dp_60"-->
-    <!--        android:text="100"-->
-    <!--        android:textSize="36sp"-->
-    <!--        android:layout_marginRight="10dp" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

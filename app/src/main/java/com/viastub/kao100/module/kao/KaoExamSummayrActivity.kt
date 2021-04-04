@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.kao
 
+import android.content.Intent
 import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestSectionAdapter
@@ -7,6 +8,7 @@ import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.module.lian.LianPage0ActivityClone
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 
 class KaoExamSummayrActivity : BaseActivity(), View.OnClickListener {
@@ -49,8 +51,12 @@ class KaoExamSummayrActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-
+        var item = v?.getTag(R.id.section_item_holder) as PracticeSection
+        item?.let {
+            var intent = Intent(this, LianPage0ActivityClone::class.java)
+            intent.putExtra("sections", arrayListOf<PracticeSection>(it))
+            startActivity(intent)
+        }
     }
-
 
 }

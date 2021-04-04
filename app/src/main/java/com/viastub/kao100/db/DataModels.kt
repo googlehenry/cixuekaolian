@@ -241,6 +241,7 @@ data class PracticeTarget(
 }
 
 //Core models
+@Parcelize
 @Entity
 data class PracticeSection(
     @PrimaryKey(autoGenerate = true)
@@ -257,7 +258,7 @@ data class PracticeSection(
     var totalTimeInMinutes: Double,
     @ColumnInfo
     var practiceQuestionTemplateIds: String?
-) {
+) : Parcelable {
     fun practiceQuestionTemplates(): MutableList<Int>? {
         return practiceQuestionTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
@@ -272,6 +273,10 @@ data class PracticeQuestionTemplate(
     @ColumnInfo
     var requirement: String?,
     @ColumnInfo
+    var itemMainText: String?,
+    @ColumnInfo
+    var itemMainAudio: String?,
+    @ColumnInfo
     var hints: String?,
     @ColumnInfo
     var keyPoints: String?,
@@ -284,9 +289,13 @@ data class PracticeQuestionTemplate(
     @ColumnInfo
     var practiceQuestionIds: String?
 ) {
+    @Ignore
+    var submitted: Boolean = false
+
     fun practiceQuestions(): MutableList<Int>? {
         return practiceQuestionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
+
 }
 
 @Entity
@@ -297,6 +306,10 @@ data class PracticeQuestion(
     var type: String,//QuestionType,//FILL, SELECT
     @ColumnInfo
     var text: String?,
+    @ColumnInfo
+    var answerStandard: String?,
+    @ColumnInfo
+    var answerKeyPoints: String?,
     @ColumnInfo
     var layoutOptionsPerRow: Int = 1,
     @ColumnInfo
@@ -310,7 +323,10 @@ data class PracticeQuestion(
 
     //Used to hold user's input/selected value
     @Ignore
-    var usersAnswers: MutableMap<Int, String?>? = null
+    var usersAnswers: MutableMap<Int, String>? = null
+
+    @Ignore
+    var optionsDb: MutableList<PracticeAnswerOption>? = null
 }
 
 @Entity

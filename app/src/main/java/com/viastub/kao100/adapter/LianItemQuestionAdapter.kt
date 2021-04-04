@@ -3,59 +3,53 @@ package com.viastub.kao100.adapter
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
-import com.viastub.kao100.beans.LianItem
-import com.viastub.kao100.beans.LianItemQuestion
-import com.viastub.kao100.beans.LianItemQuestionType
+import com.viastub.kao100.db.PracticeQuestion
+import com.viastub.kao100.db.PracticeQuestionTemplate
+import com.viastub.kao100.utils.Constants
 
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
-class LianItemQuestionAdapter(var lianItem: LianItem, var questionsHolder: RecyclerView) :
-    BaseQuickAdapter<LianItemQuestion, BaseViewHolder>(R.layout.fragment_lian_item_queston_selection_single),
+class LianItemQuestionAdapter(
+    var lianItem: PracticeQuestionTemplate,
+    var questionsHolder: RecyclerView
+) :
+    BaseQuickAdapter<PracticeQuestion, BaseViewHolder>(R.layout.fragment_lian_item_queston_selection_single),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: LianItemQuestion) {
+    override fun convert(holder: BaseViewHolder, item: PracticeQuestion) {
         holder.setText(R.id.lian_item_question_main_seq, item.id.toString())
-        holder.setText(R.id.lian_item_question_main_text, item.questionMainText)
-        holder.setText(R.id.lian_item_question_answer_reviewed, item.answerReviewed)
-        holder.setText(R.id.lian_item_question_answer_explained, item.answerExplained)
+        holder.setText(R.id.lian_item_question_main_text, item.text)
+        holder.setText(R.id.lian_item_question_answer_reviewed, item.answerStandard)
+        holder.setText(R.id.lian_item_question_answer_explained, item.answerKeyPoints)
 
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
-        questionMainText.visibility = if (item.questionMainText == null) View.GONE else View.VISIBLE
+        questionMainText.visibility = if (item.text == null) View.GONE else View.VISIBLE
 
         var questionHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
 
-        item.optionLians?.let {
-            var adapter = LianQuestionOptionAdapter(item, questionHolder, lianItem, questionHolder)
-            adapter.data = it
-            questionHolder.adapter = adapter
-            when (item.type) {
-                LianItemQuestionType.SELECT_ONE_LEN1 -> questionHolder.layoutManager =
-                    GridLayoutManager(context, 8)
-                LianItemQuestionType.SELECT_ONE_LEN2 -> questionHolder.layoutManager =
-                    GridLayoutManager(context, 4)
-                LianItemQuestionType.SELECT_ONE_LEN10 -> questionHolder.layoutManager =
-                    GridLayoutManager(context, 2)
-                else -> questionHolder.layoutManager = LinearLayoutManager(context)
-            }
-        }
 
-        item.answerLians?.let {
-            var adapter = LianQuestionAnswerAdapter(item, questionHolder, lianItem, questionHolder)
-            adapter.data = it
-            questionHolder.adapter = adapter
-            when (item.type) {
-                LianItemQuestionType.FILL_ONE_LEN10 -> questionHolder.layoutManager =
-                    GridLayoutManager(context, 2)
-                else -> questionHolder.layoutManager = LinearLayoutManager(context)
+
+        item.optionsDb?.let {
+            if (item.type == Constants.practice_question_type_fill) {
+                var adapter =
+                    LianQuestionAnswerAdapter(item, questionHolder, lianItem, questionHolder)
+                adapter.data = it
+                questionHolder.adapter = adapter
+                questionHolder.layoutManager = GridLayoutManager(context, item.layoutOptionsPerRow)
+            } else if (item.type == Constants.practice_question_type_select) {
+                var adapter =
+                    LianQuestionOptionAdapter(item, questionHolder, lianItem, questionHolder)
+                adapter.data = it
+                questionHolder.adapter = adapter
+                questionHolder.layoutManager = GridLayoutManager(context, item.layoutOptionsPerRow)
             }
         }
 
