@@ -1,5 +1,6 @@
 package com.viastub.kao100.db
 
+import android.os.CountDownTimer
 import android.os.Parcelable
 import android.view.View
 import androidx.room.ColumnInfo
@@ -303,6 +304,8 @@ data class PracticeQuestionTemplate(
     @Ignore
     var questionsDb: MutableList<PracticeQuestion>? = null
 
+    @Ignore
+    var countDownTimer: CountDownTimer? = null
 
 }
 

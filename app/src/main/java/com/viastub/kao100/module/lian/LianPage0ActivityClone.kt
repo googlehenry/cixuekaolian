@@ -1,6 +1,8 @@
 package com.viastub.kao100.module.lian
 
+import android.graphics.Color
 import android.media.MediaPlayer
+import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -67,7 +69,7 @@ class LianPage0ActivityClone : BaseActivity() {
 
         lian_item_switch_prev_btn.setOnClickListener {
             if (questionTemplate.submitted) {
-                turnTo(-1)
+                turnTo(questionTemplate, -1)
             } else {
                 Toast.makeText(this, "请先完成当前题目.", Toast.LENGTH_SHORT).show()
             }
@@ -76,7 +78,7 @@ class LianPage0ActivityClone : BaseActivity() {
 
         lian_item_switch_next_btn.setOnClickListener {
             if (questionTemplate.submitted) {
-                turnTo(1)
+                turnTo(questionTemplate, 1)
             } else {
                 Toast.makeText(this, "请先完成当前题目.", Toast.LENGTH_SHORT).show()
             }
@@ -131,9 +133,13 @@ class LianPage0ActivityClone : BaseActivity() {
 
         }
 
+        questionTemplate.countDownTimer =
+            setUpTimer((questionTemplate.totalTimeInMinutes * 60 * 1000).toLong())
+        questionTemplate.countDownTimer?.start()
+
     }
 
-    private fun turnTo(step: Int) {
+    private fun turnTo(oldQuestionTemplate: PracticeQuestionTemplate, step: Int) {
         //Load next template
         if (step != 0) {
             var toIndex = Variables.currentQuestionTemplateIdIdx + step
@@ -148,6 +154,9 @@ class LianPage0ActivityClone : BaseActivity() {
                     Toast.makeText(this, "已到第一题", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
+                    //Stop the timer first for previous question
+                    oldQuestionTemplate.countDownTimer?.cancel()
+
                     Variables.currentQuestionTemplateIdIdx = toIndex
                     loadCurrentQuestionTemplate()
                 }
@@ -206,4 +215,21 @@ class LianPage0ActivityClone : BaseActivity() {
         mediaPlayer?.stop()
     }
 
+    fun setUpTimer(milliSeconds: Long): CountDownTimer {
+        var countDownTimer = object : CountDownTimer(milliSeconds, 500) {
+            override fun onTick(millisUntilFinished: Long) {
+                var minutes = millisUntilFinished / 60000
+                var seconds = (millisUntilFinished % 60000) / 1000
+                practice_countdown_timer.text =
+                    "[${if (minutes < 10) "0" + minutes else minutes}:${if (seconds < 10) "0" + seconds else seconds}]"
+            }
+
+            override fun onFinish() {
+                practice_countdown_timer.setTextColor(Color.parseColor("#ff0000"))
+                practice_countdown_timer.text = "[已超时]"
+            }
+
+        }
+        return countDownTimer
+    }
 }
