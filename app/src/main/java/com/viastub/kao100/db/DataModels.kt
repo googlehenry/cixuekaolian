@@ -332,6 +332,9 @@ data class PracticeQuestion(
 
     @Ignore
     var optionsDb: MutableList<PracticeAnswerOption>? = null
+
+    @Ignore
+    var displaySeq: Int = 0
 }
 
 @Entity
@@ -351,6 +354,9 @@ data class PracticeAnswerOption(
     fun correctAnswers(): MutableList<String>? {
         return correctAnswers?.split(",")?.toMutableList()
     }
+
+    @Ignore
+    var displaySeq: Int = 0
 }
 
 enum class BrowseMode {

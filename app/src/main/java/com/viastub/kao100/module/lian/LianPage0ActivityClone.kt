@@ -55,7 +55,7 @@ class LianPage0ActivityClone : BaseActivity() {
         lian_item_seq.text =
             "${Variables.currentQuestionTemplateIdIdx + 1}/${Variables.availableQuestionTemplateIds.size}"
         lian_item_category.text = questionTemplate.category
-        lian_item_requirment.text = questionTemplate.requirement
+        lian_item_requirment.text = "要求:" + questionTemplate.requirement
         lian_item_main_text.text = questionTemplate.itemMainText
 
         lian_item_main_text.visibility =
@@ -102,13 +102,20 @@ class LianPage0ActivityClone : BaseActivity() {
         questionTemplate.practiceQuestions()?.let {
 
             doAsync(dataAction = {
-                RoomDB.get(applicationContext).practiceQuestion().getByIds(it).map { qs ->
-                    var options = RoomDB.get(applicationContext).practiceAnswerOption()
-                        .getByIds(qs.optionPractices()!!).toMutableList()
+                RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
+                    .mapIndexed { qidx, qs ->
+                        var options = RoomDB.get(applicationContext).practiceAnswerOption()
+                            .getByIds(qs.optionPractices()!!)
+                            .mapIndexed { index, practiceAnswerOption ->
+                                practiceAnswerOption.displaySeq = index + 1
+                                practiceAnswerOption
+                            }
+                            .toMutableList()
 
-                    qs.optionsDb = options
-                    qs
-                }.toMutableList()
+                        qs.optionsDb = options
+                        qs.displaySeq = qidx + 1
+                        qs
+                    }.toMutableList()
             },
                 uiAction = {
                     questionTemplate.questionsDb = it
@@ -130,7 +137,6 @@ class LianPage0ActivityClone : BaseActivity() {
         //Load next template
         if (step != 0) {
             var toIndex = Variables.currentQuestionTemplateIdIdx + step
-            Toast.makeText(this, "toIndex:${toIndex}", Toast.LENGTH_SHORT).show()
             when {
                 toIndex >= Variables.availableQuestionTemplateIds.size -> {
                     Variables.currentQuestionTemplateIdIdx =

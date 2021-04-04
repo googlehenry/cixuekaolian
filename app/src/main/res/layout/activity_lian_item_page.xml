@@ -76,7 +76,7 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_10"
                     android:textColor="#000000"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_14" />
 
                 <FrameLayout
                     android:id="@+id/lian_item_main_holder"

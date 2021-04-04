@@ -25,7 +25,7 @@ class LianItemQuestionAdapter(
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: PracticeQuestion) {
-        holder.setText(R.id.lian_item_question_main_seq, item.id.toString())
+        holder.setText(R.id.lian_item_question_main_seq, item.displaySeq.toString())
         holder.setText(R.id.lian_item_question_main_text, item.text)
         holder.setText(R.id.lian_item_question_answer_reviewed, "答案: " + item.answerStandard)
         holder.setText(R.id.lian_item_question_answer_explained, "解析: " + item.answerKeyPoints)
