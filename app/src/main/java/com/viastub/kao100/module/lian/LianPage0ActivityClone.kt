@@ -66,7 +66,8 @@ class LianPage0ActivityClone : BaseActivity() {
             if (questionTemplate.itemMainAudio != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (questionTemplate.itemMainAudio == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
-
+        lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+        
         lian_item_switch_prev_btn.setOnClickListener {
             if (questionTemplate.submitted) {
                 turnTo(questionTemplate, -1)
