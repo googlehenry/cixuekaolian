@@ -73,7 +73,14 @@ class LianQuestionOptionAdapter(
         bookItemHolder.setOnClickListener {
             var answerMap: MutableMap<Int, String> =
                 question.usersAnswers ?: mutableMapOf<Int, String>()
-            answerMap[item.id] = "selected"
+
+            if (question.requireAnsweredOptionsNo <= 1) {
+                answerMap = mutableMapOf<Int, String>()
+                answerMap[item.id] = "selected"
+            } else {
+                answerMap[item.id] = "selected"
+            }
+
             question.usersAnswers = answerMap
             lianItem.submitted = false
 

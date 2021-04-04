@@ -41,8 +41,6 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
         exam.let {
             summary_exam_name.text = exam.name
-            summary_exam_description.text =
-                "总分:${exam.totalScore}分,时间:${exam.totalTimeInMinutes}分钟"
             exam.practiceSections()?.let {
                 doAsync(
                     dataAction = {
@@ -64,6 +62,12 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(sections: List<PracticeSection>) {
+
+        summary_exam_description.text =
+            "总分:${sections.map { it.score }.sum()}分,时间:${
+                sections.map { it.totalTimeInMinutes }.sum()
+            }分钟"
+
         var adapter = TestSectionAdapter(this)
         adapter.data = sections.toMutableList()
         recycler_view_exam_sections.adapter = adapter

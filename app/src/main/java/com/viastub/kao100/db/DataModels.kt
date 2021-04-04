@@ -400,11 +400,11 @@ data class ExamSimulation(
     @ColumnInfo
     var tags: String?,
     @ColumnInfo
-    var totalDifficultyLevel: Double?,
+    var totalDifficultyLevel: Double? = 0.0,
     @ColumnInfo
-    var totalScore: Double?,
+    var totalScore: Double? = 0.0,
     @ColumnInfo
-    var totalTimeInMinutes: Double?,
+    var totalTimeInMinutes: Double? = 0.0,
     @ColumnInfo
     var practiceSectionIds: String?
 
