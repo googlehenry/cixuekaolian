@@ -81,11 +81,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_15"
                     android:layout_marginRight="@dimen/dp_10"
                     android:focusable="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="@dimen/dp_5"
                     android:textColor="#000000"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_16" />
 
                 <FrameLayout
                     android:id="@+id/lian_item_main_holder"

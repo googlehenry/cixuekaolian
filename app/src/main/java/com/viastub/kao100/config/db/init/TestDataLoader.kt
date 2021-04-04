@@ -1,15 +1,270 @@
 package com.viastub.kao100.config.db.init
 
+import android.os.FileUtils
+import com.viastub.kao100.R
 import com.viastub.kao100.db.*
+import com.viastub.kao100.utils.Variables
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 
 class TestDataLoader : DataLoader {
     override fun load(roomDb: RoomDB): Int {
+        loadBasicSection4(roomDb)
         loadBasicSection3(roomDb)
         loadBasicSection2(roomDb)
         loadBasicSection1(roomDb)
         loadBasicSection0(roomDb)
         return -1
+    }
+
+    private fun loadBasicSection4(roomDb: RoomDB) {
+        var testQuestionSection4 = PracticeSection(
+            4,
+            name = "听力部分",
+        ).bindTemplatesDbToThis(
+            mutableListOf(
+                PracticeQuestionTemplate(
+                    id = 6,
+                    category = "听力部分",
+                    requirement = """
+                    听下面5段对话。每段对话后有一个小题，从题中所给的A、B、C三个选项中选出最佳选项。听完每段对话后，你都有10秒钟的时间来回答有关小题和阅读下一小题。每段对话仅读一遍。
+                    例：How much is the shirt?
+                    A. £19.15.     B. £9.18.    C. £9.15.
+                    答案是C。
+                """.trimIndent(),
+                    """
+                    录音稿
+                    （Text 1）
+                    W: Excuse me, sir. Visiting hours are over now. Your wife must get some rest.
+                    M: Oh, I’m sorry, doctor. I didn’t hear the bell or I would have left earlier.
+
+                    （Text 2）
+                    M: Hello, my name is Jack. I need to get in shape. How do I register for the classes?
+                    W: We’ll need you to join the gym, and then you can find out which classes fit your schedule the best.
+
+                    （Text 3）
+                    W: I’ll see you at the theater.
+                    M: Better still. Let’s meet in the Red Lion Bar to have a nice little talk.
+                    W: Good idea. And I’d love to have a drink there.
+
+                    （Text 4）
+                    M: Hello, my name is John Arber, and I’m calling to ask about the position advertised in Friday’s .
+                    W: Yes, the position is still open. You could come over and have a talk with us.
+
+                    （Text 5）
+                    M: I have an extra ticket to the concert tonight. Would you like to join me?
+                    W: Thanks, but I already have one. You can ask Emily. She might be interested.
+                """.trimIndent(),
+                    itemMainAudioPath = loadFile(
+                        R.raw.demo_listening_2019_cee_vol1_00_02_49__00_06_26,
+                        "demo_listening_2019_cee_vol1_00_02_49__00_06_26"
+                    ),
+                    totalScore = 7.5,
+                    totalTimeInMinutes = 5.0,
+                    keyPoints = "参考听力原文"
+                ).bindQuestionsDbToThis(
+                    mutableListOf(
+                        PracticeQuestion(
+                            id = 16,
+                            type = QuestionType.SELECT.name,
+                            text = "Where does this conversation take place?",
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(
+                                    52,
+                                    LayoutUI.TEXT_VIEW.name,
+                                    "A. In a classroom."
+                                ),
+                                PracticeAnswerOption(
+                                    53,
+                                    LayoutUI.TEXT_VIEW.name,
+                                    "B. In a hospital. ",
+                                    correctAnswers = "true"
+                                ),
+                                PracticeAnswerOption(54, LayoutUI.TEXT_VIEW.name, "C.In a museum."),
+                            )
+                        ),
+                        PracticeQuestion(
+                            id = 17,
+                            text = "What does Jack want to do?"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(
+                                    55,
+                                    displayText = "A. Take fitness classes.",
+                                    correctAnswers = "true"
+                                ),
+                                PracticeAnswerOption(
+                                    56,
+                                    displayText = "B. Buy a pair of gym shoes."
+                                ),
+                                PracticeAnswerOption(
+                                    57,
+                                    displayText = "C. Change his work schedule."
+                                ),
+                            )
+                        ),
+                        PracticeQuestion(
+                            id = 18,
+                            text = "What are the speakers talking about?"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(58, displayText = "A. What to drink."),
+                                PracticeAnswerOption(
+                                    59,
+                                    displayText = "B. Where to meet. ",
+                                    correctAnswers = "true"
+                                ),
+                                PracticeAnswerOption(60, displayText = "C. When to leave."),
+                            )
+                        ),
+                        PracticeQuestion(
+                            id = 19,
+                            text = "What is the relationship between the speakers?"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(61, displayText = "A. Colleges."),
+                                PracticeAnswerOption(62, displayText = "B. Classmates. "),
+                                PracticeAnswerOption(
+                                    63,
+                                    displayText = "C. Strangers.",
+                                    correctAnswers = "true"
+                                ),
+                            )
+                        ),
+                        PracticeQuestion(
+                            id = 20,
+                            text = "Why is Emily mentioned in the conversation?"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(
+                                    61,
+                                    displayText = "A. She might want a ticket.",
+                                    correctAnswers = "true"
+                                ),
+                                PracticeAnswerOption(
+                                    62,
+                                    displayText = "B. She is looking for the man."
+                                ),
+                                PracticeAnswerOption(
+                                    63,
+                                    displayText = "C. She has an extra ticket."
+                                ),
+                            )
+                        ),
+                    )
+                ),
+                PracticeQuestionTemplate(
+                    id = 7,
+                    category = "听力部分",
+                    requirement = """
+                    听下面对话或独白。对话或独白后有几个小题，从题中所给的A、B、C三个选项中选出最佳选项。听每段对话或独白前，你将有时间阅读各个小题，每小题5秒钟；听完后，各小题将给出5秒钟的作答时间。每段对话或独白读两遍。
+                """.trimIndent(),
+                    itemMainText = """
+                        W: Did you know James went out of business?
+                        M: Really? When was that?
+                        W: Last month.
+                        M: That’s too bad. He had owned that business for fifteen years. What happened?
+                        W: I don’t know. But life must be pretty tough for his family now. His sons are still so young. One is thirteen, and the other is ten.
+                        M: Well, maybe things are not as bad as they seem to be.
+                        W: I hope so.
+                    """.trimIndent(),
+                    itemMainAudioPath = loadFile(
+                        R.raw.demo_listening_2019_cee_vol1_00_07_28__00_09_04,
+                        "demo_listening_2019_cee_vol1_00_07_28__00_09_04"
+                    ),
+                    totalScore = 4.5,
+                    totalTimeInMinutes = 2.5,
+                    keyPoints = "参考听力原文"
+                ).bindQuestionsDbToThis(
+                    mutableListOf(
+                        PracticeQuestion(
+                            id = 21,
+                            text = "How long did James run his business？"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(
+                                    64,
+                                    displayText = "A.10 years.",
+                                ),
+                                PracticeAnswerOption(
+                                    65,
+                                    displayText = "B.13years. ",
+                                ),
+                                PracticeAnswerOption(
+                                    66,
+                                    displayText = "C.15 years.",
+                                    correctAnswers = "true"
+                                ),
+                            )
+                        ),
+                        PracticeQuestion(
+                            id = 22,
+                            text = "How does the woman feel about James' situation？"
+                        ).bindOptionsDbToThis(
+                            mutableListOf(
+                                PracticeAnswerOption(
+                                    67,
+                                    displayText = "A. Embarrassed.",
+                                ),
+                                PracticeAnswerOption(
+                                    68,
+                                    displayText = "B. Concerned.  ",
+                                    correctAnswers = "true"
+                                ),
+                                PracticeAnswerOption(
+                                    69,
+                                    displayText = "C. Disappointed.",
+                                ),
+                            )
+                        )
+                    )
+                )
+            )
+
+
+        )
+
+        /*
+        roomDb.practiceAnswerOption().insert(testOpion51)
+        roomDb.practiceQuestion().insert(testQuestion9)
+        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate5)
+        roomDb.practiceSection().insert(testQuestionSection3)
+         */
+        testQuestionSection4.let { section ->
+            section.questionTemplatesDB?.forEach { template ->
+                template.questionsDb?.forEach { question ->
+                    question.optionsDb?.let { roomDb.practiceAnswerOption().insertAll(it) }
+                }
+                template.questionsDb?.let { roomDb.practiceQuestion().insertAll(it) }
+            }
+            section.questionTemplatesDB?.let { roomDb.practiceQuestionTemplate().insertAll(it) }
+        }
+
+        roomDb.practiceSection().insert(testQuestionSection4)
+    }
+
+    private fun loadFile(resAudioFileId: Int, filename: String): String? {
+        //路径：data/data/包名/file
+        var defaultFileFolder: File = Variables.globalApplication.filesDir
+        var outFolder: File = File(defaultFileFolder, "/demo")
+        outFolder.mkdirs()
+        var outFile: File = File(outFolder.absolutePath + "/$filename")
+
+
+        var inputStream: InputStream =
+            Variables.globalApplication.resources.openRawResource(resAudioFileId)
+        var outputStream: FileOutputStream =
+            FileOutputStream(outFile)
+        FileUtils.copy(inputStream, outputStream)
+
+        inputStream.close()
+        outputStream.close()
+
+        return outFile.absolutePath
+
     }
 
 
@@ -582,7 +837,7 @@ class TestDataLoader : DataLoader {
             grade = "高1年级",
             name = "2020-2021学年上学期广元市静安区高一上学期一模试卷",
             tags = "基础训练,XYZ模拟高考",
-            practiceSectionIds = "1,2,3"
+            practiceSectionIds = "1,2,3,4"
         )
 
 

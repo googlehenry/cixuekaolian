@@ -249,24 +249,39 @@ data class PracticeSection(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var seq: Int,//User can specify sequenceS
+    var seq: Int = 1,//User can specify sequenceS
     @ColumnInfo
-    var browseMode: String,//SEQUENCE, RANDOM
+    var browseMode: String = BrowseMode.SEQUENCE.name,//SEQUENCE, RANDOM
     @ColumnInfo
-    var name: String,
+    var name: String? = null,
     @ColumnInfo
-    var score: Double,
+    var score: Double = 0.0,
     @ColumnInfo
-    var totalTimeInMinutes: Double,
+    var totalTimeInMinutes: Double = 0.0,
+
     @ColumnInfo
-    var practiceQuestionTemplateIds: String?
+    var practiceQuestionTemplateIds: String? = null
 ) : Parcelable {
     fun practiceQuestionTemplates(): MutableList<Int>? {
         return practiceQuestionTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
 
     @Ignore
+    var questionTemplatesDB: MutableList<PracticeQuestionTemplate>? = null
+
+    @Ignore
     var displaySeq: Int = 0
+
+    fun bindTemplatesDbToThis(templates: MutableList<PracticeQuestionTemplate>): PracticeSection {
+        questionTemplatesDB = questionTemplatesDB ?: mutableListOf()
+        questionTemplatesDB!!.addAll(templates)
+        practiceQuestionTemplateIds = templates.map { it.id }.joinToString(",")
+        score = templates.map { it.totalScore }.sum()
+        totalTimeInMinutes = templates.map { it.totalTimeInMinutes }.sum()
+
+        return this
+    }
+
 }
 
 @Entity
@@ -274,25 +289,25 @@ data class PracticeQuestionTemplate(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var category: String?,
+    var category: String? = null,
     @ColumnInfo
-    var requirement: String?,
+    var requirement: String? = null,
     @ColumnInfo
-    var itemMainText: String?,
+    var itemMainText: String? = null,
     @ColumnInfo
-    var itemMainAudio: String?,
+    var itemMainAudioPath: String? = null,
     @ColumnInfo
-    var hints: String?,
+    var hints: String? = null,
     @ColumnInfo
-    var keyPoints: String?,
+    var keyPoints: String? = null,
     @ColumnInfo
     var layoutQuestionsPerRow: Int = 1,
     @ColumnInfo
-    var totalScore: Double,
+    var totalScore: Double = 0.0,
     @ColumnInfo
-    var totalTimeInMinutes: Double,
+    var totalTimeInMinutes: Double = 0.0,
     @ColumnInfo
-    var practiceQuestionIds: String?
+    var practiceQuestionIds: String? = null
 ) {
     @Ignore
     var submitted: Boolean = false
@@ -307,6 +322,13 @@ data class PracticeQuestionTemplate(
     @Ignore
     var countDownTimer: CountDownTimer? = null
 
+    fun bindQuestionsDbToThis(questions: MutableList<PracticeQuestion>): PracticeQuestionTemplate {
+        questionsDb = questionsDb ?: mutableListOf()
+        questionsDb!!.addAll(questions)
+        practiceQuestionIds = questions.map { it.id }.joinToString(",")
+        return this
+    }
+
 }
 
 @Entity
@@ -314,19 +336,19 @@ data class PracticeQuestion(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var type: String,//QuestionType,//FILL, SELECT
+    var type: String = QuestionType.SELECT.name,//QuestionType,//FILL, SELECT
     @ColumnInfo
     var text: String?,
     @ColumnInfo
-    var answerStandard: String?,
+    var answerStandard: String? = null,
     @ColumnInfo
-    var answerKeyPoints: String?,
+    var answerKeyPoints: String? = null,
     @ColumnInfo
     var layoutOptionsPerRow: Int = 1,
     @ColumnInfo
     var requireAnsweredOptionsNo: Int = 1,
     @ColumnInfo
-    var practiceAnswerOptionIds: String?
+    var practiceAnswerOptionIds: String? = null
 ) {
     fun optionPractices(): MutableList<Int>? {
         return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
@@ -341,6 +363,13 @@ data class PracticeQuestion(
 
     @Ignore
     var displaySeq: Int = 0
+
+    fun bindOptionsDbToThis(options: MutableList<PracticeAnswerOption>): PracticeQuestion {
+        optionsDb = optionsDb ?: mutableListOf()
+        optionsDb!!.addAll(options)
+        practiceAnswerOptionIds = options.map { it.id }.joinToString(",")
+        return this
+    }
 }
 
 @Entity
@@ -348,11 +377,11 @@ data class PracticeAnswerOption(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var layoutUI: String?,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
+    var layoutUI: String? = LayoutUI.TEXT_VIEW.name,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
     @ColumnInfo
-    var displayText: String?,//label value,place holder value,description for image
+    var displayText: String? = null,//label value,place holder value,description for image
     @ColumnInfo
-    var correctAnswers: String?
+    var correctAnswers: String? = null
 ) {
     @Ignore
     var layoutUIObject: View? = null

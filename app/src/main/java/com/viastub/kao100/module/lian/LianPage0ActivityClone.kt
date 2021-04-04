@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
@@ -16,6 +17,7 @@ import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
+import java.io.File
 
 
 class LianPage0ActivityClone : BaseActivity() {
@@ -61,13 +63,13 @@ class LianPage0ActivityClone : BaseActivity() {
         lian_item_main_text.text = questionTemplate.itemMainText
 
         lian_item_main_text.visibility =
-            if (questionTemplate.itemMainAudio != null) View.GONE else View.VISIBLE
+            if (questionTemplate.itemMainAudioPath != null) View.GONE else View.VISIBLE
         lian_item_main_audio_start.visibility =
-            if (questionTemplate.itemMainAudio != null) View.VISIBLE else View.GONE
+            if (questionTemplate.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
-            if (questionTemplate.itemMainAudio == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
+            if (questionTemplate.itemMainAudioPath == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
         lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-        
+
         lian_item_switch_prev_btn.setOnClickListener {
             if (questionTemplate.submitted) {
                 turnTo(questionTemplate, -1)
@@ -92,7 +94,9 @@ class LianPage0ActivityClone : BaseActivity() {
         lian_item_explanations.visibility = View.GONE
         lian_item_explanations.text = questionTemplate.keyPoints
 
-        lian_item_main_audio_start.setOnClickListener { plyDemoMp3Reading() }
+        lian_item_main_audio_start.setOnClickListener {
+            questionTemplate.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
+        }
 
         lian_item_result_submit.setOnClickListener {
             questionTemplate.submitted = true
@@ -133,6 +137,8 @@ class LianPage0ActivityClone : BaseActivity() {
                 })
 
         }
+        mediaPlayer = MediaPlayer.create(this, File(questionTemplate.itemMainAudioPath).toUri())
+        mediaPlayer?.prepareAsync()
 
         questionTemplate.countDownTimer =
             setUpTimer((questionTemplate.totalTimeInMinutes * 60 * 1000).toLong())
@@ -157,7 +163,7 @@ class LianPage0ActivityClone : BaseActivity() {
                 else -> {
                     //Stop the timer first for previous question
                     oldQuestionTemplate.countDownTimer?.cancel()
-
+                    stopPlayer()
                     Variables.currentQuestionTemplateIdIdx = toIndex
                     loadCurrentQuestionTemplate()
                 }
@@ -192,7 +198,7 @@ class LianPage0ActivityClone : BaseActivity() {
             lian_item_explanations.visibility = View.VISIBLE
             lian_item_main_text.visibility = View.VISIBLE
             lian_item_main_holder.visibility =
-                if (questionTemplate.itemMainAudio == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
+                if (questionTemplate.itemMainAudioPath == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
             lian_item_explanations.visibility = View.GONE
@@ -205,15 +211,22 @@ class LianPage0ActivityClone : BaseActivity() {
 
     var mediaPlayer: MediaPlayer? = null
 
-    private fun plyDemoMp3Reading() {
-        mediaPlayer =
-            mediaPlayer ?: MediaPlayer.create(this, R.raw.demo_2018_national_test_vol2_section1)
-        mediaPlayer?.start()
+    private fun plyDemoMp3Reading(audioFile: String) {
+        if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
+        } else {
+            mediaPlayer?.start()
+        }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
+        stopPlayer()
+    }
+
+    private fun stopPlayer() {
         mediaPlayer?.stop()
+        mediaPlayer = null
     }
 
     fun setUpTimer(milliSeconds: Long): CountDownTimer {

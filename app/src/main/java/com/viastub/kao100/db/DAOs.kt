@@ -41,6 +41,9 @@ interface PracticeQuestionTemplateDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeQuestionTemplate)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(item: MutableList<PracticeQuestionTemplate>)
+
     @Delete
     fun delete(item: PracticeQuestionTemplate)
 }
@@ -61,6 +64,9 @@ interface PracticeQuestionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeQuestion)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(item: MutableList<PracticeQuestion>)
+
     @Delete
     fun delete(item: PracticeQuestion)
 }
@@ -80,6 +86,9 @@ interface PracticeAnswerOptionDao {
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: PracticeAnswerOption)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(item: MutableList<PracticeAnswerOption>)
 
     @Delete
     fun delete(item: PracticeAnswerOption)

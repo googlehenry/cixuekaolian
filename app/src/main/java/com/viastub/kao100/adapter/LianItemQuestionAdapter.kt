@@ -71,8 +71,10 @@ class LianItemQuestionAdapter(
         var answerReviewed = holder.getView<TextView>(R.id.lian_item_question_answer_reviewed)
         var answerExplained = holder.getView<TextView>(R.id.lian_item_question_answer_explained)
 
-        answerReviewed.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
-        answerExplained.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
+        answerReviewed.visibility =
+            if (lianItem.submitted && item.answerStandard != null) View.VISIBLE else View.GONE
+        answerExplained.visibility =
+            if (lianItem.submitted && item.answerKeyPoints != null) View.VISIBLE else View.GONE
 
 
         questionOptionsHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
