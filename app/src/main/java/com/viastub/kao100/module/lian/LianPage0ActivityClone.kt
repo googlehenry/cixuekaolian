@@ -206,7 +206,10 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
+        } else {
+            showExplanationForTemplate(template)
         }
+
     }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int) {
