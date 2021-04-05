@@ -7,5 +7,7 @@ class Variables {
         lateinit var globalApplication: Context
         var currentTemplateIdIdx: Int = -1
         lateinit var availableTemplateIds: MutableList<Int>
+
+        var currentUserId: Int = 1
     }
 }

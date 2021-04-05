@@ -16,8 +16,15 @@ class TestDataLoader : DataLoader {
         loadBasicSection2(roomDb)
         loadBasicSection1(roomDb)
         loadBasicSection0(roomDb)
+        loadBasicUsers(roomDb)
         return -1
     }
+
+    private fun loadBasicUsers(roomDb: RoomDB) {
+        var user1 = MyUser(1, "henry", "no_nick_name")
+        roomDb.myUser().insert(user1)
+    }
+
 
     private fun loadBasicSection4(roomDb: RoomDB) {
         var testQuestionSection4 = PracticeSection(

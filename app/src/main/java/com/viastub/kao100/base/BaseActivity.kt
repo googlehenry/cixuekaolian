@@ -63,12 +63,21 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     //Kotlin coroutine, to load data async
-    fun <T> doAsync(dataAction: () -> T, uiAction: (result: T) -> Unit) {
+    fun <T> awaitAsync(dataAction: () -> T, uiAction: (result: T) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             var rs = async(Dispatchers.IO) {
                 dataAction.invoke()
             }.await()
             uiAction.invoke(rs)
+        }
+    }
+
+    //Kotlin coroutine, to load data async
+    fun launchAsync(dataAction: () -> Unit) {
+        CoroutineScope(Dispatchers.Main).launch {
+            launch(Dispatchers.IO) {
+                dataAction.invoke()
+            }
         }
     }
 }

@@ -356,3 +356,61 @@ interface GlobalConfigKaoFiltersTypeDao {
     fun delete(items: MutableList<GlobalConfigKaoFiltersType>)
 }
 
+@Dao
+interface MyUserDao {
+    @Query("SELECT * FROM MyUser")
+    fun getAll(): MutableList<MyUser>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyUser)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<MyUser>)
+
+    @Delete
+    fun delete(item: MyUser)
+
+    @Delete
+    fun delete(items: MutableList<MyUser>)
+}
+
+@Dao
+interface MyQuestionActionDao {
+    @Query("SELECT * FROM MyQuestionAction")
+    fun getAll(): MutableList<MyQuestionAction>
+
+    @Query("SELECT * FROM MyQuestionAction where userId=:userId and practiceQuestionId=:questionId limit 1")
+    fun getByQuestionIdsOfUser(userId: Int, questionId: Int): MyQuestionAction?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyQuestionAction)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<MyQuestionAction>)
+
+    @Delete
+    fun delete(item: MyQuestionAction)
+
+    @Delete
+    fun delete(items: MutableList<MyQuestionAction>)
+
+}
+
+@Dao
+interface MyQuestionAnsweredHistoryDao {
+    @Query("SELECT * FROM MyQuestionAnsweredHistory")
+    fun getAll(): MutableList<MyQuestionAnsweredHistory>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyQuestionAnsweredHistory)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(items: MutableList<MyQuestionAnsweredHistory>)
+
+    @Delete
+    fun delete(item: MyQuestionAnsweredHistory)
+
+    @Delete
+    fun delete(items: MutableList<MyQuestionAnsweredHistory>)
+}
+

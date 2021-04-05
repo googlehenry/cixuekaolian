@@ -1,6 +1,8 @@
 package com.viastub.kao100.adapter
 
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
+import com.viastub.kao100.db.MyQuestionAction
 import com.viastub.kao100.db.PracticeQuestion
 import com.viastub.kao100.db.PracticeTemplate
 import com.viastub.kao100.utils.Constants
@@ -19,7 +22,8 @@ import com.viastub.kao100.utils.Constants
  */
 class LianItemQuestionAdapter(
     var lianItem: PracticeTemplate,
-    var questionsHolder: RecyclerView
+    var questionsHolder: RecyclerView,
+    var questionEventListener: QuestionActionListener? = null
 ) :
     BaseQuickAdapter<PracticeQuestion, BaseViewHolder>(R.layout.fragment_lian_item_queston_selection_single),
     LoadMoreModule {
@@ -79,5 +83,41 @@ class LianItemQuestionAdapter(
 
         questionOptionsHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
 
+
+        //Functions zone
+        var buttonFavorite = holder.getView<Button>(R.id.question_functions_favorite_btn)
+        var buttonNote = holder.getView<Button>(R.id.question_functions_takenote_btn)
+//        var buttonReport = holder.getView<Button>(R.id.question_functions_report_btn)
+        var inputBoxNotes = holder.getView<EditText>(R.id.question_functions_notes_inputbox)
+
+        item.myQuestionActionDb?.let {
+            if (it.isFavorite == true) {
+                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
+            } else {
+                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions)
+            }
+            if (it.note.isNullOrBlank()) {
+                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions)
+            } else {
+                inputBoxNotes.setText(it.note!!.toCharArray(), 0, it.note!!.length)
+                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
+            }
+        }
+
+        questionEventListener?.let { actionListener ->
+            buttonFavorite.setOnClickListener {
+                actionListener.favoriteButtonClicked(it, item.myQuestionActionDb)
+            }
+            buttonNote.setOnClickListener {
+                actionListener.noteButtonClicked(it, inputBoxNotes, item.myQuestionActionDb)
+            }
+        }
+
+
     }
+}
+
+interface QuestionActionListener {
+    fun favoriteButtonClicked(v: View, myAction: MyQuestionAction?)
+    fun noteButtonClicked(v: View, input: EditText, myAction: MyQuestionAction?)
 }

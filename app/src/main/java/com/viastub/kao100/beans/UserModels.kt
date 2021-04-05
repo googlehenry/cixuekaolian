@@ -9,12 +9,3 @@ data class User(
     var tags: String?,
     var dateAdded: Date?
 )
-
-data class MyQuestionAnsweredHistory(
-    var id: Int,
-    var userId: Int,
-    var practiceQuestionId: Int,
-    var practiceTemplateId: Int,
-
-
-    )

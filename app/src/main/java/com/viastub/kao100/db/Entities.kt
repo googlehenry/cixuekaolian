@@ -7,8 +7,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.parcel.Parcelize
 import java.io.File
+import java.util.*
 
 
 //Section 1: Embed a sample dictionary .mdd .mdx
@@ -350,19 +353,26 @@ data class PracticeQuestion(
     @ColumnInfo
     var practiceAnswerOptionIds: String? = null
 ) {
-    fun optionPractices(): MutableList<Int>? {
-        return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
-    }
+
+    @Ignore
+    var displaySeq: Int = 0
 
     //Used to hold user's input/selected value
     @Ignore
     var usersAnswers: MutableMap<Int, String>? = null
 
     @Ignore
+    var userAnswersChecks: MutableMap<Int, Boolean?> = mutableMapOf()
+
+    @Ignore
     var optionsDb: MutableList<PracticeAnswerOption>? = null
 
     @Ignore
-    var displaySeq: Int = 0
+    var myQuestionActionDb: MyQuestionAction? = null
+
+    fun optionPractices(): MutableList<Int>? {
+        return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    }
 
     fun bindOptionsDbToThis(options: MutableList<PracticeAnswerOption>): PracticeQuestion {
         optionsDb = optionsDb ?: mutableListOf()
@@ -392,6 +402,7 @@ data class PracticeAnswerOption(
 
     @Ignore
     var displaySeq: Int = 0
+
 }
 
 enum class LayoutUI {
@@ -486,8 +497,78 @@ data class GlobalConfigKaoFiltersType(
     }
 }
 
+@Entity
+data class MyUser(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
+    @ColumnInfo
+    var officialName: String,
+    @ColumnInfo
+    var nickName: String? = null,
+    @ColumnInfo
+    var avtarImagePath: String? = null,
+    @ColumnInfo
+    var dateAdded: String = Date().toString(),
+)
 
+@Entity
+data class MyQuestionAction(
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var practiceQuestionId: Int,
+    @ColumnInfo
+    var isFavorite: Boolean? = null,
+    @ColumnInfo
+    var note: String? = null,
+    @ColumnInfo
+    var tags: String? = null,
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}
 
+@Entity
+data class MyQuestionAnsweredHistory(
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var practiceQuestionId: Int,
+    @ColumnInfo
+    var answersIntStringMapInJson: String? = null,
+    @ColumnInfo
+    var answerIsCorrect: Boolean? = null,//正确，错误，没回答
+    @ColumnInfo
+    var dateAdded: String = Date().toString(),
+
+    @ColumnInfo
+    var optionalPracticeTemplateId: Int? = null,
+    @ColumnInfo
+    var optionalPracticeSectionId: Int? = null,
+    @ColumnInfo
+    var optionalExamSimulationId: Int? = null,
+    @ColumnInfo
+    var optionalPracticeBookId: Int? = null,
+    @ColumnInfo
+    var optionalPracticeTargetId: Int? = null,
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
+    fun getMyAnswers(): MutableMap<Int, String>? {
+        return answersIntStringMapInJson?.let {
+            var typeToken = object : TypeToken<MutableMap<Int, String>>() {}.type
+            return Gson().fromJson(it, typeToken)
+        }
+    }
+
+    fun setMyAnswersJson(answers: MutableMap<Int, String>?): MyQuestionAnsweredHistory {
+        answers?.let {
+            answersIntStringMapInJson = Gson().toJson(it)
+        }
+        return this
+    }
+}
 
 
 

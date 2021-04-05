@@ -27,7 +27,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
         btn_kao_start.setOnClickListener {
             exam?.let {
-                doAsync(dataAction = {
+                awaitAsync(dataAction = {
                     RoomDB.get(applicationContext).practiceSection()
                         .getByIds(it.practiceSections()!!).toMutableList()
                 },
@@ -42,7 +42,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         exam.let {
             summary_exam_name.text = exam.name
             exam.practiceSections()?.let {
-                doAsync(
+                awaitAsync(
                     dataAction = {
                         RoomDB.get(applicationContext).practiceSection().getByIds(it)
                             ?.mapIndexed { index, practiceSection ->

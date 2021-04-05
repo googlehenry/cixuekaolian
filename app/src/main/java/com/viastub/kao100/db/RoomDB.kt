@@ -16,8 +16,11 @@ import androidx.room.RoomDatabase
         Book::class, BookAppendix::class, BookUnit::class, BookUnitWords::class,
         BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class,
         GlobalConfigKaoFiltersProvince::class,
-        GlobalConfigKaoFiltersType::class],
-    version = 4,
+        GlobalConfigKaoFiltersType::class,
+        MyUser::class,
+        MyQuestionAction::class,
+        MyQuestionAnsweredHistory::class],
+    version = 2,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -40,6 +43,9 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun bookWord(): BookWordDao
     abstract fun globalConfigKaoFiltersProvinces(): GlobalConfigKaoFiltersProvinceDao
     abstract fun globalConfigKaoFiltersTypes(): GlobalConfigKaoFiltersTypeDao
+    abstract fun myUser(): MyUserDao
+    abstract fun myQuestionAction(): MyQuestionActionDao
+    abstract fun myQuestionAnsweredHistory(): MyQuestionAnsweredHistoryDao
 
     companion object {
         @Volatile

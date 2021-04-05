@@ -10,6 +10,7 @@
     app:cardElevation="@dimen/dp_5">
 
     <LinearLayout
+        android:id="@+id/question_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -19,8 +20,8 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="top"
-            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_5"
             android:background="@drawable/shape_blue_round_cycle"
             android:gravity="center"
@@ -37,8 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textIsSelectable="true"
                 android:textColor="#000000"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/sp_16" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -54,8 +55,9 @@
                 android:id="@+id/lian_item_question_answer_reviewed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
                 android:focusable="true"
+                android:textColor="#000000"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/sp_14" />
 
             <TextView
@@ -64,10 +66,86 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:textColor="#000000"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/sp_14" />
+
+            <LinearLayout
+                android:id="@+id/question_functions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5">
+
+                    <Button
+                        android:id="@+id/question_functions_favorite_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@drawable/selector_button_round_cornor_question_functions"
+                        android:text="收藏"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/sp_10" />
+
+                    <Button
+                        android:id="@+id/question_functions_takenote_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@drawable/selector_button_round_cornor_question_functions"
+                        android:text="笔记"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/sp_10" />
+
+                    <!--                    <Button-->
+                    <!--                        android:layout_width="50dp"-->
+                    <!--                        android:layout_height="20dp"-->
+                    <!--                        android:layout_marginRight="@dimen/dp_10"-->
+                    <!--                        android:background="@drawable/selector_button_round_cornor_question_functions"-->
+                    <!--                        android:text="打标签"-->
+                    <!--                        android:textColor="#fff"-->
+                    <!--                        android:textSize="@dimen/sp_10" />-->
+
+                    <Button
+                        android:id="@+id/question_functions_report_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@drawable/selector_button_round_cornor_question_functions"
+                        android:text="报错"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/sp_10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5">
+
+                    <EditText
+                        android:id="@+id/question_functions_notes_inputbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:textSize="@dimen/sp_14"
+                        android:padding="3dp"
+                        android:background="@drawable/selector_textinput_round_cornor_grayed"
+                        android:layout_marginRight="@dimen/dp_10" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
 
     </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>

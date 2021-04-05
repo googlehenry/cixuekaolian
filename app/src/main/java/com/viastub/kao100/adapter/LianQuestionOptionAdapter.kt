@@ -19,8 +19,7 @@ class LianQuestionOptionAdapter(
     var optionsHolder: RecyclerView,
     var lianItem: PracticeTemplate,
     var questionsHolder: RecyclerView
-) :
-    BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
+) : BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
@@ -38,6 +37,8 @@ class LianQuestionOptionAdapter(
                 }
             }
         } else {
+//            question.userAnswersChecks[item.id] = null
+
             question.usersAnswers?.let {
 
                 if (it.contains(item.id)) {
@@ -45,10 +46,12 @@ class LianQuestionOptionAdapter(
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
+                        question.userAnswersChecks[item.id] = true
                     } else {
                         itemOption.setTextColor(Color.parseColor("#FF0000"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                         indicator.visibility = View.VISIBLE
+                        question.userAnswersChecks[item.id] = false
                     }
                 } else {
                     if (item.correctAnswers() != null) {

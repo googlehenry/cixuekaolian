@@ -5,22 +5,23 @@ import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
+import com.viastub.kao100.adapter.QuestionActionListener
 import com.viastub.kao100.base.BaseActivity
-import com.viastub.kao100.db.PracticeSection
-import com.viastub.kao100.db.PracticeTemplate
-import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import java.io.File
 
 
-class LianPage0ActivityClone : BaseActivity() {
+class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
     override fun id(): Int {
         return R.layout.activity_lian_item_page
@@ -46,7 +47,7 @@ class LianPage0ActivityClone : BaseActivity() {
     }
 
     private fun loadCurrentQuestionTemplate() {
-        doAsync(dataAction = {
+        awaitAsync(dataAction = {
             RoomDB.get(applicationContext).practiceTemplate()
                 .getById(Variables.availableTemplateIds!![Variables.currentTemplateIdIdx])
         }, uiAction = {
@@ -55,6 +56,8 @@ class LianPage0ActivityClone : BaseActivity() {
     }
 
     private fun updateUI(template: PracticeTemplate) {
+        lian_item_result_submit.isEnabled = true
+        lian_item_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_blue)
 
         lian_item_seq.text =
             "${Variables.currentTemplateIdIdx + 1}/${Variables.availableTemplateIds.size}"
@@ -103,34 +106,55 @@ class LianPage0ActivityClone : BaseActivity() {
             recycler_view_lian_item_questions.adapter?.notifyDataSetChanged()
             showExplanationForTemplate(template)
             loseFocusForEditable(template)
+
+            lian_item_result_submit.postDelayed({
+                checkUserAnsweredResult(template)
+            }, 100)
+
+            lian_item_result_submit.isEnabled = false
+            lian_item_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
 
 
         template.practiceQuestions()?.let {
 
-            doAsync(dataAction = {
-                RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
-                    .mapIndexed { qidx, qs ->
-                        var options = RoomDB.get(applicationContext).practiceAnswerOption()
-                            .getByIds(qs.optionPractices()!!)
-                            .mapIndexed { index, practiceAnswerOption ->
-                                practiceAnswerOption.displaySeq = index + 1
-                                practiceAnswerOption
-                            }
-                            .toMutableList()
+            awaitAsync(
+                dataAction = {
+                    RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
+                        .mapIndexed { qidx, qs ->
+                            var options = RoomDB.get(applicationContext).practiceAnswerOption()
+                                .getByIds(qs.optionPractices()!!)
+                                .mapIndexed { index, practiceAnswerOption ->
+                                    practiceAnswerOption.displaySeq = index + 1
+                                    practiceAnswerOption
+                                }
+                                .toMutableList()
+                            var myAction = RoomDB.get(applicationContext).myQuestionAction()
+                                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id)
 
-                        qs.optionsDb = options
-                        qs.displaySeq = qidx + 1
-                        qs
-                    }.toMutableList()
-            },
+                            if (myAction == null) {
+                                RoomDB.get(applicationContext).myQuestionAction()
+                                    .insert(MyQuestionAction(Variables.currentUserId, qs.id))
+
+                                myAction = RoomDB.get(applicationContext).myQuestionAction()
+                                    .getByQuestionIdsOfUser(Variables.currentUserId, qs.id)
+                            }
+
+                            qs.optionsDb = options
+                            qs.myQuestionActionDb = myAction
+                            qs.displaySeq = qidx + 1
+
+
+                            qs
+                        }.toMutableList()
+                },
                 uiAction = {
                     template.questionsDb = it
 
                     recycler_view_lian_item_questions.layoutManager =
                         GridLayoutManager(this, template.layoutQuestionsPerRow)
                     var adapter =
-                        LianItemQuestionAdapter(template, recycler_view_lian_item_questions)
+                        LianItemQuestionAdapter(template, recycler_view_lian_item_questions, this)
                     adapter.data = it
                     recycler_view_lian_item_questions.adapter = adapter
 
@@ -145,6 +169,46 @@ class LianPage0ActivityClone : BaseActivity() {
         template.countDownTimer =
             setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
         template.countDownTimer?.start()
+
+    }
+
+    private fun checkUserAnsweredResult(template: PracticeTemplate) {
+        var answeredHistoryForThisTemplate = template.questionsDb?.map { pq ->
+            var resultSet: MutableSet<Boolean?> = mutableSetOf()
+            resultSet.addAll(pq.userAnswersChecks.values)
+
+            var result = when (resultSet.size) {
+                1 -> resultSet.first()
+                else -> null
+            }
+
+            pq.userAnswersChecks = mutableMapOf()
+
+            MyQuestionAnsweredHistory(
+                Variables.currentUserId,
+                pq.id,
+                answerIsCorrect = result,
+                optionalPracticeTemplateId = template.id
+            ).setMyAnswersJson(pq.usersAnswers)
+        }?.toMutableList()
+
+        answeredHistoryForThisTemplate?.let {
+            launchAsync {
+                RoomDB.get(applicationContext).myQuestionAnsweredHistory().insertAll(it)
+            }
+        }
+
+        var summayrChecked =
+            answeredHistoryForThisTemplate?.map { it.answerIsCorrect }?.groupBy { it }
+
+        var right = summayrChecked?.get(true)?.size ?: 0
+        var wrong = summayrChecked?.get(false)?.size ?: 0
+        var missing = summayrChecked?.get(null)?.size ?: 0
+        var rate = (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
+
+        lian_item_category.text = template.category + "(正确率:$rate%)"
+        lian_item_scores.text = "对:$right 错:$wrong 未答:$missing 正确率:$rate%"
+        lian_item_scores.visibility = View.VISIBLE
 
     }
 
@@ -247,5 +311,54 @@ class LianPage0ActivityClone : BaseActivity() {
 
         }
         return countDownTimer
+    }
+
+    override fun favoriteButtonClicked(v: View, myAction: MyQuestionAction?) {
+        myAction?.let {
+            it.isFavorite = (it.isFavorite != true)
+
+            if (it.isFavorite == true) {
+                v.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
+            } else {
+                v.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions)
+            }
+
+            launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+        }
+    }
+
+    override fun noteButtonClicked(v: View, input: EditText, myAction: MyQuestionAction?) {
+        myAction?.let {
+            if (input.isVisible) {
+                val entered = input.text.toString().trim()
+                var needSave = false
+                if (it.note != entered) {
+                    it.note = entered
+                    needSave = true
+                } else if (it.note != null && entered.isNullOrBlank()) {
+                    it.note = null
+                    needSave = true
+                }
+                if (needSave) {
+                    launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+                }
+
+                input.visibility = View.GONE
+                (v as Button).text = "笔记"
+
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(
+                    input.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+                if (input.isFocused) {
+                    input.clearFocus()
+                }
+            } else {
+                input.visibility = View.VISIBLE
+                (v as Button).text = "保存"
+            }
+
+        }
     }
 }

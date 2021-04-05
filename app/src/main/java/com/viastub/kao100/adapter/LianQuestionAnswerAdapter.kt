@@ -32,6 +32,8 @@ class LianQuestionAnswerAdapter(
         var itemOption = holder.getView<TextView>(R.id.lian_item_option_main)
         itemOption.visibility = View.GONE
 
+//        question.userAnswersChecks[item.id] = null
+
         if (lianItem.submitted) {
             //current part answer check
             question.usersAnswers?.get(item.id)?.let {
@@ -41,10 +43,12 @@ class LianQuestionAnswerAdapter(
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                     answerOption.setTextColor(Color.parseColor("#2ea5ef"))
+                    question.userAnswersChecks[item.id] = true
                 } else {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                     answerOption.setTextColor(Color.parseColor("#ff0000"))
+                    question.userAnswersChecks[item.id] = false
                 }
             }
             if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
