@@ -28,14 +28,14 @@ class LianQuestionAnswerAdapter(
     override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
         var answerOption = holder.getView<EditText>(R.id.lian_item_answer_main)
-
+        var answerInput = holder.getView<EditText>(R.id.lian_item_answer_main)
         var itemOption = holder.getView<TextView>(R.id.lian_item_option_main)
         itemOption.visibility = View.GONE
 
-//        question.userAnswersChecks[item.id] = null
 
         if (lianItem.submitted) {
             //current part answer check
+            answerInput.isEnabled = false
             question.usersAnswers?.get(item.id)?.let {
                 var correct: Boolean = item.correctAnswers?.let { ans -> (ans == it) } ?: false
                 answerOption.setText(it.toCharArray(), 0, it.length)
@@ -57,6 +57,12 @@ class LianQuestionAnswerAdapter(
                     0,
                     item.displayText!!.length
                 )
+            } else if (question.usersAnswers?.get(item.id) != null) {
+                answerOption.setText(
+                    question.usersAnswers?.get(item.id)?.toCharArray(),
+                    0,
+                    question.usersAnswers?.get(item.id)!!.length
+                )
             }
         } else {
             indicator.visibility = View.GONE
@@ -72,19 +78,21 @@ class LianQuestionAnswerAdapter(
                     0,
                     item.displayText!!.length
                 )
+            } else if (question.usersAnswers?.get(item.id) != null) {
+                answerOption.setText(
+                    question.usersAnswers?.get(item.id)?.toCharArray(),
+                    0,
+                    question.usersAnswers?.get(item.id)!!.length
+                )
             }
         }
 
 
-        var answerInput = holder.getView<EditText>(R.id.lian_item_answer_main)
+
         answerInput.setTag(R.id.lian_item_answer_main, item)
         answerInput.addTextChangedListener {
-            var answerMap: MutableMap<Int, String> =
-                question.usersAnswers ?: mutableMapOf<Int, String>()
-            answerMap[item.id] = answerInput.text.toString().trim()
-            question.usersAnswers = answerMap
+            question.usersAnswers[item.id] = answerInput.text.toString().trim()
             lianItem.submitted = false
-
         }
 
         item.layoutUIObject = answerInput//clear focus when select other places

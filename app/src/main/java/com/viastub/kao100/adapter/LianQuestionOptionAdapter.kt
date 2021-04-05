@@ -29,6 +29,7 @@ class LianQuestionOptionAdapter(
 
         if (!lianItem.submitted) {
             indicator.visibility = View.GONE
+            itemOption.isEnabled = false
             question.usersAnswers?.let {
                 if (it.contains(item.id)) {
                     itemOption.setTextColor(Color.parseColor("#2ea5ef"))
@@ -37,10 +38,8 @@ class LianQuestionOptionAdapter(
                 }
             }
         } else {
-//            question.userAnswersChecks[item.id] = null
 
             question.usersAnswers?.let {
-
                 if (it.contains(item.id)) {
                     if (item.correctAnswers() != null) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
@@ -53,7 +52,7 @@ class LianQuestionOptionAdapter(
                         indicator.visibility = View.VISIBLE
                         question.userAnswersChecks[item.id] = false
                     }
-                } else {
+                } else if (!it.isNullOrEmpty()) {
                     if (item.correctAnswers() != null) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
@@ -62,6 +61,9 @@ class LianQuestionOptionAdapter(
                         indicator.visibility = View.GONE
                         itemOption.setTextColor(Color.parseColor("#333333"))
                     }
+                } else {
+                    indicator.visibility = View.GONE
+                    itemOption.setTextColor(Color.parseColor("#333333"))
                 }
 
             }

@@ -54,14 +54,15 @@
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_16" />
 
-            <ImageView
-                android:id="@+id/header_action"
-                android:layout_width="26dp"
+            <Button
+                android:id="@+id/header_action_submit"
+                android:layout_width="wrap_content"
                 android:layout_height="26dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/selector_menu_options"
-                android:tooltipText="这里菜单选项" />
+                android:text="点我交卷"
+                android:textColor="#fff"
+                android:background="@drawable/selector_button_round_cornor_orange" />
 
         </LinearLayout>
 
@@ -201,6 +202,7 @@
                     android:background="@drawable/selector_button_round_cornor_blue"
                     android:focusable="true"
                     android:text="提交答案"
+                    android:visibility="gone"
                     android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>

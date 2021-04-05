@@ -359,7 +359,7 @@ data class PracticeQuestion(
 
     //Used to hold user's input/selected value
     @Ignore
-    var usersAnswers: MutableMap<Int, String>? = null
+    var usersAnswers: MutableMap<Int, String> = mutableMapOf()
 
     @Ignore
     var userAnswersChecks: MutableMap<Int, Boolean?> = mutableMapOf()

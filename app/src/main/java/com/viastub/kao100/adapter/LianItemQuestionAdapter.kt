@@ -92,15 +92,19 @@ class LianItemQuestionAdapter(
 
         item.myQuestionActionDb?.let {
             if (it.isFavorite == true) {
-                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
+                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_red)
+                buttonFavorite.text = "已收藏"
             } else {
-                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions)
+                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
+                buttonFavorite.text = "收藏"
             }
             if (it.note.isNullOrBlank()) {
-                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions)
+                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
+                buttonNote.text = "添加笔记"
             } else {
                 inputBoxNotes.setText(it.note!!.toCharArray(), 0, it.note!!.length)
                 buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
+                buttonNote.text = "我的笔记"
             }
         }
 
