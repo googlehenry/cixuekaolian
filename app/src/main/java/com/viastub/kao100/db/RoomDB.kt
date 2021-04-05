@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [PracticeSection::class,
-        PracticeQuestionTemplate::class,
+        PracticeTemplate::class,
         PracticeQuestion::class,
         PracticeAnswerOption::class,
         DictionaryConfig::class, PracticeTarget::class,
@@ -22,7 +22,7 @@ import androidx.room.RoomDatabase
 )
 abstract class RoomDB : RoomDatabase() {
     abstract fun practiceSection(): PracticeSectionDao
-    abstract fun practiceQuestionTemplate(): PracticeQuestionTemplateDao
+    abstract fun practiceTemplate(): PracticeTemplateDao
     abstract fun practiceQuestion(): PracticeQuestionDao
     abstract fun practiceAnswerOption(): PracticeAnswerOptionDao
     abstract fun dictionaryConfig(): DictionaryConfigDao

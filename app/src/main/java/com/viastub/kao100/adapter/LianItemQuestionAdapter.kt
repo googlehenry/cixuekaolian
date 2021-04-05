@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.PracticeQuestion
-import com.viastub.kao100.db.PracticeQuestionTemplate
+import com.viastub.kao100.db.PracticeTemplate
 import com.viastub.kao100.utils.Constants
 
 
@@ -18,7 +18,7 @@ import com.viastub.kao100.utils.Constants
  * Describe :
  */
 class LianItemQuestionAdapter(
-    var lianItem: PracticeQuestionTemplate,
+    var lianItem: PracticeTemplate,
     var questionsHolder: RecyclerView
 ) :
     BaseQuickAdapter<PracticeQuestion, BaseViewHolder>(R.layout.fragment_lian_item_queston_selection_single),

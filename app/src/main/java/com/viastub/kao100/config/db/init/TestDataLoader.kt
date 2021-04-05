@@ -25,7 +25,7 @@ class TestDataLoader : DataLoader {
             name = "听力部分",
         ).bindTemplatesDbToThis(
             mutableListOf(
-                PracticeQuestionTemplate(
+                PracticeTemplate(
                     id = 6,
                     category = "听力部分",
                     requirement = """
@@ -156,7 +156,7 @@ class TestDataLoader : DataLoader {
                         ),
                     )
                 ),
-                PracticeQuestionTemplate(
+                PracticeTemplate(
                     id = 7,
                     category = "听力部分",
                     requirement = """
@@ -230,17 +230,17 @@ class TestDataLoader : DataLoader {
         /*
         roomDb.practiceAnswerOption().insert(testOpion51)
         roomDb.practiceQuestion().insert(testQuestion9)
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate5)
+        roomDb.practiceTemplate().insert(testQuestionTemplate5)
         roomDb.practiceSection().insert(testQuestionSection3)
          */
         testQuestionSection4.let { section ->
-            section.questionTemplatesDB?.forEach { template ->
+            section.templatesDB?.forEach { template ->
                 template.questionsDb?.forEach { question ->
                     question.optionsDb?.let { roomDb.practiceAnswerOption().insertAll(it) }
                 }
                 template.questionsDb?.let { roomDb.practiceQuestion().insertAll(it) }
             }
-            section.questionTemplatesDB?.let { roomDb.practiceQuestionTemplate().insertAll(it) }
+            section.templatesDB?.let { roomDb.practiceTemplate().insertAll(it) }
         }
 
         roomDb.practiceSection().insert(testQuestionSection4)
@@ -492,7 +492,7 @@ class TestDataLoader : DataLoader {
             "48,49,50,51"
         )
 
-        var testQuestionTemplate4 = PracticeQuestionTemplate(
+        var testQuestionTemplate4 = PracticeTemplate(
             4, "阅读理解", "阅读文章,回答问题。",
             """
                 	I was born on the 17th of November 1828, in the village of Nam Ping, which is about four miles southwest of the Portuguese Colony (殖民地) of Macao, and is located on Pedro Island lying west of Macao, from which it is separated by a channel of half a mile wide.
@@ -514,7 +514,7 @@ class TestDataLoader : DataLoader {
             "9,10,11"
         )
 
-        var testQuestionTemplate5 = PracticeQuestionTemplate(
+        var testQuestionTemplate5 = PracticeTemplate(
             5, "阅读理解", "阅读文章,回答问题。",
             """
     A new study has shown how computers and robots powered by artificial intelligence can read human eye movements to "read" human personalities.     
@@ -551,7 +551,7 @@ class TestDataLoader : DataLoader {
             name = "阅读理解",
             score = 6.0,
             totalTimeInMinutes = 3.0,
-            practiceQuestionTemplateIds = "4,5"
+            practiceTemplateIds = "4,5"
         )
 
         roomDb.practiceAnswerOption().insert(testOpion24)
@@ -591,8 +591,8 @@ class TestDataLoader : DataLoader {
         roomDb.practiceQuestion().insert(testQuestion14)
         roomDb.practiceQuestion().insert(testQuestion15)
 
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate4)
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate5)
+        roomDb.practiceTemplate().insert(testQuestionTemplate4)
+        roomDb.practiceTemplate().insert(testQuestionTemplate5)
         roomDb.practiceSection().insert(testQuestionSection3)
 
     }
@@ -672,7 +672,7 @@ class TestDataLoader : DataLoader {
             "20,21,22,23"
         )
 
-        var testQuestionTemplate3 = PracticeQuestionTemplate(
+        var testQuestionTemplate3 = PracticeTemplate(
             3, "单项选择", "选择正确的选项填空",
             null,
             null,
@@ -702,7 +702,7 @@ class TestDataLoader : DataLoader {
             name = "单项选择",
             score = 10.0,
             totalTimeInMinutes = 5.0,
-            practiceQuestionTemplateIds = "3"
+            practiceTemplateIds = "3"
         )
 
 
@@ -733,7 +733,7 @@ class TestDataLoader : DataLoader {
         roomDb.practiceQuestion().insert(testQuestion7)
         roomDb.practiceQuestion().insert(testQuestion8)
 
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate3)
+        roomDb.practiceTemplate().insert(testQuestionTemplate3)
         roomDb.practiceSection().insert(testQuestionSection2)
     }
 
@@ -780,7 +780,7 @@ class TestDataLoader : DataLoader {
             "3"
         )
 
-        var testQuestionTemplate1 = PracticeQuestionTemplate(
+        var testQuestionTemplate1 = PracticeTemplate(
             1, "同义句转换", "修改原句为同义句",
             null,
             null,
@@ -791,7 +791,7 @@ class TestDataLoader : DataLoader {
             1.0,
             "1"
         )
-        var testQuestionTemplate2 = PracticeQuestionTemplate(
+        var testQuestionTemplate2 = PracticeTemplate(
             2, "介词单项填空", "使用适合介词填空(一空一词)",
             null,
             null,
@@ -813,7 +813,7 @@ class TestDataLoader : DataLoader {
             name = "基础训练部分",
             score = 6.0,
             totalTimeInMinutes = 3.0,
-            practiceQuestionTemplateIds = "1,2"
+            practiceTemplateIds = "1,2"
         )
 
 
@@ -823,8 +823,8 @@ class TestDataLoader : DataLoader {
         roomDb.practiceQuestion().insert(testQuestion1)
         roomDb.practiceQuestion().insert(testQuestion2)
         roomDb.practiceQuestion().insert(testQuestion3)
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate1)
-        roomDb.practiceQuestionTemplate().insert(testQuestionTemplate2)
+        roomDb.practiceTemplate().insert(testQuestionTemplate1)
+        roomDb.practiceTemplate().insert(testQuestionTemplate2)
         roomDb.practiceSection().insert(testQuestionSection1)
     }
 

@@ -12,12 +12,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.PracticeAnswerOption
 import com.viastub.kao100.db.PracticeQuestion
-import com.viastub.kao100.db.PracticeQuestionTemplate
+import com.viastub.kao100.db.PracticeTemplate
 
 class LianQuestionOptionAdapter(
     var question: PracticeQuestion,
     var optionsHolder: RecyclerView,
-    var lianItem: PracticeQuestionTemplate,
+    var lianItem: PracticeTemplate,
     var questionsHolder: RecyclerView
 ) :
     BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),

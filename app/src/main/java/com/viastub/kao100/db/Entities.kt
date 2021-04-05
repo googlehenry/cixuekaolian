@@ -260,22 +260,22 @@ data class PracticeSection(
     var totalTimeInMinutes: Double = 0.0,
 
     @ColumnInfo
-    var practiceQuestionTemplateIds: String? = null
+    var practiceTemplateIds: String? = null
 ) : Parcelable {
-    fun practiceQuestionTemplates(): MutableList<Int>? {
-        return practiceQuestionTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
+    fun practiceTemplates(): MutableList<Int>? {
+        return practiceTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
 
     @Ignore
-    var questionTemplatesDB: MutableList<PracticeQuestionTemplate>? = null
+    var templatesDB: MutableList<PracticeTemplate>? = null
 
     @Ignore
     var displaySeq: Int = 0
 
-    fun bindTemplatesDbToThis(templates: MutableList<PracticeQuestionTemplate>): PracticeSection {
-        questionTemplatesDB = questionTemplatesDB ?: mutableListOf()
-        questionTemplatesDB!!.addAll(templates)
-        practiceQuestionTemplateIds = templates.map { it.id }.joinToString(",")
+    fun bindTemplatesDbToThis(templates: MutableList<PracticeTemplate>): PracticeSection {
+        templatesDB = templatesDB ?: mutableListOf()
+        templatesDB!!.addAll(templates)
+        practiceTemplateIds = templates.map { it.id }.joinToString(",")
         score = templates.map { it.totalScore }.sum()
         totalTimeInMinutes = templates.map { it.totalTimeInMinutes }.sum()
 
@@ -285,7 +285,7 @@ data class PracticeSection(
 }
 
 @Entity
-data class PracticeQuestionTemplate(
+data class PracticeTemplate(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
@@ -322,7 +322,7 @@ data class PracticeQuestionTemplate(
     @Ignore
     var countDownTimer: CountDownTimer? = null
 
-    fun bindQuestionsDbToThis(questions: MutableList<PracticeQuestion>): PracticeQuestionTemplate {
+    fun bindQuestionsDbToThis(questions: MutableList<PracticeQuestion>): PracticeTemplate {
         questionsDb = questionsDb ?: mutableListOf()
         questionsDb!!.addAll(questions)
         practiceQuestionIds = questions.map { it.id }.joinToString(",")

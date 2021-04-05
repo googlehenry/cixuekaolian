@@ -24,28 +24,28 @@ interface PracticeSectionDao {
 }
 
 @Dao
-interface PracticeQuestionTemplateDao {
-    @Query("SELECT * FROM PracticeQuestionTemplate")
-    fun getAll(): List<PracticeQuestionTemplate>
+interface PracticeTemplateDao {
+    @Query("SELECT * FROM PracticeTemplate")
+    fun getAll(): List<PracticeTemplate>
 
-    @Query("SELECT * FROM PracticeQuestionTemplate where id in (:ids)")
-    fun getByIds(ids: MutableList<Int>): List<PracticeQuestionTemplate>
+    @Query("SELECT * FROM PracticeTemplate where id in (:ids)")
+    fun getByIds(ids: MutableList<Int>): List<PracticeTemplate>
 
-    @Query("SELECT * FROM PracticeQuestionTemplate where id=:id")
-    fun getById(id: Int): PracticeQuestionTemplate
+    @Query("SELECT * FROM PracticeTemplate where id=:id")
+    fun getById(id: Int): PracticeTemplate
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeQuestionTemplate)
+    fun insert(item: PracticeTemplate)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(item: MutableList<PracticeQuestionTemplate>)
+    fun insertAll(item: MutableList<PracticeTemplate>)
 
     @Delete
-    fun delete(item: PracticeQuestionTemplate)
+    fun delete(item: PracticeTemplate)
 }
 
 

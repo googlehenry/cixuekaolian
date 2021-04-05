@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
 import com.viastub.kao100.base.BaseActivity
-import com.viastub.kao100.db.PracticeQuestionTemplate
 import com.viastub.kao100.db.PracticeSection
+import com.viastub.kao100.db.PracticeTemplate
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -33,12 +33,12 @@ class LianPage0ActivityClone : BaseActivity() {
 
         var sections = intent?.extras?.get("sections") as ArrayList<PracticeSection>
 
-        Variables.availableQuestionTemplateIds =
-            sections?.flatMap { it.practiceQuestionTemplates() ?: mutableListOf() }.toMutableList()
-        Variables.currentQuestionTemplateIdIdx =
-            if (Variables.availableQuestionTemplateIds!!.size > 0) 0 else -1
+        Variables.availableTemplateIds =
+            sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }.toMutableList()
+        Variables.currentTemplateIdIdx =
+            if (Variables.availableTemplateIds!!.size > 0) 0 else -1
 
-        if (Variables.currentQuestionTemplateIdIdx >= 0) {
+        if (Variables.currentTemplateIdIdx >= 0) {
             //load question from db 1 at a time
             loadCurrentQuestionTemplate()
         }
@@ -47,66 +47,66 @@ class LianPage0ActivityClone : BaseActivity() {
 
     private fun loadCurrentQuestionTemplate() {
         doAsync(dataAction = {
-            RoomDB.get(applicationContext).practiceQuestionTemplate()
-                .getById(Variables.availableQuestionTemplateIds!![Variables.currentQuestionTemplateIdIdx])
+            RoomDB.get(applicationContext).practiceTemplate()
+                .getById(Variables.availableTemplateIds!![Variables.currentTemplateIdIdx])
         }, uiAction = {
             updateUI(it)
         })
     }
 
-    private fun updateUI(questionTemplate: PracticeQuestionTemplate) {
+    private fun updateUI(template: PracticeTemplate) {
 
         lian_item_seq.text =
-            "${Variables.currentQuestionTemplateIdIdx + 1}/${Variables.availableQuestionTemplateIds.size}"
-        lian_item_category.text = questionTemplate.category
-        lian_item_requirment.text = "要求:" + questionTemplate.requirement
-        lian_item_main_text.text = questionTemplate.itemMainText
+            "${Variables.currentTemplateIdIdx + 1}/${Variables.availableTemplateIds.size}"
+        lian_item_category.text = template.category
+        lian_item_requirment.text = "要求:" + template.requirement
+        lian_item_main_text.text = template.itemMainText
 
         lian_item_main_text.visibility =
-            if (questionTemplate.itemMainAudioPath != null) View.GONE else View.VISIBLE
+            if (template.itemMainAudioPath != null) View.GONE else View.VISIBLE
         lian_item_main_audio_start.visibility =
-            if (questionTemplate.itemMainAudioPath != null) View.VISIBLE else View.GONE
+            if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
-            if (questionTemplate.itemMainAudioPath == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
+            if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
         lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
 
         lian_item_switch_prev_btn.setOnClickListener {
-            if (questionTemplate.submitted) {
-                turnTo(questionTemplate, -1)
+            if (template.submitted) {
+                turnTo(template, -1)
             } else {
                 Toast.makeText(this, "请先完成当前题目.", Toast.LENGTH_SHORT).show()
             }
-            loseFocusForEditable(questionTemplate)
+            loseFocusForEditable(template)
         }
 
         lian_item_switch_next_btn.setOnClickListener {
-            if (questionTemplate.submitted) {
-                turnTo(questionTemplate, 1)
+            if (template.submitted) {
+                turnTo(template, 1)
             } else {
                 Toast.makeText(this, "请先完成当前题目.", Toast.LENGTH_SHORT).show()
             }
-            loseFocusForEditable(questionTemplate)
+            loseFocusForEditable(template)
         }
         lian_item_explanations.setOnClickListener {
-            loseFocusForEditable(questionTemplate)
+            loseFocusForEditable(template)
         }
 
         lian_item_explanations.visibility = View.GONE
-        lian_item_explanations.text = questionTemplate.keyPoints
+        lian_item_explanations.text = template.keyPoints
 
         lian_item_main_audio_start.setOnClickListener {
-            questionTemplate.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
+            template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
         }
 
         lian_item_result_submit.setOnClickListener {
-            questionTemplate.submitted = true
+            template.submitted = true
             recycler_view_lian_item_questions.adapter?.notifyDataSetChanged()
-            showExplanationForTemplate(questionTemplate)
-            loseFocusForEditable(questionTemplate)
+            showExplanationForTemplate(template)
+            loseFocusForEditable(template)
         }
 
 
-        questionTemplate.practiceQuestions()?.let {
+        template.practiceQuestions()?.let {
 
             doAsync(dataAction = {
                 RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
@@ -125,48 +125,48 @@ class LianPage0ActivityClone : BaseActivity() {
                     }.toMutableList()
             },
                 uiAction = {
-                    questionTemplate.questionsDb = it
+                    template.questionsDb = it
 
                     recycler_view_lian_item_questions.layoutManager =
-                        GridLayoutManager(this, questionTemplate.layoutQuestionsPerRow)
+                        GridLayoutManager(this, template.layoutQuestionsPerRow)
                     var adapter =
-                        LianItemQuestionAdapter(questionTemplate, recycler_view_lian_item_questions)
+                        LianItemQuestionAdapter(template, recycler_view_lian_item_questions)
                     adapter.data = it
                     recycler_view_lian_item_questions.adapter = adapter
 
                 })
 
         }
-        questionTemplate.itemMainAudioPath?.let {
+        template.itemMainAudioPath?.let {
             mediaPlayer = MediaPlayer.create(this, File(it).toUri())
         }
 
 
-        questionTemplate.countDownTimer =
-            setUpTimer((questionTemplate.totalTimeInMinutes * 60 * 1000).toLong())
-        questionTemplate.countDownTimer?.start()
+        template.countDownTimer =
+            setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
+        template.countDownTimer?.start()
 
     }
 
-    private fun turnTo(oldQuestionTemplate: PracticeQuestionTemplate, step: Int) {
+    private fun turnTo(oldTemplate: PracticeTemplate, step: Int) {
         //Load next template
         if (step != 0) {
-            var toIndex = Variables.currentQuestionTemplateIdIdx + step
+            var toIndex = Variables.currentTemplateIdIdx + step
             when {
-                toIndex >= Variables.availableQuestionTemplateIds.size -> {
-                    Variables.currentQuestionTemplateIdIdx =
-                        Variables.availableQuestionTemplateIds.size - 1
+                toIndex >= Variables.availableTemplateIds.size -> {
+                    Variables.currentTemplateIdIdx =
+                        Variables.availableTemplateIds.size - 1
                     Toast.makeText(this, "已到最后一题", Toast.LENGTH_SHORT).show()
                 }
                 toIndex < 0 -> {
-                    Variables.currentQuestionTemplateIdIdx = 0
+                    Variables.currentTemplateIdIdx = 0
                     Toast.makeText(this, "已到第一题", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     //Stop the timer first for previous question
-                    oldQuestionTemplate.countDownTimer?.cancel()
+                    oldTemplate.countDownTimer?.cancel()
                     stopPlayer()
-                    Variables.currentQuestionTemplateIdIdx = toIndex
+                    Variables.currentTemplateIdIdx = toIndex
                     loadCurrentQuestionTemplate()
                 }
             }
@@ -174,10 +174,10 @@ class LianPage0ActivityClone : BaseActivity() {
         }
     }
 
-    private fun loseFocusForEditable(questionTemplate: PracticeQuestionTemplate) {
+    private fun loseFocusForEditable(template: PracticeTemplate) {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        questionTemplate.questionsDb?.forEach {
+        template.questionsDb?.forEach {
             it.optionsDb?.forEach {
                 it.layoutUIObject?.let {
                     if (it is EditText) {
@@ -195,12 +195,12 @@ class LianPage0ActivityClone : BaseActivity() {
         }
     }
 
-    private fun showExplanationForTemplate(questionTemplate: PracticeQuestionTemplate) {
-        if (questionTemplate.submitted) {
+    private fun showExplanationForTemplate(template: PracticeTemplate) {
+        if (template.submitted) {
             lian_item_explanations.visibility = View.VISIBLE
             lian_item_main_text.visibility = View.VISIBLE
             lian_item_main_holder.visibility =
-                if (questionTemplate.itemMainAudioPath == null && questionTemplate.itemMainText == null) View.GONE else View.VISIBLE
+                if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
             lian_item_explanations.visibility = View.GONE

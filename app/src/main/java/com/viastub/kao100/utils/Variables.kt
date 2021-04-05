@@ -5,7 +5,7 @@ import android.content.Context
 class Variables {
     companion object {
         lateinit var globalApplication: Context
-        var currentQuestionTemplateIdIdx: Int = -1
-        lateinit var availableQuestionTemplateIds: MutableList<Int>
+        var currentTemplateIdIdx: Int = -1
+        lateinit var availableTemplateIds: MutableList<Int>
     }
 }
