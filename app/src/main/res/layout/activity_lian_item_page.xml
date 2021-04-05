@@ -50,7 +50,6 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="还剩x秒"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_16" />
 

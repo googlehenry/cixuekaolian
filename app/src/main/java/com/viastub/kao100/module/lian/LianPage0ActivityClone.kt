@@ -73,14 +73,18 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
-        if (Variables.currentTemplateIdIdx in (0 until Variables.availableTemplateIds.size - 1)) {
+        if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+            lian_item_switch_next_btn.isEnabled = true
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
+            lian_item_switch_next_btn.isEnabled = false
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
         if (Variables.currentTemplateIdIdx <= 0) {
+            lian_item_switch_prev_btn.isEnabled = false
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         } else {
+            lian_item_switch_prev_btn.isEnabled = true
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         }
         if (header_action_submit.isEnabled) {
@@ -111,62 +115,65 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
         }
 
-        header_action_submit.setOnClickListener {
-            if (Variables.availableTemplatesMap.size < Variables.availableTemplateIds.size) {
-                Toast.makeText(this, "还未完成所有题目", Toast.LENGTH_SHORT).show()
-            } else {
-                var summayrChecked = Variables.availableTemplatesMap.values.map { template ->
-                    template.submitted = true
-                    template.questionsDb!!.map { question ->
-                        val answeredMatchResults =
-                            question.optionsDb?.filter { it.correctAnswers() != null }
-                                ?.map { option ->
-                                    when (question.type) {
-                                        QuestionType.FILL.name -> {
-                                            question.usersAnswers?.get(option.id)?.let {
-                                                option.correctAnswers == it
+        if (!template.submitted) {
+            header_action_submit.setOnClickListener {
+                if (Variables.availableTemplatesMap.size < Variables.availableTemplateIds.size) {
+                    Toast.makeText(this, "还未完成所有题目", Toast.LENGTH_SHORT).show()
+                } else {
+                    var summayrChecked = Variables.availableTemplatesMap.values.map { template ->
+                        template.submitted = true
+                        template.questionsDb!!.map { question ->
+                            val answeredMatchResults =
+                                question.optionsDb?.filter { it.correctAnswers() != null }
+                                    ?.map { option ->
+                                        when (question.type) {
+                                            QuestionType.FILL.name -> {
+                                                question.usersAnswers?.get(option.id)?.let {
+                                                    option.correctAnswers == it
+                                                }
+                                            }
+                                            QuestionType.SELECT.name -> {
+                                                if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
+                                                    option.id
+                                                )
+                                            }
+                                            else -> {
+                                                //暂不支持第三种
+                                                null
                                             }
                                         }
-                                        QuestionType.SELECT.name -> {
-                                            if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
-                                                option.id
-                                            )
-                                        }
-                                        else -> {
-                                            //暂不支持第三种
-                                            null
-                                        }
-                                    }
-                                }?.toSet()
-                        var result: Boolean? = null
-                        answeredMatchResults?.let {
-                            if (it.contains(true)) {
-                                result = true
+                                    }?.toSet()
+                            var result: Boolean? = null
+                            answeredMatchResults?.let {
+                                if (it.contains(true)) {
+                                    result = true
+                                }
+                                if (it.contains(false)) {
+                                    result = false
+                                }
                             }
-                            if (it.contains(false)) {
-                                result = false
-                            }
-                        }
-                        result
-                    }.toMutableList()
-                }.flatten().groupBy { it }
+                            result
+                        }.toMutableList()
+                    }.flatten().groupBy { it }
 
-                var right = summayrChecked?.get(true)?.size ?: 0
-                var wrong = summayrChecked?.get(false)?.size ?: 0
-                var missing = summayrChecked?.get(null)?.size ?: 0
-                var rate = (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
+                    var right = summayrChecked?.get(true)?.size ?: 0
+                    var wrong = summayrChecked?.get(false)?.size ?: 0
+                    var missing = summayrChecked?.get(null)?.size ?: 0
+                    var rate =
+                        (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
-                lian_item_scores.text =
-                    "对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
-                lian_item_scores.visibility = View.VISIBLE
+                    lian_item_scores.text =
+                        "对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
+                    lian_item_scores.visibility = View.VISIBLE
 
-                header_action_submit.isEnabled = false
-                header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+                    header_action_submit.isEnabled = false
+                    header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
 
-                turnTo(
-                    Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
-                    0
-                )
+                    turnTo(
+                        Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
+                        0
+                    )
+                }
             }
         }
 
@@ -207,6 +214,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
         } else {
+            practice_countdown_timer.text = "[已结束]"
             showExplanationForTemplate(template)
         }
 
@@ -349,12 +357,10 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             lian_item_main_text.visibility = View.VISIBLE
             lian_item_main_holder.visibility =
                 if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
-            lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
             lian_item_explanations.visibility = View.GONE
             lian_item_main_text.visibility = View.INVISIBLE
             lian_item_main_holder.visibility = View.GONE
-            lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
 
     }
@@ -375,6 +381,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             dialog.setTitle("正在答题中,退出答题?")
         } else {
             dialog.setTitle("答题结束,确认退出?")
+            dialog.setMessage(lian_item_scores.text)
         }
         dialog.setPositiveButton("退出") { dialog, which ->
             super@LianPage0ActivityClone.onBackPressed()
