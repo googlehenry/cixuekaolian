@@ -202,10 +202,11 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         }
 
 
-        template.countDownTimer =
-            setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
-        template.countDownTimer?.start()
-
+        if (!template.submitted) {
+            template.countDownTimer =
+                setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
+            template.countDownTimer?.start()
+        }
     }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int) {
@@ -367,15 +368,19 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
     override fun onBackPressed() {
         val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        dialog.setTitle("正在答题中,放弃答题?")
-        dialog.setPositiveButton("放弃") { dialog, which ->
+        if (header_action_submit.isEnabled) {
+            dialog.setTitle("正在答题中,退出答题?")
+        } else {
+            dialog.setTitle("答题结束,确认退出?")
+        }
+        dialog.setPositiveButton("退出") { dialog, which ->
             super@LianPage0ActivityClone.onBackPressed()
             stopPlayer()
             Variables.availableTemplateIds.clear()
             Variables.currentTemplateIdIdx = -1
             Variables.availableTemplatesMap.clear()
         }
-        dialog.setNegativeButton("不放弃") { dialog, which -> dialog?.dismiss() }
+        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
         dialog.show()
     }
 

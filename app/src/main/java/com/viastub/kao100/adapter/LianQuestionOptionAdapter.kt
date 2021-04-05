@@ -38,7 +38,6 @@ class LianQuestionOptionAdapter(
                 }
             }
         } else {
-
             question.usersAnswers?.let {
                 if (it.contains(item.id)) {
                     if (item.correctAnswers() != null) {
@@ -65,7 +64,6 @@ class LianQuestionOptionAdapter(
                     indicator.visibility = View.GONE
                     itemOption.setTextColor(Color.parseColor("#333333"))
                 }
-
             }
         }
 
@@ -75,21 +73,23 @@ class LianQuestionOptionAdapter(
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.lian_item_option_holder)
         bookItemHolder.setTag(R.id.lian_item_option_holder, item)
-        bookItemHolder.setOnClickListener {
-            var answerMap: MutableMap<Int, String> =
-                question.usersAnswers ?: mutableMapOf<Int, String>()
+        if (!lianItem.submitted) {
+            bookItemHolder.setOnClickListener {
+                var answerMap: MutableMap<Int, String> =
+                    question.usersAnswers ?: mutableMapOf<Int, String>()
 
-            if (question.requireAnsweredOptionsNo <= 1) {
-                answerMap = mutableMapOf<Int, String>()
-                answerMap[item.id] = "selected"
-            } else {
-                answerMap[item.id] = "selected"
+                if (question.requireAnsweredOptionsNo <= 1) {
+                    answerMap = mutableMapOf<Int, String>()
+                    answerMap[item.id] = "selected"
+                } else {
+                    answerMap[item.id] = "selected"
+                }
+
+                question.usersAnswers = answerMap
+                lianItem.submitted = false
+
+                optionsHolder.adapter?.notifyDataSetChanged()
             }
-
-            question.usersAnswers = answerMap
-            lianItem.submitted = false
-
-            optionsHolder.adapter?.notifyDataSetChanged()
         }
     }
 
