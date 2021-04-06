@@ -374,6 +374,9 @@ data class PracticeQuestion(
     @Ignore
     var myQuestionActionDb: MyQuestionAction? = null
 
+    @Ignore
+    var myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory? = null
+
     fun optionPractices(): MutableList<Int>? {
         return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }

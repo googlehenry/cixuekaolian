@@ -51,6 +51,10 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             loadCurrentQuestionTemplate()
         }
 
+        Variables.lianContext?.earnedScoresLastTime?.let {
+            Toast.makeText(this, "将尝试恢复上次答题状态", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun loadCurrentQuestionTemplate() {
@@ -202,10 +206,11 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                             0
                         )
 
-                        Variables.lianContext?.earnedScores = scoreEarned
+                        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
 
                         launchAsync {
                             if (Variables.lianContext?.type == LianType.ExamSimulation) {
+
                                 RoomDB.get(applicationContext).myExamSimuHistory().insert(
                                     MyExamSimuHistory(
                                         Variables.currentUserId,
@@ -216,6 +221,22 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                                         myTotalWrongs = wrong
                                     )
                                 )
+
+                                var answeredHistories =
+                                    checkedTemplates.flatMap { it.questionsDb ?: mutableListOf() }
+                                        .map {
+                                            MyQuestionAnsweredHistory(
+                                                userId = Variables.currentUserId,
+                                                practiceQuestionId = it.id,
+                                                answerIsCorrect = scoreEarned > 0,
+                                                optionalPracticeTemplateId = template.id,
+                                                optionalPracticeTargetId = Variables.lianContext?.typedEntityId
+                                            ).setMyAnswersJson(it.usersAnswers)
+                                        }.toMutableList()
+                                answeredHistories?.let {
+                                    RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+                                        .insertAll(it)
+                                }
                             }
                         }
                     }
@@ -244,7 +265,8 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                         .mapIndexed { qidx, qs ->
                             prepareQuestionData(qs, qidx)
                             qs
-                        }.toMutableList()
+                        }
+                        .toMutableList()
                 },
                 uiAction = {
                     updateQuestions(template, it)
@@ -284,6 +306,14 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
                 .getByQuestionIdsOfUser(Variables.currentUserId, qs.id)
+        }
+
+        var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+            .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id)
+
+        answeredHistory?.let {
+            qs.myQuestionAnsweredHistoryDb = it
+            qs.usersAnswers = it.getMyAnswers() ?: mutableMapOf()
         }
 
         qs.optionsDb = options

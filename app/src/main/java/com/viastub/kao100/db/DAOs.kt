@@ -401,6 +401,9 @@ interface MyQuestionAnsweredHistoryDao {
     @Query("SELECT * FROM MyQuestionAnsweredHistory")
     fun getAll(): MutableList<MyQuestionAnsweredHistory>
 
+    @Query("SELECT * FROM MyQuestionAnsweredHistory where userId=:userId and practiceQuestionId=:questionId order by id desc limit 1")
+    fun getByUserIdOfAnsweredHistory(userId: Int, questionId: Int): MyQuestionAnsweredHistory?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: MyQuestionAnsweredHistory)
 

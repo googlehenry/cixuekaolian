@@ -77,7 +77,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        Variables.lianContext?.earnedScores?.let {
+        Variables.lianContext?.earnedScoresThisTimeTemp?.let {
             summary_exam_lastScores.visibility = View.VISIBLE
             summary_exam_lastScores.text = "得分:${it}"
         }
@@ -111,14 +111,19 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun startExam(
-        examSimulation: ExamSimulation,
+        exam: ExamSimulation,
         sections: List<PracticeSection>,
         partial: Boolean = false
     ) {
         var intent = Intent(this, LianPage0ActivityClone::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
-        var lianContext = LianContext(LianType.ExamSimulation, examSimulation.id, partial)
+        var lianContext = LianContext(
+            LianType.ExamSimulation,
+            exam.id,
+            partial,
+            earnedScoresLastTime = exam.totalScores() > 0
+        )
 
         intent.putExtra("sections", secs)
         intent.putExtra("lianContext", lianContext)
