@@ -171,18 +171,24 @@ class TestDataLoader : DataLoader {
                 """.trimIndent(),
                     itemMainText = """
                         W: Did you know James went out of business?
+                        
                         M: Really? When was that?
+                        
                         W: Last month.
+                        
                         M: That’s too bad. He had owned that business for fifteen years. What happened?
+                        
                         W: I don’t know. But life must be pretty tough for his family now. His sons are still so young. One is thirteen, and the other is ten.
+                        
                         M: Well, maybe things are not as bad as they seem to be.
+                        
                         W: I hope so.
                     """.trimIndent(),
                     itemMainAudioPath = loadFile(
                         R.raw.demo_listening_2019_cee_vol1_00_07_28__00_09_04,
                         "demo_listening_2019_cee_vol1_00_07_28__00_09_04"
                     ),
-                    totalScore = 4.5,
+                    totalScore = 3.0,
                     totalTimeInMinutes = 2.5,
                     keyPoints = "参考听力原文"
                 ).bindQuestionsDbToThis(
@@ -556,8 +562,6 @@ class TestDataLoader : DataLoader {
             seq = 1,
             browseMode = "SEQUENCE",
             name = "阅读理解",
-            score = 6.0,
-            totalTimeInMinutes = 3.0,
             practiceTemplateIds = "4,5"
         )
 
@@ -707,8 +711,6 @@ class TestDataLoader : DataLoader {
             seq = 1,
             browseMode = "SEQUENCE",
             name = "单项选择",
-            score = 10.0,
-            totalTimeInMinutes = 5.0,
             practiceTemplateIds = "3"
         )
 
@@ -748,6 +750,7 @@ class TestDataLoader : DataLoader {
         var testOpion1 = PracticeAnswerOption(1, "EDIT_TEXT", null, "do good to you")
         var testOpion2 = PracticeAnswerOption(2, "EDIT_TEXT", null, "at")
         var testOpion3 = PracticeAnswerOption(3, "EDIT_TEXT", null, "for")
+        var testOpion100 = PracticeAnswerOption(100, "EDIT_TEXT", null, "for")
 
         var testQuestion1 = PracticeQuestion(
             1,
@@ -784,7 +787,7 @@ class TestDataLoader : DataLoader {
             "be good for sb./sth.对某人/某事有好处(反义短语: be bad for sb./sth.)",
             2,
             1,
-            "3"
+            "3,100"
         )
 
         var testQuestionTemplate1 = PracticeTemplate(
@@ -818,8 +821,6 @@ class TestDataLoader : DataLoader {
             seq = 1,
             browseMode = "SEQUENCE",
             name = "基础训练部分",
-            score = 6.0,
-            totalTimeInMinutes = 3.0,
             practiceTemplateIds = "1,2"
         )
 

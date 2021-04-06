@@ -258,11 +258,6 @@ data class PracticeSection(
     @ColumnInfo
     var name: String? = null,
     @ColumnInfo
-    var score: Double = 0.0,
-    @ColumnInfo
-    var totalTimeInMinutes: Double = 0.0,
-
-    @ColumnInfo
     var practiceTemplateIds: String? = null
 ) : Parcelable {
     fun practiceTemplates(): MutableList<Int>? {
@@ -279,10 +274,15 @@ data class PracticeSection(
         templatesDB = templatesDB ?: mutableListOf()
         templatesDB!!.addAll(templates)
         practiceTemplateIds = templates.map { it.id }.joinToString(",")
-        score = templates.map { it.totalScore }.sum()
-        totalTimeInMinutes = templates.map { it.totalTimeInMinutes }.sum()
-
         return this
+    }
+
+    fun totalScores(): Double {
+        return templatesDB?.map { it.totalScore }?.sum() ?: 0.0
+    }
+
+    fun totalTimeInMinutes(): Double {
+        return templatesDB?.map { it.totalTimeInMinutes }?.sum() ?: 0.0
     }
 
 }
@@ -442,13 +442,12 @@ data class ExamSimulation(
     @ColumnInfo
     var totalDifficultyLevel: Double? = 0.0,
     @ColumnInfo
-    var totalScore: Double? = 0.0,
-    @ColumnInfo
-    var totalTimeInMinutes: Double? = 0.0,
-    @ColumnInfo
     var practiceSectionIds: String?
 
 ) : Parcelable {
+    @Ignore
+    var practiceSections: MutableList<PracticeSection>? = null
+
     fun practiceSections(): MutableList<Int>? {
         return practiceSectionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
@@ -460,6 +459,14 @@ data class ExamSimulation(
         grade?.let { data?.add(it) }
         tags?.split(",")?.let { data.addAll(it) }
         return data
+    }
+
+    fun totalScores(): Double {
+        return practiceSections?.map { it.totalScores() }?.sum() ?: 0.0
+    }
+
+    fun totalTimeInMinutes(): Double {
+        return practiceSections?.map { it.totalTimeInMinutes() }?.sum() ?: 0.0
     }
 }
 

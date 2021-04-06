@@ -64,8 +64,8 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(sections: List<PracticeSection>) {
 
         summary_exam_description.text =
-            "总分:${sections.map { it.score }.sum()}分,时间:${
-                sections.map { it.totalTimeInMinutes }.sum()
+            "总分:${sections.map { it.totalScores() }.sum()}分,时间:${
+                sections.map { it.totalTimeInMinutes() }.sum()
             }分钟"
 
         var adapter = TestSectionAdapter(this)

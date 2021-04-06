@@ -64,7 +64,8 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         lian_item_seq.text =
             "${Variables.currentTemplateIdIdx + 1}/${Variables.availableTemplateIds.size}"
         lian_item_category.text = template.category
-        lian_item_requirment.text = "要求:" + template.requirement
+        lian_item_requirment.text =
+            "要求:${template.requirement} (本题${template.totalScore}分,共${template.practiceQuestions()?.size ?: 0}小题,每小题${template.totalScore / (template.practiceQuestions()?.size ?: 1)}分)"
         lian_item_main_text.text = template.itemMainText
 
         lian_item_main_text.visibility =

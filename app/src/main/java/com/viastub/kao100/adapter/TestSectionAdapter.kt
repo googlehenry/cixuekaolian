@@ -16,10 +16,7 @@ class TestSectionAdapter(var itemClickListener: View.OnClickListener) :
 
     override fun convert(holder: BaseViewHolder, item: PracticeSection) {
         holder.setText(R.id.section_seq, item.displaySeq.toString())
-        holder.setText(
-            R.id.section_title,
-            "${item.name}(总分:${item.score}分,时间:${item.totalTimeInMinutes}分钟)"
-        )
+        holder.setText(R.id.section_title, item.name)
 
         var sectionHolder = holder.getView<CardView>(R.id.section_item_holder)
         sectionHolder.setTag(R.id.section_item_holder, item)
