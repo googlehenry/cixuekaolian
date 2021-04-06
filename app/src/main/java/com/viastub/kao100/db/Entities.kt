@@ -285,6 +285,7 @@ data class PracticeSection(
         return templatesDB?.map { it.totalTimeInMinutes }?.sum() ?: 0.0
     }
 
+
 }
 
 @Entity
@@ -356,6 +357,9 @@ data class PracticeQuestion(
 
     @Ignore
     var displaySeq: Int = 0
+
+    @Ignore
+    var scoreEarned: Double = 0.0
 
     //Used to hold user's input/selected value
     @Ignore

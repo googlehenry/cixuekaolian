@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.kao
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import com.viastub.kao100.R
@@ -9,7 +10,10 @@ import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.module.lian.LianPage0ActivityClone
+import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
+import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
+import kotlinx.android.synthetic.main.activity_lian_item_page.*
 
 class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
@@ -32,7 +36,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                         .getByIds(it.practiceSections()!!).toMutableList()
                 },
                     uiAction = {
-                        startExam(it)
+                        startExam(it, false)
                     }
                 )
 
@@ -82,16 +86,32 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var item = v?.getTag(R.id.section_item_holder) as PracticeSection
         item?.let {
-            startExam(arrayListOf<PracticeSection>(it))
+            startExam(arrayListOf<PracticeSection>(it), true)
         }
     }
 
-    fun startExam(sections: List<PracticeSection>) {
+    fun startExam(sections: List<PracticeSection>, partial: Boolean = false) {
         var intent = Intent(this, LianPage0ActivityClone::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
         intent.putExtra("sections", secs)
+        intent.putExtra("partial", partial)
         startActivity(intent)
     }
+
+    override fun onBackPressed() {
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        dialog.setTitle("已答题目不会保存,退出考试吗?")
+        dialog.setPositiveButton("退出") { dialog, which ->
+            super@KaoExamSummaryActivity.onBackPressed()
+            Variables.availableTemplateIds.clear()
+            Variables.currentTemplateIdIdx = -1
+            Variables.availableTemplatesMap.clear()
+            Variables.currentIsPartialQuestions = false
+        }
+        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
+        dialog.show()
+    }
+
 
 }

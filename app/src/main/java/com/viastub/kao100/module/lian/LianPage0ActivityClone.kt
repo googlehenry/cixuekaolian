@@ -34,7 +34,9 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         header_back.setOnClickListener { onBackPressed() }
 
         var sections = intent?.extras?.get("sections") as ArrayList<PracticeSection>
+        var partial: Boolean = (intent?.extras?.get("partial") ?: false) as Boolean
 
+        Variables.currentIsPartialQuestions = partial
         Variables.availableTemplateIds =
             sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }.toMutableList()
         Variables.currentTemplateIdIdx =
@@ -89,7 +91,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         }
         if (header_action_submit.isEnabled) {
-            if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1) {
+            if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1 && !Variables.currentIsPartialQuestions) {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
             } else {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
@@ -118,13 +120,25 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
         if (!template.submitted) {
             header_action_submit.setOnClickListener {
-                if (Variables.availableTemplatesMap.size < Variables.availableTemplateIds.size) {
-                    Toast.makeText(this, "还未完成所有题目", Toast.LENGTH_SHORT).show()
+                if (Variables.currentIsPartialQuestions) {
+                    if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+                        Toast.makeText(this, "还未回答该部分所有问题", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "请返回上一级回答下一部分", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    var summayrChecked = Variables.availableTemplatesMap.values
-                        .filter { Variables.availableTemplateIds.contains(it) }.map { template ->
+                    if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+                        Toast.makeText(this, "还未回答该部分所有问题", Toast.LENGTH_SHORT).show()
+                    } else {
+                        var checkedTemplates = Variables.availableTemplatesMap.values
+                            .filter { Variables.availableTemplateIds.contains(it.id) }
+                        var summayrChecked = checkedTemplates.map { template ->
                             template.submitted = true
+
                             template.questionsDb!!.map { question ->
+                                var scorePerQuestion =
+                                    template.totalScore / (template.practiceQuestions()?.size ?: 1)
+
                                 val answeredMatchResults =
                                     question.optionsDb?.filter { it.correctAnswers() != null }
                                         ?.map { option ->
@@ -154,28 +168,38 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                                         result = false
                                     }
                                 }
+
+                                question.scoreEarned =
+                                    (if (result == true) scorePerQuestion else 0.0)
+
                                 result
                             }.toMutableList()
                         }.flatten().groupBy { it }
 
-                    var right = summayrChecked?.get(true)?.size ?: 0
-                    var wrong = summayrChecked?.get(false)?.size ?: 0
-                    var missing = summayrChecked?.get(null)?.size ?: 0
-                    var rate =
-                        (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
+                        var scoreEarned =
+                            checkedTemplates.map { it.questionsDb!!.map { it.scoreEarned } }
+                                .flatten().sum()
 
-                    lian_item_scores.text =
-                        "对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
-                    lian_item_scores.visibility = View.VISIBLE
+                        var right = summayrChecked?.get(true)?.size ?: 0
+                        var wrong = summayrChecked?.get(false)?.size ?: 0
+                        var missing = summayrChecked?.get(null)?.size ?: 0
+                        var rate =
+                            (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
-                    header_action_submit.isEnabled = false
-                    header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+                        lian_item_scores.text =
+                            "得分:${scoreEarned} \n对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
+                        lian_item_scores.visibility = View.VISIBLE
 
-                    turnTo(
-                        Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
-                        0
-                    )
+                        header_action_submit.isEnabled = false
+                        header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+
+                        turnTo(
+                            Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
+                            0
+                        )
+                    }
                 }
+
             }
         }
 
@@ -378,22 +402,30 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     }
 
     override fun onBackPressed() {
-        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        if (header_action_submit.isEnabled) {
-            dialog.setTitle("正在答题中,退出答题?")
+        if (Variables.currentIsPartialQuestions && Variables.currentTemplateIdIdx >= Variables.availableTemplateIds.size - 1) {
+            doGoBack()
         } else {
-            dialog.setTitle("答题结束,确认退出?")
-            dialog.setMessage(lian_item_scores.text)
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            if (header_action_submit.isEnabled) {
+                dialog.setTitle("正在答题中,退出答题?")
+            } else {
+                dialog.setTitle("答题结束,确认退出?")
+                dialog.setMessage(lian_item_scores.text)
+            }
+            dialog.setPositiveButton("退出") { dialog, which ->
+                doGoBack()
+            }
+            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
+            dialog.show()
         }
-        dialog.setPositiveButton("退出") { dialog, which ->
-            super@LianPage0ActivityClone.onBackPressed()
-            stopPlayer()
-            Variables.availableTemplateIds.clear()
-            Variables.currentTemplateIdIdx = -1
-//            Variables.availableTemplatesMap.clear()
-        }
-        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
-        dialog.show()
+    }
+
+    private fun doGoBack() {
+        super@LianPage0ActivityClone.onBackPressed()
+        stopPlayer()
+        Variables.availableTemplateIds.clear()
+        Variables.currentTemplateIdIdx = -1
+        Variables.currentIsPartialQuestions = false
     }
 
 
