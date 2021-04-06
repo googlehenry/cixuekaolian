@@ -55,7 +55,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             RoomDB.get(applicationContext).practiceTemplate()
                 .getById(templateId)
         }, uiAction = {
-            updateUI(it)
+            updateUI(it!!)
         })
     }
 
@@ -121,41 +121,42 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                 if (Variables.availableTemplatesMap.size < Variables.availableTemplateIds.size) {
                     Toast.makeText(this, "还未完成所有题目", Toast.LENGTH_SHORT).show()
                 } else {
-                    var summayrChecked = Variables.availableTemplatesMap.values.map { template ->
-                        template.submitted = true
-                        template.questionsDb!!.map { question ->
-                            val answeredMatchResults =
-                                question.optionsDb?.filter { it.correctAnswers() != null }
-                                    ?.map { option ->
-                                        when (question.type) {
-                                            QuestionType.FILL.name -> {
-                                                question.usersAnswers?.get(option.id)?.let {
-                                                    option.correctAnswers == it
+                    var summayrChecked = Variables.availableTemplatesMap.values
+                        .filter { Variables.availableTemplateIds.contains(it) }.map { template ->
+                            template.submitted = true
+                            template.questionsDb!!.map { question ->
+                                val answeredMatchResults =
+                                    question.optionsDb?.filter { it.correctAnswers() != null }
+                                        ?.map { option ->
+                                            when (question.type) {
+                                                QuestionType.FILL.name -> {
+                                                    question.usersAnswers?.get(option.id)?.let {
+                                                        option.correctAnswers == it
+                                                    }
+                                                }
+                                                QuestionType.SELECT.name -> {
+                                                    if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
+                                                        option.id
+                                                    )
+                                                }
+                                                else -> {
+                                                    //暂不支持第三种
+                                                    null
                                                 }
                                             }
-                                            QuestionType.SELECT.name -> {
-                                                if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
-                                                    option.id
-                                                )
-                                            }
-                                            else -> {
-                                                //暂不支持第三种
-                                                null
-                                            }
-                                        }
-                                    }?.toSet()
-                            var result: Boolean? = null
-                            answeredMatchResults?.let {
-                                if (it.contains(true)) {
-                                    result = true
+                                        }?.toSet()
+                                var result: Boolean? = null
+                                answeredMatchResults?.let {
+                                    if (it.contains(true)) {
+                                        result = true
+                                    }
+                                    if (it.contains(false)) {
+                                        result = false
+                                    }
                                 }
-                                if (it.contains(false)) {
-                                    result = false
-                                }
-                            }
-                            result
-                        }.toMutableList()
-                    }.flatten().groupBy { it }
+                                result
+                            }.toMutableList()
+                        }.flatten().groupBy { it }
 
                     var right = summayrChecked?.get(true)?.size ?: 0
                     var wrong = summayrChecked?.get(false)?.size ?: 0
@@ -389,7 +390,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             stopPlayer()
             Variables.availableTemplateIds.clear()
             Variables.currentTemplateIdIdx = -1
-            Variables.availableTemplatesMap.clear()
+//            Variables.availableTemplatesMap.clear()
         }
         dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
         dialog.show()

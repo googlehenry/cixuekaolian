@@ -26,13 +26,13 @@ interface PracticeSectionDao {
 @Dao
 interface PracticeTemplateDao {
     @Query("SELECT * FROM PracticeTemplate")
-    fun getAll(): List<PracticeTemplate>
+    fun getAll(): List<PracticeTemplate>?
 
     @Query("SELECT * FROM PracticeTemplate where id in (:ids)")
-    fun getByIds(ids: MutableList<Int>): List<PracticeTemplate>
+    fun getByIds(ids: MutableList<Int>): List<PracticeTemplate>?
 
     @Query("SELECT * FROM PracticeTemplate where id=:id")
-    fun getById(id: Int): PracticeTemplate
+    fun getById(id: Int): PracticeTemplate?
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>

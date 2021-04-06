@@ -440,8 +440,6 @@ data class ExamSimulation(
     @ColumnInfo
     var tags: String?,
     @ColumnInfo
-    var totalDifficultyLevel: Double? = 0.0,
-    @ColumnInfo
     var practiceSectionIds: String?
 
 ) : Parcelable {

@@ -46,6 +46,12 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                     dataAction = {
                         RoomDB.get(applicationContext).practiceSection().getByIds(it)
                             ?.mapIndexed { index, practiceSection ->
+                                practiceSection.templatesDB =
+                                    practiceSection.practiceTemplates()?.let {
+                                        RoomDB.get(applicationContext).practiceTemplate()
+                                            .getByIds(it)?.toMutableList()
+                                    }
+
                                 practiceSection.displaySeq = index + 1
                                 practiceSection
                             }
@@ -64,9 +70,9 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(sections: List<PracticeSection>) {
 
         summary_exam_description.text =
-            "总分:${sections.map { it.totalScores() }.sum()}分,时间:${
+            "答题时间:${
                 sections.map { it.totalTimeInMinutes() }.sum()
-            }分钟"
+            }分钟, 总分:${sections.map { it.totalScores() }.sum()}分"
 
         var adapter = TestSectionAdapter(this)
         adapter.data = sections.toMutableList()
