@@ -6,6 +6,8 @@ import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestSectionAdapter
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.beans.LianContext
+import com.viastub.kao100.beans.LianType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
@@ -36,66 +38,91 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                         .getByIds(it.practiceSections()!!).toMutableList()
                 },
                     uiAction = {
-                        startExam(it, false)
+                        startExam(exam, it, false)
                     }
                 )
 
             }
         }
 
-        exam.let {
-            summary_exam_name.text = exam.name
-            exam.practiceSections()?.let {
-                awaitAsync(
-                    dataAction = {
-                        RoomDB.get(applicationContext).practiceSection().getByIds(it)
-                            ?.mapIndexed { index, practiceSection ->
-                                practiceSection.templatesDB =
-                                    practiceSection.practiceTemplates()?.let {
-                                        RoomDB.get(applicationContext).practiceTemplate()
-                                            .getByIds(it)?.toMutableList()
-                                    }
-
-                                practiceSection.displaySeq = index + 1
-                                practiceSection
-                            }
-                    },
-                    uiAction = {
-                        updateUI(it)
-                    }
-
-                )
-            }
-
-        }
-
+        loadDb(exam)
     }
 
-    private fun updateUI(sections: List<PracticeSection>) {
+    private fun loadDb(exam: ExamSimulation) {
+        exam.let {
+            summary_exam_name.text = exam.name
+            awaitAsync({
+                it.myExamSimuHistory = RoomDB.get(applicationContext).myExamSimuHistory()
+                    .getByUserIdOfExam(Variables.currentUserId, it.id)
+                it.practiceSectionsDb = it.practiceSections()?.let {
+                    RoomDB.get(applicationContext).practiceSection().getByIds(it)
+                        ?.mapIndexed { index, practiceSection ->
+                            practiceSection.templatesDB =
+                                practiceSection.practiceTemplates()?.let {
+                                    RoomDB.get(applicationContext).practiceTemplate()
+                                        .getByIds(it)?.toMutableList()
+                                }
+
+                            practiceSection.displaySeq = index + 1
+                            practiceSection
+                        }.toMutableList()
+                }
+                it
+            }, {
+                updateUI(it)
+            })
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Variables.lianContext?.earnedScores?.let {
+            summary_exam_lastScores.visibility = View.VISIBLE
+            summary_exam_lastScores.text = "得分:${it}"
+        }
+    }
+
+    private fun updateUI(examSimulation: ExamSimulation) {
+
+        var sections = examSimulation.practiceSectionsDb!!
 
         summary_exam_description.text =
             "答题时间:${
                 sections.map { it.totalTimeInMinutes() }.sum()
             }分钟, 总分:${sections.map { it.totalScores() }.sum()}分"
 
-        var adapter = TestSectionAdapter(this)
+        examSimulation.myExamSimuHistory?.let {
+            summary_exam_lastScores.visibility = View.VISIBLE
+            summary_exam_lastScores.text = "上次得分:${it.myScore}"
+        }
+
+        var adapter = TestSectionAdapter(examSimulation, this)
         adapter.data = sections.toMutableList()
         recycler_view_exam_sections.adapter = adapter
     }
 
     override fun onClick(v: View?) {
         var item = v?.getTag(R.id.section_item_holder) as PracticeSection
+        var exam = v?.getTag(-1) as ExamSimulation
         item?.let {
-            startExam(arrayListOf<PracticeSection>(it), true)
+            startExam(exam, arrayListOf<PracticeSection>(it), true)
         }
     }
 
-    fun startExam(sections: List<PracticeSection>, partial: Boolean = false) {
+    fun startExam(
+        examSimulation: ExamSimulation,
+        sections: List<PracticeSection>,
+        partial: Boolean = false
+    ) {
         var intent = Intent(this, LianPage0ActivityClone::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
+        var lianContext = LianContext(LianType.ExamSimulation, examSimulation.id, partial)
+
         intent.putExtra("sections", secs)
-        intent.putExtra("partial", partial)
+        intent.putExtra("lianContext", lianContext)
+
         startActivity(intent)
     }
 
@@ -107,7 +134,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             Variables.availableTemplateIds.clear()
             Variables.currentTemplateIdIdx = -1
             Variables.availableTemplatesMap.clear()
-            Variables.currentIsPartialQuestions = false
+            Variables.lianContext = null
         }
         dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
         dialog.show()

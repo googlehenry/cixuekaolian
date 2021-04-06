@@ -16,6 +16,8 @@ import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
 import com.viastub.kao100.adapter.QuestionActionListener
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.beans.LianContext
+import com.viastub.kao100.beans.LianType
 import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -34,9 +36,11 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         header_back.setOnClickListener { onBackPressed() }
 
         var sections = intent?.extras?.get("sections") as ArrayList<PracticeSection>
-        var partial: Boolean = (intent?.extras?.get("partial") ?: false) as Boolean
+        var lianContext = intent.extras?.get("lianContext") as LianContext
 
-        Variables.currentIsPartialQuestions = partial
+
+
+        Variables.lianContext = lianContext
         Variables.availableTemplateIds =
             sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }.toMutableList()
         Variables.currentTemplateIdIdx =
@@ -91,7 +95,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         }
         if (header_action_submit.isEnabled) {
-            if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1 && !Variables.currentIsPartialQuestions) {
+            if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1 && !Variables.lianContext!!.currentIsPartialQuestions) {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
             } else {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
@@ -120,15 +124,15 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
         if (!template.submitted) {
             header_action_submit.setOnClickListener {
-                if (Variables.currentIsPartialQuestions) {
+                if (Variables.lianContext!!.currentIsPartialQuestions) {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
-                        Toast.makeText(this, "还未回答该部分所有问题", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "请返回上一级回答下一部分", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "请返回上一级,并继续回答下一部分题目", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
-                        Toast.makeText(this, "还未回答该部分所有问题", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
                         var checkedTemplates = Variables.availableTemplatesMap.values
                             .filter { Variables.availableTemplateIds.contains(it.id) }
@@ -197,6 +201,23 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                             Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
                             0
                         )
+
+                        Variables.lianContext?.earnedScores = scoreEarned
+
+                        launchAsync {
+                            if (Variables.lianContext?.type == LianType.ExamSimulation) {
+                                RoomDB.get(applicationContext).myExamSimuHistory().insert(
+                                    MyExamSimuHistory(
+                                        Variables.currentUserId,
+                                        Variables.lianContext!!.typedEntityId,
+                                        myScore = scoreEarned,
+                                        myTotalCorrects = right,
+                                        myTotalMissing = missing,
+                                        myTotalWrongs = wrong
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -324,6 +345,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         lian_item_scores.text = "共:${right + wrong + missing} 对:$right 错:$wrong 未答:$missing"
         lian_item_scores.visibility = View.VISIBLE
 
+
     }
 
     private fun turnTo(oldTemplate: PracticeTemplate, step: Int) {
@@ -402,7 +424,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     }
 
     override fun onBackPressed() {
-        if (Variables.currentIsPartialQuestions && Variables.currentTemplateIdIdx >= Variables.availableTemplateIds.size - 1) {
+        if (Variables.lianContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx >= Variables.availableTemplateIds.size - 1) {
             doGoBack()
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -425,7 +447,6 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         stopPlayer()
         Variables.availableTemplateIds.clear()
         Variables.currentTemplateIdIdx = -1
-        Variables.currentIsPartialQuestions = false
     }
 
 

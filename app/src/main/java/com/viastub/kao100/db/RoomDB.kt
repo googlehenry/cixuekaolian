@@ -19,8 +19,9 @@ import androidx.room.RoomDatabase
         GlobalConfigKaoFiltersType::class,
         MyUser::class,
         MyQuestionAction::class,
-        MyQuestionAnsweredHistory::class],
-    version = 4,
+        MyQuestionAnsweredHistory::class,
+        MyExamSimuHistory::class],
+    version = 5,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -46,6 +47,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun myUser(): MyUserDao
     abstract fun myQuestionAction(): MyQuestionActionDao
     abstract fun myQuestionAnsweredHistory(): MyQuestionAnsweredHistoryDao
+    abstract fun myExamSimuHistory(): MyExamSimuHistoryDao
 
     companion object {
         @Volatile

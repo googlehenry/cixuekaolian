@@ -414,3 +414,24 @@ interface MyQuestionAnsweredHistoryDao {
     fun delete(items: MutableList<MyQuestionAnsweredHistory>)
 }
 
+@Dao
+interface MyExamSimuHistoryDao {
+    @Query("SELECT * FROM MyExamSimuHistory")
+    fun getAll(): MutableList<MyExamSimuHistory>
+
+    @Query("SELECT * FROM MyExamSimuHistory where userId=:userId and examSimulationId=:examId order by id desc limit 1")
+    fun getByUserIdOfExam(userId: Int, examId: Int): MyExamSimuHistory?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyExamSimuHistory)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(items: MutableList<MyExamSimuHistory>)
+
+    @Delete
+    fun delete(item: MyExamSimuHistory)
+
+    @Delete
+    fun delete(items: MutableList<MyExamSimuHistory>)
+}
+

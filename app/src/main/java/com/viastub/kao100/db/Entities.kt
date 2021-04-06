@@ -448,7 +448,10 @@ data class ExamSimulation(
 
 ) : Parcelable {
     @Ignore
-    var practiceSections: MutableList<PracticeSection>? = null
+    var myExamSimuHistory: MyExamSimuHistory? = null
+
+    @Ignore
+    var practiceSectionsDb: MutableList<PracticeSection>? = null
 
     fun practiceSections(): MutableList<Int>? {
         return practiceSectionIds?.split(",")?.map { it.toInt() }?.toMutableList()
@@ -464,11 +467,11 @@ data class ExamSimulation(
     }
 
     fun totalScores(): Double {
-        return practiceSections?.map { it.totalScores() }?.sum() ?: 0.0
+        return practiceSectionsDb?.map { it.totalScores() }?.sum() ?: 0.0
     }
 
     fun totalTimeInMinutes(): Double {
-        return practiceSections?.map { it.totalTimeInMinutes() }?.sum() ?: 0.0
+        return practiceSectionsDb?.map { it.totalTimeInMinutes() }?.sum() ?: 0.0
     }
 }
 
@@ -519,6 +522,33 @@ data class MyUser(
     @ColumnInfo
     var dateAdded: String = Date().toString(),
 )
+
+@Entity
+data class MyExamSimuHistory(
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var examSimulationId: Int,
+    @ColumnInfo
+    var isFavorite: Boolean? = null,
+    @ColumnInfo
+    var note: String? = null,
+    @ColumnInfo
+    var tags: String? = null,
+    @ColumnInfo
+    var myScore: Double? = null,
+    @ColumnInfo
+    var myTotalCorrects: Int? = null,
+    @ColumnInfo
+    var myTotalWrongs: Int? = null,
+    @ColumnInfo
+    var myTotalMissing: Int? = null,
+    @ColumnInfo
+    var dateAdded: String = Date().toString()
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}
 
 @Entity
 data class MyQuestionAction(

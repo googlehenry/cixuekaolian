@@ -8,9 +8,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
+import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 
-class TestSectionAdapter(var itemClickListener: View.OnClickListener) :
+class TestSectionAdapter(
+    var examSimulation: ExamSimulation,
+    var itemClickListener: View.OnClickListener
+) :
     BaseQuickAdapter<PracticeSection, BaseViewHolder>(R.layout.activity_kao_exam_section_item),
     LoadMoreModule {
 
@@ -20,6 +24,8 @@ class TestSectionAdapter(var itemClickListener: View.OnClickListener) :
 
         var sectionHolder = holder.getView<CardView>(R.id.section_item_holder)
         sectionHolder.setTag(R.id.section_item_holder, item)
+        sectionHolder.setTag(-1, examSimulation)
+
         sectionHolder.setOnClickListener { null }
 
         sectionHolder.setOnTouchListener { view: View, motionEvent: MotionEvent ->
