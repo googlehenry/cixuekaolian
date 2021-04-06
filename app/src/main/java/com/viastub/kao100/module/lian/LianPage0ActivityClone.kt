@@ -210,7 +210,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                                     MyExamSimuHistory(
                                         Variables.currentUserId,
                                         Variables.lianContext!!.typedEntityId,
-                                        myScore = scoreEarned,
+                                        myScores = scoreEarned,
                                         myTotalCorrects = right,
                                         myTotalMissing = missing,
                                         myTotalWrongs = wrong

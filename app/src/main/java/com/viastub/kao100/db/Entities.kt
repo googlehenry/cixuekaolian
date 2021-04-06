@@ -536,7 +536,7 @@ data class MyExamSimuHistory(
     @ColumnInfo
     var tags: String? = null,
     @ColumnInfo
-    var myScore: Double? = null,
+    var myScores: Double? = null,
     @ColumnInfo
     var myTotalCorrects: Int? = null,
     @ColumnInfo

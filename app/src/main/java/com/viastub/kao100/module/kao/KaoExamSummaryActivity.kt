@@ -94,7 +94,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
         examSimulation.myExamSimuHistory?.let {
             summary_exam_lastScores.visibility = View.VISIBLE
-            summary_exam_lastScores.text = "上次得分:${it.myScore}"
+            summary_exam_lastScores.text = "上次得分:${it.myScores}"
         }
 
         var adapter = TestSectionAdapter(examSimulation, this)
