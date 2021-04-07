@@ -78,8 +78,13 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         Variables.lianContext?.earnedScoresThisTimeTemp?.let {
-            summary_exam_lastScores.visibility = View.VISIBLE
-            summary_exam_lastScores.text = "得分:${it}"
+            if (it >= 0.0) {
+                summary_exam_lastScores.visibility = View.VISIBLE
+                summary_exam_lastScores.text = "本次得分:${it}"
+            } else {
+                summary_exam_lastScores.visibility = View.VISIBLE
+                summary_exam_lastScores.text = "得分:答题中..."
+            }
         }
     }
 
@@ -132,17 +137,26 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        dialog.setTitle("已答题目不会保存,退出考试吗?")
-        dialog.setPositiveButton("退出") { dialog, which ->
-            super@KaoExamSummaryActivity.onBackPressed()
-            Variables.availableTemplateIds.clear()
-            Variables.currentTemplateIdIdx = -1
-            Variables.availableTemplatesMap.clear()
-            Variables.lianContext = null
+        var tempScore = Variables.lianContext?.earnedScoresThisTimeTemp
+        if (tempScore != null && tempScore < 0.0) {
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            dialog.setTitle("未交卷题目不会保存,退出考试吗?")
+            dialog.setPositiveButton("退出") { dialog, which ->
+                doGoBack()
+            }
+            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
+            dialog.show()
+        } else {
+            doGoBack()
         }
-        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
-        dialog.show()
+    }
+
+    private fun doGoBack() {
+        super@KaoExamSummaryActivity.onBackPressed()
+        Variables.availableTemplateIds.clear()
+        Variables.currentTemplateIdIdx = -1
+        Variables.availableTemplatesMap.clear()
+        Variables.lianContext = null
     }
 
 

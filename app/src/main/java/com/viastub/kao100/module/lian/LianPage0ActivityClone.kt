@@ -1,6 +1,5 @@
 package com.viastub.kao100.module.lian
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.CountDownTimer
@@ -52,9 +51,11 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         }
 
         Variables.lianContext?.earnedScoresLastTime?.let {
-            Toast.makeText(this, "将尝试恢复上次答题状态", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
         }
-
+        if (Variables.lianContext?.earnedScoresThisTimeTemp == null) {
+            Variables.lianContext?.earnedScoresThisTimeTemp = -1.0 //started, but not submitted
+        }
     }
 
     private fun loadCurrentQuestionTemplate() {
@@ -138,107 +139,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
                         Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
-                        var checkedTemplates = Variables.availableTemplatesMap.values
-                            .filter { Variables.availableTemplateIds.contains(it.id) }
-                        var summayrChecked = checkedTemplates.map { template ->
-                            template.submitted = true
-
-                            template.questionsDb!!.map { question ->
-                                var scorePerQuestion =
-                                    template.totalScore / (template.practiceQuestions()?.size ?: 1)
-
-                                val answeredMatchResults =
-                                    question.optionsDb?.filter { it.correctAnswers() != null }
-                                        ?.map { option ->
-                                            when (question.type) {
-                                                QuestionType.FILL.name -> {
-                                                    question.usersAnswers?.get(option.id)?.let {
-                                                        option.correctAnswers == it
-                                                    }
-                                                }
-                                                QuestionType.SELECT.name -> {
-                                                    if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
-                                                        option.id
-                                                    )
-                                                }
-                                                else -> {
-                                                    //暂不支持第三种
-                                                    null
-                                                }
-                                            }
-                                        }?.toSet()
-                                var result: Boolean? = null
-                                answeredMatchResults?.let {
-                                    if (it.contains(true)) {
-                                        result = true
-                                    }
-                                    if (it.contains(false)) {
-                                        result = false
-                                    }
-                                }
-
-                                question.scoreEarned =
-                                    (if (result == true) scorePerQuestion else 0.0)
-
-                                result
-                            }.toMutableList()
-                        }.flatten().groupBy { it }
-
-                        var scoreEarned =
-                            checkedTemplates.map { it.questionsDb!!.map { it.scoreEarned } }
-                                .flatten().sum()
-
-                        var right = summayrChecked?.get(true)?.size ?: 0
-                        var wrong = summayrChecked?.get(false)?.size ?: 0
-                        var missing = summayrChecked?.get(null)?.size ?: 0
-                        var rate =
-                            (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
-
-                        lian_item_scores.text =
-                            "得分:${scoreEarned} \n对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
-                        lian_item_scores.visibility = View.VISIBLE
-
-                        header_action_submit.isEnabled = false
-                        header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-
-                        turnTo(
-                            Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
-                            0
-                        )
-
-                        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
-
-                        launchAsync {
-                            if (Variables.lianContext?.type == LianType.ExamSimulation) {
-
-                                RoomDB.get(applicationContext).myExamSimuHistory().insert(
-                                    MyExamSimuHistory(
-                                        Variables.currentUserId,
-                                        Variables.lianContext!!.typedEntityId,
-                                        myScores = scoreEarned,
-                                        myTotalCorrects = right,
-                                        myTotalMissing = missing,
-                                        myTotalWrongs = wrong
-                                    )
-                                )
-
-                                var answeredHistories =
-                                    checkedTemplates.flatMap { it.questionsDb ?: mutableListOf() }
-                                        .map {
-                                            MyQuestionAnsweredHistory(
-                                                userId = Variables.currentUserId,
-                                                practiceQuestionId = it.id,
-                                                answerIsCorrect = scoreEarned > 0,
-                                                optionalPracticeTemplateId = template.id,
-                                                optionalPracticeTargetId = Variables.lianContext?.typedEntityId
-                                            ).setMyAnswersJson(it.usersAnswers)
-                                        }.toMutableList()
-                                answeredHistories?.let {
-                                    RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                                        .insertAll(it)
-                                }
-                            }
-                        }
+                        checkAnswers(template)
                     }
                 }
 
@@ -287,6 +188,110 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             showExplanationForTemplate(template)
         }
 
+    }
+
+    private fun checkAnswers(template: PracticeTemplate) {
+        var checkedTemplates = Variables.availableTemplatesMap.values
+            .filter { Variables.availableTemplateIds.contains(it.id) }
+        var summayrChecked = checkedTemplates.map { template ->
+            template.submitted = true
+
+            template.questionsDb!!.map { question ->
+                var scorePerQuestion =
+                    template.totalScore / (template.practiceQuestions()?.size ?: 1)
+
+                val answeredMatchResults =
+                    question.optionsDb?.filter { it.correctAnswers() != null }
+                        ?.map { option ->
+                            when (question.type) {
+                                QuestionType.FILL.name -> {
+                                    question.usersAnswers?.get(option.id)?.let {
+                                        option.correctAnswers == it
+                                    }
+                                }
+                                QuestionType.SELECT.name -> {
+                                    if (question.usersAnswers.isNullOrEmpty()) null else question.usersAnswers?.containsKey(
+                                        option.id
+                                    )
+                                }
+                                else -> {
+                                    //暂不支持第三种
+                                    null
+                                }
+                            }
+                        }?.toSet()
+                var result: Boolean? = null
+                answeredMatchResults?.let {
+                    if (it.contains(true)) {
+                        result = true
+                    }
+                    if (it.contains(false)) {
+                        result = false
+                    }
+                }
+
+                question.scoreEarned =
+                    (if (result == true) scorePerQuestion else 0.0)
+
+                result
+            }.toMutableList()
+        }.flatten().groupBy { it }
+
+        var scoreEarned =
+            checkedTemplates.map { it.questionsDb!!.map { it.scoreEarned } }
+                .flatten().sum()
+
+        var right = summayrChecked?.get(true)?.size ?: 0
+        var wrong = summayrChecked?.get(false)?.size ?: 0
+        var missing = summayrChecked?.get(null)?.size ?: 0
+        var rate =
+            (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
+
+        lian_item_scores.text =
+            "得分:${scoreEarned} \n对:$right 错:$wrong 未答:$missing 正确率:${rate}%"
+        lian_item_scores.visibility = View.VISIBLE
+
+        header_action_submit.isEnabled = false
+        header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+
+        turnTo(
+            Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
+            0
+        )
+
+        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
+
+        launchAsync {
+            if (Variables.lianContext?.type == LianType.ExamSimulation) {
+
+                RoomDB.get(applicationContext).myExamSimuHistory().insert(
+                    MyExamSimuHistory(
+                        Variables.currentUserId,
+                        Variables.lianContext!!.typedEntityId,
+                        myScores = scoreEarned,
+                        myTotalCorrects = right,
+                        myTotalMissing = missing,
+                        myTotalWrongs = wrong
+                    )
+                )
+
+                var answeredHistories =
+                    checkedTemplates.flatMap { it.questionsDb ?: mutableListOf() }
+                        .map {
+                            MyQuestionAnsweredHistory(
+                                userId = Variables.currentUserId,
+                                practiceQuestionId = it.id,
+                                answerIsCorrect = scoreEarned > 0,
+                                optionalPracticeTemplateId = template.id,
+                                optionalPracticeTargetId = Variables.lianContext?.typedEntityId
+                            ).setMyAnswersJson(it.usersAnswers)
+                        }.toMutableList()
+                answeredHistories?.let {
+                    RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+                        .insertAll(it)
+                }
+            }
+        }
     }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int) {
@@ -454,22 +459,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     }
 
     override fun onBackPressed() {
-        if (Variables.lianContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx >= Variables.availableTemplateIds.size - 1) {
-            doGoBack()
-        } else {
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-            if (header_action_submit.isEnabled) {
-                dialog.setTitle("正在答题中,退出答题?")
-            } else {
-                dialog.setTitle("答题结束,确认退出?")
-                dialog.setMessage(lian_item_scores.text)
-            }
-            dialog.setPositiveButton("退出") { dialog, which ->
-                doGoBack()
-            }
-            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
-            dialog.show()
-        }
+        doGoBack()
     }
 
     private fun doGoBack() {
@@ -486,6 +476,8 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     }
 
     fun setUpTimer(milliSeconds: Long): CountDownTimer {
+        practice_countdown_timer.setTextColor(Color.parseColor("#ffffff"))
+
         var countDownTimer = object : CountDownTimer(milliSeconds, 500) {
             override fun onTick(millisUntilFinished: Long) {
                 var minutes = millisUntilFinished / 60000
