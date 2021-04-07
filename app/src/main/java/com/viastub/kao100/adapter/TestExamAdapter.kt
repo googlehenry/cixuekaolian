@@ -18,6 +18,10 @@ class TestExamAdapter(var itemClickListener: View.OnClickListener) :
 
     override fun convert(holder: BaseViewHolder, item: ExamSimulation) {
         holder.setText(R.id.test_paper_title, item.name)
+        holder.setText(
+            R.id.test_paper_last_score,
+            "[${item.myExamSimuHistory?.myScores?.toString() ?: 0}分]"
+        )
 
         item.tags()?.let {
             var tagsHolder =

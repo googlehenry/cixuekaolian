@@ -13,6 +13,7 @@ import com.viastub.kao100.beans.TestType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Constants
+import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.fragment_kao.*
 
 class KaoFragment : BaseFragment(), View.OnClickListener {
@@ -31,18 +32,6 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                 DividerItemDecoration.VERTICAL
             )
         )
-
-
-
-        doAsync(0,
-            {
-                val roomDB = RoomDB.get(mContext)
-                roomDB.examSimulation().getAll()
-            },
-            {
-                updateTestPaperList(it)
-            })
-
 
         doAsync(0,
             {
@@ -71,15 +60,31 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                 }.toMutableList()
 
                 applyToUi(provinces)
+
+                //load all
+                filterTestPapers(null, null, null)
+
+
             }
         )
 
 
     }
 
-    private fun updateTestPaperList(exams: List<ExamSimulation>?) {
+    override fun onResume() {
+        super.onResume()
+        if (recycler_view_test_papers.adapter != null) {
+            var province = spin_test_province.selectedItem as String
+            var grade = spin_test_grade.selectedItem as String
+            var type = spin_test_type.selectedItem as String
+
+            filterTestPapers(province, type, grade)
+        }
+    }
+
+    private fun updateTestPaperList(exams: MutableList<ExamSimulation>?) {
         var adapter = TestExamAdapter(this)
-        adapter.data = exams?.toMutableList() ?: mutableListOf()
+        adapter.data = exams ?: mutableListOf()
         recycler_view_test_papers.adapter = adapter
     }
 
@@ -158,7 +163,11 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                     province?.replace(Constants.kao_province_all, "%") ?: "%",
                     type?.replace(Constants.kao_testType_all, "%") ?: "%",
                     grade?.replace(Constants.kao_grade_all, "%") ?: "%"
-                )
+                )?.map {
+                    it.myExamSimuHistory =
+                        roomDB.myExamSimuHistory().getByUserIdOfExam(Variables.currentUserId, it.id)
+                    it
+                }?.toMutableList()
             },
             {
                 updateTestPaperList(it)
