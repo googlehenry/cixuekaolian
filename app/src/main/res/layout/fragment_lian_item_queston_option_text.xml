@@ -48,28 +48,43 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:text="将"
+                android:textSize="@dimen/sp_14" />
+
             <EditText
                 android:id="@+id/lian_item_correction_from"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:textColor="#333333"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_14" />
 
             <TextView
-                android:layout_width="@dimen/sp_30"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="改为" />
+                android:textColor="#333333"
+                android:text="改为"
+                android:textSize="@dimen/sp_14" />
 
             <EditText
                 android:id="@+id/lian_item_correction_to"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:textColor="#333333"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/lian_item_correction_hints"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textIsSelectable="true"
             android:text="改词: A->B 添词:A C->A B C 删词:A B C->A C" />
 
     </LinearLayout>

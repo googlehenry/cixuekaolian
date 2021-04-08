@@ -3,6 +3,7 @@ package com.viastub.kao100.adapter
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,9 @@ class LianItemQuestionAdapter(
 
         var questionOptionsHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
+
+        var questionFunctions = holder.getView<LinearLayout>(R.id.question_functions)
+        questionFunctions.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
 
         item.optionsDb?.let {
             if (item.type == Constants.practice_question_type_fill) {

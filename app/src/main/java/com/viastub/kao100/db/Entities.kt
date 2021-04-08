@@ -404,7 +404,13 @@ data class PracticeAnswerOption(
     var layoutUIObject: View? = null
 
     fun correctAnswers(): MutableList<String>? {
-        return correctAnswers?.split(",")?.toMutableList()
+        return correctAnswers?.let {
+            return if (it.contains('|', ignoreCase = true)) {
+                it.split("|")?.toMutableList()
+            } else {
+                it.split(",")?.toMutableList()
+            }
+        }
     }
 
     @Ignore

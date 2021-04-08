@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.lian
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -136,7 +137,12 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             ) {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
             } else {
-                header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+
+                if (Variables.lianContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1) {
+                    header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+                } else {
+                    header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+                }
             }
         }
 
@@ -166,7 +172,12 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
                         Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "请返回上一级,并继续回答下一部分题目", Toast.LENGTH_SHORT).show()
+                        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                        dialog.setTitle("完成该部分无法交卷,请先点击[模拟考试]回答完所有题目?")
+                        dialog.setPositiveButton("知道了") { dialog, which ->
+                            doGoBack()
+                        }
+                        dialog.show()
                     }
                 } else {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {

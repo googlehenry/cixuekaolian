@@ -41,16 +41,16 @@ class TestDataLoader : DataLoader {
                     totalTimeInMinutes = 7.5,
                     keyPoints = """
                     解析:
-                    ①此处讲述的是过去发生的事情,和一般过去时连用的应是ago,before常和完成时连用。
-                    ②with the help of...在……的帮助下,为固定短语。
-                    ③句中year是可数名词,前面的these应修饰复数形式的名词。
-                    ④时间状语since then 通常和现在完成时连用,而不是过去完成时。
-                    ⑤as a result 结果,为固定短语。
-                    ⑥根据句意可知此处表示“圣女果到处生长”,所以用everywhere。
-                    ⑦本句中small,juicy和tasty是并列的表语,所以要用形容词。
-                    ⑧根据前面的be动词are和后面的them可知应是代替可数名词复数的many。
-                    ⑨引导让步状语从句的although不能和连词but连用,但是可以和副词yet连用。所以可以删掉but,也可以把but改为yet。
-                    ⑩修饰名词时应用形容词。
+                    ①before->ago,此处讲述的是过去发生的事情,和一般过去时连用的应是ago,before常和完成时连用。
+                    ②by->of, with the help of...在……的帮助下,为固定短语。
+                    ③year->years,句中year是可数名词,前面的these应修饰复数形式的名词。
+                    ④had->have,时间状语since then 通常和现在完成时连用,而不是过去完成时。
+                    ⑤As result->As a result,as a result 结果,为固定短语。
+                    ⑥somewhere->everywhere,根据句意可知此处表示“圣女果到处生长”,所以用everywhere。
+                    ⑦taste->tasty,本句中small,juicy和tasty是并列的表语,所以要用形容词。
+                    ⑧much->many,根据前面的be动词are和后面的them可知应是代替可数名词复数的many。
+                    ⑨but->yet/,but we->, we,引导让步状语从句的although不能和连词but连用,但是可以和副词yet连用。所以可以删掉but,也可以把but改为yet。
+                    ⑩wonderfully->wonderful,修饰名词时应用形容词。
                 """.trimIndent()
                 ).bindQuestionsDbToThis(
                     mutableListOf(
@@ -63,7 +63,7 @@ class TestDataLoader : DataLoader {
                                     70,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -76,7 +76,7 @@ class TestDataLoader : DataLoader {
                                     71,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -89,7 +89,7 @@ class TestDataLoader : DataLoader {
                                     72,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -102,7 +102,7 @@ class TestDataLoader : DataLoader {
                                     73,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -115,7 +115,7 @@ class TestDataLoader : DataLoader {
                                     74,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -128,7 +128,7 @@ class TestDataLoader : DataLoader {
                                     75,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -141,7 +141,7 @@ class TestDataLoader : DataLoader {
                                     76,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -154,7 +154,7 @@ class TestDataLoader : DataLoader {
                                     77,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -167,7 +167,7 @@ class TestDataLoader : DataLoader {
                                     78,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -180,7 +180,7 @@ class TestDataLoader : DataLoader {
                                     79,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago,by->of,year->years,had->have,As result->As a result,somewhere->everywhere,taste->tasty,much->many,but->yet,wonderfully->wonderful"
+                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
                                 )
                             )
                         ),
