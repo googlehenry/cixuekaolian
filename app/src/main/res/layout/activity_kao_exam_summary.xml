@@ -54,8 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:textColor="#000000"
@@ -68,8 +68,8 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:textColor="#FF0000"
-            android:visibility="gone"
-            android:textSize="@dimen/sp_20" />
+            android:textSize="@dimen/sp_20"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/summary_exam_description"
@@ -98,11 +98,21 @@
             android:paddingBottom="@dimen/dp_10">
 
             <Button
+                android:id="@+id/btn_kao_resume"
+                style="@style/rectangle_blue"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/selector_button_round_cornor_orange"
+                android:text="查看上一次"
+                android:visibility="gone" />
+
+            <Button
                 android:id="@+id/btn_kao_start"
                 style="@style/rectangle_blue"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_40"
-                android:text="开始答题" />
+                android:text="模拟考试" />
         </LinearLayout>
     </LinearLayout>
 

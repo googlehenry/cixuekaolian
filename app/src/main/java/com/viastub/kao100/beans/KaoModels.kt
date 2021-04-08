@@ -31,7 +31,9 @@ data class LianContext(
     var typedEntityId: Int,
     var currentIsPartialQuestions: Boolean,
     var earnedScoresLastTime: Boolean = false,
-    var earnedScoresThisTimeTemp: Double? = null
+    var earnedScoresThisTimeTemp: Double? = null,
+    var previousExamSimuLoaded: Boolean = false,
+    var resumeExam: Boolean = false
 ) : Parcelable
 
 enum class LianType {

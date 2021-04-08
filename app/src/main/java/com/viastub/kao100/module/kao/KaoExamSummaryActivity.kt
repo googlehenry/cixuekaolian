@@ -31,6 +31,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         var exam = intent?.extras?.get("exam") as ExamSimulation
         header_title.text = "试卷信息"
 
+
         btn_kao_start.setOnClickListener {
             exam?.let {
                 awaitAsync(dataAction = {
@@ -81,28 +82,43 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             if (it >= 0.0) {
                 summary_exam_lastScores.visibility = View.VISIBLE
                 summary_exam_lastScores.text = "本次得分:${it}"
-            } else {
-                summary_exam_lastScores.visibility = View.VISIBLE
-                summary_exam_lastScores.text = "得分:答题中..."
+                btn_kao_start.text = "查看本次结果"
+                btn_kao_resume.isEnabled = false
+                btn_kao_resume.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
             }
         }
     }
 
-    private fun updateUI(examSimulation: ExamSimulation) {
+    private fun updateUI(exam: ExamSimulation) {
 
-        var sections = examSimulation.practiceSectionsDb!!
+        var sections = exam.practiceSectionsDb!!
 
         summary_exam_description.text =
             "答题时间:${
                 sections.map { it.totalTimeInMinutes() }.sum()
             }分钟, 总分:${sections.map { it.totalScores() }.sum()}分"
 
-        examSimulation.myExamSimuHistory?.let {
+        exam.myExamSimuHistory?.let {
             summary_exam_lastScores.visibility = View.VISIBLE
             summary_exam_lastScores.text = "上次得分:${it.myScores}"
+
+            btn_kao_resume.visibility = View.VISIBLE
+            btn_kao_resume.setOnClickListener {
+                exam?.let {
+                    awaitAsync(dataAction = {
+                        RoomDB.get(applicationContext).practiceSection()
+                            .getByIds(it.practiceSections()!!).toMutableList()
+                    },
+                        uiAction = {
+                            startExam(exam, it, false, resumeExam = true)
+                        }
+                    )
+
+                }
+            }
         }
 
-        var adapter = TestSectionAdapter(examSimulation, this)
+        var adapter = TestSectionAdapter(exam, this)
         adapter.data = sections.toMutableList()
         recycler_view_exam_sections.adapter = adapter
     }
@@ -118,7 +134,8 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     fun startExam(
         exam: ExamSimulation,
         sections: List<PracticeSection>,
-        partial: Boolean = false
+        partial: Boolean = false,
+        resumeExam: Boolean = false
     ) {
         var intent = Intent(this, LianPage0ActivityClone::class.java)
         var secs = arrayListOf<PracticeSection>()
@@ -127,7 +144,10 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             LianType.ExamSimulation,
             exam.id,
             partial,
-            earnedScoresLastTime = exam.totalScores() > 0
+            earnedScoresThisTimeTemp = Variables.lianContext?.earnedScoresThisTimeTemp,
+            earnedScoresLastTime = exam.totalScores() > 0,
+            resumeExam = resumeExam,
+            previousExamSimuLoaded = (Variables.lianContext?.previousExamSimuLoaded == true)
         )
 
         intent.putExtra("sections", secs)
