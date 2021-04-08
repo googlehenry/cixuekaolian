@@ -342,7 +342,7 @@ data class PracticeQuestion(
     @ColumnInfo
     var type: String = QuestionType.SELECT.name,//QuestionType,//FILL, SELECT
     @ColumnInfo
-    var text: String?,
+    var text: String? = null,
     @ColumnInfo
     var answerStandard: String? = null,
     @ColumnInfo
@@ -413,7 +413,7 @@ data class PracticeAnswerOption(
 }
 
 enum class LayoutUI {
-    EDIT_TEXT, TEXT_VIEW, IMAGE_VIEW
+    EDIT_TEXT, TEXT_VIEW, IMAGE_VIEW, CORRECTION
 }
 
 enum class BrowseMode {
@@ -421,7 +421,7 @@ enum class BrowseMode {
 }
 
 enum class QuestionType {
-    FILL, SELECT
+    FILL, SELECT, CORRECT
 }
 
 enum class AnswerOptionUI {

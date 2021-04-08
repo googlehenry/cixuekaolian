@@ -248,6 +248,12 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                                         option.id
                                     )
                                 }
+                                QuestionType.CORRECT.name -> {
+                                    //var correct: Boolean = item.correctAnswers()?.any { ans -> (ans == it) } ?: false
+                                    if (question.usersAnswers.isNullOrEmpty()) null else (question.usersAnswers[option.id]?.let {
+                                        option.correctAnswers()?.contains(it)
+                                    } ?: null)
+                                }
                                 else -> {
                                     //暂不支持第三种
                                     null
@@ -283,13 +289,12 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
         header_action_submit.isEnabled = false
         header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
 
         turnTo(
             Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
             0
         )
-
-        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
 
         launchAsync {
             if (Variables.lianContext?.type == LianType.ExamSimulation) {

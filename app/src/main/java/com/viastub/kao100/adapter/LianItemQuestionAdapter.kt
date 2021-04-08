@@ -69,6 +69,20 @@ class LianItemQuestionAdapter(
                     context,
                     item.layoutOptionsPerRow
                 )
+            } else if (item.type == Constants.practice_question_type_correct) {
+                var adapter =
+                    LianQuestionCorrectionAdapter(
+                        item,
+                        questionOptionsHolder,
+                        lianItem,
+                        questionsHolder
+                    )
+                adapter.data = it
+                questionOptionsHolder.adapter = adapter
+                questionOptionsHolder.layoutManager = GridLayoutManager(
+                    context,
+                    item.layoutOptionsPerRow
+                )
             }
         }
 

@@ -27,7 +27,6 @@ class LianQuestionAnswerAdapter(
 
     override fun convert(holder: BaseViewHolder, item: PracticeAnswerOption) {
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
-        var answerOption = holder.getView<EditText>(R.id.lian_item_answer_main)
         var answerInput = holder.getView<EditText>(R.id.lian_item_answer_main)
         var itemOption = holder.getView<TextView>(R.id.lian_item_option_main)
         itemOption.visibility = View.GONE
@@ -38,27 +37,27 @@ class LianQuestionAnswerAdapter(
             answerInput.isEnabled = false
             question.usersAnswers?.get(item.id)?.let {
                 var correct: Boolean = item.correctAnswers?.let { ans -> (ans == it) } ?: false
-                answerOption.setText(it.toCharArray(), 0, it.length)
+                answerInput.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
-                    answerOption.setTextColor(Color.parseColor("#2ea5ef"))
+                    answerInput.setTextColor(Color.parseColor("#2ea5ef"))
                     question.userAnswersChecks[item.id] = true
                 } else {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
-                    answerOption.setTextColor(Color.parseColor("#ff0000"))
+                    answerInput.setTextColor(Color.parseColor("#ff0000"))
                     question.userAnswersChecks[item.id] = false
                 }
             }
             if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
-                answerOption.setText(
+                answerInput.setText(
                     item.displayText?.toCharArray(),
                     0,
                     item.displayText!!.length
                 )
             } else if (question.usersAnswers?.get(item.id) != null) {
-                answerOption.setText(
+                answerInput.setText(
                     question.usersAnswers?.get(item.id)?.toCharArray(),
                     0,
                     question.usersAnswers?.get(item.id)!!.length
@@ -66,20 +65,20 @@ class LianQuestionAnswerAdapter(
             }
         } else {
             indicator.visibility = View.GONE
-            answerOption.setTextColor(Color.parseColor("#333333"))
+            answerInput.setTextColor(Color.parseColor("#333333"))
 
             question.usersAnswers?.get(item.id)?.let {
-                answerOption.setText(it.toCharArray(), 0, it.length)
+                answerInput.setText(it.toCharArray(), 0, it.length)
             }
 
             if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
-                answerOption.setText(
+                answerInput.setText(
                     item.displayText?.toCharArray(),
                     0,
                     item.displayText!!.length
                 )
             } else if (question.usersAnswers?.get(item.id) != null) {
-                answerOption.setText(
+                answerInput.setText(
                     question.usersAnswers?.get(item.id)?.toCharArray(),
                     0,
                     question.usersAnswers?.get(item.id)!!.length

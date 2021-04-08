@@ -100,7 +100,8 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
         exam.myExamSimuHistory?.let {
             summary_exam_lastScores.visibility = View.VISIBLE
-            summary_exam_lastScores.text = "上次得分:${it.myScores}"
+            summary_exam_lastScores.text =
+                "上次得分:${it.myScores} (${(it.myTotalCorrects!!.toDouble() / (it.myTotalCorrects!! + it.myTotalWrongs!! + it.myTotalMissing!!).toDouble() * 100).toInt()}%)"
 
             btn_kao_resume.visibility = View.VISIBLE
             btn_kao_resume.setOnClickListener {
