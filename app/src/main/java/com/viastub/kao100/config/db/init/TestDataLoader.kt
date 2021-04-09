@@ -34,153 +34,152 @@ class TestDataLoader : DataLoader {
                      全文共10处错误,添词，删词，修改词，请找出作答。
                 """.trimIndent(),
                     itemMainText = """
-                    Nearly five years before,and with the help by our father,my sister and I planted some cherry tomatoes(圣女果)in our back garden.Since then—for all these year—we had been allowing tomatoes to self-seed where they please.As result,the plants are growing somewhere.The fruits are small in size,but juicy and taste.There are so much that we often share them with our neighbors.Although we allow tomato plants to grow in the same place year after year,but we have never had any disease or insect attack problems.We are growing wonderfully tomatoes at no cost!
+                    Nearly five years before,and with the help by our father,my sister and I planted some cherry tomatoes(圣女果)in our back garden.Since then—for all these year—we had been allowing tomatoes to self-seed where they please.
+                    
+                    As result,the plants are growing somewhere.The fruits are small in size,but juicy and taste.There are so much that we often share them with our neighbors.Although we allow tomato plants to grow in the same place year after year,but we have never had any disease or insect attack problems.We are growing wonderfully tomatoes at no cost!
                 """.trimIndent(),
                     itemMainAudioPath = null,
                     totalScore = 10.0,
                     totalTimeInMinutes = 7.5,
-                    keyPoints = """
-                    解析:
-                    ①before->ago,此处讲述的是过去发生的事情,和一般过去时连用的应是ago,before常和完成时连用。
-                    ②by->of, with the help of...在……的帮助下,为固定短语。
-                    ③year->years,句中year是可数名词,前面的these应修饰复数形式的名词。
-                    ④had->have,时间状语since then 通常和现在完成时连用,而不是过去完成时。
-                    ⑤As result->As a result,as a result 结果,为固定短语。
-                    ⑥somewhere->everywhere,根据句意可知此处表示“圣女果到处生长”,所以用everywhere。
-                    ⑦taste->tasty,本句中small,juicy和tasty是并列的表语,所以要用形容词。
-                    ⑧much->many,根据前面的be动词are和后面的them可知应是代替可数名词复数的many。
-                    ⑨but->yet/,but we->, we,引导让步状语从句的although不能和连词but连用,但是可以和副词yet连用。所以可以删掉but,也可以把but改为yet。
-                    ⑩wonderfully->wonderful,修饰名词时应用形容词。
-                """.trimIndent()
                 ).bindQuestionsDbToThis(
                     mutableListOf(
                         PracticeQuestion(
                             id = 23,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "①before->ago,此处讲述的是过去发生的事情,和一般过去时连用的应是ago,before常和完成时连用。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     70,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "before->ago"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 24,
                             type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "②by->of, with the help of...在……的帮助下,为固定短语。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     71,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "by->of"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 25,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "③year->years,句中year是可数名词,前面的these应修饰复数形式的名词。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     72,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "year->years"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 26,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "④had->have,时间状语since then 通常和现在完成时连用,而不是过去完成时。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     73,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "had->have"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 27,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑤As result->As a result,as a result 结果,为固定短语。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     74,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "As result->As a result"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 28,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑥somewhere->everywhere,根据句意可知此处表示“圣女果到处生长”,所以用everywhere。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     75,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "somewhere->everywhere"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 29,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑦taste->tasty,本句中small,juicy和tasty是并列的表语,所以要用形容词。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     76,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "taste->tasty"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 30,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑧much->many,根据前面的be动词are和后面的them可知应是代替可数名词复数的many。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     77,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "much->many"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 31,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑨but->yet/,but we->, we,引导让步状语从句的although不能和连词but连用,但是可以和副词yet连用。所以可以删掉but,也可以把but改为yet。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     78,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "but->yet|,but we->, we,"
                                 )
                             )
                         ),
                         PracticeQuestion(
                             id = 32,
-                            type = QuestionType.CORRECT.name
+                            type = QuestionType.CORRECT.name,
+                            answerKeyPoints = "⑩wonderfully->wonderful,修饰名词时应用形容词。"
                         ).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     79,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago|by->of|year->years|had->have|As result->As a result|somewhere->everywhere|taste->tasty|much->many|but->yet|,but we->,we|, but we->, we|wonderfully->wonderful"
+                                    correctAnswers = "wonderfully->wonderful"
                                 )
                             )
                         ),

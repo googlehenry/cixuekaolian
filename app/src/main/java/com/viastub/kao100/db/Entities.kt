@@ -333,6 +333,17 @@ data class PracticeTemplate(
         return this
     }
 
+    //questionId->MutableList<Answers>
+    fun pooledQuestionStandardAnswers(): MutableMap<Int, MutableList<String>> {
+        return questionsDb?.map {
+            Pair(
+                it.id,
+                (it.optionsDb?.flatMap { it.correctAnswers() ?: mutableListOf() })?.toMutableList()
+                    ?: mutableListOf()
+            )
+        }?.toMap()?.toMutableMap() ?: mutableMapOf()
+    }
+
 }
 
 @Entity
@@ -405,11 +416,7 @@ data class PracticeAnswerOption(
 
     fun correctAnswers(): MutableList<String>? {
         return correctAnswers?.let {
-            return if (it.contains('|', ignoreCase = true)) {
-                it.split("|")?.toMutableList()
-            } else {
-                it.split(",")?.toMutableList()
-            }
+            return it.split("|")?.toMutableList()
         }
     }
 

@@ -19,7 +19,7 @@ import com.viastub.kao100.db.PracticeTemplate
 class LianQuestionCorrectionAdapter(
     var question: PracticeQuestion,
     var optionsHolder: RecyclerView,
-    var lianItem: PracticeTemplate,
+    var template: PracticeTemplate,
     var questionsHolder: RecyclerView
 ) :
     BaseQuickAdapter<PracticeAnswerOption, BaseViewHolder>(R.layout.fragment_lian_item_queston_option_text),
@@ -39,31 +39,75 @@ class LianQuestionCorrectionAdapter(
         correctUiGroup.visibility = View.VISIBLE
 
 
-        if (lianItem.submitted) {
+        if (template.submitted) {
             //current part answer check
             correctUiFrom.isEnabled = false
             correctUiTo.isEnabled = false
-            question.usersAnswers?.get(item.id)?.let {
-                var correct: Boolean = item.correctAnswers()?.any { ans -> (ans == it) } ?: false
 
-                correctUiFrom.setText(it.split("->")[0].toCharArray(), 0, it.split("->")[0].length)
-                correctUiTo.setText(it.split("->")[1].toCharArray(), 0, it.split("->")[1].length)
-                if (correct) {
-                    indicator.visibility = View.VISIBLE
-                    indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
-                    correctUiFrom.setTextColor(Color.parseColor("#2ea5ef"))
-                    correctUiTo.setTextColor(Color.parseColor("#2ea5ef"))
-                } else {
-                    indicator.visibility = View.VISIBLE
+            var pooledUserAnsers =
+                template.questionsDb?.flatMap { it.usersAnswers.values }?.toMutableSet()
+                    ?: mutableSetOf()
+
+            var userAnsweredCorrectOnes = pooledUserAnsers.filter {
+                item.correctAnswers()?.contains(
+                    it
+                ) ?: false
+            }
+            var correct = (!userAnsweredCorrectOnes.isNullOrEmpty())
+
+
+            if (correct) {
+                indicator.visibility = View.VISIBLE
+                indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
+                correctUiFrom.setTextColor(Color.parseColor("#2ea5ef"))
+                correctUiTo.setTextColor(Color.parseColor("#2ea5ef"))
+
+                correctUiFrom.setText(
+                    userAnsweredCorrectOnes[0].split("->")[0].toCharArray(),
+                    0,
+                    userAnsweredCorrectOnes[0].split(
+                        "->"
+                    )[0].length
+                )
+                correctUiTo.setText(
+                    userAnsweredCorrectOnes[0].split("->")[1].toCharArray(),
+                    0,
+                    userAnsweredCorrectOnes[0].split(
+                        "->"
+                    )[1].length
+                )
+            } else {
+                var wrongInputByUser = pooledUserAnsers.find {
+                    !template.pooledQuestionStandardAnswers().values.flatten().contains(it)
+                }
+                (correctUiFrom as TextView?)?.setText("")
+                (correctUiTo as TextView?)?.setText("")
+
+                wrongInputByUser?.let {
+                    indicator.visibility =
+                        View.VISIBLE //no show for correction, he/she just didn't find it
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                     correctUiFrom.setTextColor(Color.parseColor("#ff0000"))
                     correctUiTo.setTextColor(Color.parseColor("#ff0000"))
-                }
-            }
 
-            question.usersAnswers?.get(item.id)?.let {
-                correctUiFrom.setText(it.split("->")[0].toCharArray(), 0, it.split("->")[0].length)
-                correctUiTo.setText(it.split("->")[1].toCharArray(), 0, it.split("->")[1].length)
+                    correctUiFrom.setText(
+                        it.split("->")[0].toCharArray(),
+                        0,
+                        it.split("->")[0].length
+                    )
+                    correctUiTo.setText(
+                        it.split("->")[1].toCharArray(),
+                        0,
+                        it.split("->")[1].length
+                    )
+
+                    template.questionsDb?.forEach {
+                        it.usersAnswers.filter { entry -> entry.value == wrongInputByUser }.keys.forEach { key ->
+                            it.usersAnswers.remove(key)
+                        }
+                    }
+
+                }
             }
         } else {
             indicator.visibility = View.GONE

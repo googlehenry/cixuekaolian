@@ -262,7 +262,8 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                                 QuestionType.CORRECT.name -> {
                                     //var correct: Boolean = item.correctAnswers()?.any { ans -> (ans == it) } ?: false
                                     if (question.usersAnswers.isNullOrEmpty()) null else (question.usersAnswers[option.id]?.let {
-                                        option.correctAnswers()?.contains(it)
+                                        template.pooledQuestionStandardAnswers().values.flatten()
+                                            .contains(it)
                                     } ?: null)
                                 }
                                 else -> {
