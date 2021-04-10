@@ -2,7 +2,8 @@ package com.viastub.kao100.app
 
 import android.app.Application
 import com.viastub.kao100.config.db.init.ConfigGlobalLoader
-import com.viastub.kao100.config.db.init.TestDataLoader
+import com.viastub.kao100.config.db.init.ExamDataLoader
+import com.viastub.kao100.config.db.init.PracticeDataLoader
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import com.yechaoa.yutilskt.ActivityUtilKt
@@ -23,7 +24,8 @@ class App : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             RoomDB.get(applicationContext).let {
                 ConfigGlobalLoader().load(it)
-                TestDataLoader().load(it)
+                ExamDataLoader().load(it)
+                PracticeDataLoader().load(it)
             }
         }
 

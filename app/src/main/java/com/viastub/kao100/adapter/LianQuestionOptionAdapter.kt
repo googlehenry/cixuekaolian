@@ -31,7 +31,7 @@ class LianQuestionOptionAdapter(
             indicator.visibility = View.GONE
             itemOption.isEnabled = false
             question.usersAnswers?.let {
-                if (it.contains(item.id)) {
+                if (it.contains(item.id!!)) {
                     itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                 } else {
                     itemOption.setTextColor(Color.parseColor("#000000"))
@@ -39,17 +39,17 @@ class LianQuestionOptionAdapter(
             }
         } else {
             question.usersAnswers?.let {
-                if (it.contains(item.id)) {
+                if (it.contains(item.id!!)) {
                     if (item.correctAnswers() != null) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
-                        question.userAnswersChecks[item.id] = true
+                        question.userAnswersChecks[item.id!!] = true
                     } else {
                         itemOption.setTextColor(Color.parseColor("#FF0000"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                         indicator.visibility = View.VISIBLE
-                        question.userAnswersChecks[item.id] = false
+                        question.userAnswersChecks[item.id!!] = false
                     }
                 } else if (!it.isNullOrEmpty()) {
                     if (item.correctAnswers() != null) {
@@ -80,9 +80,9 @@ class LianQuestionOptionAdapter(
 
                 if (question.requireAnsweredOptionsNo <= 1) {
                     answerMap = mutableMapOf<Int, String>()
-                    answerMap[item.id] = "selected"
+                    answerMap[item.id!!] = "selected"
                 } else {
-                    answerMap[item.id] = "selected"
+                    answerMap[item.id!!] = "selected"
                 }
 
                 question.usersAnswers = answerMap

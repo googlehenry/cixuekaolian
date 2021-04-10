@@ -7,9 +7,6 @@
     app:cardBackgroundColor="#572AB7"
     android:background="@drawable/shape_button_half_rounded"
     android:foreground="?android:attr/selectableItemBackground">
-    <!--    android:background="@drawable/shape_button_half_rounded"-->
-    <!--    android:foreground="?android:attr/selectableItemBackground"-->
-    <!--    app:cardBackgroundColor="#673AB7"-->
 
     <TextView
         android:id="@+id/nav_target_name"

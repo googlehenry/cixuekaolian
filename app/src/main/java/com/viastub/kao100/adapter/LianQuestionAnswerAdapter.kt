@@ -36,18 +36,19 @@ class LianQuestionAnswerAdapter(
             //current part answer check
             answerInput.isEnabled = false
             question.usersAnswers?.get(item.id)?.let {
-                var correct: Boolean = item.correctAnswers?.let { ans -> (ans == it) } ?: false
+                var correct: Boolean =
+                    item.correctAnswersSplitByPipes?.let { ans -> (ans == it) } ?: false
                 answerInput.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                     answerInput.setTextColor(Color.parseColor("#2ea5ef"))
-                    question.userAnswersChecks[item.id] = true
+                    question.userAnswersChecks[item.id!!] = true
                 } else {
                     indicator.visibility = View.VISIBLE
                     indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
                     answerInput.setTextColor(Color.parseColor("#ff0000"))
-                    question.userAnswersChecks[item.id] = false
+                    question.userAnswersChecks[item.id!!] = false
                 }
             }
             if (question.usersAnswers?.get(item.id) == null && item.displayText != null) {
@@ -90,7 +91,7 @@ class LianQuestionAnswerAdapter(
 
         answerInput.setTag(R.id.lian_item_answer_main, item)
         answerInput.addTextChangedListener {
-            question.usersAnswers[item.id] = answerInput.text.toString().trim()
+            question.usersAnswers[item.id!!] = answerInput.text.toString().trim()
             lianItem.submitted = false
         }
 

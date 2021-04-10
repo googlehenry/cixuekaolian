@@ -5,8 +5,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
-import com.viastub.kao100.beans.ExcerciseByBook
-import com.viastub.kao100.beans.ExcerciseByUnit
+import com.viastub.kao100.db.PracticeBook
+import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.module.lian.OnExcercistStartListener
 
 /**
@@ -15,21 +15,18 @@ import com.viastub.kao100.module.lian.OnExcercistStartListener
  */
 class ExcerciseByUnitAdapter(
     val excerciseListener: OnExcercistStartListener,
-    val book: ExcerciseByBook
+    val book: PracticeBook
 ) :
-    BaseQuickAdapter<ExcerciseByUnit, BaseViewHolder>(R.layout.fragment_lian_nav_item_units_in_book),
+    BaseQuickAdapter<PracticeSection, BaseViewHolder>(R.layout.fragment_lian_book_item_unit_item),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: ExcerciseByUnit) {
-        holder.setText(R.id.unit_title, item.shortName.toString())
-        holder.setText(R.id.nav_unit_error, "(" + item.error.toString())
-        holder.setText(R.id.nav_unit_done, "/" + item.done.toString())
-        holder.setText(R.id.nav_unit_total, "/" + item.total.toString() + ")")
+    override fun convert(holder: BaseViewHolder, item: PracticeSection) {
+        holder.setText(R.id.unit_title, item.name.toString())
 
         var bookItemHolder = holder.getView<ConstraintLayout>(R.id.unit_line_holder)
         bookItemHolder.setTag(R.id.unit_line_holder, item)
         bookItemHolder.setOnClickListener {
-            excerciseListener.start(book, it.getTag(R.id.unit_line_holder) as ExcerciseByUnit)
+            excerciseListener.start(book, it.getTag(R.id.unit_line_holder) as PracticeSection)
         }
     }
 

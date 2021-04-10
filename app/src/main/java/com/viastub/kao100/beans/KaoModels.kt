@@ -26,16 +26,16 @@ data class TestPaperTag(
 )
 
 @Parcelize
-data class LianContext(
-    var type: LianType,
+data class KaoContext(
+    var type: KaoType,
     var typedEntityId: Int,
     var currentIsPartialQuestions: Boolean,
     var earnedScoresLastTime: Boolean = false,
     var earnedScoresThisTimeTemp: Double? = null,
     var previousExamSimuLoaded: Boolean = false,
-    var resumeExam: Boolean = false
+    var loadLastExam: Boolean = false
 ) : Parcelable
 
-enum class LianType {
+enum class KaoType {
     ExamSimulation
 }

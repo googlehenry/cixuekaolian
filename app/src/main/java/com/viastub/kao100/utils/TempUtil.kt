@@ -1,18 +1,31 @@
 package com.viastub.kao100.utils
 
+import android.os.FileUtils
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+
 class TempUtil {
     companion object {
-        var counter = 0
-        var categoryMap: MutableMap<String, Int> = mutableMapOf(
-            "阅读理解" to 0,
-            "完形填空" to 1,
-            "听力测试" to 2,
-            "短文填空" to 3,
-            "单项选择" to 4,
-            "语法填空" to 5,
-            "短文改错" to 6,
-            "汉语提示填写单词" to 7,
-            "汉语提示完成句子" to 8
-        )
+        fun loadRawFile(resAudioFileId: Int, filename: String): String? {
+            //路径：data/data/包名/file
+            var defaultFileFolder: File = Variables.globalApplication.filesDir
+            var outFolder: File = File(defaultFileFolder, "/demo")
+            outFolder.mkdirs()
+            var outFile: File = File(outFolder.absolutePath + "/$filename")
+
+
+            var inputStream: InputStream =
+                Variables.globalApplication.resources.openRawResource(resAudioFileId)
+            var outputStream: FileOutputStream =
+                FileOutputStream(outFile)
+            FileUtils.copy(inputStream, outputStream)
+
+            inputStream.close()
+            outputStream.close()
+
+            return outFile.absolutePath
+
+        }
     }
 }

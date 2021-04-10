@@ -6,8 +6,8 @@ import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestSectionAdapter
 import com.viastub.kao100.base.BaseActivity
-import com.viastub.kao100.beans.LianContext
-import com.viastub.kao100.beans.LianType
+import com.viastub.kao100.beans.KaoContext
+import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
@@ -36,7 +36,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             exam?.let {
                 awaitAsync(dataAction = {
                     RoomDB.get(applicationContext).practiceSection()
-                        .getByIds(it.practiceSections()!!).toMutableList()
+                        .getByIds(it.practiceSections()!!)?.toMutableList() ?: mutableListOf()
                 },
                     uiAction = {
                         startExam(exam, it, false)
@@ -66,7 +66,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
                             practiceSection.displaySeq = index + 1
                             practiceSection
-                        }.toMutableList()
+                        }?.toMutableList() ?: mutableListOf()
                 }
                 it
             }, {
@@ -78,7 +78,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        Variables.lianContext?.earnedScoresThisTimeTemp?.let {
+        Variables.kaoContext?.earnedScoresThisTimeTemp?.let {
             if (it >= 0.0) {
                 summary_exam_lastScores.visibility = View.VISIBLE
                 summary_exam_lastScores.text = "本次得分:${it}"
@@ -108,7 +108,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                 exam?.let {
                     awaitAsync(dataAction = {
                         RoomDB.get(applicationContext).practiceSection()
-                            .getByIds(it.practiceSections()!!).toMutableList()
+                            .getByIds(it.practiceSections()!!)?.toMutableList() ?: mutableListOf()
                     },
                         uiAction = {
                             startExam(exam, it, false, resumeExam = true)
@@ -141,14 +141,14 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         var intent = Intent(this, LianPage0ActivityClone::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
-        var lianContext = LianContext(
-            LianType.ExamSimulation,
+        var lianContext = KaoContext(
+            KaoType.ExamSimulation,
             exam.id,
             partial,
-            earnedScoresThisTimeTemp = Variables.lianContext?.earnedScoresThisTimeTemp,
+            earnedScoresThisTimeTemp = Variables.kaoContext?.earnedScoresThisTimeTemp,
             earnedScoresLastTime = exam.totalScores() > 0,
-            resumeExam = resumeExam,
-            previousExamSimuLoaded = (Variables.lianContext?.previousExamSimuLoaded == true)
+            loadLastExam = resumeExam,
+            previousExamSimuLoaded = (Variables.kaoContext?.previousExamSimuLoaded == true)
         )
 
         intent.putExtra("sections", secs)
@@ -158,7 +158,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        var tempScore = Variables.lianContext?.earnedScoresThisTimeTemp
+        var tempScore = Variables.kaoContext?.earnedScoresThisTimeTemp
         if (tempScore != null && tempScore < 0.0) {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle("未交卷题目不会保存,退出考试吗?")
@@ -177,7 +177,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         Variables.availableTemplateIds.clear()
         Variables.currentTemplateIdIdx = -1
         Variables.availableTemplatesMap.clear()
-        Variables.lianContext = null
+        Variables.kaoContext = null
     }
 
 

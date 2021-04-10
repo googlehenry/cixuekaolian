@@ -17,8 +17,8 @@ import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
 import com.viastub.kao100.adapter.QuestionActionListener
 import com.viastub.kao100.base.BaseActivity
-import com.viastub.kao100.beans.LianContext
-import com.viastub.kao100.beans.LianType
+import com.viastub.kao100.beans.KaoContext
+import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -37,32 +37,32 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         header_back.setOnClickListener { onBackPressed() }
 
         var sections = intent?.extras?.get("sections") as ArrayList<PracticeSection>
-        var lianContext = intent.extras?.get("lianContext") as LianContext
+        var lianContext = intent.extras?.get("lianContext") as KaoContext
 
 
-        Variables.lianContext = lianContext
+        Variables.kaoContext = lianContext
         Variables.availableTemplateIds =
             sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }.toMutableList()
         Variables.currentTemplateIdIdx =
             if (Variables.availableTemplateIds!!.size > 0) 0 else -1
 
         //flag last exam answer data loaded if clicked check last exam
-        if (Variables.lianContext?.resumeExam == true) {
-            Variables.lianContext?.previousExamSimuLoaded = true
+        if (Variables.kaoContext?.loadLastExam == true) {
+            Variables.kaoContext?.previousExamSimuLoaded = true
         }
         //If user previously clicked last exam, then start new exam, clean user's answers last time
-        if (Variables.lianContext?.resumeExam == false && Variables.lianContext?.previousExamSimuLoaded == true) {
+        if (Variables.kaoContext?.loadLastExam == false && Variables.kaoContext?.previousExamSimuLoaded == true) {
             Variables.availableTemplatesMap.values.forEach {
                 it.questionsDb?.forEach {
                     it.usersAnswers =
                         mutableMapOf()
                 }
             }
-            Variables.lianContext?.previousExamSimuLoaded = false
+            Variables.kaoContext?.previousExamSimuLoaded = false
         }
 
-        if (Variables.lianContext?.earnedScoresThisTimeTemp == null) {
-            Variables.lianContext?.earnedScoresThisTimeTemp = -1.0 //started, but not submitted
+        if (Variables.kaoContext?.earnedScoresThisTimeTemp == null) {
+            Variables.kaoContext?.earnedScoresThisTimeTemp = -1.0 //started, but not submitted
         }
 
         if (Variables.currentTemplateIdIdx >= 0) {
@@ -70,7 +70,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             loadCurrentQuestionTemplate()
         }
 
-        Variables.lianContext?.earnedScoresLastTime?.let {
+        Variables.kaoContext?.earnedScoresLastTime?.let {
             Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
         }
     }
@@ -78,7 +78,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     private fun loadCurrentQuestionTemplate() {
         val templateId = Variables.availableTemplateIds!![Variables.currentTemplateIdIdx]
 
-        Variables.lianContext?.earnedScoresThisTimeTemp?.let {
+        Variables.kaoContext?.earnedScoresThisTimeTemp?.let {
             if (it < 0) {
                 //in progress, not submit actually
                 Variables.availableTemplatesMap[templateId]?.submitted = false
@@ -98,7 +98,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
     private fun updateUI(template: PracticeTemplate) {
 
-        if (Variables.lianContext?.resumeExam == true) {
+        if (Variables.kaoContext?.loadLastExam == true) {
             template.submitted = true
         }
 
@@ -131,14 +131,14 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         }
         if (header_action_submit.isEnabled) {
             if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1
-                && !Variables.lianContext!!.currentIsPartialQuestions
+                && !Variables.kaoContext!!.currentIsPartialQuestions
                 && !template.submitted
-                && Variables.lianContext?.earnedScoresThisTimeTemp!! < 0
+                && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0
             ) {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
             } else {
 
-                if (Variables.lianContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1) {
+                if (Variables.kaoContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1) {
                     header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
                 } else {
                     header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
@@ -166,9 +166,9 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
         }
 
-        if (!template.submitted && Variables.lianContext?.earnedScoresThisTimeTemp!! < 0) {
+        if (!template.submitted && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
             header_action_submit.setOnClickListener {
-                if (Variables.lianContext!!.currentIsPartialQuestions) {
+                if (Variables.kaoContext!!.currentIsPartialQuestions) {
                     if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
                         Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
@@ -190,17 +190,17 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             }
         }
 
-        lian_item_result_submit.setOnClickListener {
+        lian_template_result_submit.setOnClickListener {
             template.submitted = true
             recycler_view_lian_item_questions.adapter?.notifyDataSetChanged()
             showExplanationForTemplate(template)
             loseFocusForEditable(template)
-            lian_item_result_submit.isEnabled = false
-            lian_item_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+            lian_template_result_submit.isEnabled = false
+            lian_template_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
 
         Variables.availableTemplatesMap[template.id]?.let {
-            if (Variables.lianContext?.resumeExam == true) {
+            if (Variables.kaoContext?.loadLastExam == true) {
                 null
             } else {
                 updateQuestions(it, it.questionsDb!!)
@@ -225,7 +225,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         }
 
 
-        if (!template.submitted && Variables.lianContext?.earnedScoresThisTimeTemp!! < 0) {
+        if (!template.submitted && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
@@ -251,7 +251,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                             when (question.type) {
                                 QuestionType.FILL.name -> {
                                     question.usersAnswers?.get(option.id)?.let {
-                                        option.correctAnswers == it
+                                        option.correctAnswersSplitByPipes == it
                                     }
                                 }
                                 QuestionType.SELECT.name -> {
@@ -301,7 +301,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
         header_action_submit.isEnabled = false
         header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-        Variables.lianContext?.earnedScoresThisTimeTemp = scoreEarned
+        Variables.kaoContext?.earnedScoresThisTimeTemp = scoreEarned
 
         turnTo(
             Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
@@ -309,12 +309,12 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         )
 
         launchAsync {
-            if (Variables.lianContext?.type == LianType.ExamSimulation) {
+            if (Variables.kaoContext?.type == KaoType.ExamSimulation) {
 
                 RoomDB.get(applicationContext).myExamSimuHistory().insert(
                     MyExamSimuHistory(
                         Variables.currentUserId,
-                        Variables.lianContext!!.typedEntityId,
+                        Variables.kaoContext!!.typedEntityId,
                         myScores = scoreEarned,
                         myTotalCorrects = right,
                         myTotalMissing = missing,
@@ -327,10 +327,10 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
                         tempLat.questionsDb?.map {
                             MyQuestionAnsweredHistory(
                                 userId = Variables.currentUserId,
-                                practiceQuestionId = it.id,
+                                practiceQuestionId = it.id!!,
                                 answerIsCorrect = scoreEarned > 0,
                                 optionalPracticeTemplateId = tempLat.id,
-                                optionalPracticeTargetId = Variables.lianContext?.typedEntityId
+                                optionalPracticeTargetId = Variables.kaoContext?.typedEntityId
                             ).setMyAnswersJson(it.usersAnswers)
                         } ?: mutableListOf()
                     }.toMutableList()
@@ -371,19 +371,19 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
             }
             .toMutableList()
         var myAction = RoomDB.get(applicationContext).myQuestionAction()
-            .getByQuestionIdsOfUser(Variables.currentUserId, qs.id)
+            .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(Variables.currentUserId, qs.id))
+                .insert(MyQuestionAction(Variables.currentUserId, qs.id!!))
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
-                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id)
+                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
         }
 
-        if (Variables.lianContext?.resumeExam == true) {
+        if (Variables.kaoContext?.loadLastExam == true) {
             var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id)
+                .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id!!)
 
             answeredHistory?.let {
                 qs.myQuestionAnsweredHistoryDb = it
@@ -409,7 +409,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         adapter.data = questions
         recycler_view_lian_item_questions.adapter = adapter
 
-        Variables.availableTemplatesMap[template.id] = template
+        Variables.availableTemplatesMap[template.id!!] = template
     }
 
     private fun checkUserAnsweredResult(template: PracticeTemplate) {
@@ -426,7 +426,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
 
             MyQuestionAnsweredHistory(
                 Variables.currentUserId,
-                pq.id,
+                pq.id!!,
                 answerIsCorrect = result,
                 optionalPracticeTemplateId = template.id
             ).setMyAnswersJson(pq.usersAnswers)

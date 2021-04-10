@@ -6,17 +6,17 @@ import androidx.room.*
 @Dao
 interface PracticeSectionDao {
     @Query("SELECT * FROM PracticeSection")
-    fun getAll(): List<PracticeSection>
+    fun getAll(): List<PracticeSection>?
 
     @Query("SELECT * FROM PracticeSection where id in (:ids)")
-    fun getByIds(ids: MutableList<Int>): List<PracticeSection>
+    fun getByIds(ids: MutableList<Int>): List<PracticeSection>?
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeSection)
+    fun insert(item: PracticeSection): Long
 
     @Delete
     fun delete(item: PracticeSection)
@@ -39,7 +39,7 @@ interface PracticeTemplateDao {
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeTemplate)
+    fun insert(item: PracticeTemplate): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(item: MutableList<PracticeTemplate>)
@@ -62,7 +62,7 @@ interface PracticeQuestionDao {
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeQuestion)
+    fun insert(item: PracticeQuestion): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(item: MutableList<PracticeQuestion>)
@@ -85,7 +85,7 @@ interface PracticeAnswerOptionDao {
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeAnswerOption)
+    fun insert(item: PracticeAnswerOption): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(item: MutableList<PracticeAnswerOption>)
@@ -116,7 +116,10 @@ interface DictionaryConfigDao {
 @Dao
 interface PracticeTargetDao {
     @Query("SELECT * FROM PracticeTarget")
-    fun getAll(): List<PracticeTarget>
+    fun getAll(): List<PracticeTarget>?
+
+    @Query("SELECT * FROM PracticeTarget where name=:name")
+    fun getByName(name: String): List<PracticeTarget>?
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
@@ -133,14 +136,17 @@ interface PracticeTargetDao {
 @Dao
 interface PracticeBookDao {
     @Query("SELECT * FROM PracticeBook")
-    fun getAll(): List<PracticeBook>
+    fun getAll(): List<PracticeBook>?
+
+    @Query("SELECT * FROM PracticeBook where id=:id")
+    fun getById(id: Int): PracticeBook?
 
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
 //    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: PracticeBook)
+    fun insert(item: PracticeBook): Long
 
     @Delete
     fun delete(item: PracticeBook)

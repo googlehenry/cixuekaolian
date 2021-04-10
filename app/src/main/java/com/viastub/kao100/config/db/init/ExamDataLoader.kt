@@ -1,34 +1,28 @@
 package com.viastub.kao100.config.db.init
 
-import android.os.FileUtils
 import com.viastub.kao100.R
 import com.viastub.kao100.db.*
-import com.viastub.kao100.utils.Variables
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import com.viastub.kao100.utils.TempUtil
 
 
-class TestDataLoader : DataLoader {
+class ExamDataLoader : DataLoader {
     override fun load(roomDb: RoomDB): Int {
         loadBasicSection5(roomDb)
         loadBasicSection4(roomDb)
         loadBasicSection3(roomDb)
         loadBasicSection2(roomDb)
         loadBasicSection1(roomDb)
-        loadBasicSection0(roomDb)
+        loadBasicExam(roomDb)
         loadBasicUsers(roomDb)
         return -1
     }
 
     private fun loadBasicSection5(roomDb: RoomDB) {
         var testQuestionSection5 = PracticeSection(
-            5,
             name = "写作部分",
-        ).bindTemplatesDbToThis(
+        ).bindId(5).bindTemplatesDbToThis(
             mutableListOf(
                 PracticeTemplate(
-                    id = 8,
                     category = "短文改错",
                     requirement = """
                      全文共10处错误,添词，删词，修改词，请找出作答。
@@ -41,145 +35,135 @@ class TestDataLoader : DataLoader {
                     itemMainAudioPath = null,
                     totalScore = 10.0,
                     totalTimeInMinutes = 7.5,
-                ).bindQuestionsDbToThis(
+                ).bindId(8).bindQuestionsDbToThis(
                     mutableListOf(
                         PracticeQuestion(
-                            id = 23,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "①before->ago,此处讲述的是过去发生的事情,和一般过去时连用的应是ago,before常和完成时连用。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(23).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     70,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "before->ago"
+                                    correctAnswersSplitByPipes = "before->ago"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 24,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "②by->of, with the help of...在……的帮助下,为固定短语。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(24).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     71,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "by->of"
+                                    correctAnswersSplitByPipes = "by->of"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 25,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "③year->years,句中year是可数名词,前面的these应修饰复数形式的名词。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(25).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     72,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "year->years"
+                                    correctAnswersSplitByPipes = "year->years"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 26,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "④had->have,时间状语since then 通常和现在完成时连用,而不是过去完成时。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(26).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     73,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "had->have"
+                                    correctAnswersSplitByPipes = "had->have"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 27,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑤As result->As a result,as a result 结果,为固定短语。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(27).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     74,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "As result->As a result"
+                                    correctAnswersSplitByPipes = "As result->As a result"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 28,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑥somewhere->everywhere,根据句意可知此处表示“圣女果到处生长”,所以用everywhere。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(28).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     75,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "somewhere->everywhere"
+                                    correctAnswersSplitByPipes = "somewhere->everywhere"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 29,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑦taste->tasty,本句中small,juicy和tasty是并列的表语,所以要用形容词。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(29).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     76,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "taste->tasty"
+                                    correctAnswersSplitByPipes = "taste->tasty"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 30,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑧much->many,根据前面的be动词are和后面的them可知应是代替可数名词复数的many。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(30).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     77,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "much->many"
+                                    correctAnswersSplitByPipes = "much->many"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 31,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑨but->yet/,but we->, we,引导让步状语从句的although不能和连词but连用,但是可以和副词yet连用。所以可以删掉but,也可以把but改为yet。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(31).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     78,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "but->yet|,but we->, we,"
+                                    correctAnswersSplitByPipes = "but->yet|,but we->, we,"
                                 )
                             )
                         ),
                         PracticeQuestion(
-                            id = 32,
                             type = QuestionType.CORRECT.name,
                             answerKeyPoints = "⑩wonderfully->wonderful,修饰名词时应用形容词。"
-                        ).bindOptionsDbToThis(
+                        ).bindId(32).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     79,
                                     LayoutUI.CORRECTION.name,
                                     null,
-                                    correctAnswers = "wonderfully->wonderful"
+                                    correctAnswersSplitByPipes = "wonderfully->wonderful"
                                 )
                             )
                         ),
@@ -210,12 +194,10 @@ class TestDataLoader : DataLoader {
 
     private fun loadBasicSection4(roomDb: RoomDB) {
         var testQuestionSection4 = PracticeSection(
-            4,
             name = "听力部分",
-        ).bindTemplatesDbToThis(
+        ).bindId(4).bindTemplatesDbToThis(
             mutableListOf(
                 PracticeTemplate(
-                    id = 6,
                     category = "听力部分",
                     requirement = """
                     听下面5段对话。每段对话后有一个小题，从题中所给的A、B、C三个选项中选出最佳选项。听完每段对话后，你都有10秒钟的时间来回答有关小题和阅读下一小题。每段对话仅读一遍。
@@ -246,20 +228,19 @@ class TestDataLoader : DataLoader {
                     M: I have an extra ticket to the concert tonight. Would you like to join me?
                     W: Thanks, but I already have one. You can ask Emily. She might be interested.
                 """.trimIndent(),
-                    itemMainAudioPath = loadFile(
+                    itemMainAudioPath = TempUtil.loadRawFile(
                         R.raw.demo_listening_2019_cee_vol1_00_02_49__00_06_26,
                         "demo_listening_2019_cee_vol1_00_02_49__00_06_26"
                     ),
                     totalScore = 7.5,
                     totalTimeInMinutes = 5.0,
                     keyPoints = "参考听力原文"
-                ).bindQuestionsDbToThis(
+                ).bindId(6).bindQuestionsDbToThis(
                     mutableListOf(
                         PracticeQuestion(
-                            id = 16,
                             type = QuestionType.SELECT.name,
                             text = "Where does this conversation take place?",
-                        ).bindOptionsDbToThis(
+                        ).bindId(16).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     52,
@@ -270,20 +251,19 @@ class TestDataLoader : DataLoader {
                                     53,
                                     LayoutUI.TEXT_VIEW.name,
                                     "B. In a hospital. ",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                                 PracticeAnswerOption(54, LayoutUI.TEXT_VIEW.name, "C.In a museum."),
                             )
                         ),
                         PracticeQuestion(
-                            id = 17,
                             text = "What does Jack want to do?"
-                        ).bindOptionsDbToThis(
+                        ).bindId(17).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     55,
                                     displayText = "A. Take fitness classes.",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                                 PracticeAnswerOption(
                                     56,
@@ -296,42 +276,39 @@ class TestDataLoader : DataLoader {
                             )
                         ),
                         PracticeQuestion(
-                            id = 18,
                             text = "What are the speakers talking about?"
-                        ).bindOptionsDbToThis(
+                        ).bindId(18).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(58, displayText = "A. What to drink."),
                                 PracticeAnswerOption(
                                     59,
                                     displayText = "B. Where to meet. ",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                                 PracticeAnswerOption(60, displayText = "C. When to leave."),
                             )
                         ),
                         PracticeQuestion(
-                            id = 19,
                             text = "What is the relationship between the speakers?"
-                        ).bindOptionsDbToThis(
+                        ).bindId(19).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(61, displayText = "A. Colleges."),
                                 PracticeAnswerOption(62, displayText = "B. Classmates. "),
                                 PracticeAnswerOption(
                                     63,
                                     displayText = "C. Strangers.",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                             )
                         ),
                         PracticeQuestion(
-                            id = 20,
                             text = "Why is Emily mentioned in the conversation?"
-                        ).bindOptionsDbToThis(
+                        ).bindId(20).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     61,
                                     displayText = "A. She might want a ticket.",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                                 PracticeAnswerOption(
                                     62,
@@ -346,7 +323,6 @@ class TestDataLoader : DataLoader {
                     )
                 ),
                 PracticeTemplate(
-                    id = 7,
                     category = "听力部分",
                     requirement = """
                     听下面对话或独白。对话或独白后有几个小题，从题中所给的A、B、C三个选项中选出最佳选项。听每段对话或独白前，你将有时间阅读各个小题，每小题5秒钟；听完后，各小题将给出5秒钟的作答时间。每段对话或独白读两遍。
@@ -366,19 +342,18 @@ class TestDataLoader : DataLoader {
                         
                         W: I hope so.
                     """.trimIndent(),
-                    itemMainAudioPath = loadFile(
+                    itemMainAudioPath = TempUtil.loadRawFile(
                         R.raw.demo_listening_2019_cee_vol1_00_07_28__00_09_04,
                         "demo_listening_2019_cee_vol1_00_07_28__00_09_04"
                     ),
                     totalScore = 3.0,
                     totalTimeInMinutes = 2.5,
                     keyPoints = "参考听力原文"
-                ).bindQuestionsDbToThis(
+                ).bindId(7).bindQuestionsDbToThis(
                     mutableListOf(
                         PracticeQuestion(
-                            id = 21,
                             text = "How long did James run his business？"
-                        ).bindOptionsDbToThis(
+                        ).bindId(21).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     64,
@@ -391,14 +366,13 @@ class TestDataLoader : DataLoader {
                                 PracticeAnswerOption(
                                     66,
                                     displayText = "C.15 years.",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                             )
                         ),
                         PracticeQuestion(
-                            id = 22,
                             text = "How does the woman feel about James' situation？"
-                        ).bindOptionsDbToThis(
+                        ).bindId(22).bindOptionsDbToThis(
                             mutableListOf(
                                 PracticeAnswerOption(
                                     67,
@@ -407,7 +381,7 @@ class TestDataLoader : DataLoader {
                                 PracticeAnswerOption(
                                     68,
                                     displayText = "B. Concerned.  ",
-                                    correctAnswers = "true"
+                                    correctAnswersSplitByPipes = "true"
                                 ),
                                 PracticeAnswerOption(
                                     69,
@@ -440,28 +414,6 @@ class TestDataLoader : DataLoader {
 
         roomDb.practiceSection().insert(testQuestionSection4)
     }
-
-    private fun loadFile(resAudioFileId: Int, filename: String): String? {
-        //路径：data/data/包名/file
-        var defaultFileFolder: File = Variables.globalApplication.filesDir
-        var outFolder: File = File(defaultFileFolder, "/demo")
-        outFolder.mkdirs()
-        var outFile: File = File(outFolder.absolutePath + "/$filename")
-
-
-        var inputStream: InputStream =
-            Variables.globalApplication.resources.openRawResource(resAudioFileId)
-        var outputStream: FileOutputStream =
-            FileOutputStream(outFile)
-        FileUtils.copy(inputStream, outputStream)
-
-        inputStream.close()
-        outputStream.close()
-
-        return outFile.absolutePath
-
-    }
-
 
     private fun loadBasicSection3(roomDb: RoomDB) {
         var testOpion24 = PracticeAnswerOption(
@@ -602,7 +554,6 @@ class TestDataLoader : DataLoader {
 
 
         var testQuestion9 = PracticeQuestion(
-            9,
             QuestionType.SELECT.name,
             """
                 How was the author admitted to Mrs. Gutzlaff's school?
@@ -612,9 +563,8 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "24,25,26,27"
-        )
+        ).bindId(9)
         var testQuestion10 = PracticeQuestion(
-            10,
             QuestionType.SELECT.name,
             """
                 Why did the author's parents put him into an English school？
@@ -624,9 +574,8 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "28,29,30,31"
-        )
+        ).bindId(10)
         var testQuestion11 = PracticeQuestion(
-            11,
             QuestionType.SELECT.name,
             """
                 What did the author think of his parents' decision to put him into an English school? 
@@ -636,10 +585,9 @@ class TestDataLoader : DataLoader {
             2,
             1,
             "32,33,34,35"
-        )
+        ).bindId(11)
 
         var testQuestion12 = PracticeQuestion(
-            12,
             QuestionType.SELECT.name,
             """
                 What do the underlined words "peer into" in Paragraph 2 probably mean? 
@@ -649,9 +597,8 @@ class TestDataLoader : DataLoader {
             2,
             1,
             "36,37,38,39"
-        )
+        ).bindId(12)
         var testQuestion13 = PracticeQuestion(
-            13,
             QuestionType.SELECT.name,
             """
                 How did the researchers conduct the research? 
@@ -661,9 +608,8 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "40,41,42,43"
-        )
+        ).bindId(13)
         var testQuestion14 = PracticeQuestion(
-            14,
             QuestionType.SELECT.name,
             """
                 According to Tobias Loetscher, what can we know? 
@@ -673,9 +619,8 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "44,45,46,47"
-        )
+        ).bindId(14)
         var testQuestion15 = PracticeQuestion(
-            15,
             QuestionType.SELECT.name,
             """
                 What can be a suitable title for the text? 
@@ -685,10 +630,11 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "48,49,50,51"
-        )
+        ).bindId(15)
 
         var testQuestionTemplate4 = PracticeTemplate(
-            4, "阅读理解", "阅读文章,回答问题。",
+            category = "阅读理解", requirement = "阅读文章,回答问题。",
+            itemMainText =
             """
                 	I was born on the 17th of November 1828, in the village of Nam Ping, which is about four miles southwest of the Portuguese Colony (殖民地) of Macao, and is located on Pedro Island lying west of Macao, from which it is separated by a channel of half a mile wide.
                 	
@@ -696,21 +642,19 @@ class TestDataLoader : DataLoader {
                 	
                     Mrs. Gutzlaff's comprador(买办) happened to come from my village and was actually my father's friend and neighbor. It was through him that my parents heard about Mrs. Gutzlaff's school and it was doubtlessly through his influence and means that my father got me admitted into the school. It has always been a mystery to me why my parents should put me into a foreign school, instead of a traditional Confucian school, where my big brother was placed. Most certainly such a step would have been more suitable for Chinese public opinion, taste, and the wants of the country, than to allow me to attend an English school. Moreover, a Chinese belief is the only avenue in China that leads to political promotion, influence, power and wealth. I can only guess that as foreign communication with China was just beginning to grow, my parents hoped that it might be worthwhile to put one of their sons to learning English. In this way he might become an interpreter and have a more advantageous position to enter the business and diplomatic world. I am wondering if that influenced my parents to put me into Mrs. Gutzlaff's School. As to what other sequences it has eventually brought about in my later life, they were entirely left in the hands of God.
             """.trimIndent(),
-            null,
-            hints = null,
             keyPoints = """
                 【答案】（1）A（2）D（3）B  
                 【解析】【分析】本文是一篇记叙文，小时候父亲送作者去英语学校而不是中文学校，并分析了具体原因。
                 【点评】本题考点涉及细节理解和推理判断两个题型的考查，是一篇故事类阅读，考生需要准确掌握细节信息，同时根据上下文的逻辑关系，进行分析，推理，从而选出正确答案。
             """.trimIndent(),
-            1,
-            6.0,
-            3.0,
-            "9,10,11"
-        )
+            totalScore = 6.0,
+            totalTimeInMinutes = 3.0,
+            practiceQuestionIds = "9,10,11"
+        ).bindId(4)
 
         var testQuestionTemplate5 = PracticeTemplate(
-            5, "阅读理解", "阅读文章,回答问题。",
+            category = "阅读理解", requirement = "阅读文章,回答问题。",
+            itemMainText =
             """
     A new study has shown how computers and robots powered by artificial intelligence can read human eye movements to "read" human personalities.     
 	        
@@ -726,26 +670,20 @@ class TestDataLoader : DataLoader {
 	        
     The study revealed previously undiscovered relations between specific personality characteristics and specific eye movement tendencies, according to a summary in Britain's Daily Mail newspaper. 
             """.trimIndent(),
-            null,
-            hints = null,
             keyPoints = """
                 【答案】 （1）A （2）B （3）D （4）C    
                 【解析】【分析】本文是一篇说明文，一项新的研究表明，由人工智能驱动的计算机和机器人可以通过阅读人类的眼球运动来“解读”人类的性格。
                 【点评】本题考点涉及细节理解，词义猜测和主旨大意三个题型的考查，是一篇科研类阅读，要求考生在捕捉细节信息的基础上，进一步根据上下文的逻辑关系，进行分析，推理，概括和归纳，从而选出正确答案。
             """.trimIndent(),
-            1,
-            8.0,
-            4.0,
-            "12,13,14,15"
-        )
+            totalScore = 8.0,
+            totalTimeInMinutes = 4.0,
+            practiceQuestionIds = "12,13,14,15"
+        ).bindId(5)
 
         var testQuestionSection3 = PracticeSection(
-            3,
-            seq = 1,
-            browseMode = "SEQUENCE",
             name = "阅读理解",
             practiceTemplateIds = "4,5"
-        )
+        ).bindId(3)
 
         roomDb.practiceAnswerOption().insert(testOpion24)
         roomDb.practiceAnswerOption().insert(testOpion25)
@@ -820,40 +758,39 @@ class TestDataLoader : DataLoader {
             PracticeAnswerOption(23, LayoutUI.TEXT_VIEW.name, "D. having caught", "true")
 
         var testQuestion4 = PracticeQuestion(
-            4, QuestionType.SELECT.name,
+            QuestionType.SELECT.name,
             """
                 --I'm sorry I made a mistake! 
                 --____ Nobody is perfect.    
             """.trimIndent(),
             "D", "考查交际用语。根据后句“人无完人”可知，前一个人犯错误了，应叫他take it easy（放松）。",
             1, 1, "4,5,6,7"
-        )
+        ).bindId(4)
         var testQuestion5 = PracticeQuestion(
-            5, QuestionType.SELECT.name,
+            QuestionType.SELECT.name,
             """
                 Would you like to ____ with us to the film tonight?
             """.trimIndent(),
             "A", "考查动词短语辨析。根据句意，与我们一道去看电影，故选A。come along with…与…一道。",
             1, 1, "8,9,10,11"
-        )
+        ).bindId(5)
         var testQuestion6 = PracticeQuestion(
-            6, QuestionType.SELECT.name,
+            QuestionType.SELECT.name,
             """
                 I was glad to meet Jenny again, ____ I didn't want to spend all day with her.
             """.trimIndent(),
             "A", "考查并列连词。根据句意：再次见到Jenny我很高兴，但我不想整天都和她一起度过。",
             1, 1, "12,13,14,15"
-        )
+        ).bindId(6)
         var testQuestion7 = PracticeQuestion(
-            7, QuestionType.SELECT.name,
+            QuestionType.SELECT.name,
             """
                 When I arrived, Bryan took me to see the house ____ I would be staying.
             """.trimIndent(),
             "C", "考查定语从句。定语从句中stay为不及物动词，故不缺主干成分，用关系副词；先行词为house，指地点，故用关系副词where。",
             1, 1, "16,17,18,19"
-        )
+        ).bindId(7)
         var testQuestion8 = PracticeQuestion(
-            8,
             QuestionType.SELECT.name,
             """
                 I got to the office earlier that day, ____ the 7:30 train from Paddington
@@ -863,13 +800,10 @@ class TestDataLoader : DataLoader {
             1,
             1,
             "20,21,22,23"
-        )
+        ).bindId(8)
 
         var testQuestionTemplate3 = PracticeTemplate(
-            3, "单项选择", "选择正确的选项填空",
-            null,
-            null,
-            hints = null,
+            category = "单项选择", requirement = "选择正确的选项填空",
             keyPoints = """
                 1.【答案】D 
                   【解析】考查交际用语。根据后句“人无完人”可知，前一个人犯错误了，应叫他take it easy（放松）。
@@ -882,19 +816,15 @@ class TestDataLoader : DataLoader {
                 5.【答案】D 
                   【解析】考查非谓语动词。根据句意，因为我赶上了7:30的车，所以那天我更早地到了办公室，可知赶车发生在到办公室之前，且与主语I之间为主动关系，故使用现在分词完成体表主动完成。
             """.trimIndent(),
-            1,
-            10.0,
-            5.0,
-            "4,5,6,7,8"
-        )
+            totalScore = 10.0,
+            totalTimeInMinutes = 5.0,
+            practiceQuestionIds = "4,5,6,7,8"
+        ).bindId(3)
 
         var testQuestionSection2 = PracticeSection(
-            2,
-            seq = 1,
-            browseMode = "SEQUENCE",
             name = "单项选择",
             practiceTemplateIds = "3"
-        )
+        ).bindId(2)
 
 
         roomDb.practiceAnswerOption().insert(testOpion4)
@@ -935,7 +865,6 @@ class TestDataLoader : DataLoader {
         var testOpion100 = PracticeAnswerOption(100, "EDIT_TEXT", null, "for")
 
         var testQuestion1 = PracticeQuestion(
-            1,
             "FILL",
             """
                     (原句)Eat more fruit and it will do you good.
@@ -946,9 +875,8 @@ class TestDataLoader : DataLoader {
             2,
             1,
             "1"
-        )
+        ).bindId(1)
         var testQuestion2 = PracticeQuestion(
-            2,
             "FILL",
             """
                     Artificial intelligence (AI) may become extremely good ____ achieving something other than what we really want.
@@ -958,9 +886,8 @@ class TestDataLoader : DataLoader {
             2,
             1,
             "2"
-        )
+        ).bindId(2)
         var testQuestion3 = PracticeQuestion(
-            3,
             "FILL",
             """
                     Of course everyone knows that excercise is good ____ the body. 
@@ -970,41 +897,31 @@ class TestDataLoader : DataLoader {
             2,
             1,
             "3,100"
-        )
+        ).bindId(3)
 
         var testQuestionTemplate1 = PracticeTemplate(
-            1, "同义句转换", "修改原句为同义句",
-            null,
-            null,
-            hints = null,
+            category = "同义句转换", requirement = "修改原句为同义句",
             keyPoints = "do good to sb./do sb. good 对某人有好处(反义短语: do harm to sb./do sb. harm)",
-            1,
-            2.0,
-            1.0,
-            "1"
-        )
+            totalScore = 2.0,
+            totalTimeInMinutes = 1.0,
+            practiceQuestionIds = "1"
+        ).bindId(1)
         var testQuestionTemplate2 = PracticeTemplate(
-            2, "介词单项填空", "使用适合介词填空(一空一词)",
-            null,
-            null,
-            hints = null,
+            category = "介词单项填空", requirement = "使用适合介词填空(一空一词)",
             keyPoints = """
                     be good at(doing) sth.擅长干某事(近义短语:do well in sth.)
                     be good for sb./sth.对某人/某事有好处(反义短语: be bad for sb./sth.)
                 """.trimIndent(),
-            1,
-            4.0,
-            2.0,
-            "2,3"
-        )
+            totalScore = 4.0,
+            totalTimeInMinutes = 2.0,
+            practiceQuestionIds = "2,3"
+        ).bindId(2)
 
         var testQuestionSection1 = PracticeSection(
-            1,
-            seq = 1,
             browseMode = "SEQUENCE",
             name = "基础训练部分",
             practiceTemplateIds = "1,2"
-        )
+        ).bindId(1)
 
 
         roomDb.practiceAnswerOption().insert(testOpion1)
@@ -1018,7 +935,7 @@ class TestDataLoader : DataLoader {
         roomDb.practiceSection().insert(testQuestionSection1)
     }
 
-    private fun loadBasicSection0(roomDb: RoomDB) {
+    private fun loadBasicExam(roomDb: RoomDB) {
         var examSimulation1 = ExamSimulation(
             1,
             province = "四川省",

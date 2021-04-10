@@ -128,14 +128,14 @@ class LianQuestionCorrectionAdapter(
             var fromText = correctUiFrom.text.toString().trim()
             var toText = correctUiTo.text.toString().trim()
 
-            question.usersAnswers[item.id] = "$fromText->$toText"
+            question.usersAnswers[item.id!!] = "$fromText->$toText"
         }
 
         correctUiTo.addTextChangedListener {
             var fromText = correctUiFrom.text.toString().trim()
             var toText = correctUiTo.text.toString().trim()
 
-            question.usersAnswers[item.id] = "$fromText->$toText"
+            question.usersAnswers[item.id!!] = "$fromText->$toText"
         }
 
     }

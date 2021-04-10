@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dp_10"
     android:layout_marginRight="@dimen/dp_10"
-    android:padding="@dimen/dp_5"
+    android:padding="@dimen/dp_10"
     android:background="@drawable/selector_button_round_corner_card_lian">
 
     <ImageView
@@ -28,33 +28,5 @@
         app:layout_constraintStart_toEndOf="@id/start_excercise"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/nav_unit_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#ff0000"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/unit_title" />
-
-    <TextView
-        android:id="@+id/nav_unit_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#2ea5ef"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toRightOf="@id/nav_unit_error"
-        app:layout_constraintTop_toBottomOf="@id/unit_title" />
-
-    <TextView
-        android:id="@+id/nav_unit_total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toRightOf="@id/nav_unit_done"
-        app:layout_constraintTop_toBottomOf="@id/unit_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

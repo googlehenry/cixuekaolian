@@ -213,46 +213,70 @@ enum class WordImportance {
 
 //Section 3: Practice
 @Entity
-data class PracticeBook(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var description: String?,
-    @ColumnInfo
-    var coverImagePath: String?,
-
-    ) {
-    @Ignore
-    var coverImage: File? = null
-
-    @Ignore
-    var practiceSections: MutableList<PracticeSection>? = null
-}
-
-
-@Entity
 data class PracticeTarget(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
     @ColumnInfo
     var name: String,
     @ColumnInfo
-    var description: String?
+    var description: String? = null,
+    @ColumnInfo
+    var bookIdsString: String? = null
 ) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
     @Ignore
-    var books: MutableList<PracticeBook>? = null
+    var booksDb: MutableList<PracticeBook>? = null
+
+    fun bindId(id: Int): PracticeTarget = this.also { this.id = id }
+
+    fun bookIds(): MutableList<Int>? =
+        bookIdsString?.split(",")?.map { it.toInt() }?.toMutableList()
+
+    fun bindBooksDBToThis(books: MutableList<PracticeBook>?): PracticeTarget {
+        booksDb = mutableListOf()
+        books?.let { booksDb!!.addAll(it) }
+        bookIdsString = books?.map { it.id }?.joinToString(",")
+        return this
+    }
 }
+
+@Parcelize
+@Entity
+data class PracticeBook(
+    @ColumnInfo
+    var name: String,
+    @ColumnInfo
+    var description: String? = null,
+    @ColumnInfo
+    var coverImagePath: String? = null,
+    @ColumnInfo
+    var unitSectionIdsString: String? = null,//section can be any type of blocks
+) : Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
+    fun coverImage(): File? = coverImagePath?.let { File(it) }
+
+    @Ignore
+    var unitSectionsDb: MutableList<PracticeSection>? = null
+    fun bindId(id: Int): PracticeBook = this.also { this.id = id }
+
+    fun unitSectionIds(): MutableList<Int>? =
+        unitSectionIdsString?.split(",")?.map { it.toInt() }?.toMutableList()
+
+    fun bindUnitSectionsDBToThis(sections: MutableList<PracticeSection>?): PracticeBook {
+        unitSectionsDb = mutableListOf()
+        sections?.let { unitSectionsDb!!.addAll(it) }
+        unitSectionIdsString = sections?.map { it.id }?.joinToString(",")
+        return this
+    }
+}
+
 
 //Core models
 @Parcelize
 @Entity
 data class PracticeSection(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var seq: Int = 1,//User can specify sequenceS
     @ColumnInfo
     var browseMode: String = BrowseMode.SEQUENCE.name,//SEQUENCE, RANDOM
     @ColumnInfo
@@ -260,6 +284,13 @@ data class PracticeSection(
     @ColumnInfo
     var practiceTemplateIds: String? = null
 ) : Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
+    fun bindId(id: Int): PracticeSection {
+        return this.also { this.id = id }
+    }
+
     fun practiceTemplates(): MutableList<Int>? {
         return practiceTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
@@ -270,10 +301,12 @@ data class PracticeSection(
     @Ignore
     var displaySeq: Int = 0
 
-    fun bindTemplatesDbToThis(templates: MutableList<PracticeTemplate>): PracticeSection {
-        templatesDB = templatesDB ?: mutableListOf()
-        templatesDB!!.addAll(templates)
-        practiceTemplateIds = templates.map { it.id }.joinToString(",")
+    fun bindTemplatesDbToThis(templates: MutableList<PracticeTemplate>?): PracticeSection {
+        templatesDB = mutableListOf()
+        templates?.let {
+            templatesDB!!.addAll(it)
+        }
+        practiceTemplateIds = templates?.map { it.id }?.joinToString(",")
         return this
     }
 
@@ -290,8 +323,6 @@ data class PracticeSection(
 
 @Entity
 data class PracticeTemplate(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
     @ColumnInfo
     var category: String? = null,
     @ColumnInfo
@@ -313,6 +344,9 @@ data class PracticeTemplate(
     @ColumnInfo
     var practiceQuestionIds: String? = null
 ) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
     @Ignore
     var submitted: Boolean = false
 
@@ -326,8 +360,10 @@ data class PracticeTemplate(
     @Ignore
     var countDownTimer: CountDownTimer? = null
 
+    fun bindId(id: Int): PracticeTemplate = this.also { this.id = id }
+
     fun bindQuestionsDbToThis(questions: MutableList<PracticeQuestion>): PracticeTemplate {
-        questionsDb = questionsDb ?: mutableListOf()
+        questionsDb = mutableListOf()
         questionsDb!!.addAll(questions)
         practiceQuestionIds = questions.map { it.id }.joinToString(",")
         return this
@@ -337,7 +373,7 @@ data class PracticeTemplate(
     fun pooledQuestionStandardAnswers(): MutableMap<Int, MutableList<String>> {
         return questionsDb?.map {
             Pair(
-                it.id,
+                it.id!!,
                 (it.optionsDb?.flatMap { it.correctAnswers() ?: mutableListOf() })?.toMutableList()
                     ?: mutableListOf()
             )
@@ -348,8 +384,6 @@ data class PracticeTemplate(
 
 @Entity
 data class PracticeQuestion(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
     @ColumnInfo
     var type: String = QuestionType.SELECT.name,//QuestionType,//FILL, SELECT
     @ColumnInfo
@@ -365,6 +399,8 @@ data class PracticeQuestion(
     @ColumnInfo
     var practiceAnswerOptionIds: String? = null
 ) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
 
     @Ignore
     var displaySeq: Int = 0
@@ -392,8 +428,10 @@ data class PracticeQuestion(
         return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
 
+    fun bindId(id: Int): PracticeQuestion = this.also { this.id = id }
+
     fun bindOptionsDbToThis(options: MutableList<PracticeAnswerOption>): PracticeQuestion {
-        optionsDb = optionsDb ?: mutableListOf()
+        optionsDb = mutableListOf()
         optionsDb!!.addAll(options)
         practiceAnswerOptionIds = options.map { it.id }.joinToString(",")
         return this
@@ -403,26 +441,27 @@ data class PracticeQuestion(
 @Entity
 data class PracticeAnswerOption(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
     var layoutUI: String? = LayoutUI.TEXT_VIEW.name,//AnswerOptionUI?,//EDIT_TEXT,TEXT_VIEW,IMAGE_VIEW
     @ColumnInfo
     var displayText: String? = null,//label value,place holder value,description for image
     @ColumnInfo
-    var correctAnswers: String? = null
+    var correctAnswersSplitByPipes: String? = null
 ) {
     @Ignore
     var layoutUIObject: View? = null
 
     fun correctAnswers(): MutableList<String>? {
-        return correctAnswers?.let {
+        return correctAnswersSplitByPipes?.let {
             return it.split("|")?.toMutableList()
         }
     }
 
+    fun bindId(id: Int): PracticeAnswerOption = this.also { this.id = id }
+
     @Ignore
     var displaySeq: Int = 0
-
 }
 
 enum class LayoutUI {

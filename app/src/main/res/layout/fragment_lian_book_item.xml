@@ -19,7 +19,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/target_item_upper"
+            android:id="@+id/lian_book_item_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +31,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:padding="@dimen/dp_5">
 
                 <ImageView
-                    android:id="@+id/nav_lian_group_icon"
+                    android:id="@+id/lian_book_item_icon"
                     android:layout_width="55dp"
                     android:layout_height="@dimen/dp_70" />
             </LinearLayout>
@@ -52,21 +53,20 @@
                     android:layout_marginLeft="@dimen/dp_5"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
-
                     <TextView
-                        android:id="@+id/nav_group_seq"
+                        android:id="@+id/lian_book_item_seq"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
+                        android:visibility="gone"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/dp_5"
                         android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_5"
                         android:background="@drawable/shape_blue_round_cycle"
                         android:gravity="center"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp_12" />
-
                     <TextView
-                        android:id="@+id/nav_group_title"
+                        android:id="@+id/lian_book_item_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -75,75 +75,17 @@
                         android:textSize="@dimen/sp_16" />
 
                     <ImageView
-                        android:id="@+id/excercise_expand_collapse"
+                        android:id="@+id/lian_book_item_show_more"
                         android:layout_width="@dimen/dp_16"
                         android:layout_height="@dimen/dp_16"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginRight="@dimen/dp_10"
-                        android:contentDescription="进入学习"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/shape_button_all_rounded"
                         android:src="@drawable/icon_button_minus" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/progress_holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <ProgressBar
-                        android:id="@+id/nav_group_progress"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_10"
-                        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-                        android:indeterminateOnly="false"
-                        android:visibility="gone"
-                        android:max="100"
-                        android:mirrorForRtl="true"
-                        android:progress="20"
-                        android:progressDrawable="@drawable/progress_horizontal"
-                        android:secondaryProgress="60" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="@dimen/dp_10">
-
-
-                        <TextView
-                            android:id="@+id/nav_group_error"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:textColor="#ccff0000"
-                            android:textSize="@dimen/sp_12" />
-
-                        <TextView
-                            android:id="@+id/nav_group_done"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:textColor="#cc2ea5ef"
-                            android:textSize="@dimen/sp_12" />
-
-                        <TextView
-                            android:id="@+id/nav_group_total"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:textColor="#cc000000"
-                            android:textSize="@dimen/sp_12" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -152,7 +94,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/target_item_upper">
+            app:layout_constraintTop_toBottomOf="@id/lian_book_item_upper">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_units"
@@ -163,7 +105,7 @@
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/fragment_lian_nav_item_units_in_book" />
+                tools:listitem="@layout/fragment_lian_book_item_unit_item" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
