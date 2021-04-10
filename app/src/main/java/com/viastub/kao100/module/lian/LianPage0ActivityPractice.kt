@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import java.io.File
 
 
-class LianPage0Activity : BaseActivity(), QuestionActionListener {
+class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     override fun id(): Int {
         return R.layout.activity_lian_item_page
@@ -174,7 +174,7 @@ class LianPage0Activity : BaseActivity(), QuestionActionListener {
         missing: Int,
         rate: Int
     ) {
-        var intent = Intent(this, LianPageScorePageActivity::class.java)
+        var intent = Intent(this, LianPageScorePageActivityPractice::class.java)
         intent.putExtra("scoreEarned", scoreEarned)
         intent.putExtra("rate", rate)
 
@@ -305,7 +305,7 @@ class LianPage0Activity : BaseActivity(), QuestionActionListener {
     }
 
     private fun doGoBack() {
-        super@LianPage0Activity.onBackPressed()
+        super@LianPage0ActivityPractice.onBackPressed()
         stopPlayer()
         VariablesLian.availableTemplateIds.clear()
         VariablesLian.currentTemplateIdIdx = -1

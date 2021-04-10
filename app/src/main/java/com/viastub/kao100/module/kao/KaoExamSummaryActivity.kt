@@ -11,7 +11,6 @@ import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.module.lian.LianPage0ActivityClone
 import com.viastub.kao100.utils.Variables
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
@@ -138,7 +137,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         partial: Boolean = false,
         resumeExam: Boolean = false
     ) {
-        var intent = Intent(this, LianPage0ActivityClone::class.java)
+        var intent = Intent(this, KaoPage0ActivityExamination::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
         var lianContext = KaoContext(

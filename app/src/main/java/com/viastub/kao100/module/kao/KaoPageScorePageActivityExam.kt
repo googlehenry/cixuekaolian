@@ -1,10 +1,10 @@
-package com.viastub.kao100.module.lian
+package com.viastub.kao100.module.kao
 
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_lian_item_score_page.*
 
-class LianPageScorePageActivity : BaseActivity() {
+class KaoPageScorePageActivityExam : BaseActivity() {
 
     override fun id(): Int {
         return R.layout.activity_lian_item_score_page

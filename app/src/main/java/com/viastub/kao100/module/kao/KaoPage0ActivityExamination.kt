@@ -1,4 +1,4 @@
-package com.viastub.kao100.module.lian
+package com.viastub.kao100.module.kao
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import java.io.File
 
 
-class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
+class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
     override fun id(): Int {
         return R.layout.activity_lian_item_page
@@ -352,7 +352,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
         missing: Int,
         rate: Int
     ) {
-        var intent = Intent(this, LianPageScorePageActivity::class.java)
+        var intent = Intent(this, KaoPageScorePageActivityExam::class.java)
         intent.putExtra("scoreEarned", scoreEarned)
         intent.putExtra("rate", rate)
 
@@ -529,7 +529,7 @@ class LianPage0ActivityClone : BaseActivity(), QuestionActionListener {
     }
 
     private fun doGoBack() {
-        super@LianPage0ActivityClone.onBackPressed()
+        super@KaoPage0ActivityExamination.onBackPressed()
         stopPlayer()
         Variables.availableTemplateIds.clear()
         Variables.currentTemplateIdIdx = -1

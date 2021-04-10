@@ -44,7 +44,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         book: PracticeBook,
         sections: List<PracticeSection>
     ) {
-        var intent = Intent(this, LianPage0Activity::class.java)
+        var intent = Intent(this, LianPage0ActivityPractice::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
         intent.putExtra("context", LianContext(book, sections.toMutableList()))
