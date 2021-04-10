@@ -31,7 +31,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         header_title.text = "试卷信息"
 
 
-        btn_kao_start.setOnClickListener {
+        btn_lian_start.setOnClickListener {
             exam?.let {
                 awaitAsync(dataAction = {
                     RoomDB.get(applicationContext).practiceSection()
@@ -81,7 +81,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             if (it >= 0.0) {
                 summary_exam_lastScores.visibility = View.VISIBLE
                 summary_exam_lastScores.text = "本次得分:${it}"
-                btn_kao_start.text = "查看本次结果"
+                btn_lian_start.text = "查看本次结果"
                 btn_kao_resume.isEnabled = false
                 btn_kao_resume.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
             }

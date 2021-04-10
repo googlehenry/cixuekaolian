@@ -8,7 +8,7 @@ import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.utils.VariablesLian
-import kotlinx.android.synthetic.main.activity_kao_exam_summary.btn_kao_start
+import kotlinx.android.synthetic.main.activity_kao_exam_summary.btn_lian_start
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_title
 import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.*
@@ -34,7 +34,9 @@ class LianBookUnitSummaryActivity : BaseActivity() {
             summary_book_icon.setImageURI(Uri.fromFile(it))
         }
 
-        btn_kao_start.setOnClickListener {
+        btn_lian_start.text = "开始练习(随机)"
+
+        btn_lian_start.setOnClickListener {
             startBookSection(book!!, mutableListOf(section!!))
         }
 

@@ -87,7 +87,7 @@
             android:paddingBottom="@dimen/dp_10">
 
             <Button
-                android:id="@+id/btn_kao_start"
+                android:id="@+id/btn_lian_start"
                 style="@style/rectangle_blue"
                 android:layout_width="@dimen/dp_160"
                 android:layout_height="@dimen/dp_40"

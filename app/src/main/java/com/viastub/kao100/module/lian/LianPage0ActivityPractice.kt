@@ -37,10 +37,14 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         var lianContext = intent?.extras?.get("context") as LianContext
 
-
-        VariablesLian.availableTemplateIds =
+        var templateIds =
             lianContext.sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }
                 .toMutableList()
+        templateIds.shuffle() //random
+
+
+        VariablesLian.availableTemplateIds = templateIds
+
         VariablesLian.currentTemplateIdIdx =
             if (VariablesLian.availableTemplateIds!!.size > 0) 0 else -1
 
@@ -80,19 +84,26 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
-        if (VariablesLian.currentTemplateIdIdx < VariablesLian.availableTemplateIds.size - 1) {
-            lian_item_switch_next_btn.isEnabled = true
+
+        lian_item_switch_prev_btn.visibility = View.VISIBLE
+
+        lian_item_switch_next_btn.isEnabled = template.submitted
+        lian_item_switch_next_btn.visibility = View.VISIBLE
+
+        if (template.submitted) {
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+            lian_template_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         } else {
-            lian_item_switch_next_btn.isEnabled = false
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+            lian_template_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         }
-        if (VariablesLian.currentTemplateIdIdx <= 0) {
-            lian_item_switch_prev_btn.isEnabled = false
-            lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-        } else {
-            lian_item_switch_prev_btn.isEnabled = true
+
+        if (VariablesLian.currentTemplateIdIdx > 0 && VariablesLian.availableTemplateIds.size > 1) {
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+            lian_item_switch_prev_btn.isEnabled = true
+        } else {
+            lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+            lian_item_switch_prev_btn.isEnabled = false
         }
 
         lian_item_switch_prev_btn.setOnClickListener {
@@ -101,9 +112,12 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
 
         lian_item_switch_next_btn.setOnClickListener {
-            turnTo(template, 1)
-            loseFocusForEditable(template)
+            if (template.submitted) {
+                turnTo(template, 1)
+                loseFocusForEditable(template)
+            }
         }
+
         lian_item_explanations.setOnClickListener {
             loseFocusForEditable(template)
         }
@@ -119,14 +133,13 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         lian_template_result_submit.visibility = View.VISIBLE
 
         lian_template_result_submit.setOnClickListener {
-            template.submitted = true
-            recycler_view_lian_item_questions.adapter?.notifyDataSetChanged()
-            showExplanationForTemplate(template)
-            loseFocusForEditable(template)
-            lian_template_result_submit.isEnabled = false
-            lian_template_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+            if (!template.submitted) {
+                template.submitted = true
+                Variables.availableTemplatesMap[template.id!!] = template
 
-            checkAnswers(template)
+                turnTo(template, 0)
+                checkAnswers(template)
+            }
         }
 
         template.itemMainAudioPath?.let {
@@ -144,11 +157,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
 
         Variables.availableTemplatesMap[template.id]?.let {
-            if (Variables.kaoContext?.loadLastExam == true) {
-                null
-            } else {
-                updateQuestions(it, it.questionsDb!!)
-            }
+            updateQuestions(it, it.questionsDb!!)
         } ?: template.practiceQuestions()?.let {
             awaitAsync(
                 dataAction = {
