@@ -42,7 +42,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         Variables.kaoContext = lianContext
         Variables.availableTemplateIds =
-            sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }.toMutableList()
+            sections?.flatMap { it.practiceTemplateIds() ?: mutableListOf() }.toMutableList()
         Variables.currentTemplateIdIdx =
             if (Variables.availableTemplateIds!!.size > 0) 0 else -1
 

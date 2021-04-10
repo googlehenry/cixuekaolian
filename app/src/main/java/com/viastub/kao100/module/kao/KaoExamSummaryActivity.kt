@@ -58,7 +58,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                     RoomDB.get(applicationContext).practiceSection().getByIds(it)
                         ?.mapIndexed { index, practiceSection ->
                             practiceSection.templatesDB =
-                                practiceSection.practiceTemplates()?.let {
+                                practiceSection.practiceTemplateIds()?.let {
                                     RoomDB.get(applicationContext).practiceTemplate()
                                         .getByIds(it)?.toMutableList()
                                 }

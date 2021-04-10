@@ -22,6 +22,7 @@ import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesLian
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import java.io.File
+import java.util.*
 
 
 class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
@@ -36,21 +37,48 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         header_back.setOnClickListener { onBackPressed() }
 
         var lianContext = intent?.extras?.get("context") as LianContext
+        VariablesLian.lianContext = lianContext
 
         var templateIds =
-            lianContext.sections?.flatMap { it.practiceTemplates() ?: mutableListOf() }
+            lianContext.sections?.flatMap {
+                it.practiceTemplateIds()?.toSortedSet()?.toMutableList() ?: mutableListOf()
+            }
                 .toMutableList()
-        templateIds.shuffle() //random
-
-
         VariablesLian.availableTemplateIds = templateIds
 
-        VariablesLian.currentTemplateIdIdx =
-            if (VariablesLian.availableTemplateIds!!.size > 0) 0 else -1
 
-        if (VariablesLian.currentTemplateIdIdx >= 0) {
-            loadCurrentQuestionTemplate()
-        }
+        awaitAsync({
+            lianContext.sections?.map {
+                it.mySectionPracticeHistory =
+                    RoomDB.get(applicationContext).mySectionPracticeHistory()
+                        .getByUserIdAndSectionId(Variables.currentUserId, it.id!!)
+                it
+            }
+        }, {
+            var latestTemplateDone = lianContext.sections?.flatMap {
+                it.mySectionPracticeHistory?.let { it.myFinishedTemplateIds() } ?: sortedSetOf()
+            }.maxOrNull()
+            val startedIndex = latestTemplateDone?.let {
+                templateIds.indexOf(it).let {
+                    if (it < 0) 0 else (it + 1).also {
+                        Toast.makeText(this, "从上次接着练习", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } ?: 0
+
+            VariablesLian.currentTemplateIdIdx =
+                if (VariablesLian.availableTemplateIds!!.size > 0) {
+                    if (startedIndex < templateIds.size) {
+                        startedIndex
+                    } else {
+                        templateIds.size - 1
+                    }
+                } else -1
+
+            if (VariablesLian.currentTemplateIdIdx >= 0) {
+                loadCurrentQuestionTemplate()
+            }
+        })
 
 
     }
@@ -70,6 +98,20 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
     }
 
     private fun updateUI(template: PracticeTemplate) {
+
+        VariablesLian.lianContext?.sections?.find {
+            it.practiceTemplateIds()?.contains(template.id) == true
+        }?.let {
+            VariablesLian.loadLastTimeSubmittedAnswers =
+                (it.mySectionPracticeHistory?.myFinishedTemplateIds() ?: sortedSetOf()).contains(
+                    template.id
+                )
+        }
+
+        if (VariablesLian.loadLastTimeSubmittedAnswers) {
+            template.submitted = true
+        }
+
 
         lian_item_seq.text =
             "${VariablesLian.currentTemplateIdIdx + 1}/${VariablesLian.availableTemplateIds.size}"
@@ -107,6 +149,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
 
         lian_item_switch_prev_btn.setOnClickListener {
+
             turnTo(template, -1)
             loseFocusForEditable(template)
         }
@@ -135,10 +178,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         lian_template_result_submit.setOnClickListener {
             if (!template.submitted) {
                 template.submitted = true
-                Variables.availableTemplatesMap[template.id!!] = template
-
                 turnTo(template, 0)
                 checkAnswers(template)
+            } else {
+                Toast.makeText(this, "请勿重复提交", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -156,7 +199,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             showExplanationForTemplate(template)
         }
 
-        Variables.availableTemplatesMap[template.id]?.let {
+        VariablesLian.availableTemplatesMap[template.id]?.let {
             updateQuestions(it, it.questionsDb!!)
         } ?: template.practiceQuestions()?.let {
             awaitAsync(
@@ -202,14 +245,24 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             }
             .toMutableList()
         var myAction = RoomDB.get(applicationContext).myQuestionAction()
-            .getByQuestionIdsOfUser(VariablesLian.currentUserId, qs.id!!)
+            .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(VariablesLian.currentUserId, qs.id!!))
+                .insert(MyQuestionAction(Variables.currentUserId, qs.id!!))
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
-                .getByQuestionIdsOfUser(VariablesLian.currentUserId, qs.id!!)
+                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
+        }
+
+        if (VariablesLian.loadLastTimeSubmittedAnswers) {
+            var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+                .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id!!)
+
+            answeredHistory?.let {
+                qs.myQuestionAnsweredHistoryDb = it
+                qs.usersAnswers = it.getMyAnswers() ?: mutableMapOf()
+            }
         }
 
         qs.optionsDb = options
@@ -316,8 +369,6 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
     private fun doGoBack() {
         super@LianPage0ActivityPractice.onBackPressed()
         stopPlayer()
-        VariablesLian.availableTemplateIds.clear()
-        VariablesLian.currentTemplateIdIdx = -1
     }
 
 
@@ -460,6 +511,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
         launchAsync {
+            var roomDb = RoomDB.get(applicationContext)
 
             var answeredHistories = template.questionsDb?.map {
                 MyQuestionAnsweredHistory(
@@ -471,8 +523,32 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             } ?: mutableListOf()
 
             answeredHistories?.toMutableList()?.let {
-                RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+                roomDb.myQuestionAnsweredHistory()
                     .insertAll(it)
+            }
+
+            VariablesLian.lianContext?.sections?.find {
+                it.practiceTemplateIds()?.contains(template.id) == true
+            }?.let {
+                it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
+                    .getByUserIdAndSectionId(Variables.currentUserId, it.id!!)
+                if (it.mySectionPracticeHistory == null) {
+                    var his = MySectionPracticeHistory(
+                        Variables.currentUserId,
+                        it.id!!,
+                        template.id.toString()
+                    )
+                    var myId = roomDb.mySectionPracticeHistory().insert(his).toInt()
+                    his.id = myId
+                    it.mySectionPracticeHistory = his
+                } else {
+                    var existingIds =
+                        it.mySectionPracticeHistory!!.myFinishedTemplateIds() ?: sortedSetOf()
+                    existingIds.add(template.id)
+
+                    it.mySectionPracticeHistory!!.setMyFinishedTemplateIdsSortedString(existingIds.toMutableList())
+                    roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
+                }
             }
         }
 

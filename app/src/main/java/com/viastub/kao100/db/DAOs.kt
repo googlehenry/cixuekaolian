@@ -444,3 +444,24 @@ interface MyExamSimuHistoryDao {
     fun delete(items: MutableList<MyExamSimuHistory>)
 }
 
+@Dao
+interface MySectionPracticeHistoryDao {
+    @Query("SELECT * FROM MySectionPracticeHistory")
+    fun getAll(): MutableList<MySectionPracticeHistory>
+
+    @Query("SELECT * FROM MySectionPracticeHistory where userId=:userId and sectionId=:sectionId order by id desc limit 1")
+    fun getByUserIdAndSectionId(userId: Int, sectionId: Int): MySectionPracticeHistory?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MySectionPracticeHistory): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(items: MutableList<MySectionPracticeHistory>)
+
+    @Delete
+    fun delete(item: MySectionPracticeHistory)
+
+    @Delete
+    fun delete(items: MutableList<MySectionPracticeHistory>)
+}
+

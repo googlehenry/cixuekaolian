@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.lian
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import com.viastub.kao100.R
@@ -34,7 +35,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
             summary_book_icon.setImageURI(Uri.fromFile(it))
         }
 
-        btn_lian_start.text = "开始练习(随机)"
+        btn_lian_start.text = "开始练习"
 
         btn_lian_start.setOnClickListener {
             startBookSection(book!!, mutableListOf(section!!))
@@ -55,6 +56,18 @@ class LianBookUnitSummaryActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        dialog.setTitle("未提交答案不会保存,退出测试吗?")
+        dialog.setPositiveButton("退出") { dialog, which ->
+            doGoBack()
+        }
+        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
+        dialog.show()
+
+    }
+
+    private fun doGoBack() {
         super.onBackPressed()
         VariablesLian.lianContext = null
         VariablesLian.availableTemplatesMap.clear()

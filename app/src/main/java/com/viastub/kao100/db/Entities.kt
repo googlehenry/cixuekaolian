@@ -243,6 +243,8 @@ data class PracticeTarget(
 @Parcelize
 @Entity
 data class PracticeBook(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
     @ColumnInfo
     var name: String,
     @ColumnInfo
@@ -252,8 +254,6 @@ data class PracticeBook(
     @ColumnInfo
     var unitSectionIdsString: String? = null,//section can be any type of blocks
 ) : Parcelable {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
 
     fun coverImage(): File? = coverImagePath?.let { File(it) }
 
@@ -277,6 +277,8 @@ data class PracticeBook(
 @Parcelize
 @Entity
 data class PracticeSection(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
     @ColumnInfo
     var browseMode: String = BrowseMode.SEQUENCE.name,//SEQUENCE, RANDOM
     @ColumnInfo
@@ -284,19 +286,19 @@ data class PracticeSection(
     @ColumnInfo
     var practiceTemplateIds: String? = null
 ) : Parcelable {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
-
     fun bindId(id: Int): PracticeSection {
         return this.also { this.id = id }
     }
 
-    fun practiceTemplates(): MutableList<Int>? {
+    fun practiceTemplateIds(): MutableList<Int>? {
         return practiceTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }
 
     @Ignore
     var templatesDB: MutableList<PracticeTemplate>? = null
+
+    @Ignore
+    var mySectionPracticeHistory: MySectionPracticeHistory? = null
 
     @Ignore
     var displaySeq: Int = 0
@@ -578,6 +580,34 @@ data class MyUser(
     var dateAdded: String = Date().toString(),
 )
 
+@Parcelize
+@Entity
+data class MySectionPracticeHistory(
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var sectionId: Int,
+    @ColumnInfo
+    var myFinishedTemplateIdsSortedString: String? = null,
+
+    ) : Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
+    fun myFinishedTemplateIds(): SortedSet<Int>? {
+        return myFinishedTemplateIdsSortedString?.split(",")?.filter { it.isNotEmpty() }
+            ?.map { it.toInt() }?.toSortedSet()
+    }
+
+    fun setMyFinishedTemplateIdsSortedString(templateIds: MutableList<Int>?): MySectionPracticeHistory {
+        templateIds?.let {
+            myFinishedTemplateIdsSortedString = templateIds.joinToString(",")
+        }
+        return this
+    }
+
+}
+
 @Entity
 data class MyExamSimuHistory(
     @ColumnInfo
@@ -658,7 +688,7 @@ data class MyQuestionAnsweredHistory(
 
     fun setMyAnswersJson(answers: MutableMap<Int, String>?): MyQuestionAnsweredHistory {
         answers?.let {
-            answersIntStringMapInJson = Gson().toJson(it)
+            this.answersIntStringMapInJson = Gson().toJson(it)
         }
         return this
     }
