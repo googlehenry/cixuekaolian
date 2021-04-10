@@ -83,8 +83,20 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     }
 
-    private fun loadCurrentQuestionTemplate() {
+    private fun loadCurrentQuestionTemplate(loadReviewMode: Boolean = true) {
         val templateId = VariablesLian.availableTemplateIds!![VariablesLian.currentTemplateIdIdx]
+
+        VariablesLian.lianContext?.sections?.find {
+            it.practiceTemplateIds()?.contains(templateId) == true
+        }?.let {
+            VariablesLian.loadLastTimeSubmittedAnswers =
+                (it.mySectionPracticeHistory?.myFinishedTemplateIds() ?: sortedSetOf()).contains(
+                    templateId
+                )
+        }
+        if (!loadReviewMode) {
+            VariablesLian.loadLastTimeSubmittedAnswers = false
+        }
 
         VariablesLian.availableTemplatesMap[templateId]?.let {
             updateUI(it)
@@ -99,19 +111,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     private fun updateUI(template: PracticeTemplate) {
 
-        VariablesLian.lianContext?.sections?.find {
-            it.practiceTemplateIds()?.contains(template.id) == true
-        }?.let {
-            VariablesLian.loadLastTimeSubmittedAnswers =
-                (it.mySectionPracticeHistory?.myFinishedTemplateIds() ?: sortedSetOf()).contains(
-                    template.id
-                )
-        }
 
         if (VariablesLian.loadLastTimeSubmittedAnswers) {
             template.submitted = true
         }
-
 
         lian_item_seq.text =
             "${VariablesLian.currentTemplateIdIdx + 1}/${VariablesLian.availableTemplateIds.size}"
@@ -182,6 +185,18 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 checkAnswers(template)
             } else {
                 Toast.makeText(this, "请勿重复提交", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (template.submitted) {
+            header_action_submit.visibility = View.VISIBLE
+            header_action_submit.text = "重做该练习"
+            header_action_submit.setOnClickListener {
+                template.submitted = false
+                template.questionsDb?.forEach { it.usersAnswers = mutableMapOf() }
+                loadCurrentQuestionTemplate(false)
+
+                header_action_submit.visibility = View.GONE
             }
         }
 
