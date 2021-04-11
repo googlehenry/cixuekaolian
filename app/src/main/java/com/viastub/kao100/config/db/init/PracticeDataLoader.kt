@@ -278,7 +278,7 @@ class PracticeDataLoader : DataLoader {
                                     ),
                                     PracticeQuestion(
                                         type = QuestionType.CORRECT.name,
-                                        answerStandard = "Germen>Germans",
+                                        answerStandard = "Germen->Germans",
                                         answerKeyPoints = "句意为:前几天参观校园时,我们遇到了几个德国人。 German作名词可表示“德国人”,此处被 several修饰,应用复数形式。 German的复数为 Germans,不是 Germen."
                                     ).bindId(49).bindOptionsDbToThis(
                                         mutableListOf(
@@ -286,7 +286,7 @@ class PracticeDataLoader : DataLoader {
                                                 96,
                                                 LayoutUI.CORRECTION.name,
                                                 null,
-                                                correctAnswersSplitByPipes = "Germen>Germans"
+                                                correctAnswersSplitByPipes = "Germen->Germans"
                                             )
                                         )
                                     ),
