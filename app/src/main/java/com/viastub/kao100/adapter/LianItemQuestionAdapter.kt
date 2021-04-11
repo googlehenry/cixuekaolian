@@ -57,7 +57,7 @@ class LianItemQuestionAdapter(
                 questionOptionsHolder.adapter = adapter
                 questionOptionsHolder.layoutManager = GridLayoutManager(
                     context,
-                    item.layoutOptionsPerRow
+                    item.layoutOptionsPerRowX()
                 )
             } else if (item.type == Constants.practice_question_type_select) {
                 var adapter =
@@ -71,7 +71,7 @@ class LianItemQuestionAdapter(
                 questionOptionsHolder.adapter = adapter
                 questionOptionsHolder.layoutManager = GridLayoutManager(
                     context,
-                    item.layoutOptionsPerRow
+                    item.layoutOptionsPerRowX()
                 )
             } else if (item.type == Constants.practice_question_type_correct) {
                 var adapter =
@@ -85,7 +85,7 @@ class LianItemQuestionAdapter(
                 questionOptionsHolder.adapter = adapter
                 questionOptionsHolder.layoutManager = GridLayoutManager(
                     context,
-                    item.layoutOptionsPerRow
+                    item.layoutOptionsPerRowX()
                 )
             }
         }

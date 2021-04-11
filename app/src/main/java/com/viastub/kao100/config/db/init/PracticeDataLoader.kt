@@ -335,7 +335,6 @@ class PracticeDataLoader : DataLoader {
                                 )
                             ),
                             PracticeTemplate(
-                                layoutQuestionsPerRow = 2,
                                 category = "语法填空",
                                 requirement = "[河北武邑中学2019高一月考]阅读下面短文,在空白处填入1个适当的单词或括号内单词的正确形式",
                                 itemMainText = """

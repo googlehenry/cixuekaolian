@@ -397,7 +397,7 @@ data class PracticeQuestion(
     @ColumnInfo
     var answerKeyPoints: String? = null,
     @ColumnInfo
-    var layoutOptionsPerRow: Int = 1,
+    var layoutOptionsPerRow: Int = 1,//can auto adjust based on answer's length 30
     @ColumnInfo
     var requireAnsweredOptionsNo: Int = 1,
     @ColumnInfo
@@ -431,6 +431,18 @@ data class PracticeQuestion(
     fun answerStandardX(): String? {
         return answerStandard ?: optionsDb?.flatMap { it.correctAnswers() ?: mutableSetOf() }
             ?.joinToString(",")
+    }
+
+    fun layoutOptionsPerRowX(): Int {
+        return if (layoutOptionsPerRow > 1) {
+            layoutOptionsPerRow
+        } else {
+            val maxLength: Int = optionsDb?.flatMap {
+                it.correctAnswers()?.map { it.length } ?: mutableListOf<Int>()
+            }?.maxOrNull() ?: -1
+
+            return if (maxLength > 30) 1 else 2
+        }
     }
 
     fun optionPractices(): MutableList<Int>? {
