@@ -3,6 +3,7 @@ package com.viastub.kao100.module.lian
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.LianContext
@@ -31,6 +32,11 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         var section = intent?.extras?.get("section")?.let { it as PracticeSection }
 
         summary_book_unit_name.text = "${book?.name}\n${section?.name}"
+        summary_book_unit_description.visibility =
+            if (section?.description.isNullOrBlank()) View.GONE else View.VISIBLE
+        section?.description?.let {
+            summary_book_unit_description.text = it
+        }
         book?.coverImage()?.let {
             summary_book_icon.setImageURI(Uri.fromFile(it))
         }

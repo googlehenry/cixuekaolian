@@ -284,7 +284,9 @@ data class PracticeSection(
     @ColumnInfo
     var name: String? = null,
     @ColumnInfo
-    var practiceTemplateIds: String? = null
+    var practiceTemplateIds: String? = null,
+    @ColumnInfo
+    var description: String? = null,
 ) : Parcelable {
     fun bindId(id: Int): PracticeSection {
         return this.also { this.id = id }

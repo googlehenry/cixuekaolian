@@ -11,10 +11,10 @@
         android:layout_width="45dp"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:background="#673AB7" />
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="3dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:background="#673AB7" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_lian_targets"
