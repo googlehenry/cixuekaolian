@@ -433,7 +433,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 (v as Button).text = "收藏"
             }
 
-            launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+            doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
         }
     }
 
@@ -450,7 +450,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     needSave = true
                 }
                 if (needSave) {
-                    launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+                    doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
                 }
 
                 input.visibility = View.GONE

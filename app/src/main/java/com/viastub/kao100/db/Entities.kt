@@ -433,18 +433,6 @@ data class PracticeQuestion(
             ?.joinToString(",")
     }
 
-    fun layoutOptionsPerRowX(): Int {
-        return if (layoutOptionsPerRow > 1) {
-            layoutOptionsPerRow
-        } else {
-            val maxLength: Int = optionsDb?.flatMap {
-                it.correctAnswers()?.map { it.length } ?: mutableListOf<Int>()
-            }?.maxOrNull() ?: -1
-
-            return if (maxLength > 30) 1 else 2
-        }
-    }
-
     fun optionPractices(): MutableList<Int>? {
         return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
     }

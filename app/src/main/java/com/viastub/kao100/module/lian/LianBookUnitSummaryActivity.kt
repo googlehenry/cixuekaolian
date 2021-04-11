@@ -33,7 +33,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         var book = intent?.extras?.get("book")?.let { it as PracticeBook }
         var section = intent?.extras?.get("section")?.let { it as PracticeSection }
 
-        summary_book_unit_name.text = "${book?.name}\n${section?.name}"
+        summary_book_unit_name.text = "${section?.name}"
         summary_book_unit_description.visibility =
             if (section?.description.isNullOrBlank()) View.GONE else View.VISIBLE
         section?.description?.let {
@@ -55,7 +55,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
                 .getByUserIdAndSectionId(Variables.currentUserId, section?.id!!)
         }, {
             it?.let {
-                summary_book_unit_progress.visibility = View.VISIBLE
+                progress_holder.visibility = View.VISIBLE
                 val max = (section?.practiceTemplateIds()?.size ?: 0)
                 val done = (it.myFinishedTemplateIds()?.size ?: 0)
                 summary_book_unit_total.text = "共计:${max}大题"

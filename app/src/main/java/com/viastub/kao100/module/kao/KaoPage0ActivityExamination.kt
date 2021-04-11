@@ -308,7 +308,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             0
         )
 
-        launchAsync {
+        doAsync {
             if (Variables.kaoContext?.type == KaoType.ExamSimulation) {
 
                 RoomDB.get(applicationContext).myExamSimuHistory().insert(
@@ -433,7 +433,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         }?.toMutableList()
 
         answeredHistoryForThisTemplate?.let {
-            launchAsync {
+            doAsync {
                 RoomDB.get(applicationContext).myQuestionAnsweredHistory().insertAll(it)
             }
         }
@@ -573,7 +573,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                 (v as Button).text = "收藏"
             }
 
-            launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+            doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
         }
     }
 
@@ -590,7 +590,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                     needSave = true
                 }
                 if (needSave) {
-                    launchAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
+                    doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
                 }
 
                 input.visibility = View.GONE

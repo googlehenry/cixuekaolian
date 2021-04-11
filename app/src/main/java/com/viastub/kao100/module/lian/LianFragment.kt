@@ -32,31 +32,34 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
         doAsync(0, {
             val roomDB: RoomDB = RoomDB.get(applicationContext = mContext)
-            roomDB.practiceTarget().getAll()?.map { target ->
+            roomDB.practiceTarget().getAll()?.toMutableList()
+        },
+            {
+                updateUI(it)
+            })
 
-                var books = target.bookIds()?.map { bookId ->
-                    var bookDb = roomDB.practiceBook().getById(bookId)
+    }
 
-                    bookDb?.bindUnitSectionsDBToThis(bookDb?.unitSectionIds()?.let { sectionIds ->
-                        var sections = roomDB.practiceSection().getByIds(sectionIds)
-                        sections?.forEach { sec ->
-                            sec.mySectionPracticeHistory = roomDB.mySectionPracticeHistory()
-                                .getByUserIdAndSectionId(Variables.currentUserId, sec?.id!!)
-                        }
-                        sections
-                    }?.toMutableList())
+    private fun loadBooksFromDB(
+        target: PracticeTarget,
+        roomDB: RoomDB
+    ) {
+        var books = target.bookIds()?.map { bookId ->
+            var bookDb = roomDB.practiceBook().getById(bookId)
 
-                    bookDb
-                }?.filterNotNull()?.toMutableList()
+            bookDb?.bindUnitSectionsDBToThis(bookDb?.unitSectionIds()?.let { sectionIds ->
+                var sections = roomDB.practiceSection().getByIds(sectionIds)
+                sections?.forEach { sec ->
+                    sec.mySectionPracticeHistory = roomDB.mySectionPracticeHistory()
+                        .getByUserIdAndSectionId(Variables.currentUserId, sec?.id!!)
+                }
+                sections
+            }?.toMutableList())
 
-                target.bindBooksDBToThis(books = books)
-                target
-            }?.toMutableList()
-        }, {
-            updateUI(it)
-        })
+            bookDb
+        }?.filterNotNull()?.toMutableList()
 
-
+        target.bindBooksDBToThis(books = books)
     }
 
     private fun updateUI(targets: MutableList<PracticeTarget>?) {
@@ -93,23 +96,29 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     private fun loadBooksOfTarget(target: PracticeTarget) {
+        doAsync(0, {
+            loadBooksFromDB(target, RoomDB.get(applicationContext = mContext))
+        }, {
+            target.booksDb?.let {
+                var adapterBooks = ExcerciseByBookAdapter(object : View.OnClickListener {
+                    override fun onClick(v: View?) {//onclick books
+                        val unitHolder = v?.findViewById<RecyclerView>(R.id.recycler_units)
+                        val folderImageView =
+                            v?.findViewById<ImageView>(R.id.lian_book_item_show_more)
+                        unitHolder?.visibility =
+                            if (unitHolder?.isVisible == true) View.GONE else View.VISIBLE
+                        folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_minus else R.drawable.icon_button_plus)
+                    }
 
-        target.booksDb?.let {
-            var adapterBooks = ExcerciseByBookAdapter(object : View.OnClickListener {
-                override fun onClick(v: View?) {//onclick books
-                    val unitHolder = v?.findViewById<RecyclerView>(R.id.recycler_units)
-                    val folderImageView = v?.findViewById<ImageView>(R.id.lian_book_item_show_more)
-                    unitHolder?.visibility =
-                        if (unitHolder?.isVisible == true) View.GONE else View.VISIBLE
-                    folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_minus else R.drawable.icon_button_plus)
-                }
+                }, this, target)
+                adapterBooks.data = it
+                recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
+                recycler_view_excercise_nav_groups.adapter = adapterBooks
 
-            }, this, target)
-            adapterBooks.data = it
-            recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
-            recycler_view_excercise_nav_groups.adapter = adapterBooks
+            }
+        })
 
-        }
+
     }
 
     override fun start(book: PracticeBook, unitSection: PracticeSection) {

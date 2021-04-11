@@ -400,6 +400,8 @@ interface MyQuestionActionDao {
     @Delete
     fun delete(items: MutableList<MyQuestionAction>)
 
+    @Query("DELETE FROM MyQuestionAction")
+    fun deleteAll()
 }
 
 @Dao
@@ -421,6 +423,9 @@ interface MyQuestionAnsweredHistoryDao {
 
     @Delete
     fun delete(items: MutableList<MyQuestionAnsweredHistory>)
+
+    @Query("DELETE FROM MyQuestionAnsweredHistory")
+    fun deleteAll()
 }
 
 @Dao
@@ -442,6 +447,9 @@ interface MyExamSimuHistoryDao {
 
     @Delete
     fun delete(items: MutableList<MyExamSimuHistory>)
+
+    @Query("DELETE FROM MyExamSimuHistory")
+    fun deleteAll()
 }
 
 @Dao
@@ -463,5 +471,8 @@ interface MySectionPracticeHistoryDao {
 
     @Delete
     fun delete(items: MutableList<MySectionPracticeHistory>)
+
+    @Query("DELETE FROM MySectionPracticeHistory")
+    fun deleteAll()
 }
 

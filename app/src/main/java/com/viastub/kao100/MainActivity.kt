@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
@@ -81,6 +82,15 @@ class MainActivity : BaseActivity() {
                     var intent = Intent(this, NavPageVpnActivity::class.java)
                     startActivity(intent)
                 }
+                R.id.nav_db_cleanHistory -> {
+                    doAsync {
+                        RoomDB.get(applicationContext).mySectionPracticeHistory().deleteAll()
+                        RoomDB.get(applicationContext).myExamSimuHistory().deleteAll()
+                        RoomDB.get(applicationContext).myQuestionAnsweredHistory().deleteAll()
+                        RoomDB.get(applicationContext).myQuestionAction().deleteAll()
+                    }
+                }
+
             }
 
             //关闭侧边栏

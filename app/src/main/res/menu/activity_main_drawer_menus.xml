@@ -31,6 +31,10 @@
                 android:id="@+id/nav_vpn_manage"
                 android:icon="@drawable/ic_menu_info"
                 android:title="管理VPN" />
+            <item
+                android:id="@+id/nav_db_cleanHistory"
+                android:icon="@drawable/ic_menu_info"
+                android:title="删除答题记录" />
         </menu>
     </item>
 

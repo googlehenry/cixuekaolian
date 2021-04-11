@@ -346,6 +346,7 @@ class PracticeDataLoader : DataLoader {
                             ).bindId(11).bindQuestionsDbToThis(
                                 mutableListOf(
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "修饰名词短语 animals and enemies应用形容词。",
                                         type = QuestionType.FILL.name,
                                     ).bindId(53).bindOptionsDbToThis(
@@ -358,6 +359,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "设空处与 starve并列,eat与主语是被动关系,所以设空处应用被动语态。前有 would,故填 be eaten",
                                         type = QuestionType.FILL.name,
                                     ).bindId(54).bindOptionsDbToThis(
@@ -370,6 +372,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "修饰be动词应用副词,故填 exactly",
                                         type = QuestionType.FILL.name,
                                     ).bindId(55).bindOptionsDbToThis(
@@ -382,6 +385,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "be concerned about意为“为……担忧”",
                                         type = QuestionType.FILL.name,
                                     ).bindId(56).bindOptionsDbToThis(
@@ -394,6 +398,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "句意为:大多数人把朋友看作是当他们遇到困难时可以依靠的人。 go through意为“经历(困难、痛苦等)”",
                                         type = QuestionType.FILL.name,
                                     ).bindId(57).bindOptionsDbToThis(
@@ -406,6 +411,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "此处是It is…that…强调结构,强调时间状语 in these troubled times",
                                         type = QuestionType.FILL.name,
                                     ).bindId(58).bindOptionsDbToThis(
@@ -418,6 +424,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "goes as the old saying goes是固定表达,意为“老话说得好”",
                                         type = QuestionType.FILL.name,
                                     ).bindId(59).bindOptionsDbToThis(
@@ -430,6 +437,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "suffering介词of后一般接名词、代词或动名词作宾语",
                                         type = QuestionType.FILL.name,
                                     ).bindId(60).bindOptionsDbToThis(
@@ -442,6 +450,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "____that says you can hardly make a friend in a year为定语从句,修饰先行词 another saying,关系词在从句中作主语,且该句为there be句型,只能用that引导,故填that",
                                         type = QuestionType.FILL.name,
                                     ).bindId(61).bindOptionsDbToThis(
@@ -454,6 +463,7 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     ),
                                     PracticeQuestion(
+                                        layoutOptionsPerRow = 2,
                                         answerKeyPoints = "who引导定语从句,代替先行词 those在从句中作主语,从句中的谓语动词的数应取决于先行词的数,所以应用复数形式。",
                                         type = QuestionType.FILL.name,
                                     ).bindId(62).bindOptionsDbToThis(
