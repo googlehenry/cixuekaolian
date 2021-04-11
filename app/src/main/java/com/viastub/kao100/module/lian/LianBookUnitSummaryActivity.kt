@@ -9,6 +9,8 @@ import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
+import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesLian
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.btn_lian_start
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
@@ -26,7 +28,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         supportActionBar?.hide()
         header_back.setOnClickListener { onBackPressed() }
 
-        header_title.text = "单元内容简介"
+        header_title.text = "单元内容"
 
         var book = intent?.extras?.get("book")?.let { it as PracticeBook }
         var section = intent?.extras?.get("section")?.let { it as PracticeSection }
@@ -47,6 +49,22 @@ class LianBookUnitSummaryActivity : BaseActivity() {
             startBookSection(book!!, mutableListOf(section!!))
         }
 
+        //load progress if any
+        awaitAsync({
+            RoomDB.get(applicationContext).mySectionPracticeHistory()
+                .getByUserIdAndSectionId(Variables.currentUserId, section?.id!!)
+        }, {
+            it?.let {
+                summary_book_unit_progress.visibility = View.VISIBLE
+                val max = (section?.practiceTemplateIds()?.size ?: 0)
+                val done = (it.myFinishedTemplateIds()?.size ?: 0)
+                summary_book_unit_total.text = "共计:${max}大题"
+                summary_book_unit_done.text = "完成:${done}"
+                summary_book_unit_progress.max = max
+                summary_book_unit_progress.secondaryProgress = done
+                summary_book_unit_progress.progress = 0//error
+            }
+        })
     }
 
     fun startBookSection(

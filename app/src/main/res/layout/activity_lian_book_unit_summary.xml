@@ -69,8 +69,63 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:textColor="#000000"
+            android:textColor="#2ea5ef"
             android:textSize="@dimen/sp_20" />
+
+        <LinearLayout
+            android:id="@+id/progress_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/summary_book_unit_progress"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+                android:indeterminateOnly="false"
+                android:visibility="gone"
+                android:max="100"
+                android:mirrorForRtl="true"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_horizontal"
+                android:secondaryProgress="60" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_10">
+
+                <TextView
+                    android:id="@+id/summary_book_unit_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:textColor="#cc2ea5ef"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/summary_book_unit_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:textColor="#cc000000"
+                    android:textSize="@dimen/sp_16" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

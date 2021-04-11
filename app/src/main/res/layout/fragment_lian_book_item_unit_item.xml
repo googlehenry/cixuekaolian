@@ -6,27 +6,61 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dp_10"
     android:layout_marginRight="@dimen/dp_10"
-    android:padding="@dimen/dp_10"
-    android:background="@drawable/selector_button_round_corner_card_lian">
+    android:background="@drawable/selector_button_round_corner_card_lian"
+    android:padding="@dimen/dp_10">
 
-    <ImageView
-        android:id="@+id/start_excercise"
-        android:layout_width="@dimen/dp_16"
-        android:layout_height="@dimen/dp_18"
-        android:layout_gravity="center"
-        android:contentDescription="进入学习"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_richeng_time_start" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/unit_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sp_14"
-        android:layout_marginLeft="@dimen/dp_2"
-        app:layout_constraintStart_toEndOf="@id/start_excercise"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/start_excercise"
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_18"
+                android:layout_gravity="center"
+                android:contentDescription="进入学习"
+                android:src="@drawable/icon_richeng_time_start"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/unit_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toEndOf="@id/start_excercise"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/summary_book_unit_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#cc2ea5ef"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/summary_book_unit_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="#cc000000"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
