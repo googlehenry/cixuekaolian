@@ -333,7 +333,143 @@ class PracticeDataLoader : DataLoader {
                                         )
                                     )
                                 )
+                            ),
+                            PracticeTemplate(
+                                layoutQuestionsPerRow = 2,
+                                category = "语法填空",
+                                requirement = "[河北武邑中学2019高一月考]阅读下面短文,在空白处填入1个适当的单词或括号内单词的正确形式",
+                                itemMainText = """
+                                In the distant past, friends relied on each other for their survival. They hunted together and defended each other against 1____(danger) animals and enemies. In those days, if you didnt have a friend, you would either starve, 2____(eat) or killed. Nowadays, friendship isn't 3____(exact) a matter of life and death. However, friendship is still of great importance and not having a friend is something to be 4____(concern) about. Most people look upon a friend as someone they can depend on when they are going 5____times of trouble. In such times, friends provide them with emotional support and sometimes financial help. It is in these troubled times 6____ they find out who their true friends are As the old saying 7____(go), in times of success, friends will be plenty; in times of 8____(suffer), not one in twenty. And there is another saying 9____says you can hardly make a friend in a year, but you can easily upset one in an hour. So do your best to get along with and be grateful to all those who 10___(be) willing to side with you even when you are in trouble as they are your true friends.
+                            """.trimIndent(),
+                                keyPoints = "木文是一篇议论文,论述了朋友的重要性。真心的朋友会永远在你身边支持你,会在你困难的时候给予情感上的支持和必要时经济上的援助。",
+                                totalScore = 10.0,
+                                totalTimeInMinutes = 7.5
+                            ).bindId(11).bindQuestionsDbToThis(
+                                mutableListOf(
+                                    PracticeQuestion(
+                                        answerKeyPoints = "修饰名词短语 animals and enemies应用形容词。",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(53).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 100,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "dangerous"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "设空处与 starve并列,eat与主语是被动关系,所以设空处应用被动语态。前有 would,故填 be eaten",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(54).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 101,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "be eaten"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "修饰be动词应用副词,故填 exactly",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(55).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 102,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "exactly"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "be concerned about意为“为……担忧”",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(56).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 103,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "concerned"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "句意为:大多数人把朋友看作是当他们遇到困难时可以依靠的人。 go through意为“经历(困难、痛苦等)”",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(57).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 104,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "through"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "此处是It is…that…强调结构,强调时间状语 in these troubled times",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(58).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 105,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "that"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "goes as the old saying goes是固定表达,意为“老话说得好”",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(59).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 106,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "goes"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "suffering介词of后一般接名词、代词或动名词作宾语",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(60).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 107,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "suffering"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "____that says you can hardly make a friend in a year为定语从句,修饰先行词 another saying,关系词在从句中作主语,且该句为there be句型,只能用that引导,故填that",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(61).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 108,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "that"
+                                            )
+                                        )
+                                    ),
+                                    PracticeQuestion(
+                                        answerKeyPoints = "who引导定语从句,代替先行词 those在从句中作主语,从句中的谓语动词的数应取决于先行词的数,所以应用复数形式。",
+                                        type = QuestionType.FILL.name,
+                                    ).bindId(62).bindOptionsDbToThis(
+                                        mutableListOf(
+                                            PracticeAnswerOption(
+                                                id = 109,
+                                                layoutUI = LayoutUI.EDIT_TEXT.name,
+                                                correctAnswersSplitByPipes = "are"
+                                            )
+                                        )
+                                    ),
+
+                                    )
                             )
+
                         )
                     ),
                 PracticeSection(

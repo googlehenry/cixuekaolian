@@ -181,7 +181,6 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         lian_template_result_submit.setOnClickListener {
             if (!template.submitted) {
                 template.submitted = true
-                turnTo(template, 0)
                 checkAnswers(template)
             } else {
                 Toast.makeText(this, "请勿重复提交", Toast.LENGTH_SHORT).show()
@@ -535,7 +534,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         var rate =
             (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
-        launchAsync {
+        awaitAsync({
             var roomDb = RoomDB.get(applicationContext)
 
             var answeredHistories = template.questionsDb?.map {
@@ -575,7 +574,9 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
                 }
             }
-        }
+        }, {
+            turnTo(template, 0)
+        })
 
         startExamSummaryActivity(scoreEarned, right, wrong, missing, rate)
     }

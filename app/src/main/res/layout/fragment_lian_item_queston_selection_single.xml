@@ -86,7 +86,7 @@
                         android:id="@+id/question_functions_favorite_btn"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_5"
                         android:background="@drawable/selector_button_round_cornor_question_functions_blue"
                         android:text="收藏"
                         android:textColor="#fff"
@@ -96,26 +96,17 @@
                         android:id="@+id/question_functions_takenote_btn"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_5"
                         android:background="@drawable/selector_button_round_cornor_question_functions_blue"
                         android:text="笔记"
                         android:textColor="#fff"
                         android:textSize="@dimen/sp_10" />
 
-                    <!--                    <Button-->
-                    <!--                        android:layout_width="50dp"-->
-                    <!--                        android:layout_height="20dp"-->
-                    <!--                        android:layout_marginRight="@dimen/dp_10"-->
-                    <!--                        android:background="@drawable/selector_button_round_cornor_question_functions"-->
-                    <!--                        android:text="打标签"-->
-                    <!--                        android:textColor="#fff"-->
-                    <!--                        android:textSize="@dimen/sp_10" />-->
-
                     <Button
                         android:id="@+id/question_functions_report_btn"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_5"
                         android:background="@drawable/selector_button_round_cornor_question_functions"
                         android:text="报错"
                         android:textColor="#fff"

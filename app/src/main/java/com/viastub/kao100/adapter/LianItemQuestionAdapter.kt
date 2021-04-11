@@ -32,7 +32,7 @@ class LianItemQuestionAdapter(
     override fun convert(holder: BaseViewHolder, item: PracticeQuestion) {
         holder.setText(R.id.lian_item_question_main_seq, item.displaySeq.toString())
         holder.setText(R.id.lian_item_question_main_text, item.text)
-        holder.setText(R.id.lian_item_question_answer_reviewed, "答案: " + item.answerStandard)
+        holder.setText(R.id.lian_item_question_answer_reviewed, "答案: " + item.answerStandardX())
         holder.setText(R.id.lian_item_question_answer_explained, "解析: " + item.answerKeyPoints)
 
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
@@ -94,7 +94,7 @@ class LianItemQuestionAdapter(
         var answerExplained = holder.getView<TextView>(R.id.lian_item_question_answer_explained)
 
         answerReviewed.visibility =
-            if (lianItem.submitted && item.answerStandard != null) View.VISIBLE else View.GONE
+            if (lianItem.submitted && item.answerStandardX() != null) View.VISIBLE else View.GONE
         answerExplained.visibility =
             if (lianItem.submitted && item.answerKeyPoints != null) View.VISIBLE else View.GONE
 

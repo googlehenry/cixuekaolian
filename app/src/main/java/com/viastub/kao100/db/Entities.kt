@@ -393,7 +393,7 @@ data class PracticeQuestion(
     @ColumnInfo
     var text: String? = null,
     @ColumnInfo
-    var answerStandard: String? = null,
+    var answerStandard: String? = null,//display only after submit answers
     @ColumnInfo
     var answerKeyPoints: String? = null,
     @ColumnInfo
@@ -427,6 +427,11 @@ data class PracticeQuestion(
 
     @Ignore
     var myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory? = null
+
+    fun answerStandardX(): String? {
+        return answerStandard ?: optionsDb?.flatMap { it.correctAnswers() ?: mutableSetOf() }
+            ?.joinToString(",")
+    }
 
     fun optionPractices(): MutableList<Int>? {
         return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
