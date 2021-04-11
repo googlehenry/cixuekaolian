@@ -6,22 +6,22 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.ms.square.android.expandabletextview.ExpandableTextView
 import com.viastub.kao100.R
-import com.viastub.kao100.beans.TeachItem
+import com.viastub.kao100.db.TeachingPoint
 
 /**
  * Created by yechao on 2020/1/17/017.
  * Describe :
  */
 class ExpandableTextAdapter :
-    BaseQuickAdapter<TeachItem, BaseViewHolder>(R.layout.fragment_xue_item_teach_item),
+    BaseQuickAdapter<TeachingPoint, BaseViewHolder>(R.layout.fragment_xue_item_teach_item),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: TeachItem) {
+    override fun convert(holder: BaseViewHolder, item: TeachingPoint) {
         var content = holder.getView<ExpandableTextView>(R.id.expand_text_view)
         var title = holder.getView<TextView>(R.id.title_high)
 
-        title.text = item.id.toString() + "." + item.title
-        content.text = item.content
+        title.text = item.sequence.toString() + " " + item.point
+        content.text = item.explained
 
     }
 

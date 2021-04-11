@@ -178,152 +178,103 @@ interface ExamSimulationDao {
 
 
 @Dao
-interface BookDao {
-    @Query("SELECT * FROM Book")
-    fun getAll(): List<Book>
+interface TeachingBookDao {
+    @Query("SELECT * FROM TeachingBook order by grade desc")
+    fun getAll(): List<TeachingBook>?
 
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: Book)
+    fun insert(item: TeachingBook)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<TeachingBook>)
 
     @Delete
-    fun delete(item: Book)
+    fun delete(item: TeachingBook)
 }
 
 
 @Dao
-interface BookAppendixDao {
-    @Query("SELECT * FROM BookAppendix")
-    fun getAll(): List<BookAppendix>
+interface TeachingBookUnitSectionDao {
+    @Query("SELECT * FROM TeachingBookUnitSection")
+    fun getAll(): List<TeachingBookUnitSection>?
 
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
+    @Query("SELECT * FROM TeachingBookUnitSection where id in(:ids)")
+    fun getByIds(ids: MutableList<Int>): List<TeachingBookUnitSection>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookAppendix)
+    fun insert(item: TeachingBookUnitSection)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<TeachingBookUnitSection>)
 
     @Delete
-    fun delete(item: BookAppendix)
+    fun delete(item: TeachingBookUnitSection)
 }
 
 
 @Dao
-interface BookUnitDao {
-    @Query("SELECT * FROM BookUnit")
-    fun getAll(): List<BookUnit>
+interface TeachingPointDao {
+    @Query("SELECT * FROM TeachingPoint")
+    fun getAll(): List<TeachingPoint>
 
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
+    @Query("SELECT * FROM TeachingPoint where id in(:ids)")
+    fun getByIds(ids: MutableList<Int>): List<TeachingPoint>?
+
+    @Query("SELECT * FROM TeachingPoint where id =:id")
+    fun getById(id: Int): TeachingPoint?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookUnit)
+    fun insert(item: TeachingPoint)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<TeachingPoint>)
 
     @Delete
-    fun delete(item: BookUnit)
+    fun delete(item: TeachingPoint)
 }
 
 
 @Dao
-interface BookUnitWordsDao {
-    @Query("SELECT * FROM BookUnitWords")
-    fun getAll(): List<BookUnitWords>
+interface TeachingTranslationDao {
+    @Query("SELECT * FROM TeachingTranslation")
+    fun getAll(): List<TeachingTranslation>
 
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
+    @Query("SELECT * FROM TeachingTranslation where id in(:ids)")
+    fun getByIds(ids: MutableList<Int>): List<TeachingTranslation>?
+
+    @Query("SELECT * FROM TeachingTranslation where id =:id")
+    fun getById(id: Int): TeachingTranslation?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookUnitWords)
+    fun insert(item: TeachingTranslation)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<TeachingTranslation>)
 
     @Delete
-    fun delete(item: BookUnitWords)
+    fun delete(item: TeachingTranslation)
 }
 
 
 @Dao
-interface BookUnitPagesDao {
-    @Query("SELECT * FROM BookUnitPages")
-    fun getAll(): List<BookUnitPages>
+interface TeachingBookWordDao {
+    @Query("SELECT * FROM TeachingBookWord")
+    fun getAll(): List<TeachingBookWord>?
 
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
+    @Query("SELECT * FROM TeachingBookWord where id in(:ids)")
+    fun getByIds(ids: MutableList<Int>): List<TeachingBookWord>?
+
+    @Query("SELECT * FROM TeachingBookWord where id =:id")
+    fun getById(id: Int): TeachingBookWord?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookUnitPages)
+    fun insert(item: TeachingBookWord)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<TeachingBookWord>)
 
     @Delete
-    fun delete(item: BookUnitPages)
-}
-
-
-@Dao
-interface BookPageDao {
-    @Query("SELECT * FROM BookPage")
-    fun getAll(): List<BookPage>
-
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookPage)
-
-    @Delete
-    fun delete(item: BookPage)
-}
-
-@Dao
-interface BookTeachingPointDao {
-    @Query("SELECT * FROM BookTeachingPoint")
-    fun getAll(): List<BookTeachingPoint>
-
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookTeachingPoint)
-
-    @Delete
-    fun delete(item: BookTeachingPoint)
-}
-
-@Dao
-interface BookTranslationDao {
-    @Query("SELECT * FROM BookTranslation")
-    fun getAll(): List<BookTranslation>
-
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookTranslation)
-
-    @Delete
-    fun delete(item: BookTranslation)
-}
-
-@Dao
-interface BookWordDao {
-    @Query("SELECT * FROM BookWord")
-    fun getAll(): List<BookWord>
-
-    //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: BookWord)
-
-    @Delete
-    fun delete(item: BookWord)
+    fun delete(item: TeachingBookWord)
 }
 
 @Dao

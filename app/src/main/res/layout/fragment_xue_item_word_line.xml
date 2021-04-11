@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/word_line_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:background="@drawable/selector_background_light">
 
     <TextView
-        android:id="@+id/word_line"
-        android:layout_width="match_parent"
+        android:id="@+id/word_level"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_10"
-        android:textSize="@dimen/sp_16"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="@dimen/dp_2"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/word_spelling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_2"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/word_pronunciation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_2"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/word_grammertype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_2"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/word_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_2"
+        android:textSize="@dimen/sp_16" />
 
     <ImageView
         android:id="@+id/ci_goin"
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:clickable="true"
+        android:visibility="gone"
         android:contentDescription="进入词条"
         android:layout_marginRight="@dimen/dp_20"
         android:src="@drawable/shape_arrow_forward_dark"
@@ -30,4 +58,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

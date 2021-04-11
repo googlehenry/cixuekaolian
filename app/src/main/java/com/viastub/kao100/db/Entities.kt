@@ -36,154 +36,174 @@ data class DictionaryConfig(
 
 
 //Section 2:
+@Parcelize
 @Entity
-data class Book(
+data class TeachingBook(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
-    var phase: String?,//初中,高中
+    var name: String,
     @ColumnInfo
-    var publishedBy: String,
+    var phase: String?,//TeachingBookPhase
     @ColumnInfo
-    var publishedVersion: Int,
-    @ColumnInfo
-    var grade: String,
-    @ColumnInfo
-    var title: String,
-    @ColumnInfo
-    var type: String,//Textbook,GrammarBook
+    var grade: Int = 0,
+
     @ColumnInfo
     var bookCoverImagePath: String?,
+    @ColumnInfo
+    var unitIdsString: String? = null
 
-    ) {
+) : Parcelable {
     @Ignore
-    var bookCoverImage: File? = null
+    var unitsDb: MutableList<TeachingBookUnitSection>? = null
 
-    @Ignore
-    var bookUnits: MutableList<BookUnit>? = null
+    fun bindId(id: Int) = this.also { this.id = id }
+    fun unitIds(): MutableList<Int>? {
+        return unitIdsString?.let { it.split(",").filter { it.isNotBlank() }.map { it.toInt() } }
+            ?.toMutableList()
+    }
 
-    @Ignore
-    var appendices: MutableList<BookAppendix>? = null
+    fun coverImage(): File? {
+        return bookCoverImagePath?.let { File(it) }
+    }
+
+    fun bindUnits(units: MutableList<TeachingBookUnitSection>) =
+        this.also {
+            unitsDb = units
+            this.unitIdsString = units.map { it.id!! }.joinToString(",")
+        }
 }
 
+@Parcelize
 @Entity
-data class BookAppendix(
+data class TeachingBookUnitSection(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
     var name: String,
     @ColumnInfo
-    var description: String?,
+    var description: String? = null,
+    @ColumnInfo
+    var unitCoverImagePath: String? = null,
 
-    ) {
+    @ColumnInfo
+    var audiosPathsInJson: String? = null, //filenames,collection
+    @ColumnInfo
+    var pageSnapshotImagePathsInJson: String? = null,//filenames,collection
+    @ColumnInfo
+    var teachingBookTranslationsIdsInString: String? = null,
+    @ColumnInfo
+    var bookTeachingPointIdsInString: String? = null, //point ids, collection
+    @ColumnInfo
+    var bookWordItemIdsInString: String? = null, //word ids, collection
+
+
+) : Parcelable {
     @Ignore
-    var pageSnapshotImages: MutableList<File>? = null
+    var bookTranslationsDb: MutableList<TeachingTranslation>? = null
+
+    @Ignore
+    var bookTeachingPointsDb: MutableList<TeachingPoint>? = null
+
+    @Ignore
+    var bookWordItemsDb: MutableList<TeachingBookWord>? = null
+
+
+    fun bindId(id: Int) = this.also { this.id = id }
+
+    fun coverImage(): File? {
+        return unitCoverImagePath?.let { File(it) }
+    }
+
+    fun pageSnapshotPaths(): MutableList<String>? {
+        var typeToken = object : TypeToken<MutableList<String>>() {}.type
+        return pageSnapshotImagePathsInJson?.let { Gson().fromJson(it, typeToken) }
+    }
+
+    fun audioPaths(): MutableList<String>? {
+        var typeToken = object : TypeToken<MutableList<String>>() {}.type
+        return audiosPathsInJson?.let { Gson().fromJson(it, typeToken) }
+    }
+
+    fun bindTranslations(translations: MutableList<TeachingTranslation>): TeachingBookUnitSection {
+        this.bookTranslationsDb = translations
+        this.teachingBookTranslationsIdsInString = translations.map { it.id!! }.joinToString(",")
+        return this
+    }
+
+    fun bindTeachingPoints(points: MutableList<TeachingPoint>): TeachingBookUnitSection {
+        this.bookTeachingPointsDb = points
+        this.bookTeachingPointIdsInString = points.map { it.id!! }.joinToString(",")
+        return this
+    }
+
+    fun bindWords(words: MutableList<TeachingBookWord>): TeachingBookUnitSection {
+        this.bookWordItemsDb = words
+        this.bookWordItemIdsInString = words.map { it.id!! }.joinToString(",")
+        return this
+    }
+
+    fun bindPageSnapshopPaths(paths: MutableList<String>?) =
+        this.also { pageSnapshotImagePathsInJson = paths?.let { Gson().toJson(it) } }
+
+    fun bindAudiosPaths(paths: MutableList<String>?) =
+        this.also { audiosPathsInJson = paths?.let { Gson().toJson(it) } }
+
+    fun teachingBookTranslationsIds(): MutableList<Int>? =
+        teachingBookTranslationsIdsInString?.let {
+            it.split(",").filter { it.isNotBlank() }.map { it.toInt() }
+        }?.toMutableList()
+
+    fun bookTeachingPointIds(): MutableList<Int>? =
+        bookTeachingPointIdsInString?.let {
+            it.split(",").filter { it.isNotBlank() }.map { it.toInt() }
+        }?.toMutableList()
+
+    fun bookWordItemIds(): MutableList<Int>? =
+        bookWordItemIdsInString?.let {
+            it.split(",").filter { it.isNotBlank() }.map { it.toInt() }
+        }?.toMutableList()
+
+}
+
+
+@Entity
+data class TeachingPoint(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
+    @ColumnInfo
+    var point: String? = null,
+    @ColumnInfo
+    var explained: String? = null,
+    @ColumnInfo
+    var type: String? = null,//TeachingPointType,
+) {
+    @Ignore
+    var sequence: Int? = null
+
+    fun bindId(id: Int) = this.also { this.id = id }
 }
 
 @Entity
-data class BookUnit(
+data class TeachingTranslation(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
-    var name: String,
-    @ColumnInfo
-    var description: String?,
-    @ColumnInfo
-    var unitCoverImage: String?,
-
-
-    ) {
-    @Ignore
-    var unitCover: File? = null
-
-    @Ignore
-    var bookUnitPages: BookUnitPages? = null
-
-    @Ignore
-    var bookUnitWords: BookUnitWords? = null
-}
-
-@Entity
-data class BookUnitWords(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var soundFilePath: String?,
-
-    ) {
-    @Ignore
-    var soundFile: File? = null
-
-    @Ignore
-    var words: MutableList<BookWord>? = null
-}
-
-@Entity
-data class BookUnitPages(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var soundFilePath: String?,
-
-    ) {
-    @Ignore
-    var soundFile: File? = null
-
-    @Ignore
-    var pages: MutableList<BookPage>? = null
-}
-
-@Entity
-data class BookPage(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var pageNo: Int,
-    @ColumnInfo
-    var pageImagePath: String?,
-    @ColumnInfo
-    var soundFilePath: String?,
-
-    ) {
-    @Ignore
-    var soundFile: File? = null //optional
-
-    @Ignore
-    var pageImage: File? = null
-
-    @Ignore
-    var bookTranslations: MutableList<BookTranslation>? = null
-
-    @Ignore
-    var bookTeachingPoints: MutableList<BookTeachingPoint>? = null
-}
-
-@Entity
-data class BookTeachingPoint(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
-    @ColumnInfo
-    var type: String?,//TeachingPointType,
-    @ColumnInfo
-    var point: String?,
-    @ColumnInfo
-    var explained: String?
-)
-
-@Entity
-data class BookTranslation(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var name: String? = null,
     @ColumnInfo
     var text_eng: String?,
     @ColumnInfo
     var text_zh: String?
-)
+) {
+    @Ignore
+    var sequence: Int? = null
+    fun bindId(id: Int) = this.also { this.id = id }
+}
 
 @Entity
-data class BookWord(
+data class TeachingBookWord(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
     var name: String,
     @ColumnInfo
@@ -193,13 +213,13 @@ data class BookWord(
     @ColumnInfo
     var grammerType: String?,
     @ColumnInfo
-    var meaning: String?,
-    @ColumnInfo
-    var soundFilePath: String?,
+    var meaning: String?
+) {
+    fun bindId(id: Int) = this.also { this.id = id }
+}
 
-    ) {
-    @Ignore
-    var soundFile: File? = null//optional
+enum class TeachingBookPhase {
+    PRIMARY_SCHOOL, MIDDLE_SCHOOL, HIGH_SCHOOL
 }
 
 enum class TeachingPointType {

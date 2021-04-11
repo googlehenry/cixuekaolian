@@ -14,7 +14,7 @@ class PracticeDataLoader : DataLoader {
     private fun loadTextBook1(roomDb: RoomDB) {
 
         var book1 = PracticeBook(
-            name = "普通高中课程标准试验教科书(英语 1)必修",
+            name = "普通高中课程标准试验教科书(英语1)必修",
             coverImagePath = TempUtil.loadRawFile(
                 R.raw.demo_high_school_rjb_bixiu_1,
                 "demo_high_school_rjb_bixiu_1"
@@ -483,7 +483,7 @@ class PracticeDataLoader : DataLoader {
                     ),
                 PracticeSection(
                     name = "第2单元",
-                    description = "Unit 2: English aroun the world"
+                    description = "Unit 2: English around the world"
                 ).bindId(7),
                 PracticeSection(name = "第3单元", description = "Unit 3: Travel journal").bindId(8),
                 PracticeSection(name = "第4单元", description = "Unit 4: Earthquakes").bindId(9),

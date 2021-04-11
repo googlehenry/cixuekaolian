@@ -24,9 +24,10 @@
 
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/textbook_coverImage"
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="140dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="@dimen/dp_10"
                 android:contentDescription="@null"
                 android:src="@drawable/demo_eng_pep_3_1" />
@@ -37,33 +38,22 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textbook_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp_5"
                     android:paddingTop="@dimen/dp_10"
-                    android:text="人教版英语(三上)"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_5"
-                    android:text="课程类型 : 教材" />
-
-                <TextView
-                    android:id="@+id/textView_chapters"
+                    android:id="@+id/textbook_chapters_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:text="章节数量 : 6" />
 
-                <Button
-                    android:id="@+id/btn_xue_change_book"
-                    style="@style/rectangle_orange"
-                    android:text="下载" />
             </LinearLayout>
 
 

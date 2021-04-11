@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.xue
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -9,38 +10,36 @@ import android.widget.ImageView
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_study.*
+import java.io.File
 
-class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener {
+
+class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseFragment(),
+    GestureDetector.OnGestureListener {
 
     override fun id(): Int {
         return R.layout.activity_xue_detail_page_frag_study
     }
 
-    override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpImageViewFlipper()
-    }
+    var currentIndex = -1
+
 
     private var detector: GestureDetector? = null
-    private fun setUpImageViewFlipper() {
-//但是如果我希望HorizontalScrollView可以想ViewPager一样，既可以绑定数据集（动态改变图片），还能做到不管多少图片都不会OOM（ViewPager内部一直初始化，回收，最多保持3个View）。
+    override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
         detector = GestureDetector(this)
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_02));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_03));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_04));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_05));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_06));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_07));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_08));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_09));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_10));
-        flipper.addView(addImageView(R.drawable.demo_eng_pep_3_1_11));
+
+        pageSnapshotPaths?.let {
+            currentIndex = 0
+            teaching_book_unit_progress.max = it.size
+            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+            flipper.addView(getImageView(File(it[currentIndex])));
+        }
 
     }
 
-    private fun addImageView(id: Int): View? {
+
+    private fun getImageView(imageFile: File): View {
         val iv = ImageView(context)
-        iv.id = id
-        iv.setImageResource(id)
+        iv.setImageURI(Uri.fromFile(imageFile))
         return iv
     }
 
@@ -63,12 +62,33 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
         if (e1.x - e2.x > 120) {
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
-            flipper.showNext()
+            currentIndex++
+            if (currentIndex < pageSnapshotPaths!!.size) {
+                flipper.removeAllViews()
+                flipper.addView(getImageView(File(pageSnapshotPaths!![currentIndex])))
+                flipper.showNext()
+            } else {
+                currentIndex--
+                toast("已经到最后一页")
+            }
+            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+
             return true
         } else if (e1.x - e2.x < -120) {
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
-            flipper.showPrevious()
+            currentIndex--
+            if (currentIndex >= 0) {
+                flipper.removeAllViews()
+                flipper.addView(getImageView(File(pageSnapshotPaths!![currentIndex])))
+                flipper.showPrevious()
+            } else {
+                currentIndex++
+                toast("已经到第一页")
+            }
+
+            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+
             return true
         }
         return false
@@ -96,4 +116,48 @@ class XuePage1FragmentStudy : BaseFragment(), GestureDetector.OnGestureListener 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {
         return false
     }
+
+
 }
+//
+//class MyAdapter : PagerAdapter() {
+//    var mDatas: MutableList<String> = mutableListOf()
+//    private var mViews: List<SubsamplingScaleImageView> = mutableListOf()
+//
+//    override fun getCount(): Int {
+//        return mDatas.size
+//    }
+//
+//    override fun isViewFromObject(view: View, obj: Any): Boolean {
+//        return view === obj
+//    }
+//
+//    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+//
+//        val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+//            ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT
+//        )
+//
+//        val i = position % 4
+//        val imageView: SubsamplingScaleImageView = mViews.get(i)
+//        imageView.setLayoutParams(params)
+//
+//        val url = mDatas[position]
+//        imageView.setImage(ImageSource.uri(url))
+//
+//        container.addView(imageView)
+//        return imageView
+//    }
+//
+//    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+//        val i = position % 4
+//        val imageView: SubsamplingScaleImageView = mViews.get(i)
+//        if (imageView != null) {
+//            imageView.recycle()
+//        }
+//
+//        container.removeView(imageView)
+//
+//    }
+//
+//}

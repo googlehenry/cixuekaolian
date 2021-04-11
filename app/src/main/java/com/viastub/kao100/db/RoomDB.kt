@@ -13,8 +13,11 @@ import androidx.room.RoomDatabase
         DictionaryConfig::class, PracticeTarget::class,
         PracticeBook::class,
         ExamSimulation::class,
-        Book::class, BookAppendix::class, BookUnit::class, BookUnitWords::class,
-        BookUnitPages::class, BookPage::class, BookTeachingPoint::class, BookTranslation::class, BookWord::class,
+        TeachingBook::class,
+        TeachingBookUnitSection::class,
+        TeachingPoint::class,
+        TeachingTranslation::class,
+        TeachingBookWord::class,
         GlobalConfigKaoFiltersProvince::class,
         GlobalConfigKaoFiltersType::class,
         MyUser::class,
@@ -23,7 +26,7 @@ import androidx.room.RoomDatabase
         MyExamSimuHistory::class,
         MySectionPracticeHistory::class
     ],
-    version = 11,
+    version = 12,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -35,15 +38,11 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun practiceTarget(): PracticeTargetDao
     abstract fun practiceBook(): PracticeBookDao
     abstract fun examSimulation(): ExamSimulationDao
-    abstract fun book(): BookDao
-    abstract fun bookAppendix(): BookAppendixDao
-    abstract fun bookUnit(): BookUnitDao
-    abstract fun bookUnitWords(): BookUnitWordsDao
-    abstract fun bookUnitPages(): BookUnitPagesDao
-    abstract fun bookPage(): BookPageDao
-    abstract fun bookTeachingPoint(): BookTeachingPointDao
-    abstract fun bookTranslation(): BookTranslationDao
-    abstract fun bookWord(): BookWordDao
+    abstract fun teachingBook(): TeachingBookDao
+    abstract fun teachingBookUnitSection(): TeachingBookUnitSectionDao
+    abstract fun teachingTranslation(): TeachingTranslationDao
+    abstract fun teachingPoint(): TeachingPointDao
+    abstract fun teachingBookWord(): TeachingBookWordDao
     abstract fun globalConfigKaoFiltersProvinces(): GlobalConfigKaoFiltersProvinceDao
     abstract fun globalConfigKaoFiltersTypes(): GlobalConfigKaoFiltersTypeDao
     abstract fun myUser(): MyUserDao

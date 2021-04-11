@@ -4,6 +4,7 @@ import android.app.Application
 import com.viastub.kao100.config.db.init.ConfigGlobalLoader
 import com.viastub.kao100.config.db.init.ExamDataLoader
 import com.viastub.kao100.config.db.init.PracticeDataLoader
+import com.viastub.kao100.config.db.init.TeachingBookDataLoader
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import com.yechaoa.yutilskt.ActivityUtilKt
@@ -26,6 +27,7 @@ class App : Application() {
                 ConfigGlobalLoader().load(it)
                 ExamDataLoader().load(it)
                 PracticeDataLoader().load(it)
+                TeachingBookDataLoader().load(it)
             }
         }
 

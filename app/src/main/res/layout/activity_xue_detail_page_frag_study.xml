@@ -8,5 +8,19 @@
     <ViewFlipper
         android:id="@+id/flipper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ProgressBar
+        android:id="@+id/teaching_book_unit_progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="center_vertical"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:mirrorForRtl="true"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:secondaryProgress="60" />
 </LinearLayout>
