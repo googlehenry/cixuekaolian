@@ -83,30 +83,33 @@ class LianQuestionCorrectionAdapter(
                 (correctUiFrom as TextView?)?.setText("")
                 (correctUiTo as TextView?)?.setText("")
 
-                wrongInputByUser?.let {
-                    indicator.visibility =
-                        View.VISIBLE //no show for correction, he/she just didn't find it
-                    indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
-                    correctUiFrom.setTextColor(Color.parseColor("#ff0000"))
-                    correctUiTo.setTextColor(Color.parseColor("#ff0000"))
+                //assign wrong answer to user-once-filled boxes
+                if (question.usersAnswers[item.id] != null) {
+                    wrongInputByUser?.let {
+                        indicator.visibility =
+                            View.VISIBLE //no show for correction, he/she just didn't find it
+                        indicator.setBackgroundResource(R.drawable.icon_lian_result_cross)
+                        correctUiFrom.setTextColor(Color.parseColor("#ff0000"))
+                        correctUiTo.setTextColor(Color.parseColor("#ff0000"))
 
-                    correctUiFrom.setText(
-                        it.split("->")[0].toCharArray(),
-                        0,
-                        it.split("->")[0].length
-                    )
-                    correctUiTo.setText(
-                        it.split("->")[1].toCharArray(),
-                        0,
-                        it.split("->")[1].length
-                    )
+                        correctUiFrom.setText(
+                            it.split("->")[0].toCharArray(),
+                            0,
+                            it.split("->")[0].length
+                        )
+                        correctUiTo.setText(
+                            it.split("->")[1].toCharArray(),
+                            0,
+                            it.split("->")[1].length
+                        )
 
-                    template.questionsDb?.forEach {
-                        it.usersAnswers.filter { entry -> entry.value == wrongInputByUser }.keys.forEach { key ->
-                            it.usersAnswers.remove(key)
+                        template.questionsDb?.forEach {
+                            it.usersAnswers.filter { entry -> entry.value == wrongInputByUser }.keys.forEach { key ->
+                                it.usersAnswers.remove(key)
+                            }
                         }
-                    }
 
+                    }
                 }
             }
         } else {

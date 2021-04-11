@@ -213,10 +213,20 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             practice_countdown_timer.text = "[已结束]"
             showExplanationForTemplate(template)
         }
+        //if submitted, always load questions from db
+        if (template.submitted) {
+            refreshQuestionsFromDb(template)
+        } else {
+            VariablesLian.availableTemplatesMap[template.id]?.let {
+                updateQuestions(it, it.questionsDb!!)
+            } ?: refreshQuestionsFromDb(template)
+        }
 
-        VariablesLian.availableTemplatesMap[template.id]?.let {
-            updateQuestions(it, it.questionsDb!!)
-        } ?: template.practiceQuestions()?.let {
+
+    }
+
+    private fun refreshQuestionsFromDb(template: PracticeTemplate) {
+        template.practiceQuestions()?.let {
             awaitAsync(
                 dataAction = {
                     RoomDB.get(applicationContext).practiceQuestion().getByIds(it)

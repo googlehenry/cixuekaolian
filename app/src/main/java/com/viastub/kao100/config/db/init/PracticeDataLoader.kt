@@ -146,13 +146,13 @@ class PracticeDataLoader : DataLoader {
                                     type = QuestionType.FILL.name,
                                     layoutOptionsPerRow = 2,
                                     text = "(ignore)____ the difference between the two research findings will be one of the worst mistakes you make.",
-                                    answerStandard = "ignoring",
+                                    answerStandard = "Ignoring",
                                     answerKeyPoints = "句意为:忽视这两个研究成果之间的区别将会是你犯的最严重的错误之一。此时用动名词短语 Ignoring the difference between the two research findings作句子的主语。 ignore意为“忽视;不理睬”。"
                                 ).bindId(41).bindOptionsDbToThis(
                                     mutableListOf(
                                         PracticeAnswerOption(
                                             layoutUI = LayoutUI.EDIT_TEXT.name,
-                                            correctAnswersSplitByPipes = "ignoring"
+                                            correctAnswersSplitByPipes = "Ignoring"
                                         ).bindId(88)
                                     )
                                 ),
@@ -249,7 +249,7 @@ class PracticeDataLoader : DataLoader {
                                 ),
                                 PracticeQuestion(
                                     type = QuestionType.CORRECT.name,
-                                    answerStandard = "删除up",
+                                    answerStandard = "added up to->added to",
                                     answerKeyPoints = "句意为:大雪增加了我们寻找出山的路的难度。 add to意为“使增加;使抄大”;add up to为“总共是;总计为”。"
                                 ).bindId(47).bindOptionsDbToThis(
                                     mutableListOf(
