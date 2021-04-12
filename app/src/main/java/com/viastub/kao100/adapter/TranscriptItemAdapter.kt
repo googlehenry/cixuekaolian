@@ -9,15 +9,21 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.TeachingTranslation
 
-class TranscriptItemAdapter(var itemClickListener: View.OnClickListener) :
+class TranscriptItemAdapter(
+    var itemClickListener: View.OnClickListener,
+    var showEngText: Boolean = false
+) :
     BaseQuickAdapter<TeachingTranslation, BaseViewHolder>(R.layout.fragment_xue_item_transcript_line),
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: TeachingTranslation) {
         //fromHtml，因为搜索结果中的title中含有html标签
         holder.setText(R.id.transcript_seq, item.sequence.toString())
-        holder.setText(R.id.transcript_english, item.text_eng)
-        holder.setText(R.id.transcript_chinese, item.text_zh)
+        if (showEngText) {
+            holder.setText(R.id.transcript_english, item.text_eng)
+        } else {
+            holder.setText(R.id.transcript_chinese, item.text_zh)
+        }
         val engText = holder.getView<TextView>(R.id.transcript_english)
         val zhText = holder.getView<TextView>(R.id.transcript_chinese)
 

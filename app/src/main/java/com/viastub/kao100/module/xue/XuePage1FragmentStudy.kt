@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseFragment
+import com.viastub.kao100.utils.VariablesXue
 import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_study.*
 import java.io.File
 
@@ -29,6 +30,9 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
 
         pageSnapshotPaths?.let {
             currentIndex = 0
+            teaching_book_unit_page_index.text = (currentIndex + 1).toString()
+            VariablesXue.xueContext?.currentPageIndex = currentIndex
+
             teaching_book_unit_progress.max = it.size
             teaching_book_unit_progress.secondaryProgress = currentIndex + 1
             flipper.addView(getImageView(File(it[currentIndex])));
@@ -62,33 +66,38 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
         if (e1.x - e2.x > 120) {
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
-            currentIndex++
-            if (currentIndex < pageSnapshotPaths!!.size) {
-                flipper.removeAllViews()
-                flipper.addView(getImageView(File(pageSnapshotPaths!![currentIndex])))
-                flipper.showNext()
-            } else {
-                currentIndex--
-                toast("已经到最后一页")
+            pageSnapshotPaths?.let {
+                currentIndex++
+                if (currentIndex < it.size) {
+                    flipper.removeAllViews()
+                    flipper.addView(getImageView(File(it[currentIndex])))
+                    flipper.showNext()
+                } else {
+                    currentIndex--
+                    toast("已经到最后一页")
+                }
+                teaching_book_unit_page_index.text = (currentIndex + 1).toString()
+                VariablesXue.xueContext?.currentPageIndex = currentIndex
+                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
             }
-            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
-
             return true
         } else if (e1.x - e2.x < -120) {
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
-            currentIndex--
-            if (currentIndex >= 0) {
-                flipper.removeAllViews()
-                flipper.addView(getImageView(File(pageSnapshotPaths!![currentIndex])))
-                flipper.showPrevious()
-            } else {
-                currentIndex++
-                toast("已经到第一页")
+            pageSnapshotPaths?.let {
+                currentIndex--
+                if (currentIndex >= 0) {
+                    flipper.removeAllViews()
+                    flipper.addView(getImageView(File(it[currentIndex])))
+                    flipper.showPrevious()
+                } else {
+                    currentIndex++
+                    toast("已经到第一页")
+                }
+                teaching_book_unit_page_index.text = (currentIndex + 1).toString()
+                VariablesXue.xueContext?.currentPageIndex = currentIndex
+                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
             }
-
-            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
-
             return true
         }
         return false

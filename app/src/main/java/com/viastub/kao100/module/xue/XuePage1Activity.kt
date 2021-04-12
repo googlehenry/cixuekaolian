@@ -10,15 +10,15 @@ import com.viastub.kao100.R
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.base.BaseFragment
+import com.viastub.kao100.beans.XueContext
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.db.TeachingBookUnitSection
+import com.viastub.kao100.utils.VariablesXue
 import kotlinx.android.synthetic.main.activity_xue_detail_page.*
 import java.io.File
 
 
 class XuePage1Activity : BaseActivity() {
     var currentFragment: BaseFragment? = null
-    var currentUnit: TeachingBookUnitSection? = null
     var currentPlayAudioIndex = -1
 
     override fun id(): Int {
@@ -30,8 +30,10 @@ class XuePage1Activity : BaseActivity() {
 
         project_tab_layout.setupWithViewPager(non_scrollable_view_pager)
 
-        var unit = intent?.extras?.get("unit")?.let { it as TeachingBookUnitSection }
+        var xueContext = intent?.extras?.get("xueContext")?.let { it as XueContext }
+        VariablesXue.xueContext = xueContext
 
+        var unit = xueContext?.unit
 
         unit?.let {
             awaitAsync({
@@ -46,15 +48,16 @@ class XuePage1Activity : BaseActivity() {
                         ?.toMutableList()
                 it
             }, {
-                currentUnit = it
+                title_high.text = "${unit.name} ${unit.description}"
 
                 val commonViewPagerAdapter =
                     CommonViewPagerAdapter(
                         supportFragmentManager,
-                        mutableListOf("教材", "双语", "单词", "精解")
+                        mutableListOf("教材", "英语", "中文", "单词", "精解")
                     ).apply {
                         addFragment(XuePage1FragmentStudy(it.pageSnapshotPaths()))
-                        addFragment(XuePage1FragmentTranscript(it.bookTranslationsDb))
+                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, true))
+                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, false))
                         addFragment(XuePage1FragmentWords(it.bookWordItemsDb))
                         addFragment(XuePage1FragmentTeach(it.bookTeachingPointsDb))
                     }
@@ -62,7 +65,7 @@ class XuePage1Activity : BaseActivity() {
                 val currentIdx = 0
                 non_scrollable_view_pager.adapter = commonViewPagerAdapter
                 non_scrollable_view_pager.currentItem = currentIdx
-                non_scrollable_view_pager.offscreenPageLimit = 1
+                non_scrollable_view_pager.offscreenPageLimit = 5
                 currentFragment = commonViewPagerAdapter.getItem(currentIdx) as BaseFragment
 
                 project_tab_layout.addOnTabSelectedListener(object :
@@ -70,6 +73,7 @@ class XuePage1Activity : BaseActivity() {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         currentFragment =
                             commonViewPagerAdapter.getItem(tab!!.position) as BaseFragment
+                        currentFragment!!.onResume()
                         non_scrollable_view_pager.isScrollble =
                             !(currentFragment?.touchEventAware() == true)
                     }
@@ -140,7 +144,7 @@ class XuePage1Activity : BaseActivity() {
 
     private fun playAnother(step: Int) {
         playerTimer?.cancel()
-        currentUnit?.audioPaths()?.let {
+        VariablesXue.xueContext?.unit?.audioPaths()?.let {
             currentPlayAudioIndex += step
             if (currentPlayAudioIndex >= 0 && currentPlayAudioIndex < it.size) {
                 mediaPlayer?.let {

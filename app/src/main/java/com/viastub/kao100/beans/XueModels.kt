@@ -1,26 +1,11 @@
 package com.viastub.kao100.beans
 
-data class TeachItem(
-    val id: Int,
-    val title: String,
-    val content: String
-)
+import android.os.Parcelable
+import com.viastub.kao100.db.TeachingBookUnitSection
+import kotlinx.android.parcel.Parcelize
 
-data class BookItem(
-    val id: Int,
-    val title: String,
-    val coverImg: Int
-)
-
-data class TranscriptItem(
-    val id: Int,
-    val seq: String? = null,
-    val transcriptEnglish: String? = null,
-    val transcriptChinese: String? = null,
-    val title: Boolean = false
-)
-
-data class WordLine(
-    val id: Int,
-    val wordLine: String
-)
+@Parcelize
+data class XueContext(
+    var unit: TeachingBookUnitSection,
+    var currentPageIndex: Int = -1
+) : Parcelable

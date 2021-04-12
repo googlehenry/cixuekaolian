@@ -5,6 +5,7 @@ import android.net.Uri
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.beans.XueContext
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.db.TeachingBook
 import kotlinx.android.synthetic.main.activity_xue_chapter_page.*
@@ -50,7 +51,8 @@ class XuePage0Activity : BaseActivity() {
                     var unit = units[scrollable_view_pager.currentItem]
 
                     var intent = Intent(this, XuePage1Activity::class.java)
-                    intent.putExtra("unit", unit)
+
+                    intent.putExtra("xueContext", XueContext(unit))
 
                     startActivity(intent)
                 }
