@@ -85,7 +85,7 @@ class XuePage1Activity : BaseActivity() {
                 it.audioPaths()?.firstOrNull()?.let {
                     currentPlayAudioIndex = 0
                     var audioFileInit = File(it)
-                    player_current_item_name.text = audioFileInit.name
+                    player_current_item_name.text = "当前音频:${audioFileInit.name}"
                     mediaPlayer = MediaPlayer.create(this, audioFileInit.toUri())
                     mediaPlayer?.setVolume(1.0f, 1.0f)
                 }
@@ -156,7 +156,7 @@ class XuePage1Activity : BaseActivity() {
                 mediaPlayer = MediaPlayer.create(this, availableNextAudio.toUri())
                 mediaPlayer?.setVolume(1.0f, 1.0f)
                 mediaPlayer?.start()
-                player_current_item_name.text = availableNextAudio.name
+                player_current_item_name.text = "当前音频:${availableNextAudio.name}"
 
                 setPlayerUpTimer()
                 playerTimer?.start()

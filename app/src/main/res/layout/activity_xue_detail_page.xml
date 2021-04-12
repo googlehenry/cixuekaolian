@@ -123,35 +123,32 @@
                 <LinearLayout
                     android:id="@+id/player_controls_holder"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_40"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/player_seekbar"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent">
 
                     <ImageView
                         android:id="@+id/play_prev"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="上一个"
                         android:src="@drawable/player_icon_previous" />
 
                     <ImageView
                         android:id="@+id/play_pause"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="暂停"
                         android:src="@drawable/player_icon_play" />
 
                     <ImageView
                         android:id="@+id/play_next"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="下一个"
                         android:src="@drawable/player_icon_next" />
@@ -162,9 +159,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_20"
                     app:layout_constraintTop_toBottomOf="@id/player_controls_holder"
-                    android:layout_margin="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginBottom="2dp"
                     app:layout_constraintRight_toRightOf="parent">
 
                     <TextView
@@ -172,6 +169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_20"
                         android:textColor="#cccccc"
+                        android:background="@drawable/selector_button_square_cornor_blue"
                         android:gravity="center"
                         android:padding="0dp" />
                 </LinearLayout>
