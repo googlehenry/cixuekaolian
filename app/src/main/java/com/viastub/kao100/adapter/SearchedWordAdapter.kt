@@ -24,7 +24,6 @@ class SearchedWordAdapter(var itemClickListener: View.OnClickListener) :
         //fromHtml，因为搜索结果中的title中含有html标签
 //        holder.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/english.ttf"));
         holder.setText(R.id.ci_word, item.word)
-        holder.setText(R.id.ci_source, item.source)
         var searchItemHolder = holder.getView<LinearLayout>(R.id.searched_word_item_holder_root)
         searchItemHolder.setTag(R.id.searched_word_item_holder_root, item)
         searchItemHolder.setOnClickListener(null)

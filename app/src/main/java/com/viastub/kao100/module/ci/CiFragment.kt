@@ -3,6 +3,7 @@ package com.viastub.kao100.module.ci
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.knziha.plod.dictionary.mdict
@@ -10,6 +11,7 @@ import com.viastub.kao100.R
 import com.viastub.kao100.adapter.SearchedWordAdapter
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.beans.CiContext
+import com.viastub.kao100.beans.SearchMode
 import com.viastub.kao100.beans.SearchedWord
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesCi
@@ -52,6 +54,21 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
+        radiogroup_start.isChecked = true
+        radiogroup_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                when (checkedId) {
+                    R.id.radiogroup_start -> VariablesCi.searchMode = SearchMode.START
+                    R.id.radiogroup_middle -> VariablesCi.searchMode = SearchMode.MIDDLE
+                    R.id.radiogroup_end -> VariablesCi.searchMode = SearchMode.END
+                }
+
+                searchView.query.toString().trim()?.let {
+                    searchItem(it)?.let { updateLayout(it) }
+                }
+
+            }
+        })
 
     }
 
@@ -63,6 +80,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
         recycler_view_high.adapter = mSearchedWordAdapter
 
         searchView.isSubmitButtonEnabled = false
+        searchView.onActionViewExpanded()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -84,11 +102,14 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             if (enteredKey.isNotBlank()) {
 
                 VariablesCi.ciContext?.wordKeys?.filter {
-                    it.startsWith(enteredKey, ignoreCase = true)
-                }
-                    ?.map { SearchedWord(it, "") }?.let {
-                        filteredList.addAll(it)
+                    when (VariablesCi.searchMode) {
+                        SearchMode.START -> it.startsWith(enteredKey, ignoreCase = true)
+                        SearchMode.MIDDLE -> it.contains(enteredKey, ignoreCase = true)
+                        SearchMode.END -> it.endsWith(enteredKey, ignoreCase = true)
                     }
+                }?.map { SearchedWord(it, "") }?.let {
+                    filteredList.addAll(it)
+                }
             }
         }
         return filteredList

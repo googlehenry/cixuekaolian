@@ -15,3 +15,7 @@ data class CiContext(
     var dictConfig: DictionaryConfig? = null,
     var wordKeys: MutableList<String>? = null
 ) : Parcelable
+
+enum class SearchMode {
+    START, MIDDLE, END
+}

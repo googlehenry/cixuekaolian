@@ -18,39 +18,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
             <com.viastub.kao100.wigets.BrandTextView
                 android:id="@+id/ci_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:gravity="center_vertical"
                 android:text="标题"
-                android:layout_marginBottom="5dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_16" />
-
-
-            <TextView
-                android:id="@+id/ci_source"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:paddingTop="@dimen/dp_2"
-                android:text="from"
-                android:layout_marginBottom="2dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_14" />
 
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/ci_goin"
-            android:layout_width="@dimen/dp_16"
-            android:layout_height="@dimen/dp_16"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
             android:layout_marginRight="@dimen/dp_20"
             android:contentDescription="进入词条"
             android:clickable="true"

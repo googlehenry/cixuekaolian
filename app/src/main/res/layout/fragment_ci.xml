@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
@@ -24,9 +24,42 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:iconifiedByDefault="false"
+                android:iconifiedByDefault="true"
                 android:background="@drawable/shape_ci_search"
                 android:queryHint="输入您要查找的单词" />
+
+            <RadioGroup
+                android:id="@+id/radiogroup_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiogroup_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_10"
+                    android:text="以..开头" />
+
+                <RadioButton
+                    android:id="@+id/radiogroup_middle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_10"
+                    android:text="包含.." />
+
+                <RadioButton
+                    android:id="@+id/radiogroup_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_10"
+                    android:text="以..结尾" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ccc" />
 
         </LinearLayout>
 

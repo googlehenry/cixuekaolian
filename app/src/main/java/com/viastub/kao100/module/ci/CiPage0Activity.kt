@@ -1,5 +1,8 @@
 package com.viastub.kao100.module.ci
 
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.utils.VariablesCi
@@ -16,20 +19,29 @@ class CiPage0Activity : BaseActivity() {
         var word = intent?.extras?.get("word")?.let { it as String }
 
         title_high.text = "查询结果:$word"
-        word?.let { wd ->
-            VariablesCi.ciContext?.dictConfig?.mdict?.let {
-                var explanation = it.getRecordAt(it.lookUp(wd))
 
-                ci_word_detail.loadDataWithBaseURL(
-                    "file:///android_asset/www/",
-                    getHtmlData(explanation),
-                    "text/html",
-                    "UTF-8",
-                    null
-                );
+        ci_word_detail.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                //entry://workout
+                request?.url?.let {
+                    if (it.toString().startsWith("entry://")) {
+                        val word = it.toString().replace("entry://", "")
+                        gotoWordFromDict(word)
+                    }
+                }
 
+                return true
             }
         }
+
+        word?.let { wd ->
+            gotoWordFromDict(wd)
+        }
+
+
         header_action.setOnClickListener {
             VariablesCi.ciContext?.dictConfig?.mdict?.let {
                 ci_word_detail.loadDataWithBaseURL(
@@ -44,6 +56,21 @@ class CiPage0Activity : BaseActivity() {
 
 
         header_back.setOnClickListener { onBackPressed() }
+    }
+
+    private fun gotoWordFromDict(wd: String) {
+        VariablesCi.ciContext?.dictConfig?.mdict?.let {
+            var explanation = it.getRecordAt(it.lookUp(wd))
+
+            ci_word_detail.loadDataWithBaseURL(
+                "file:///android_asset/www/",
+                getHtmlData(explanation),
+                "text/html",
+                "UTF-8",
+                null
+            );
+
+        }
     }
 
     private fun getHtmlData(data: String): String {
