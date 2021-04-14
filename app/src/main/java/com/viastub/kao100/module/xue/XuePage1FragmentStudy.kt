@@ -104,12 +104,7 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
     }
 
     override fun onLongPress(e: MotionEvent?) {
-        if (flipper.currentView.id == R.drawable.demo_eng_pep_3_1_06) {
-            toast("切换到当前页播放")
-            val mediaPlayer = (mContext as XuePage1Activity).mediaPlayer
-            mediaPlayer?.seekTo(88_000)
-            mediaPlayer?.start()
-        }
+
     }
 
     override fun onScroll(

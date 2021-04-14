@@ -34,7 +34,6 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="单词:world"
                 android:textColor="#fff"
                 android:textSize="18sp" />
 

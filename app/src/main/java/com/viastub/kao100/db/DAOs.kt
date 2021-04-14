@@ -101,6 +101,9 @@ interface DictionaryConfigDao {
     @Query("SELECT * FROM DictionaryConfig")
     fun getAll(): List<DictionaryConfig>
 
+    @Query("SELECT * FROM DictionaryConfig where id=:id")
+    fun getById(id: Int): DictionaryConfig?
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")

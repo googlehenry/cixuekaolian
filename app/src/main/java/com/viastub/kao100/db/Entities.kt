@@ -9,29 +9,35 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.knziha.plod.dictionary.mdict
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 import java.util.*
 
 
 //Section 1: Embed a sample dictionary .mdd .mdx
+@Parcelize
 @Entity
 data class DictionaryConfig(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int? = null,
     @ColumnInfo
     var title: String,
     @ColumnInfo
-    var dictFilePath: String?,
+    var dictFilePath: String? = null,
     @ColumnInfo
-    var soundFilePath: String?,
+    var soundFilePath: String? = null,
 
-    ) {
+    ) : Parcelable {
     @Ignore
     var soundFile: File? = null
 
     @Ignore
-    var dictFile: File? = null
+    var mdict: mdict? = null
+
+    fun bindId(id: Int) = this.also { this.id = id }
+
+    fun dictFile(): File? = dictFilePath?.let { File(it) }
 }
 
 

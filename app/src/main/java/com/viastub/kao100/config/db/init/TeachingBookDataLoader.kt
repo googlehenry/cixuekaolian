@@ -7,8 +7,19 @@ import com.viastub.kao100.utils.TempUtil
 
 class TeachingBookDataLoader : DataLoader {
     override fun load(roomDb: RoomDB): Int {
+        loadDictionary(roomDb)
         loadTeachingBook1(roomDb)
         return -1
+    }
+
+    private fun loadDictionary(roomDb: RoomDB) {
+        var dict = DictionaryConfig(
+            id = 1, title = "牛津英汉双解词典", dictFilePath = TempUtil.loadRawFile(
+                R.raw.dict_oxford_en_zh_biolingol, "dict_oxford_en_zh_biolingol.mdx"
+            )
+        )
+
+        roomDb.dictionaryConfig().insert(dict)
     }
 
     private fun loadTeachingBook1(roomDb: RoomDB) {
