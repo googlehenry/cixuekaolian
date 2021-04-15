@@ -190,11 +190,15 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
         if (rootWordLinks.size == 0 && index == 0) {
             super.onBackPressed()
+            speech?.stop()
+            speech?.shutdown()
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle("还未学完单词列表中的单词,强行返回?")
             dialog.setPositiveButton("返回") { dialog, which ->
                 super.onBackPressed()
+                speech?.stop()
+                speech?.shutdown()
             }
             dialog.setNegativeButton("不返回") { dialog, which -> dialog?.dismiss() }
             dialog.show()
@@ -207,7 +211,11 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         if (status === TextToSpeech.SUCCESS) {
             //int result = mSpeech.setLanguage(Locale.ENGLISH);
             speech?.language = Locale.ENGLISH
-            speech?.setPitch(0.85F)
+            speech?.setPitch(0.75F)
+            speech?.setSpeechRate(0.5f)
+            VariablesCi.ciContext!!.currentword?.let {
+                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+            }
         } else {
             Toast.makeText(this, "手机不支持合成语音", Toast.LENGTH_SHORT).show()
         }
