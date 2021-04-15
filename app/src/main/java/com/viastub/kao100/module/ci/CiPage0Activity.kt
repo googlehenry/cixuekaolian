@@ -1,6 +1,7 @@
 package com.viastub.kao100.module.ci
 
 import android.app.AlertDialog
+import android.speech.tts.TextToSpeech
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -11,7 +12,9 @@ import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import java.util.*
 
-class CiPage0Activity : BaseActivity() {
+
+class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
+    var speech: TextToSpeech? = null
 
     override fun id(): Int {
         return R.layout.activity_ci_word_detail_page
@@ -20,9 +23,10 @@ class CiPage0Activity : BaseActivity() {
     override fun afterCreated() {
         supportActionBar?.hide()
         header_back.setOnClickListener { onBackPressed() }
-
+        doAsync {
+            setUpSpeeachTTS()
+        }
         var wordsx = intent?.extras?.get("wordlist")?.let { it as ArrayList<String> }
-
         wordsx?.let {
             VariablesCi.ciContext!!.currentWordList = it.toMutableList()
         }
@@ -59,6 +63,13 @@ class CiPage0Activity : BaseActivity() {
 
         gotoWordFromDict(0)
 
+
+        action_speak.setOnClickListener {
+            VariablesCi.ciContext!!.currentword?.let {
+                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+            }
+        }
+
         action_next.setOnClickListener {
             gotoWordFromDict(1)
         }
@@ -91,6 +102,12 @@ class CiPage0Activity : BaseActivity() {
             }
 
         }
+
+
+    }
+
+    private fun setUpSpeeachTTS() {
+        speech = TextToSpeech(this, this)
     }
 
     private fun gotoWordFromDict(step: Int = 0) {
@@ -121,9 +138,15 @@ class CiPage0Activity : BaseActivity() {
 
         if (links > 0) {
             title_high.text = "单词:${list?.get(index)}..${wd}"
+            VariablesCi.ciContext!!.currentword = wd
+            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
         } else {
-            title_high.text = "单词:${list?.get(index)} (${index + 1}/${list?.size})"
+            var wd = list?.get(index)
+            title_high.text = "单词:${wd} (${index + 1}/${list?.size})"
+            VariablesCi.ciContext!!.currentword = wd
+            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
         }
+
         word_list_dict_progress.max = list?.size!!
         word_list_dict_progress.secondaryProgress = index + 1
 
@@ -154,7 +177,7 @@ class CiPage0Activity : BaseActivity() {
                     </style>
                 </head>
             """.trimIndent()
-        return "<html>$head<body>$data</body></html>"
+        return "<html>$head<body style='background:#CCE8CF;'>$data</body></html>"
     }
 
     override fun onBackPressed() {
@@ -178,6 +201,16 @@ class CiPage0Activity : BaseActivity() {
         }
 
 
+    }
+
+    override fun onInit(status: Int) {
+        if (status === TextToSpeech.SUCCESS) {
+            //int result = mSpeech.setLanguage(Locale.ENGLISH);
+            speech?.language = Locale.ENGLISH
+            speech?.setPitch(0.85F)
+        } else {
+            Toast.makeText(this, "手机不支持合成语音", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

@@ -17,7 +17,8 @@ data class CiContext(
     var wordKeys: MutableList<String>? = null,
     var currentWordRootLinks: MutableMap<String, LinkedList<String>> = mutableMapOf(),
     var currentWordList: MutableList<String>? = mutableListOf(),
-    var currentIndex: Int = 0
+    var currentIndex: Int = 0,
+    var currentword: String? = null
 ) : Parcelable
 
 enum class SearchMode {

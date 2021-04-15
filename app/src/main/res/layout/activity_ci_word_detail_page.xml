@@ -58,7 +58,7 @@
             <WebView
                 android:id="@+id/ci_word_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <ProgressBar
@@ -100,15 +100,6 @@
                     android:src="@drawable/selector_button_prev_icon" />
 
                 <ImageView
-                    android:id="@+id/action_next"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:contentDescription="下一个"
-                    android:src="@drawable/selector_button_next_icon" />
-
-                <ImageView
                     android:id="@+id/action_speak"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -118,12 +109,22 @@
                     android:src="@drawable/selector_button_speak_icon" />
 
                 <ImageView
-                    android:id="@+id/action_auto_play"
+                    android:id="@+id/action_next"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:src="@drawable/selector_button_tape_icon" />
+                    android:contentDescription="下一个"
+                    android:src="@drawable/selector_button_next_icon" />
+
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/action_auto_play"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:clickable="true"-->
+                <!--                    android:src="@drawable/selector_button_tape_icon" />-->
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
