@@ -22,5 +22,5 @@ data class CiContext(
 ) : Parcelable
 
 enum class SearchMode {
-    START, MIDDLE, END
+    START, MIDDLE, END, CONTAINS
 }

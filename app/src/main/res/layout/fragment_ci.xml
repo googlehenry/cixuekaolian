@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
-                    android:text="包含.." />
+                    android:text="在..中间" />
 
                 <RadioButton
                     android:id="@+id/radiogroup_end"
@@ -54,6 +54,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
                     android:text="以..结尾" />
+
+                <RadioButton
+                    android:id="@+id/radiogroup_contains"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_10"
+                    android:text="包含.." />
             </RadioGroup>
 
             <View

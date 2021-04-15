@@ -3,8 +3,10 @@ package com.viastub.kao100.module.ci
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.knziha.plod.dictionary.mdict
 import com.viastub.kao100.R
@@ -61,14 +63,24 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                     R.id.radiogroup_start -> VariablesCi.searchMode = SearchMode.START
                     R.id.radiogroup_middle -> VariablesCi.searchMode = SearchMode.MIDDLE
                     R.id.radiogroup_end -> VariablesCi.searchMode = SearchMode.END
+                    R.id.radiogroup_contains -> VariablesCi.searchMode = SearchMode.CONTAINS
                 }
 
                 searchView.query.toString().trim()?.let {
-                    searchItem(it)?.let { updateLayout(it) }
+                    if (it.isNotEmpty()) {
+                        searchItem(it)?.let { updateLayout(it) }
+                    }
                 }
 
             }
         })
+
+        val imm =
+            mContext.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(
+            searchView.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
 
     }
 
@@ -105,8 +117,13 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                 VariablesCi.ciContext?.wordKeys?.filter {
                     when (VariablesCi.searchMode) {
                         SearchMode.START -> it.startsWith(enteredKey, ignoreCase = true)
-                        SearchMode.MIDDLE -> it.contains(enteredKey, ignoreCase = true)
+                        SearchMode.MIDDLE -> {
+                            var idx = it.indexOf(enteredKey, 0, ignoreCase = true)
+                            var endix = idx + enteredKey.length
+                            (idx > 0 && endix < it.length - 1)
+                        }
                         SearchMode.END -> it.endsWith(enteredKey, ignoreCase = true)
+                        SearchMode.CONTAINS -> it.contains(enteredKey, ignoreCase = true)
                     }
                 }?.map { SearchedWord(it, "") }?.let {
                     filteredList.addAll(it)

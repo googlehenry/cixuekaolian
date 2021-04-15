@@ -194,13 +194,13 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             speech?.shutdown()
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-            dialog.setTitle("还未学完单词列表中的单词,强行返回?")
-            dialog.setPositiveButton("返回") { dialog, which ->
+            dialog.setTitle("还未学完单词,仍然退出?")
+            dialog.setPositiveButton("退出") { dialog, which ->
                 super.onBackPressed()
                 speech?.stop()
                 speech?.shutdown()
             }
-            dialog.setNegativeButton("不返回") { dialog, which -> dialog?.dismiss() }
+            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
             dialog.show()
         }
 
@@ -212,7 +212,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             //int result = mSpeech.setLanguage(Locale.ENGLISH);
             speech?.language = Locale.ENGLISH
             speech?.setPitch(0.75F)
-            speech?.setSpeechRate(0.5f)
+//            speech?.setSpeechRate(0.75f)
             VariablesCi.ciContext!!.currentword?.let {
                 speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
             }
