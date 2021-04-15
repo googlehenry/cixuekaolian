@@ -7,6 +7,5 @@ class VariablesCi {
     companion object {
         var ciContext: CiContext? = null
         var searchMode: SearchMode = SearchMode.START
-
     }
 }

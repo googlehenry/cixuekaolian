@@ -92,6 +92,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             }
 
         })
+        searchView.clearFocus()
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
@@ -127,7 +128,14 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         word?.let {
             var intent = Intent(mContext, CiPage0Activity::class.java)
-            intent.putExtra("word", word.word)
+            val array = ArrayList<String>()
+            val wordList = (recycler_view_high.adapter as SearchedWordAdapter).data.map { it.word }
+
+            array.addAll(wordList)
+
+            VariablesCi.ciContext!!.currentWordList = array.toMutableList()
+            VariablesCi.ciContext!!.currentIndex = wordList.indexOf(word.word)
+
             startActivity(
                 intent
             )

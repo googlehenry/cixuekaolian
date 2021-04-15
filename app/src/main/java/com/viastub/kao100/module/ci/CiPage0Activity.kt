@@ -1,12 +1,15 @@
 package com.viastub.kao100.module.ci
 
+import android.app.AlertDialog
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
+import java.util.*
 
 class CiPage0Activity : BaseActivity() {
 
@@ -16,9 +19,13 @@ class CiPage0Activity : BaseActivity() {
 
     override fun afterCreated() {
         supportActionBar?.hide()
-        var word = intent?.extras?.get("word")?.let { it as String }
+        header_back.setOnClickListener { onBackPressed() }
 
-        title_high.text = "查询结果:$word"
+        var wordsx = intent?.extras?.get("wordlist")?.let { it as ArrayList<String> }
+
+        wordsx?.let {
+            VariablesCi.ciContext!!.currentWordList = it.toMutableList()
+        }
 
         ci_word_detail.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
@@ -28,8 +35,20 @@ class CiPage0Activity : BaseActivity() {
                 //entry://workout
                 request?.url?.let {
                     if (it.toString().startsWith("entry://")) {
-                        val word = it.toString().replace("entry://", "")
-                        gotoWordFromDict(word)
+                        var word = it.toString().replace("entry://", "")
+
+                        var list = VariablesCi.ciContext?.currentWordList
+                        var index = VariablesCi.ciContext?.currentIndex ?: 0
+                        var rootWord = list?.get(index)!!
+                        var rootWordLinks: LinkedList<String> =
+                            VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord)
+                                ?: LinkedList()
+                        rootWordLinks.add(word)
+
+                        loadword(word, rootWordLinks.size)
+
+
+                        VariablesCi.ciContext?.currentWordRootLinks?.put(rootWord, rootWordLinks)
                     }
                 }
 
@@ -37,28 +56,78 @@ class CiPage0Activity : BaseActivity() {
             }
         }
 
-        word?.let { wd ->
-            gotoWordFromDict(wd)
+
+        gotoWordFromDict(0)
+
+        action_next.setOnClickListener {
+            gotoWordFromDict(1)
         }
 
+        action_prev.setOnClickListener {
+            //If user clicks links, first go back to last link, then go to previous word in list
+            var list = VariablesCi.ciContext?.currentWordList
+            var index = VariablesCi.ciContext?.currentIndex ?: 0
+            var rootWord = list?.get(index)!!
+            var rootWordLinks: LinkedList<String> =
+                VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord) ?: LinkedList()
 
-        header_action.setOnClickListener {
-            VariablesCi.ciContext?.dictConfig?.mdict?.let {
-                ci_word_detail.loadDataWithBaseURL(
-                    "file:///android_asset/www/",
-                    it.getRecordAt(it.lookUp(word)),
-                    "text/html",
-                    "UTF-16LE",
-                    null
-                )
+            var linksize = rootWordLinks.size
+            if (linksize > 0) {
+                rootWordLinks.removeLast()
+            }
+            VariablesCi.ciContext?.currentWordRootLinks?.put(rootWord, rootWordLinks)
+
+            if (rootWordLinks.size > 0) {
+                var word = rootWordLinks.last
+                loadword(word, rootWordLinks.size)
+            } else if (rootWordLinks.size == 0) {
+                if (linksize == 0) {
+                    gotoWordFromDict(-1) //move prev in list
+                } else {
+                    gotoWordFromDict(0) // show current root word
+                }
+            } else {
+                gotoWordFromDict(-1)
+            }
+
+        }
+    }
+
+    private fun gotoWordFromDict(step: Int = 0) {
+        var list = VariablesCi.ciContext?.currentWordList
+        var index = VariablesCi.ciContext?.currentIndex ?: 0
+        index += step
+
+
+        list?.let {
+            if (it.isNotEmpty()) {
+                var wd = if (index < it.size && index >= 0) list[index] else null
+                wd?.let {
+                    VariablesCi.ciContext?.currentIndex = index
+                    loadword(wd)
+                }
+                if (wd == null) {
+                    Toast.makeText(this, "已经到底了", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
 
-        header_back.setOnClickListener { onBackPressed() }
     }
 
-    private fun gotoWordFromDict(wd: String) {
+    private fun loadword(wd: String, links: Int = 0) {
+        var list = VariablesCi.ciContext?.currentWordList
+        var index = VariablesCi.ciContext?.currentIndex ?: 0
+
+        if (links > 0) {
+            title_high.text = "单词:${list?.get(index)}..${wd}"
+        } else {
+            title_high.text = "单词:${list?.get(index)} (${index + 1}/${list?.size})"
+        }
+        word_list_dict_progress.max = list?.size!!
+        word_list_dict_progress.secondaryProgress = index + 1
+
+
         VariablesCi.ciContext?.dictConfig?.mdict?.let {
             var explanation = it.getRecordAt(it.lookUp(wd))
 
@@ -86,6 +155,29 @@ class CiPage0Activity : BaseActivity() {
                 </head>
             """.trimIndent()
         return "<html>$head<body>$data</body></html>"
+    }
+
+    override fun onBackPressed() {
+
+        var list = VariablesCi.ciContext?.currentWordList
+        var index = VariablesCi.ciContext?.currentIndex ?: 0
+        var rootWord = list?.get(index)!!
+        var rootWordLinks: LinkedList<String> =
+            VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord) ?: LinkedList()
+
+        if (rootWordLinks.size == 0 && index == 0) {
+            super.onBackPressed()
+        } else {
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            dialog.setTitle("还未学完单词列表中的单词,强行返回?")
+            dialog.setPositiveButton("返回") { dialog, which ->
+                super.onBackPressed()
+            }
+            dialog.setNegativeButton("不返回") { dialog, which -> dialog?.dismiss() }
+            dialog.show()
+        }
+
+
     }
 
 }

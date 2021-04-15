@@ -31,9 +31,9 @@
             <TextView
                 android:id="@+id/title_high"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
@@ -41,9 +41,9 @@
                 android:id="@+id/header_action"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="2dp"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/selector_menu_options"
                 android:tooltipText="这里菜单选项" />
         </LinearLayout>
@@ -61,13 +61,26 @@
                 android:layout_height="wrap_content"></WebView>
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/word_list_dict_progress"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="center_vertical"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:mirrorForRtl="true"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_horizontal"
+            android:secondaryProgress="30" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary">
 
+
             <LinearLayout
-                android:id="@+id/player_controls_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/dp_10"
@@ -76,8 +89,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
 
+
                 <ImageView
-                    android:id="@+id/prev"
+                    android:id="@+id/action_prev"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -86,7 +100,7 @@
                     android:src="@drawable/selector_button_prev_icon" />
 
                 <ImageView
-                    android:id="@+id/next"
+                    android:id="@+id/action_next"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -95,23 +109,21 @@
                     android:src="@drawable/selector_button_next_icon" />
 
                 <ImageView
-                    android:id="@+id/sound"
+                    android:id="@+id/action_speak"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:contentDescription="暂停"
+                    android:contentDescription="发音"
                     android:src="@drawable/selector_button_speak_icon" />
 
                 <ImageView
-                    android:id="@+id/play_pause"
+                    android:id="@+id/action_auto_play"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:contentDescription="暂停"
                     android:src="@drawable/selector_button_tape_icon" />
-
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
