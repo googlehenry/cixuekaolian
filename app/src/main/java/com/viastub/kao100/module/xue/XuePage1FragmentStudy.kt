@@ -3,6 +3,7 @@ package com.viastub.kao100.module.xue
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.utils.VariablesXue
@@ -24,12 +25,46 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
 
         pageSnapshotPaths?.let {
             currentIndex = 0
-            teaching_book_unit_page_index.text = (currentIndex + 1).toString()
             VariablesXue.xueContext?.currentPageIndex = currentIndex
 
             teaching_book_unit_progress.max = it.size
             teaching_book_unit_progress.secondaryProgress = currentIndex + 1
             flipper.addView(getImageView(File(it[currentIndex])));
+        }
+
+        teaching_book_unit_page_next.setOnClickListener {
+            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
+            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
+            pageSnapshotPaths?.let {
+                currentIndex++
+                if (currentIndex < it.size) {
+                    flipper.removeAllViews()
+                    flipper.addView(getImageView(File(it[currentIndex])))
+                    flipper.showNext()
+                } else {
+                    currentIndex--
+                    toast("已经到最后一页")
+                }
+                VariablesXue.xueContext?.currentPageIndex = currentIndex
+                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+            }
+        }
+        teaching_book_unit_page_prev.setOnClickListener {
+            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
+            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
+            pageSnapshotPaths?.let {
+                currentIndex--
+                if (currentIndex >= 0) {
+                    flipper.removeAllViews()
+                    flipper.addView(getImageView(File(it[currentIndex])))
+                    flipper.showPrevious()
+                } else {
+                    currentIndex++
+                    toast("已经到第一页")
+                }
+                VariablesXue.xueContext?.currentPageIndex = currentIndex
+                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+            }
         }
 
     }

@@ -417,6 +417,9 @@ public class ZoomImageView extends androidx.appcompat.widget.AppCompatImageView 
                 if (rectF.width() > getWidth() + 0.01 || rectF.height() > getHeight() + 0.01) {
                     if (getParent() instanceof ViewPager)
                         getParent().requestDisallowInterceptTouchEvent(true);
+                    if (getParent() instanceof ViewFlipper) {
+                        getParent().requestDisallowInterceptTouchEvent(true);
+                    }
                 }
                 float dx = x - mLastX;
                 float dy = y - mLastY;
