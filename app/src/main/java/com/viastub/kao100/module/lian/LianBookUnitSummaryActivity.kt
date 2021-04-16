@@ -81,13 +81,20 @@ class LianBookUnitSummaryActivity : BaseActivity() {
 
     override fun onBackPressed() {
 
-        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        dialog.setTitle("未提交答案不会保存,退出测试吗?")
-        dialog.setPositiveButton("退出") { dialog, which ->
+        var submittedCurrent =
+            VariablesLian.availableTemplatesMap[VariablesLian.availableTemplateIds[VariablesLian.currentTemplateIdIdx]]?.submitted
+
+        if (submittedCurrent == true) {
             doGoBack()
+        } else {
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            dialog.setTitle("未提交答案不会保存,退出练习吗?")
+            dialog.setPositiveButton("退出") { dialog, which ->
+                doGoBack()
+            }
+            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
+            dialog.show()
         }
-        dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
-        dialog.show()
 
     }
 

@@ -128,8 +128,13 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                 }?.map { SearchedWord(it, "") }?.let {
                     filteredList.addAll(it)
                 }
+
+                if (!filteredList.contains(enteredKey)) {
+                    filteredList.add(SearchedWord(enteredKey, ""))
+                }
             }
         }
+
         return filteredList
     }
 

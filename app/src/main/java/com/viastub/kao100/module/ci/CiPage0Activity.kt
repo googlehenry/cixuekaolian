@@ -139,12 +139,12 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         if (links > 0) {
             title_high.text = "单词:${list?.get(index)}..${wd}"
             VariablesCi.ciContext!!.currentword = wd
-            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
+//            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
         } else {
             var wd = list?.get(index)
             title_high.text = "单词:${wd} (${index + 1}/${list?.size})"
             VariablesCi.ciContext!!.currentword = wd
-            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
+//            speech?.speak(wd, TextToSpeech.QUEUE_FLUSH, null, "oops")
         }
 
         word_list_dict_progress.max = list?.size!!
@@ -213,9 +213,9 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             speech?.language = Locale.ENGLISH
             speech?.setPitch(0.75F)
 //            speech?.setSpeechRate(0.75f)
-            VariablesCi.ciContext!!.currentword?.let {
-                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
-            }
+//            VariablesCi.ciContext!!.currentword?.let {
+//                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+//            }
         } else {
             Toast.makeText(this, "手机不支持合成语音", Toast.LENGTH_SHORT).show()
         }
