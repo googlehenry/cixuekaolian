@@ -74,8 +74,6 @@ class XuePage1Activity : BaseActivity() {
                         currentFragment =
                             commonViewPagerAdapter.getItem(tab!!.position) as BaseFragment
                         currentFragment!!.onResume()
-                        non_scrollable_view_pager.isScrollble =
-                            !(currentFragment?.touchEventAware() == true)
                     }
 
                     override fun onTabUnselected(tab: TabLayout.Tab?) {}

@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/teaching_book_unit_page_prev"
-        android:layout_width="30dp"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,11 +43,11 @@
         android:gravity="center"
         android:background="@drawable/shape_xue_textbook_controls"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/teaching_book_unit_page_next"
-        android:layout_width="30dp"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,5 +57,5 @@
         android:gravity="center"
         android:background="@drawable/shape_xue_textbook_controls"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
