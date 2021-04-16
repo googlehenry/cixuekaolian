@@ -9,16 +9,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.beans.SearchedWord
 
-/**
- * Created by yechao on 2020/1/17/017.
- * Describe :
- */
 class SearchedWordAdapter(var itemClickListener: View.OnClickListener) :
     BaseQuickAdapter<SearchedWord, BaseViewHolder>(R.layout.fragment_ci_item_searched_word) {
-
-    init {
-        addChildClickViewIds(R.id.article_favorite)
-    }
 
     override fun convert(holder: BaseViewHolder, item: SearchedWord) {
         //fromHtml，因为搜索结果中的title中含有html标签
@@ -40,20 +32,7 @@ class SearchedWordAdapter(var itemClickListener: View.OnClickListener) :
             }
             true
         }
-//
-//        var goIn = holder.getView<ImageView>(R.id.ci_goin)
-//        goIn.setTag(R.id.ci_goin, item)
-//        goIn.setOnClickListener {
-//            itemClickListener.onClick(it)
-//        }
-//        if (item.collect) {
-//            Glide.with(context).load(R.drawable.ic_like_checked)
-//                .into(holder.getView(R.id.article_favorite))
-//        } else {
-//            Glide.with(context).load(R.drawable.ic_like_normal)
-//                .into(holder.getView(R.id.article_favorite))
-//        }
+
+
     }
-
-
 }
