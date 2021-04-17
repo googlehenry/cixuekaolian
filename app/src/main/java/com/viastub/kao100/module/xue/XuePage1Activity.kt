@@ -82,10 +82,12 @@ class XuePage1Activity : BaseActivity() {
 
                 it.audioPaths()?.firstOrNull()?.let {
                     currentPlayAudioIndex = 0
-                    var audioFileInit = File(it)
-                    player_current_item_name.text = "当前音频:${audioFileInit.name}"
-                    mediaPlayer = MediaPlayer.create(this, audioFileInit.toUri())
-                    mediaPlayer?.setVolume(1.0f, 1.0f)
+
+                    playAnother(0)
+//                    var audioFileInit = File(it)
+//                    player_current_item_name.text = "当前音频:${audioFileInit.name}"
+//                    mediaPlayer = MediaPlayer.create(this, audioFileInit.toUri())
+//                    mediaPlayer?.setVolume(1.0f, 1.0f)
                 }
 
             })
@@ -141,23 +143,32 @@ class XuePage1Activity : BaseActivity() {
     }
 
     private fun playAnother(step: Int) {
+
+        currentPlayAudioIndex += step
         playerTimer?.cancel()
         VariablesXue.xueContext?.unit?.audioPaths()?.let {
-            currentPlayAudioIndex += step
+
             if (currentPlayAudioIndex >= 0 && currentPlayAudioIndex < it.size) {
+                var availableNextAudio = File(it[currentPlayAudioIndex])
+                player_current_item_name.text = "当前音频:${availableNextAudio.name}"
+
                 mediaPlayer?.let {
                     it.stop()
                     play_pause.setImageResource(R.drawable.player_icon_pause)
                 }
-                var availableNextAudio = File(it[currentPlayAudioIndex])
 
                 mediaPlayer = MediaPlayer.create(this, availableNextAudio.toUri())
                 mediaPlayer?.setVolume(1.0f, 1.0f)
                 mediaPlayer?.start()
-                player_current_item_name.text = "当前音频:${availableNextAudio.name}"
 
                 setPlayerUpTimer()
                 playerTimer?.start()
+            } else {
+                if (currentPlayAudioIndex < 0) {
+                    currentPlayAudioIndex = 0
+                } else {
+                    currentPlayAudioIndex = it.size - 1
+                }
             }
         }
 

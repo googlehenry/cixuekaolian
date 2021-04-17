@@ -862,7 +862,6 @@ class ExamDataLoader : DataLoader {
         var testOpion1 = PracticeAnswerOption(1, "EDIT_TEXT", null, "do good to you")
         var testOpion2 = PracticeAnswerOption(2, "EDIT_TEXT", null, "at")
         var testOpion3 = PracticeAnswerOption(3, "EDIT_TEXT", null, "for")
-        var testOpion100 = PracticeAnswerOption(100, "EDIT_TEXT", null, "for")
 
         var testQuestion1 = PracticeQuestion(
             "FILL",
@@ -896,7 +895,7 @@ class ExamDataLoader : DataLoader {
             "be good for sb./sth.对某人/某事有好处(反义短语: be bad for sb./sth.)",
             2,
             1,
-            "3,100"
+            "3"
         ).bindId(3)
 
         var testQuestionTemplate1 = PracticeTemplate(

@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/teaching_book_unit_page_prev"
         android:layout_width="24dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,14 +48,14 @@
     <TextView
         android:id="@+id/teaching_book_unit_page_next"
         android:layout_width="24dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:clickable="true"
         android:text="下\n一\n页"
         android:gravity="center"
-        android:background="@drawable/shape_xue_textbook_controls"
+        android:background="@drawable/shape_xue_textbook_controls_mirror"
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
