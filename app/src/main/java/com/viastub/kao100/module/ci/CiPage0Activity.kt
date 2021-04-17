@@ -69,10 +69,10 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         }
 
         if (VariablesCi.autoTimer == null) {
+            header_status.text = "手动模式"
+        } else {
             header_status.text =
                 "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
-        } else {
-            header_status.text = "手动模式"
         }
 
 

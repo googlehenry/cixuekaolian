@@ -111,7 +111,8 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             }
 
         })
-        searchView.clearFocus()
+
+        //searchView.clearFocus()
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
@@ -139,6 +140,11 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                 if (!filteredList.contains(enteredKey)) {
                     filteredList.add(enteredKey)
                 }
+            }
+        }
+        if (filteredList.isEmpty()) {
+            VariablesCi.ciContext?.wordKeys?.let {
+                filteredList.addAll(it)
             }
         }
 
