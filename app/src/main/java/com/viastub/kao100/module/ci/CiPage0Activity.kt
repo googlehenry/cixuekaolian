@@ -39,21 +39,26 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             ): Boolean {
                 //entry://workout
                 request?.url?.let {
-                    if (it.toString().startsWith("entry://")) {
-                        var word = it.toString().replace("entry://", "")
+                    var link = it.toString().toLowerCase()
+                    if (link.startsWith("entry://")) {
+                        var word = link.replace("entry://", "")
 
-                        var list = VariablesCi.ciContext?.currentWordList
-                        var index = VariablesCi.ciContext?.currentIndex ?: 0
-                        var rootWord = list?.get(index)!!
-                        var rootWordLinks: LinkedList<String> =
-                            VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord)
-                                ?: LinkedList()
-                        rootWordLinks.add(word)
+                        var findLinks =
+                            VariablesCi.ciContext?.wordKeys?.filter { it == word }
+                                ?: mutableListOf()
+                        while (word.length > 0 && findLinks.isNullOrEmpty()) {
+                            word = word.substring(0, word.length - 1)
+                            findLinks =
+                                VariablesCi.ciContext?.wordKeys?.filter { it == word }
+                                    ?: mutableListOf()
+                        }
 
-                        loadword(word, rootWordLinks.size)
-
-
-                        VariablesCi.ciContext?.currentWordRootLinks?.put(rootWord, rootWordLinks)
+                        if (findLinks.size == 1) {
+                            loadLinkedWord(word)
+                        } else {
+                            Toast.makeText(this@CiPage0Activity, "没有合适的链接", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
 
@@ -111,6 +116,24 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         }
 
 
+    }
+
+    private fun loadLinkedWord(word: String) {
+        var list = VariablesCi.ciContext?.currentWordList
+        var index = VariablesCi.ciContext?.currentIndex ?: 0
+        var rootWord = list?.get(index)!!
+        var rootWordLinks: LinkedList<String> =
+            VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord)
+                ?: LinkedList()
+        rootWordLinks.add(word)
+
+        loadword(word, rootWordLinks.size)
+
+
+        VariablesCi.ciContext?.currentWordRootLinks?.put(
+            rootWord,
+            rootWordLinks
+        )
     }
 
     private fun setUpSpeeachTTS() {
