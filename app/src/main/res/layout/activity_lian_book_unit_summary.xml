@@ -37,14 +37,14 @@
                 android:textSize="@dimen/sp_16" />
 
 
-            <ImageView
-                android:id="@+id/header_action"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/selector_menu_options"
-                android:tooltipText="这里菜单选项" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/header_action"-->
+            <!--                android:layout_width="26dp"-->
+            <!--                android:layout_height="26dp"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:layout_marginRight="2dp"-->
+            <!--                android:background="@drawable/selector_menu_options"-->
+            <!--                android:tooltipText="这里菜单选项" />-->
 
         </LinearLayout>
 
@@ -75,8 +75,8 @@
             android:id="@+id/progress_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/summary_book_unit_progress"
@@ -127,18 +127,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
             android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:padding="@dimen/dp_5">
 
-            <!--            <ImageView-->
-            <!--                android:id="@+id/summary_book_icon"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:scaleType="fitCenter"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:padding="1dp" />-->
+            <ImageView
+                android:id="@+id/summary_book_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="1dp"
+                android:scaleType="fitCenter" />
         </LinearLayout>
 
 

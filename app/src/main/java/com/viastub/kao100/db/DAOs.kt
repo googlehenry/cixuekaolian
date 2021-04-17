@@ -430,3 +430,27 @@ interface MySectionPracticeHistoryDao {
     fun deleteAll()
 }
 
+@Dao
+interface MyWordHistoryDao {
+    @Query("SELECT * FROM MyWordHistory")
+    fun getAll(): MutableList<MyWordHistory>
+
+    @Query("SELECT * FROM MyWordHistory where userId=:userId and word=:word order by id desc limit 1")
+    fun getByUserIdAndWord(userId: Int, word: String): MyWordHistory?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyWordHistory): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(items: MutableList<MyWordHistory>)
+
+    @Delete
+    fun delete(item: MyWordHistory)
+
+    @Delete
+    fun delete(items: MutableList<MyWordHistory>)
+
+    @Query("DELETE FROM MyWordHistory")
+    fun deleteAll()
+}
+

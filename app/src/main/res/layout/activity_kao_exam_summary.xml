@@ -38,14 +38,14 @@
                 android:textSize="@dimen/sp_16" />
 
 
-            <ImageView
-                android:id="@+id/header_action"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/selector_menu_options"
-                android:tooltipText="这里菜单选项" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/header_action"-->
+            <!--                android:layout_width="26dp"-->
+            <!--                android:layout_height="26dp"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:layout_marginRight="2dp"-->
+            <!--                android:background="@drawable/selector_menu_options"-->
+            <!--                android:tooltipText="这里菜单选项" />-->
 
         </LinearLayout>
 

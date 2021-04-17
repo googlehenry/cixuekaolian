@@ -11,6 +11,9 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.db.MyWordHistory
+import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.header_back
@@ -332,6 +335,20 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             if (it.playSoundAtStart) {
                 playSoundOfCurrentWord()
             }
+        }
+
+        doAsync {
+            val roomDb = RoomDB.get(applicationContext)
+            var myWordHistory = roomDb.myWordHistory()
+                .getByUserIdAndWord(Variables.currentUserId, VariablesCi.ciContext!!.currentword!!)
+                ?: MyWordHistory(
+                    userId = Variables.currentUserId,
+                    word = VariablesCi.ciContext!!.currentword!!
+                )
+
+            myWordHistory.visitCount += 1
+            roomDb.myWordHistory().insert(myWordHistory)
+
         }
     }
 

@@ -737,7 +737,19 @@ data class MyQuestionAnsweredHistory(
 }
 
 
-
+@Entity
+data class MyWordHistory(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var word: String?,
+    @ColumnInfo
+    var visitCount: Int = 0,
+    @ColumnInfo
+    var dateAdded: String = Date().toString()
+)
 
 
 

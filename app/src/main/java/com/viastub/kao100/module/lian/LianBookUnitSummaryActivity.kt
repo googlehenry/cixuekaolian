@@ -2,6 +2,7 @@ package com.viastub.kao100.module.lian
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
@@ -38,9 +39,9 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         section?.description?.let {
             summary_book_unit_description.text = it
         }
-//        book?.coverImage()?.let {
-//            summary_book_icon.setImageURI(Uri.fromFile(it))
-//        }
+        book?.coverImage()?.let {
+            summary_book_icon.setImageURI(Uri.fromFile(it))
+        }
 
         btn_lian_start.text = "开始练习"
 

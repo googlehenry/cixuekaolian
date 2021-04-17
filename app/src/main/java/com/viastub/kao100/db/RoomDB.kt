@@ -24,9 +24,10 @@ import androidx.room.RoomDatabase
         MyQuestionAction::class,
         MyQuestionAnsweredHistory::class,
         MyExamSimuHistory::class,
-        MySectionPracticeHistory::class
+        MySectionPracticeHistory::class,
+        MyWordHistory::class
     ],
-    version = 15,
+    version = 16,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -50,6 +51,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun myQuestionAnsweredHistory(): MyQuestionAnsweredHistoryDao
     abstract fun myExamSimuHistory(): MyExamSimuHistoryDao
     abstract fun mySectionPracticeHistory(): MySectionPracticeHistoryDao
+    abstract fun myWordHistory(): MyWordHistoryDao
 
     companion object {
         @Volatile
