@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".module.ci.CiPage1SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/side_nav_bar"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/header_back"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/shape_arrow_back_light"
+                android:tooltipText="返回上一级" />
+
+            <TextView
+                android:id="@+id/title_high"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="词典配置"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.加载单词完成后自动播放读音?" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiogroup_autosound_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="使用"
+                    android:textSize="@dimen/sp_10" />
+
+                <RadioButton
+                    android:id="@+id/radiogroup_autosound_disable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="不使用"
+                    android:textSize="@dimen/sp_10" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.在线发音链接:单词用$word$代替" />
+
+            <EditText
+                android:id="@+id/dict_settings_sound_link_template"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.使用系统和成发音?(当网络发音不可用)" />
+
+            <RadioGroup
+                android:id="@+id/radiogroup_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiogroup_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="使用"
+                    android:textSize="@dimen/sp_10" />
+
+                <RadioButton
+                    android:id="@+id/radiogroup_disable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="不使用"
+                    android:textSize="@dimen/sp_10" />
+
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#cccccc" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.自动播放模式时间间隔(单位:秒,最小5s,默认10s.)" />
+
+            <EditText
+                android:id="@+id/dict_settings_autonext_interval"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/dp_10">
+
+            <Button
+                android:id="@+id/btn_dict_config_save"
+                style="@style/rectangle_blue"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_40"
+                android:text="保 存" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

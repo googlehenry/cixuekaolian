@@ -16,7 +16,8 @@ class TeachingBookDataLoader : DataLoader {
         var dict1 = DictionaryConfig(
             id = 1, title = "英汉双解词典", dictFilePath = TempUtil.loadRawFile(
                 R.raw.dict_lonman_biolingal_simple, "dict_en_zh.mdx"
-            )
+            ),
+            onlineSpeakingLinkTemplate = "http://dict.youdao.com/dictvoice?audio=#word&type=2"
         )
 
         roomDb.dictionaryConfig().insert(dict1)

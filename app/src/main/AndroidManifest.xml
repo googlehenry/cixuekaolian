@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.viastub.kao100.module.ci.CiPage0Activity" />
+        <activity android:name="com.viastub.kao100.module.ci.CiPage1SettingActivity" />
         <activity android:name="com.viastub.kao100.module.xue.XuePage0Activity" />
         <activity android:name="com.viastub.kao100.module.xue.XuePage1Activity" />
         <activity android:name="com.viastub.kao100.module.lian.LianPage0ActivityPractice" />

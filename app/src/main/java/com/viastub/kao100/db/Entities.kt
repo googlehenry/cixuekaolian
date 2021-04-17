@@ -28,7 +28,16 @@ data class DictionaryConfig(
     @ColumnInfo
     var soundFilePath: String? = null,
 
-    ) : Parcelable {
+    @ColumnInfo
+    var onlineSpeakingLinkTemplate: String? = null,
+    @ColumnInfo
+    var ttsEnabled: Boolean = false,
+    @ColumnInfo
+    var playSoundAtStart: Boolean = false,
+    @ColumnInfo
+    var autoNextIntervalSeconds: Int = 10
+
+) : Parcelable {
     @Ignore
     var soundFile: File? = null
 

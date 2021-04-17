@@ -26,7 +26,7 @@ import androidx.room.RoomDatabase
         MyExamSimuHistory::class,
         MySectionPracticeHistory::class
     ],
-    version = 13,
+    version = 15,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {

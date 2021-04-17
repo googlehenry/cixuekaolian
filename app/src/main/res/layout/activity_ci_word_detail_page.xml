@@ -37,15 +37,15 @@
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/header_action"
-                android:layout_width="26dp"
+            <TextView
+                android:id="@+id/header_status"
+                android:layout_width="wrap_content"
                 android:layout_height="26dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/selector_menu_options"
-                android:tooltipText="这里菜单选项" />
+                android:layout_marginRight="10dp"
+                android:textColor="#ffffff"
+                android:text="手动模式" />
         </LinearLayout>
 
 
@@ -100,15 +100,6 @@
                     android:src="@drawable/selector_button_prev_icon" />
 
                 <ImageView
-                    android:id="@+id/action_speak"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:contentDescription="发音"
-                    android:src="@drawable/selector_button_speak_icon" />
-
-                <ImageView
                     android:id="@+id/action_next"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -117,14 +108,34 @@
                     android:contentDescription="下一个"
                     android:src="@drawable/selector_button_next_icon" />
 
+                <ImageView
+                    android:id="@+id/action_speak"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="发音"
+                    android:src="@drawable/selector_button_speak_icon" />
 
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/action_auto_play"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_weight="1"-->
-                <!--                    android:clickable="true"-->
-                <!--                    android:src="@drawable/selector_button_tape_icon" />-->
+
+                <ImageView
+                    android:id="@+id/action_autoNext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="自动播放"
+                    android:src="@drawable/selector_button_robot_icon" />
+
+                <ImageView
+                    android:id="@+id/action_settings"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:src="@drawable/settings_icon_gear" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

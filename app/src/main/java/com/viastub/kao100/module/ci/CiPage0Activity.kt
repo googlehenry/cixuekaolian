@@ -1,6 +1,7 @@
 package com.viastub.kao100.module.ci
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.media.MediaPlayer
 import android.speech.tts.TextToSpeech
 import android.webkit.WebResourceRequest
@@ -11,6 +12,7 @@ import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
+import kotlinx.coroutines.*
 import java.util.*
 
 
@@ -69,21 +71,58 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
         gotoWordFromDict(0)
 
+        action_settings.setOnClickListener {
+            startActivity(Intent(this, CiPage1SettingActivity::class.java))
+        }
+
+        action_autoNext.setOnClickListener {
+            if (VariablesCi.autoTimer == null) {
+                header_status.text =
+                    "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
+                Toast.makeText(this, "进入自动模式", Toast.LENGTH_SHORT).show()
+            } else {
+                header_status.text = "手动模式"
+                Toast.makeText(this, "进入自动模式", Toast.LENGTH_SHORT).show()
+            }
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                if (VariablesCi.autoTimer == null) {
+
+                    VariablesCi.autoTimer = Timer()
+                    VariablesCi.autoTimer!!.scheduleAtFixedRate(
+                        object : TimerTask() {
+                            override fun run() {
+                                if (VariablesCi.ciContext!!.currentIndex >= VariablesCi.ciContext!!.currentWordList!!.size - 1) {
+                                    VariablesCi.autoTimer?.cancel()
+                                    VariablesCi.autoTimer = null
+                                } else {
+                                    runOnUiThread {
+                                        gotoWordFromDict(1)
+                                    }
+                                }
+                            }
+
+                        },
+                        1000,
+                        VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
+                    )
+                } else {
+                    VariablesCi.autoTimer?.cancel()
+                    VariablesCi.autoTimer = null
+
+                }
+            }
+        }
 
         action_speak.setOnClickListener {
-
-
-            VariablesCi.ciContext!!.currentword?.let {
-                var mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource("http://dict.youdao.com/dictvoice?audio=$it&type=2")
-                mediaPlayer.prepare()
-                mediaPlayer.start()
-//                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
-            }
+            playSoundOfCurrentWord()
+            Toast.makeText(this, "播放读音", Toast.LENGTH_SHORT).show()
         }
 
         action_next.setOnClickListener {
             gotoWordFromDict(1)
+            Toast.makeText(this, "下一个", Toast.LENGTH_SHORT).show()
         }
 
         action_prev.setOnClickListener {
@@ -113,9 +152,43 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                 gotoWordFromDict(-1)
             }
 
+            Toast.makeText(this, "上一个", Toast.LENGTH_SHORT).show()
         }
 
+    }
 
+
+    var networkMap: MutableMap<String, Int> = mutableMapOf()
+
+    private fun playSoundOfCurrentWord() {
+        var playedOnlineSound = false
+        //step1: prefer to play online sound
+        VariablesCi.ciContext?.dictConfig?.onlineSpeakingLinkTemplate?.let { template ->
+            if (template.isNotBlank() && (networkMap[template] ?: 0) < 4) {
+                VariablesCi.ciContext!!.currentword?.let {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            withTimeout(5000) {
+                                var mediaPlayer = MediaPlayer()
+                                mediaPlayer.setDataSource(template.replace("#word", it))
+                                mediaPlayer.prepare()
+                                mediaPlayer.start()
+                                playedOnlineSound = true
+                            }
+                        } catch (ex: TimeoutCancellationException) {
+                            networkMap[template] = (networkMap[template] ?: 0) + 1
+                        }
+                    }
+                }
+            }
+        }
+
+        //step2: fallback, Play TTS if enabled and no online configed
+        if (!playedOnlineSound && VariablesCi.ciContext?.dictConfig?.ttsEnabled == true) {
+            VariablesCi.ciContext!!.currentword?.let {
+                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+            }
+        }
     }
 
     private fun loadLinkedWord(word: String) {
@@ -192,6 +265,13 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                 null
             );
 
+        }
+
+        //after all set activities, playSoundAtStart
+        VariablesCi.ciContext?.dictConfig?.let {
+            if (it.playSoundAtStart) {
+                playSoundOfCurrentWord()
+            }
         }
     }
 
