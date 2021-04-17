@@ -38,23 +38,10 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             )
         )
 
-        doAsync(0, {
-            var roomDb = RoomDB.get(mContext)
-            var dictDb = roomDb.dictionaryConfig().getById(1)
-            dictDb?.let {
-                VariablesCi.ciContext?.dictConfig = it
-            }
-            val mdct = dictDb?.dictFilePath?.let { mdict(it) }
-            dictDb?.mdict = mdct
-            if (VariablesCi.ciContext?.wordKeys == null) {
-                VariablesCi.ciContext?.wordKeys = mdct?.getKeys(null)?.toMutableList()
-            }
-            dictDb
-        }, {
-            it?.let {
-                updateUI()
-            }
-        })
+        var dictId = 1
+
+
+        loadDictWithId(dictId)
 
         radiogroup_start.isChecked = true
         radiogroup_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
@@ -84,6 +71,26 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
     }
 
+    private fun loadDictWithId(dictId: Int) {
+        doAsync(0, {
+            var roomDb = RoomDB.get(mContext)
+            var dictDb = roomDb.dictionaryConfig().getById(dictId)
+            dictDb?.let {
+                VariablesCi.ciContext?.dictConfig = it
+            }
+            val mdct = dictDb?.dictFilePath?.let { mdict(it) }
+            dictDb?.mdict = mdct
+            if (VariablesCi.ciContext?.wordKeys == null) {
+                VariablesCi.ciContext?.wordKeys = mdct?.getKeys(null)?.toMutableList()
+            }
+            dictDb
+        }, {
+            it?.let {
+                updateUI()
+            }
+        })
+    }
+
     fun updateUI() {
         var mSearchedWordAdapter = SearchedWordAdapter(this)
         mSearchedWordAdapter.data =
@@ -108,7 +115,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
-        val filteredList = ArrayList<SearchedWord>()
+        val filteredList = ArrayList<String>()
         //SearchedWord("unless", "柯林斯双解")
         name?.trim()?.let { enteredKey ->
 
@@ -125,17 +132,17 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                         SearchMode.END -> it.endsWith(enteredKey, ignoreCase = true)
                         SearchMode.CONTAINS -> it.contains(enteredKey, ignoreCase = true)
                     }
-                }?.map { SearchedWord(it, "") }?.let {
+                }?.let {
                     filteredList.addAll(it)
                 }
 
                 if (!filteredList.contains(enteredKey)) {
-                    filteredList.add(SearchedWord(enteredKey, ""))
+                    filteredList.add(enteredKey)
                 }
             }
         }
 
-        return filteredList
+        return filteredList.map { SearchedWord(it, "") }
     }
 
     // 更新数据

@@ -13,13 +13,13 @@ class TeachingBookDataLoader : DataLoader {
     }
 
     private fun loadDictionary(roomDb: RoomDB) {
-        var dict = DictionaryConfig(
-            id = 1, title = "牛津英汉双解词典", dictFilePath = TempUtil.loadRawFile(
-                R.raw.dict_oxford_en_zh_biolingol, "dict_oxford_en_zh_biolingol.mdx"
+        var dict1 = DictionaryConfig(
+            id = 1, title = "英汉双解词典", dictFilePath = TempUtil.loadRawFile(
+                R.raw.dict_lonman_biolingal_simple, "dict_en_zh.mdx"
             )
         )
 
-        roomDb.dictionaryConfig().insert(dict)
+        roomDb.dictionaryConfig().insert(dict1)
     }
 
     private fun loadTeachingBook1(roomDb: RoomDB) {

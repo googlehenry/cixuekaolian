@@ -1,6 +1,7 @@
 package com.viastub.kao100.module.ci
 
 import android.app.AlertDialog
+import android.media.MediaPlayer
 import android.speech.tts.TextToSpeech
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -65,8 +66,14 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
 
         action_speak.setOnClickListener {
+
+
             VariablesCi.ciContext!!.currentword?.let {
-                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+                var mediaPlayer = MediaPlayer()
+                mediaPlayer.setDataSource("http://dict.youdao.com/dictvoice?audio=$it&type=2")
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+//                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
             }
         }
 
@@ -214,7 +221,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             speech?.setPitch(0.75F)
 //            speech?.setSpeechRate(0.75f)
 //            VariablesCi.ciContext!!.currentword?.let {
-//                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+//                speech!!.speak("gud", TextToSpeech.QUEUE_FLUSH, null, "oops")
 //            }
         } else {
             Toast.makeText(this, "手机不支持合成语音", Toast.LENGTH_SHORT).show()

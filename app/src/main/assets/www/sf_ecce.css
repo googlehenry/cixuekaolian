@@ -1,0 +1,133 @@
+/*音标*/
+.phone{
+	color:sienna;
+	display:block;
+	margin-left:5
+}
+/*例句*/
+.exam{
+	display: block;
+	margin-left:14px;
+}
+/*上标*/
+.upper{
+	vertical-align:super;
+	font-size: 60%
+}
+/*英语例句*/
+.f{
+	color:darkblue;
+}
+/*汉语例句*/
+.n{
+	color:slategray;
+	display: block;
+	margin-left:8px;
+}
+/*换行*/
+.l{
+	display: block;
+}
+/*词性*/
+.pos{
+	display: block;
+	margin-left:8px;
+	color:darkmagenta;
+}
+/*词性词组转换*/
+.trs,.phrs{
+	margin-top:8px;
+}
+/*词组*/
+.phrs{
+	display: block;
+	margin-left:10px;
+}
+.phr{
+	color:darkblue;
+}
+.des{
+	display: block;
+	margin-left:8px;
+	color:darkslategray;
+}
+.phrs .tr{
+	display: block;
+	margin-left:8px;
+	color:darkslategray;
+}
+/*号码，点*/
+.entryNum{
+	font-weight:bold;
+	color:darkgreen;
+	/*display:inline;*/
+	display:none;
+	font-weight:bold;
+	margin-right:3px
+}
+.entryDot{
+	font-weight:bold;
+	color:darkgreen;
+	display:inline;
+	/*display:none;*/
+	font-weight:bold;
+	margin-right:3px
+}
+
+/*
+.tr{
+	display:block;
+}
+*/
+/*同义词 变形 反义词*/
+.tongyici{
+	margin-left:5px;
+	font-weight:bold;
+	display: block;
+}
+.fanyici{
+	margin-left:5px;
+	font-weight:bold;
+	display: block;
+}
+.bianxing{
+	margin-left:5px;
+	font-weight:bold;
+	display: block;
+}
+.anto{
+	margin-top:5px;
+	margin-left:10px;
+	display: block;
+}
+.wf{
+	margin-top:5px;
+	margin-left:10px;
+	display: block;
+}
+.syno{
+	margin-top:5px;
+	margin-left:10px;
+	display: block;
+}
+.anto .i{
+	font-style:italic;
+	display: block;
+}
+.wf .i{
+	font-style:italic;
+	display: block;
+}
+.syno .i{
+	font-style:italic;
+	display: block;
+}
+/*词组链接*/
+.ref_title{
+	margin-right:5;
+	font-weight:bold;
+	font-style:normal;
+}
+.reference{
+	font-style:italic;
+}

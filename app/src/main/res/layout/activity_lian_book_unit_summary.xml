@@ -133,12 +133,12 @@
             android:layout_weight="1"
             android:padding="@dimen/dp_5">
 
-            <ImageView
-                android:id="@+id/summary_book_icon"
-                android:layout_width="match_parent"
-                android:scaleType="fitCenter"
-                android:layout_height="match_parent"
-                android:padding="1dp" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/summary_book_icon"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:scaleType="fitCenter"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:padding="1dp" />-->
         </LinearLayout>
 
 
