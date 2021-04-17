@@ -3,6 +3,7 @@ package com.viastub.kao100.module.ci
 import android.app.AlertDialog
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -12,6 +13,8 @@ import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
+import kotlinx.android.synthetic.main.activity_ci_word_detail_page.header_back
+import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -88,15 +91,19 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             if (VariablesCi.autoTimer == null) {
                 header_status.text =
                     "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
+                action_autoNext.setBackgroundResource(R.drawable.ci_word_timer_off)
             } else {
                 header_status.text = "手动模式"
+                action_autoNext.setBackgroundResource(R.drawable.ci_word_timer_on)
             }
 
             CoroutineScope(Dispatchers.IO).launch {
 
                 if (VariablesCi.autoTimer == null) {
-
                     VariablesCi.autoTimer = Timer()
+                    val interval =
+                        VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
+                    var countDownTimer: CountDownTimer? = null
                     VariablesCi.autoTimer!!.scheduleAtFixedRate(
                         object : TimerTask() {
                             override fun run() {
@@ -106,13 +113,16 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                                 } else {
                                     runOnUiThread {
                                         gotoWordFromDict(1)
+                                        countDownTimer?.let { it.cancel() }
+                                        countDownTimer = setUpTimer(interval)
+                                        countDownTimer?.start()
                                     }
                                 }
                             }
 
                         },
                         1000,
-                        VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
+                        interval
                     )
                 } else {
                     VariablesCi.autoTimer?.cancel()
@@ -165,37 +175,80 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
     }
 
 
-    var networkMap: MutableMap<String, Int> = mutableMapOf()
+    fun setUpTimer(milliSeconds: Long): CountDownTimer {
 
+        var countDownTimer = object : CountDownTimer(milliSeconds, 500) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (VariablesCi.autoTimer != null) {
+                    var seconds = millisUntilFinished / 1000
+                    header_status.text =
+                        "自动模式[${if (seconds < 10) "0" + seconds else seconds}]"
+                }
+            }
+
+            override fun onFinish() {
+
+            }
+
+        }
+        return countDownTimer
+    }
+
+
+    var networkMap: MutableMap<String, Int> = mutableMapOf()
     private fun playSoundOfCurrentWord() {
         var playedOnlineSound = false
-        //step1: prefer to play online sound
-        VariablesCi.ciContext?.dictConfig?.onlineSpeakingLinkTemplate?.let { template ->
-            if (template.isNotBlank() && (networkMap[template] ?: 0) < 4) {
-                VariablesCi.ciContext!!.currentword?.let {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        try {
-                            withTimeout(5000) {
-                                var mediaPlayer = MediaPlayer()
-                                mediaPlayer.setDataSource(template.replace("#word", it))
-                                mediaPlayer.prepare()
-                                mediaPlayer.start()
-                                playedOnlineSound = true
+
+        CoroutineScope(Dispatchers.IO).launch {
+            //step1: prefer to play online sound
+            supervisorScope {
+
+                launch {
+                    VariablesCi.ciContext?.dictConfig?.onlineSpeakingLinkTemplate?.let { template ->
+                        if (template.isNotBlank() && (networkMap[template] ?: 0) < 3) {
+                            VariablesCi.ciContext!!.currentword?.let {
+
+                                try {
+                                    var mediaPlayer = MediaPlayer()
+                                    mediaPlayer.setDataSource(template.replace("#word", it))
+                                    mediaPlayer.setOnErrorListener { mp, what, extra ->
+                                        networkMap[template] = (networkMap[template] ?: 0) + 1
+                                        mp.release()
+                                        true
+                                    }
+                                    mediaPlayer.setOnCompletionListener {
+                                        it.release()
+                                    }
+                                    mediaPlayer.prepare()
+                                    mediaPlayer.start()
+                                    playedOnlineSound = true
+                                } catch (ex: Exception) {
+                                    networkMap[template] = (networkMap[template] ?: 0) + 1
+                                }
+
                             }
-                        } catch (ex: TimeoutCancellationException) {
-                            networkMap[template] = (networkMap[template] ?: 0) + 1
+                        }
+                    }
+                }
+                launch {
+                    val template = VariablesCi.ciContext?.dictConfig?.onlineSpeakingLinkTemplate
+                    if (template != null && (networkMap[template] ?: 0) < 3) {
+                        delay(2000)
+                    }
+                    //step2: fallback, Play TTS if enabled and no online configed
+                    if (!playedOnlineSound && VariablesCi.ciContext?.dictConfig?.ttsEnabled == true) {
+                        VariablesCi.ciContext!!.currentword?.let {
+                            runOnUiThread {
+                                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
+                            }
                         }
                     }
                 }
             }
+
         }
 
-        //step2: fallback, Play TTS if enabled and no online configed
-        if (!playedOnlineSound && VariablesCi.ciContext?.dictConfig?.ttsEnabled == true) {
-            VariablesCi.ciContext!!.currentword?.let {
-                speech!!.speak(it, TextToSpeech.QUEUE_FLUSH, null, "oops")
-            }
-        }
+
     }
 
     private fun loadLinkedWord(word: String) {

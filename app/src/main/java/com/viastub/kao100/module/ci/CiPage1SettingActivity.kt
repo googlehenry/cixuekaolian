@@ -40,25 +40,33 @@ class CiPage1SettingActivity : BaseActivity() {
         }
 
         btn_dict_config_save.setOnClickListener {
-            VariablesCi.ciContext?.dictConfig?.let {
-                it.onlineSpeakingLinkTemplate =
-                    dict_settings_sound_link_template.text.toString().trim()
-                it.ttsEnabled = radiogroup_enable.isChecked
-                it.playSoundAtStart = radiogroup_autosound_enable.isChecked
-                it.autoNextIntervalSeconds =
-                    dict_settings_autonext_interval.text.toString().toIntOrNull() ?: 10
-
-                it.autoNextIntervalSeconds =
-                    if (it.autoNextIntervalSeconds >= 5) it.autoNextIntervalSeconds else 10
-
-                doAsync {
-                    RoomDB.get(applicationContext).dictionaryConfig().insert(it)
-                }
-                Toast.makeText(this, "配置已保存", Toast.LENGTH_SHORT).show()
-
-                onBackPressed()
-            }
+            onBackPressed()
         }
+    }
+
+    private fun saveConfig() {
+        VariablesCi.ciContext?.dictConfig?.let {
+            it.onlineSpeakingLinkTemplate =
+                dict_settings_sound_link_template.text.toString().trim()
+            it.ttsEnabled = radiogroup_enable.isChecked
+            it.playSoundAtStart = radiogroup_autosound_enable.isChecked
+            it.autoNextIntervalSeconds =
+                dict_settings_autonext_interval.text.toString().toIntOrNull() ?: 10
+
+            it.autoNextIntervalSeconds =
+                if (it.autoNextIntervalSeconds >= 5) it.autoNextIntervalSeconds else 10
+
+            doAsync {
+                RoomDB.get(applicationContext).dictionaryConfig().insert(it)
+            }
+            Toast.makeText(this, "配置已保存", Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        saveConfig()
     }
 
 }
