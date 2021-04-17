@@ -3,10 +3,8 @@ package com.viastub.kao100.module.ci
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.knziha.plod.dictionary.mdict
 import com.viastub.kao100.R
@@ -43,6 +41,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         loadDictWithId(dictId)
 
+
         radiogroup_start.isChecked = true
         radiogroup_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -61,13 +60,6 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
             }
         })
-
-        val imm =
-            mContext.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(
-            searchView.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
 
     }
 
@@ -100,6 +92,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         searchView.isSubmitButtonEnabled = false
         searchView.onActionViewExpanded()
+        searchView.clearFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -112,7 +105,6 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         })
 
-        //searchView.clearFocus()
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
@@ -168,8 +160,10 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
             array.addAll(wordList)
 
+            val startIdx = wordList.indexOf(word.word)
             VariablesCi.ciContext!!.currentWordList = array.toMutableList()
-            VariablesCi.ciContext!!.currentIndex = wordList.indexOf(word.word)
+            VariablesCi.ciContext!!.currentIndex = startIdx
+            VariablesCi.ciContext!!.initIndex = startIdx
 
             startActivity(
                 intent

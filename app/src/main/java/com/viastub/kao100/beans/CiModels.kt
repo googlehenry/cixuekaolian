@@ -18,7 +18,9 @@ data class CiContext(
     var currentWordRootLinks: MutableMap<String, LinkedList<String>> = mutableMapOf(),
     var currentWordList: MutableList<String>? = mutableListOf(),
     var currentIndex: Int = 0,
+    var initIndex: Int = 0,
     var currentword: String? = null
+
 
 ) : Parcelable
 

@@ -305,7 +305,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         var rootWordLinks: LinkedList<String> =
             VariablesCi.ciContext?.currentWordRootLinks?.get(rootWord) ?: LinkedList()
 
-        if (rootWordLinks.size == 0 && index == 0) {
+        if (rootWordLinks.size == 0 && index == (VariablesCi.ciContext?.initIndex ?: 0)) {
             super.onBackPressed()
             speech?.stop()
             speech?.shutdown()
