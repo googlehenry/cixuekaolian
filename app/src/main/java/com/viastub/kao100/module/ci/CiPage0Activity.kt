@@ -68,6 +68,13 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             }
         }
 
+        if (VariablesCi.autoTimer == null) {
+            header_status.text =
+                "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
+        } else {
+            header_status.text = "手动模式"
+        }
+
 
         gotoWordFromDict(0)
 
@@ -76,13 +83,13 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         }
 
         action_autoNext.setOnClickListener {
+            Toast.makeText(this, "切换模式", Toast.LENGTH_SHORT).show()
+
             if (VariablesCi.autoTimer == null) {
                 header_status.text =
                     "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
-                Toast.makeText(this, "进入自动模式", Toast.LENGTH_SHORT).show()
             } else {
                 header_status.text = "手动模式"
-                Toast.makeText(this, "进入自动模式", Toast.LENGTH_SHORT).show()
             }
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -302,6 +309,8 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             super.onBackPressed()
             speech?.stop()
             speech?.shutdown()
+            VariablesCi.autoTimer?.cancel()
+            VariablesCi.autoTimer = null
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle("还未学完单词,仍然退出?")
@@ -309,6 +318,8 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                 super.onBackPressed()
                 speech?.stop()
                 speech?.shutdown()
+                VariablesCi.autoTimer?.cancel()
+                VariablesCi.autoTimer = null
             }
             dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
             dialog.show()
