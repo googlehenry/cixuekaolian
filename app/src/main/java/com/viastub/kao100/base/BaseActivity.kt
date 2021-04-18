@@ -1,23 +1,22 @@
 package com.viastub.kao100.base
 
-import android.app.AlertDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.viastub.kao100.R
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.wigets.CommonDialog
+import com.viastub.kao100.wigets.CommonDialog.OnClickBottomListener
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+
 
 /**
  * Created by yechao on 2020/1/3/003.
@@ -91,37 +90,39 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     fun addNewCollectDialog(item: String) {
-        var inputText = EditText(this)
-
+        val dialog = CommonDialog(this)
         if (!item.trim().isNullOrBlank() && item.split(" ").size > 1) {
-            inputText.setText(item.toCharArray(), 0, item.length)
+            dialog.message = item
         }
-        inputText.setBackgroundResource(R.drawable.selector_textinput_round_cornor_grayed)
-        inputText.setTextSize(COMPLEX_UNIT_DIP, 14f);
-        inputText.selectAll()
 
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("收集一个新项").setIcon(
-            R.drawable.ic_drawer_menu_notebook
-        ).setView(inputText).setNegativeButton("取消", null)
-        builder.setPositiveButton("确定") { dialog, which ->
-            val inputName = inputText.text.toString()
-            if (inputName.split(" ").size > 1) {
-                doAsync {
-                    RoomDB.get(applicationContext).myCollectedNote().insert(
-                        MyCollectedNote(
-                            userId = Variables.currentUserId,
-                            collectedText = inputName
-                        )
-                    )
+        dialog
+            .setTitle("收集一个新项")
+            .setSingle(false).setOnClickBottomListener(object : OnClickBottomListener {
+                override fun onPositiveClick() {
+                    val inputName = dialog.message
+                    if (inputName.split(" ").size > 1) {
+                        doAsync {
+                            RoomDB.get(applicationContext).myCollectedNote().insert(
+                                MyCollectedNote(
+                                    userId = Variables.currentUserId,
+                                    collectedText = inputName
+                                )
+                            )
+                        }
+                        dialog.message = ""
+                        Toast.makeText(this@BaseActivity, "该文本已添加到我的收集", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@BaseActivity, "单个单词无法收集", Toast.LENGTH_SHORT).show()
+                    }
+
+                    dialog.dismiss()
                 }
-                inputText.text.clear()
-                Toast.makeText(this, "该文本已添加到我的收集", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "单个单词无法收集", Toast.LENGTH_SHORT).show()
-            }
-        }
-        builder.show()
+
+                override fun onNegtiveClick() {
+                    dialog.dismiss()
+                }
+            }).show()
     }
+
 
 }
