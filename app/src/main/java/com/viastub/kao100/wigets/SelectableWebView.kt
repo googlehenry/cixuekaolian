@@ -57,14 +57,17 @@ class SelectableWebView : WebView {
 
             itemQuery.setOnMenuItemClickListener {
                 getSelectedDataJSAnCallBack(action = "query")
+                actionMode.finish()
                 true
             }
             itemCollect.setOnMenuItemClickListener {
                 getSelectedDataJSAnCallBack(action = "collect")
+                actionMode.finish()
                 true
             }
             itemCopy.setOnMenuItemClickListener {
                 getSelectedDataJSAnCallBack(action = "copy")
+                actionMode.finish()
                 true
             }
         }
@@ -147,7 +150,12 @@ class SelectableWebView : WebView {
                 "txt = window.document.selection.createRange().text;" +
                 "}" +
                 "JSInterface.callback(txt,title);" +
-                "})()"
+                "})();" +
+                "if (document.selection) {" +
+                "document.selection.empty();" +
+                "} else if (window.getSelection) {" +
+                "window.getSelection().removeAllRanges();" +
+                "}"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             evaluateJavascript("javascript:$js", null)
         } else {
