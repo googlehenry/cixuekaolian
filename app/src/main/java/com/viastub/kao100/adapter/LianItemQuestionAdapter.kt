@@ -15,6 +15,7 @@ import com.viastub.kao100.db.MyQuestionAction
 import com.viastub.kao100.db.PracticeQuestion
 import com.viastub.kao100.db.PracticeTemplate
 import com.viastub.kao100.utils.Constants
+import com.viastub.kao100.wigets.TextViewSelectionCallback
 
 
 /**
@@ -37,6 +38,8 @@ class LianItemQuestionAdapter(
 
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
         questionMainText.visibility = if (item.text == null) View.GONE else View.VISIBLE
+        questionMainText.customSelectionActionModeCallback =
+            TextViewSelectionCallback(context, questionMainText)
 
         var questionOptionsHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
@@ -98,6 +101,10 @@ class LianItemQuestionAdapter(
         answerExplained.visibility =
             if (lianItem.submitted && item.answerKeyPoints != null) View.VISIBLE else View.GONE
 
+        answerReviewed.customSelectionActionModeCallback =
+            TextViewSelectionCallback(context, answerReviewed)
+        answerExplained.customSelectionActionModeCallback =
+            TextViewSelectionCallback(context, answerExplained)
 
         questionOptionsHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
 

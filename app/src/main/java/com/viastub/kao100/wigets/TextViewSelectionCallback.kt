@@ -62,16 +62,19 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
                 val selectedText: CharSequence = getSelectedText()
 
                 if (selectedText.trim().isNotEmpty()) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        RoomDB.get(context).myCollectedNote().insert(
-                            MyCollectedNote(
-                                userId = Variables.currentUserId,
-                                collectedText = selectedText.trim().toString()
+                    if (selectedText.split(" ").size > 1) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            RoomDB.get(context).myCollectedNote().insert(
+                                MyCollectedNote(
+                                    userId = Variables.currentUserId,
+                                    collectedText = selectedText.trim().toString()
+                                )
                             )
-                        )
+                        }
+                        Toast.makeText(context, "选中文本已添加到我的收集", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "单个单词无法收集", Toast.LENGTH_SHORT).show()
                     }
-
-                    Toast.makeText(context, "选中文本已添加到我的收集", Toast.LENGTH_SHORT).show()
                 }
                 mode.finish()
                 true
@@ -79,7 +82,7 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
             999 -> {
                 val selectedText: CharSequence = getSelectedText()
 
-                val regex = Regex("[a-z]+[\\-\\']?[a-z]*")
+                val regex = Regex("[a-zA-Z]+[\\-\\']?[a-z]*")
                 var wordListX = regex.findAll(selectedText).map { it.value }.toList()
                 var sortedList = wordListX
 //                var sortedList = wordListX.asSequence().map { it to 1 }

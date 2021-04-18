@@ -44,7 +44,7 @@ class XuePage1FragmentTrans(
                 bookTranslationsDb?.let {
                     if (index < it.size) {
                         if (pageLoadedMap[index] == null) {
-                            var adapter = TranscriptItemAdapter(this, showEngText)
+                            var adapter = TranscriptItemAdapter(showEngText)
                             var oneTrans = it[index]
                             oneTrans.sequence = index + 1
                             adapter.data = mutableListOf(oneTrans)

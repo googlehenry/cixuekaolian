@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <WebView
+            <com.viastub.kao100.wigets.SelectableWebView
                 android:id="@+id/ci_word_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

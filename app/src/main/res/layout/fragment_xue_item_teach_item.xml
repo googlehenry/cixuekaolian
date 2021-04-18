@@ -30,6 +30,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:fontFamily="sans-serif-light"
+            android:textIsSelectable="true"
             android:textColor="#666666"
             android:textSize="14sp" />
 

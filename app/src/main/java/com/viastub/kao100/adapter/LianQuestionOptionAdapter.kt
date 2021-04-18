@@ -26,6 +26,8 @@ class LianQuestionOptionAdapter(
         var indicator = holder.getView<ImageView>(R.id.lian_item_result_icon)
         var itemOption = holder.getView<TextView>(R.id.lian_item_option_main)
         itemOption.text = item.displayText
+//        itemOption.customSelectionActionModeCallback =
+//            TextViewSelectionCallback(context, itemOption)
 
         if (!lianItem.submitted) {
             indicator.visibility = View.GONE

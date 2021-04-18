@@ -1,6 +1,5 @@
 package com.viastub.kao100.adapter
 
-import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -12,7 +11,6 @@ import com.viastub.kao100.wigets.TextViewSelectionCallback
 
 
 class TranscriptItemAdapter(
-    var itemClickListener: View.OnClickListener,
     var showEngText: Boolean = false
 ) :
     BaseQuickAdapter<TeachingTranslation, BaseViewHolder>(R.layout.fragment_xue_item_transcript_line),
@@ -34,6 +32,7 @@ class TranscriptItemAdapter(
         bookItemHolder.setOnClickListener(null)
 
         engText.customSelectionActionModeCallback = TextViewSelectionCallback(context, engText)
+        zhText.customSelectionActionModeCallback = TextViewSelectionCallback(context, zhText)
     }
 
 }

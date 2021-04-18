@@ -20,6 +20,7 @@ import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesLian
+import com.viastub.kao100.wigets.TextViewSelectionCallback
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import java.io.File
 import java.util.*
@@ -122,6 +123,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         lian_item_requirment.text =
             "要求:${template.requirement} (本题${template.totalScore}分,共${template.practiceQuestions()?.size ?: 0}小题,每小题${template.totalScore / (template.practiceQuestions()?.size ?: 1)}分)"
         lian_item_main_text.text = template.itemMainText
+        lian_item_main_text.customSelectionActionModeCallback =
+            TextViewSelectionCallback(this, lian_item_main_text)
 
         lian_item_main_text.visibility =
             if (template.itemMainAudioPath != null) View.GONE else View.VISIBLE
@@ -170,6 +173,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         lian_item_explanations.visibility = View.GONE
         lian_item_explanations.text = template.keyPoints
+        lian_item_explanations.customSelectionActionModeCallback =
+            TextViewSelectionCallback(this, lian_item_explanations)
 
         lian_item_main_audio_start.setOnClickListener {
             template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }

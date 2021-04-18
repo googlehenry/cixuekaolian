@@ -138,6 +138,7 @@
                         android:id="@+id/lian_item_explanations"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
                         android:focusable="true"
                         android:textColor="#000000"
                         android:textSize="@dimen/sp_14" />
