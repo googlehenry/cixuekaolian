@@ -1,6 +1,8 @@
 package com.viastub.kao100.module.ci
 
 import android.app.AlertDialog
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.CountDownTimer
@@ -14,8 +16,6 @@ import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
-import kotlinx.android.synthetic.main.activity_ci_word_detail_page.header_back
-import kotlinx.android.synthetic.main.activity_lian_item_page.*
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -36,6 +36,16 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         var wordsx = intent?.extras?.get("wordlist")?.let { it as ArrayList<String> }
         wordsx?.let {
             VariablesCi.ciContext!!.currentWordList = it.toMutableList()
+        }
+
+        floating_button_add.setOnClickListener {
+            val cm: ClipboardManager? =
+                getSystemService(Context.CLIPBOARD_SERVICE)
+                    ?.let { it as ClipboardManager }
+
+            var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
+            addNewCollectDialog(txt)
         }
 
         ci_word_detail.webViewClient = object : WebViewClient() {

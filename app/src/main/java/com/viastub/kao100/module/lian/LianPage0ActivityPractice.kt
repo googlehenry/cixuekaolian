@@ -1,5 +1,7 @@
 package com.viastub.kao100.module.lian
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -21,7 +23,10 @@ import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesLian
 import com.viastub.kao100.wigets.TextViewSelectionCallback
+import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
+import kotlinx.android.synthetic.main.activity_lian_item_page.floating_button_add
+import kotlinx.android.synthetic.main.activity_lian_item_page.header_back
 import java.io.File
 import java.util.*
 
@@ -80,7 +85,15 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 loadCurrentQuestionTemplate()
             }
         })
+        floating_button_add.setOnClickListener {
+            val cm: ClipboardManager? =
+                getSystemService(Context.CLIPBOARD_SERVICE)
+                    ?.let { it as ClipboardManager }
 
+            var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
+            addNewCollectDialog(txt)
+        }
 
     }
 

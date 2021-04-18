@@ -1,5 +1,7 @@
 package com.viastub.kao100.module.xue
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.view.MotionEvent
@@ -27,7 +29,7 @@ class XuePage1Activity : BaseActivity() {
 
     override fun afterCreated() {
         supportActionBar?.hide()
-
+        header_back.setOnClickListener { onBackPressed() }
         project_tab_layout.setupWithViewPager(non_scrollable_view_pager)
 
         var xueContext = intent?.extras?.get("xueContext")?.let { it as XueContext }
@@ -92,9 +94,15 @@ class XuePage1Activity : BaseActivity() {
 
             })
         }
+        floating_button_add.setOnClickListener {
+            val cm: ClipboardManager? =
+                getSystemService(Context.CLIPBOARD_SERVICE)
+                    ?.let { it as ClipboardManager }
 
-
-        header_back.setOnClickListener { onBackPressed() }
+            var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
+            addNewCollectDialog(txt)
+        }
 
         play_pause.setOnClickListener {
             mediaPlayer?.let {
