@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.forEach
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.ActivityUtils
@@ -24,7 +25,18 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
 //        menu.removeItem(android.R.id.cut)
 //        menu.removeItem(android.R.id.copy)
 //        menu.removeItem(android.R.id.shareText)
-        menu.clear()
+
+//        menu.clear()
+        var tobeDelted = mutableListOf<Int>()
+        menu.forEach {
+            if (it.itemId in 991..999) {
+            } else {
+                tobeDelted.add(it.itemId)
+            }
+        }
+        tobeDelted?.map {
+            menu.removeItem(it)
+        }
         return true
     }
 
@@ -33,6 +45,7 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
         // will be used to generate action buttons for the action mode
 
         // Here is an example MenuItem
+
         menu.add(0, 997, 99997, "复制")
         menu.add(0, 998, 99998, "收集")
         menu.add(0, 999, 99999, "查词")

@@ -15,7 +15,6 @@ import com.viastub.kao100.db.MyWordHistory
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesCi
-import com.viastub.kao100.wigets.OnQueryWordRequestedListener
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.header_back
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -23,7 +22,7 @@ import kotlinx.coroutines.*
 import java.util.*
 
 
-class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener, OnQueryWordRequestedListener {
+class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
     var speech: TextToSpeech? = null
 
     override fun id(): Int {
@@ -161,7 +160,6 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener, OnQueryWord
             Toast.makeText(this, "上一个", Toast.LENGTH_SHORT).show()
         }
 
-        ci_word_detail.queryWordListener = this
     }
 
     private fun goToLinkInWebview(word: String) {
@@ -297,7 +295,11 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener, OnQueryWord
                     loadword(wd)
                 }
                 if (wd == null) {
-                    Toast.makeText(this, "已经到底了", Toast.LENGTH_SHORT).show()
+                    if (index < 0) {
+                        onBackPressed()
+                    } else {
+                        Toast.makeText(this, "已经到底了", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -306,6 +308,11 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener, OnQueryWord
     }
 
     private fun loadword(wd: String, links: Int = 0) {
+
+        if (!VariablesCi.ciContext?.wordKeys!!.contains(wd)) {
+            Toast.makeText(this, "匹配相似单词", Toast.LENGTH_SHORT).show()
+        }
+
         var list = VariablesCi.ciContext?.currentWordList
         var index = VariablesCi.ciContext?.currentIndex ?: 0
 
@@ -418,20 +425,5 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener, OnQueryWord
         }
     }
 
-    override fun query(wordList: List<String>, word: String) {
-        runOnUiThread {
-            if (wordList.size > 1) {
-                val startIdx = wordList.indexOf(word)
-                VariablesCi.ciContext!!.currentWordList = wordList.toMutableList()
-                VariablesCi.ciContext!!.currentIndex = startIdx
-                VariablesCi.ciContext!!.initIndex = startIdx
-                VariablesCi.ciContext!!.currentWordRootLinks = mutableMapOf()
-                gotoWordFromDict(0)
-            } else {
-                goToLinkInWebview(word)
-            }
-        }
-
-    }
 
 }
