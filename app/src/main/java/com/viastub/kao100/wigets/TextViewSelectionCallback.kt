@@ -20,14 +20,11 @@ import kotlinx.coroutines.launch
 class TextViewSelectionCallback(var context: Context, private var textView: TextView) :
     ActionMode.Callback {
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu): Boolean {
-        // Remove the "select all" option
-        menu.removeItem(android.R.id.selectAll)
-        // Remove the "cut" option
-        menu.removeItem(android.R.id.cut)
-        // Remove the "copy all" option
-        menu.removeItem(android.R.id.copy)
-
-        menu.removeItem(android.R.id.shareText)
+//        menu.removeItem(android.R.id.selectAll)
+//        menu.removeItem(android.R.id.cut)
+//        menu.removeItem(android.R.id.copy)
+//        menu.removeItem(android.R.id.shareText)
+        menu.clear()
         return true
     }
 
