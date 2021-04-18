@@ -454,3 +454,30 @@ interface MyWordHistoryDao {
     fun deleteAll()
 }
 
+@Dao
+interface MyCollectedNoteDao {
+    @Query("SELECT * FROM MyCollectedNote")
+    fun getAll(): MutableList<MyCollectedNote>
+
+    @Query("SELECT * FROM MyCollectedNote where userId=:userId and tags like :tag order by id desc")
+    fun getByUserIdAndTagLike(userId: Int, tag: String): List<MyCollectedNote>?
+
+    @Query("SELECT * FROM MyCollectedNote where userId=:userId")
+    fun getByUserId(userId: Int): List<MyCollectedNote>?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyCollectedNote): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(items: MutableList<MyCollectedNote>)
+
+    @Delete
+    fun delete(item: MyCollectedNote)
+
+    @Delete
+    fun delete(items: MutableList<MyCollectedNote>)
+
+    @Query("DELETE FROM MyCollectedNote")
+    fun deleteAll()
+}
+

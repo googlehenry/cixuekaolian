@@ -155,19 +155,10 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         word?.let {
             var intent = Intent(mContext, CiPage0Activity::class.java)
-            val array = ArrayList<String>()
             val wordList = (recycler_view_high.adapter as SearchedWordAdapter).data.map { it.word }
 
-            array.addAll(wordList)
+            goToDictionary(wordList, it.word)
 
-            val startIdx = wordList.indexOf(word.word)
-            VariablesCi.ciContext!!.currentWordList = array.toMutableList()
-            VariablesCi.ciContext!!.currentIndex = startIdx
-            VariablesCi.ciContext!!.initIndex = startIdx
-
-            startActivity(
-                intent
-            )
         }
     }
 

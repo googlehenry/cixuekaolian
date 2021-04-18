@@ -8,6 +8,8 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.TeachingTranslation
+import com.viastub.kao100.wigets.TextViewSelectionCallback
+
 
 class TranscriptItemAdapter(
     var itemClickListener: View.OnClickListener,
@@ -28,8 +30,10 @@ class TranscriptItemAdapter(
         val zhText = holder.getView<TextView>(R.id.transcript_chinese)
 
         var bookItemHolder = holder.getView<ConstraintLayout>(R.id.transcript_holder)
-        bookItemHolder.setTag(R.id.book_item_holder, item)
+        bookItemHolder.setTag(R.id.transcript_holder, item)
         bookItemHolder.setOnClickListener(null)
+
+        engText.customSelectionActionModeCallback = TextViewSelectionCallback(context, engText)
     }
 
 }

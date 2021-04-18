@@ -53,11 +53,11 @@ class XuePage1Activity : BaseActivity() {
                 val commonViewPagerAdapter =
                     CommonViewPagerAdapter(
                         supportFragmentManager,
-                        mutableListOf("教材", "英语", "中文", "单词", "精解")
+                        mutableListOf("教材", "中文", "英文", "单词", "精解")
                     ).apply {
                         addFragment(XuePage1FragmentStudy(it.pageSnapshotPaths()))
-                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, true))
                         addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, false))
+                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, true))
                         addFragment(XuePage1FragmentWords(it.bookWordItemsDb))
                         addFragment(XuePage1FragmentTeach(it.bookTeachingPointsDb))
                     }

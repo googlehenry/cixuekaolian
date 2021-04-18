@@ -10,6 +10,7 @@ import com.viastub.kao100.db.TeachingTranslation
 import com.viastub.kao100.utils.VariablesXue
 import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_transcript.*
 
+
 class XuePage1FragmentTrans(
     var bookTranslationsDb: MutableList<TeachingTranslation>?,
     var showEngText: Boolean = false
@@ -50,7 +51,7 @@ class XuePage1FragmentTrans(
                             recycler_view_transcipt.adapter = adapter
                             pageLoadedMap[index] = true
                             if (index > 0) {
-                                toast("当前第${index + 1}页已加载")
+                                toast("当前第${index + 1}页")
                             }
                         }
                     }
@@ -62,3 +63,5 @@ class XuePage1FragmentTrans(
     }
 
 }
+
+

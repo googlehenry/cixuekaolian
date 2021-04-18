@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.viastub.kao100.utils.ActivityUtils
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.coroutines.*
@@ -57,6 +58,10 @@ abstract class BaseFragment : Fragment() {
             }.await()
             uiAction.invoke(rs)
         }
+    }
+
+    fun goToDictionary(wordlist: List<String>, word: String) {
+        ActivityUtils.goToDictionary(mContext, wordlist, word)
     }
 
 }

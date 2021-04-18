@@ -752,6 +752,21 @@ data class MyWordHistory(
 )
 
 
+@Entity
+data class MyCollectedNote(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
+    @ColumnInfo
+    var userId: Int,
+    @ColumnInfo
+    var collectedText: String? = null,
+    @ColumnInfo
+    var tags: String? = null,
+    @ColumnInfo
+    var dateAdded: String = Date().toString()
+)
+
+
 
 
 

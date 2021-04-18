@@ -1,6 +1,7 @@
 package com.viastub.kao100.adapter
 
 import android.graphics.Color
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -9,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.TeachingBookWord
 
-class WordLineAdapter :
+class WordLineAdapter(var onItemClickListener: View.OnClickListener) :
     BaseQuickAdapter<TeachingBookWord, BaseViewHolder>(R.layout.fragment_xue_item_word_line),
     LoadMoreModule {
 
@@ -30,7 +31,10 @@ class WordLineAdapter :
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.word_line_holder)
         bookItemHolder.setTag(R.id.word_line_holder, item)
-        bookItemHolder.setOnClickListener(null)
+        bookItemHolder.setOnLongClickListener {
+            onItemClickListener.onClick(it)
+            true
+        }
     }
 
 }

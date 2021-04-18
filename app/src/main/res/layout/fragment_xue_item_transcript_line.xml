@@ -4,6 +4,7 @@
     android:id="@+id/transcript_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="false"
     android:padding="@dimen/dp_5"
     android:background="@drawable/selector_background_light">
 
@@ -16,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.viastub.kao100.wigets.BrandTextView
         android:id="@+id/transcript_english"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
         android:textAlignment="viewStart"
         android:singleLine="false"
         android:paddingRight="50dp"
+        android:textIsSelectable="true"
         app:layout_constraintLeft_toRightOf="@id/transcript_seq"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/black" />
@@ -36,6 +38,7 @@
         android:singleLine="false"
         android:textColor="#087E19"
         android:paddingRight="50dp"
+        android:textIsSelectable="true"
         app:layout_constraintLeft_toRightOf="@id/transcript_seq"
         app:layout_constraintTop_toBottomOf="@id/transcript_english" />
 
