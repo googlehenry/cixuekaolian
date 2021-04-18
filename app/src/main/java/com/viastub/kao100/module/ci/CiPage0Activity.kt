@@ -5,9 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.Toast
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
@@ -416,14 +414,9 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             //int result = mSpeech.setLanguage(Locale.ENGLISH);
             speech?.language = Locale.ENGLISH
             speech?.setPitch(0.75F)
-//            speech?.setSpeechRate(0.75f)
-//            VariablesCi.ciContext!!.currentword?.let {
-//                speech!!.speak("gud", TextToSpeech.QUEUE_FLUSH, null, "oops")
-//            }
         } else {
             Toast.makeText(this, "手机不支持合成语音", Toast.LENGTH_SHORT).show()
         }
     }
-
 
 }
