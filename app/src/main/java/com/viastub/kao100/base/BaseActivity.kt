@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.wigets.CommonDialog
 import com.viastub.kao100.wigets.CommonDialog.OnClickBottomListener
 import com.yechaoa.yutilskt.ToastUtilKt
@@ -104,7 +104,7 @@ abstract class BaseActivity : AppCompatActivity() {
                         doAsync {
                             RoomDB.get(applicationContext).myCollectedNote().insert(
                                 MyCollectedNote(
-                                    userId = Variables.currentUserId,
+                                    userId = VariablesKao.currentUserId,
                                     collectedText = inputName
                                 )
                             )

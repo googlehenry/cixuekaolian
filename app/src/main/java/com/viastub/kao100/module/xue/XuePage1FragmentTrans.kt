@@ -32,34 +32,53 @@ class XuePage1FragmentTrans(
                 DividerItemDecoration.VERTICAL
             )
         )
+        VariablesXue.xueContext?.currentPageIndex?.let { idx ->
+            loadPage(idx)
+        }
+
+
+        teaching_book_unit_page_next.setOnClickListener {
+            bookTranslationsDb?.let {
+                VariablesXue.xueContext?.currentPageIndex?.let { idx ->
+                    var currentIndex = idx + 1
+                    if (currentIndex < 0) currentIndex = 0
+                    if (currentIndex > it.size - 1) currentIndex = it.size - 1
+                    loadPage(currentIndex)
+                }
+            }
+        }
+        teaching_book_unit_page_prev.setOnClickListener {
+            bookTranslationsDb?.let {
+                VariablesXue.xueContext?.currentPageIndex?.let { idx ->
+                    var currentIndex = idx - 1
+                    if (currentIndex < 0) currentIndex = 0
+                    if (currentIndex > it.size - 1) currentIndex = it.size - 1
+                    loadPage(currentIndex)
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
     }
 
-    override fun onResume() {
-        super.onResume()
-        VariablesXue.xueContext?.currentPageIndex?.let { index ->
-            if (index >= 0) {
-                bookTranslationsDb?.let {
-                    if (index < it.size) {
-                        if (pageLoadedMap[index] == null) {
-                            var adapter = TranscriptItemAdapter(showEngText)
-                            var oneTrans = it[index]
-                            oneTrans.sequence = index + 1
-                            adapter.data = mutableListOf(oneTrans)
-                            recycler_view_transcipt.adapter = adapter
-                            pageLoadedMap[index] = true
-                            if (index > 0) {
-                                toast("当前第${index + 1}页")
-                            }
-                        }
-                    }
-
-                }
-
+    fun loadPage(index: Int) {
+        bookTranslationsDb?.let {
+            if (index < it.size) {
+                var oneTrans = it[index]
+                oneTrans.sequence = index + 1
+                var adapter = TranscriptItemAdapter(showEngText)
+                adapter.data = mutableListOf(oneTrans)
+                recycler_view_transcipt.adapter = adapter
+                pageLoadedMap[index] = true
+                teaching_book_unit_progress.secondaryProgress = index + 1
+                teaching_book_unit_progress.max = it.size
             }
+            teaching_book_unit_progress.secondaryProgress = index + 1
+            teaching_book_unit_progress.max = it.size
+            VariablesXue.xueContext?.currentPageIndex = index
         }
+
     }
 
 }

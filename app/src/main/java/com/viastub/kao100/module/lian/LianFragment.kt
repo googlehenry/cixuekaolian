@@ -19,7 +19,7 @@ import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.PracticeTarget
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.fragment_lian.*
 
 class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
@@ -51,7 +51,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                 var sections = roomDB.practiceSection().getByIds(sectionIds)
                 sections?.forEach { sec ->
                     sec.mySectionPracticeHistory = roomDB.mySectionPracticeHistory()
-                        .getByUserIdAndSectionId(Variables.currentUserId, sec?.id!!)
+                        .getByUserIdAndSectionId(VariablesKao.currentUserId, sec?.id!!)
                 }
                 sections
             }?.toMutableList())

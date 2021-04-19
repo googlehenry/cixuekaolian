@@ -5,14 +5,13 @@
     <item android:state_pressed="false">
 
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <gradient android:angle="180" android:startColor="@color/colorPrimaryDark" android:endColor="#AAECEAFD" android:type="linear" />
+            <gradient android:angle="0" android:startColor="#eeFCFAED" android:centerColor="#dddCdAcD" android:endColor="#cc9C9A9D" android:type="linear" />
         </shape>
 
     </item>
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-            <gradient android:angle="180" android:startColor="@color/colorPrimaryDark" android:endColor="#ECEAFD" android:type="linear" />
+            <gradient android:angle="0" android:startColor="#FCFAED" android:centerColor="#dddCdAcD" android:endColor="#7C7A7D" android:type="linear" />
         </shape>
-
     </item>
 </selector>

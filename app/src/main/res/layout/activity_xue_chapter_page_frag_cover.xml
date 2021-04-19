@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_5"
         android:padding="5dp"
-        android:background="@drawable/shape_button_updown_rounded"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:contentDescription="@null"

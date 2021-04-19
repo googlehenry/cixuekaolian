@@ -27,6 +27,7 @@ class MainActivity : BaseActivity() {
     override fun afterCreated() {
 
         toolbar.title = resources.getString(R.string.app_name)
+        toolbar.contentInsetStartWithNavigation = 0
         setSupportActionBar(toolbar)
 
         initActionBarDrawer()

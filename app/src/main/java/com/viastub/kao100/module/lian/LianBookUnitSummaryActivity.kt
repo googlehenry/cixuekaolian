@@ -10,7 +10,7 @@ import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesLian
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.btn_lian_start
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
@@ -52,7 +52,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
         //load progress if any
         awaitAsync({
             RoomDB.get(applicationContext).mySectionPracticeHistory()
-                .getByUserIdAndSectionId(Variables.currentUserId, section?.id!!)
+                .getByUserIdAndSectionId(VariablesKao.currentUserId, section?.id!!)
         }, {
             it?.let {
                 progress_holder.visibility = View.VISIBLE

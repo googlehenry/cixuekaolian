@@ -13,8 +13,8 @@ import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.db.MyWordHistory
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
 import com.viastub.kao100.utils.VariablesCi
+import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -379,9 +379,12 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         awaitAsync({
             val roomDb = RoomDB.get(applicationContext)
             var myWordHistory = roomDb.myWordHistory()
-                .getByUserIdAndWord(Variables.currentUserId, VariablesCi.ciContext!!.currentword!!)
+                .getByUserIdAndWord(
+                    VariablesKao.currentUserId,
+                    VariablesCi.ciContext!!.currentword!!
+                )
                 ?: MyWordHistory(
-                    userId = Variables.currentUserId,
+                    userId = VariablesKao.currentUserId,
                     word = VariablesCi.ciContext!!.currentword!!
                 )
 

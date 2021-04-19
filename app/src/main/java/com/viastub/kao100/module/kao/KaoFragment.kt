@@ -13,7 +13,7 @@ import com.viastub.kao100.beans.TestType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.Constants
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.fragment_kao.*
 
 class KaoFragment : BaseFragment(), View.OnClickListener {
@@ -165,7 +165,8 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                     grade?.replace(Constants.kao_grade_all, "%") ?: "%"
                 )?.map {
                     it.myExamSimuHistory =
-                        roomDB.myExamSimuHistory().getByUserIdOfExam(Variables.currentUserId, it.id)
+                        roomDB.myExamSimuHistory()
+                            .getByUserIdOfExam(VariablesKao.currentUserId, it.id)
                     it
                 }?.toMutableList()
             },

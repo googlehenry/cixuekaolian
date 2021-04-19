@@ -9,14 +9,14 @@ class TempUtil {
     companion object {
         fun loadRawFile(resAudioFileId: Int, filename: String): String? {
             //路径：data/data/包名/file
-            var defaultFileFolder: File = Variables.globalApplication.filesDir
+            var defaultFileFolder: File = VariablesKao.globalApplication.filesDir
             var outFolder: File = File(defaultFileFolder, "/demo")
             outFolder.mkdirs()
             var outFile: File = File(outFolder.absolutePath + "/$filename")
 
 
             var inputStream: InputStream =
-                Variables.globalApplication.resources.openRawResource(resAudioFileId)
+                VariablesKao.globalApplication.resources.openRawResource(resAudioFileId)
             var outputStream: FileOutputStream =
                 FileOutputStream(outFile)
             FileUtils.copy(inputStream, outputStream)
@@ -32,7 +32,7 @@ class TempUtil {
             var points = mutableListOf<TeachingPoint>()
             var reader = BufferedReader(
                 InputStreamReader(
-                    (Variables.globalApplication.resources.openRawResource(pointResourceId))
+                    (VariablesKao.globalApplication.resources.openRawResource(pointResourceId))
                 )
             )
             var temp = TeachingPoint()
@@ -64,7 +64,7 @@ class TempUtil {
             var words = mutableListOf<TeachingBookWord>()
             var reader = BufferedReader(
                 InputStreamReader(
-                    (Variables.globalApplication.resources.openRawResource(wordResourceId))
+                    (VariablesKao.globalApplication.resources.openRawResource(wordResourceId))
                 )
             )
             reader.readLines().mapIndexed { index, line ->

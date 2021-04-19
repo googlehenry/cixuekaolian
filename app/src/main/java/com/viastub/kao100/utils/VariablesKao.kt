@@ -4,7 +4,7 @@ import android.content.Context
 import com.viastub.kao100.beans.KaoContext
 import com.viastub.kao100.db.PracticeTemplate
 
-class Variables {
+class VariablesKao {
     companion object {
         lateinit var globalApplication: Context
 

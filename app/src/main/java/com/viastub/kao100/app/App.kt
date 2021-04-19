@@ -6,7 +6,7 @@ import com.viastub.kao100.config.db.init.ExamDataLoader
 import com.viastub.kao100.config.db.init.PracticeDataLoader
 import com.viastub.kao100.config.db.init.TeachingBookDataLoader
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.LogUtilKt
 import com.yechaoa.yutilskt.YUtilsKt
@@ -21,7 +21,7 @@ class App : Application() {
         YUtilsKt.initialize(this)
         LogUtilKt.setIsLog(true)
         registerActivityLifecycleCallbacks(ActivityUtilKt.activityLifecycleCallbacks)
-        Variables.globalApplication = applicationContext
+        VariablesKao.globalApplication = applicationContext
         CoroutineScope(Dispatchers.IO).launch {
             RoomDB.get(applicationContext).let {
                 ConfigGlobalLoader().load(it)

@@ -22,7 +22,7 @@ import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.KaoContext
 import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.*
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.wigets.TextViewSelectionCallback
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -46,37 +46,37 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         var lianContext = intent.extras?.get("lianContext") as KaoContext
 
 
-        Variables.kaoContext = lianContext
-        Variables.availableTemplateIds =
+        VariablesKao.kaoContext = lianContext
+        VariablesKao.availableTemplateIds =
             sections?.flatMap { it.practiceTemplateIds() ?: mutableListOf() }.toMutableList()
-        Variables.currentTemplateIdIdx =
-            if (Variables.availableTemplateIds!!.size > 0) 0 else -1
+        VariablesKao.currentTemplateIdIdx =
+            if (VariablesKao.availableTemplateIds!!.size > 0) 0 else -1
 
         //flag last exam answer data loaded if clicked check last exam
-        if (Variables.kaoContext?.loadLastExam == true) {
-            Variables.kaoContext?.previousExamSimuLoaded = true
+        if (VariablesKao.kaoContext?.loadLastExam == true) {
+            VariablesKao.kaoContext?.previousExamSimuLoaded = true
         }
         //If user previously clicked last exam, then start new exam, clean user's answers last time
-        if (Variables.kaoContext?.loadLastExam == false && Variables.kaoContext?.previousExamSimuLoaded == true) {
-            Variables.availableTemplatesMap.values.forEach {
+        if (VariablesKao.kaoContext?.loadLastExam == false && VariablesKao.kaoContext?.previousExamSimuLoaded == true) {
+            VariablesKao.availableTemplatesMap.values.forEach {
                 it.questionsDb?.forEach {
                     it.usersAnswers =
                         mutableMapOf()
                 }
             }
-            Variables.kaoContext?.previousExamSimuLoaded = false
+            VariablesKao.kaoContext?.previousExamSimuLoaded = false
         }
 
-        if (Variables.kaoContext?.earnedScoresThisTimeTemp == null) {
-            Variables.kaoContext?.earnedScoresThisTimeTemp = -1.0 //started, but not submitted
+        if (VariablesKao.kaoContext?.earnedScoresThisTimeTemp == null) {
+            VariablesKao.kaoContext?.earnedScoresThisTimeTemp = -1.0 //started, but not submitted
         }
 
-        if (Variables.currentTemplateIdIdx >= 0) {
+        if (VariablesKao.currentTemplateIdIdx >= 0) {
             //load question from db 1 at a time
             loadCurrentQuestionTemplate()
         }
 
-        Variables.kaoContext?.earnedScoresLastTime?.let {
+        VariablesKao.kaoContext?.earnedScoresLastTime?.let {
             Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
         }
         floating_button_add.setOnClickListener {
@@ -91,17 +91,17 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     }
 
     private fun loadCurrentQuestionTemplate() {
-        val templateId = Variables.availableTemplateIds!![Variables.currentTemplateIdIdx]
+        val templateId = VariablesKao.availableTemplateIds!![VariablesKao.currentTemplateIdIdx]
 
-        Variables.kaoContext?.earnedScoresThisTimeTemp?.let {
+        VariablesKao.kaoContext?.earnedScoresThisTimeTemp?.let {
             if (it < 0) {
                 //in progress, not submit actually
-                Variables.availableTemplatesMap[templateId]?.submitted = false
+                VariablesKao.availableTemplatesMap[templateId]?.submitted = false
             }
         }
 
 
-        Variables.availableTemplatesMap[templateId]?.let {
+        VariablesKao.availableTemplatesMap[templateId]?.let {
             updateUI(it)
         } ?: awaitAsync(dataAction = {
             RoomDB.get(applicationContext).practiceTemplate()
@@ -113,12 +113,15 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
     private fun updateUI(template: PracticeTemplate) {
 
-        if (Variables.kaoContext?.loadLastExam == true) {
+        if (VariablesKao.kaoContext?.loadLastExam == true) {
             template.submitted = true
         }
 
         lian_item_seq.text =
-            "${Variables.currentTemplateIdIdx + 1}/${Variables.availableTemplateIds.size}"
+            "${VariablesKao.currentTemplateIdIdx + 1}/${VariablesKao.availableTemplateIds.size}"
+        teaching_book_practice_progress.max = VariablesKao.availableTemplateIds.size
+        teaching_book_practice_progress.secondaryProgress = VariablesKao.currentTemplateIdIdx + 1
+
         lian_item_category.text = template.category
         lian_item_requirment.text =
             "要求:${template.requirement} (本题${template.totalScore}分,共${template.practiceQuestions()?.size ?: 0}小题,每小题${template.totalScore / (template.practiceQuestions()?.size ?: 1)}分)"
@@ -132,14 +135,14 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
-        if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+        if (VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
             lian_item_switch_next_btn.isEnabled = true
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         } else {
             lian_item_switch_next_btn.isEnabled = false
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
-        if (Variables.currentTemplateIdIdx <= 0) {
+        if (VariablesKao.currentTemplateIdIdx <= 0) {
             lian_item_switch_prev_btn.isEnabled = false
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         } else {
@@ -147,15 +150,15 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
         }
         if (header_action_submit.isEnabled) {
-            if (Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1
-                && !Variables.kaoContext!!.currentIsPartialQuestions
+            if (VariablesKao.currentTemplateIdIdx == VariablesKao.availableTemplateIds.size - 1
+                && !VariablesKao.kaoContext!!.currentIsPartialQuestions
                 && !template.submitted
-                && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0
+                && VariablesKao.kaoContext?.earnedScoresThisTimeTemp!! < 0
             ) {
                 header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
             } else {
 
-                if (Variables.kaoContext!!.currentIsPartialQuestions && Variables.currentTemplateIdIdx == Variables.availableTemplateIds.size - 1) {
+                if (VariablesKao.kaoContext!!.currentIsPartialQuestions && VariablesKao.currentTemplateIdIdx == VariablesKao.availableTemplateIds.size - 1) {
                     header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
                 } else {
                     header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
@@ -185,10 +188,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
         }
 
-        if (!template.submitted && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
+        if (!template.submitted && VariablesKao.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
             header_action_submit.setOnClickListener {
-                if (Variables.kaoContext!!.currentIsPartialQuestions) {
-                    if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+                if (VariablesKao.kaoContext!!.currentIsPartialQuestions) {
+                    if (VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
                         Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
                         val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -199,7 +202,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                         dialog.show()
                     }
                 } else {
-                    if (Variables.currentTemplateIdIdx < Variables.availableTemplateIds.size - 1) {
+                    if (VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
                         Toast.makeText(this, "请回答该部分所有问题", Toast.LENGTH_SHORT).show()
                     } else {
                         checkAnswers()
@@ -218,8 +221,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             lian_template_result_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
         }
 
-        Variables.availableTemplatesMap[template.id]?.let {
-            if (Variables.kaoContext?.loadLastExam == true) {
+        VariablesKao.availableTemplatesMap[template.id]?.let {
+            if (VariablesKao.kaoContext?.loadLastExam == true) {
                 null
             } else {
                 updateQuestions(it, it.questionsDb!!)
@@ -244,7 +247,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         }
 
 
-        if (!template.submitted && Variables.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
+        if (!template.submitted && VariablesKao.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
@@ -256,8 +259,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     }
 
     private fun checkAnswers() {
-        var checkedTemplates = Variables.availableTemplatesMap.values
-            .filter { Variables.availableTemplateIds.contains(it.id) }
+        var checkedTemplates = VariablesKao.availableTemplatesMap.values
+            .filter { VariablesKao.availableTemplateIds.contains(it.id) }
         var summayrChecked = checkedTemplates.map { template ->
             template.submitted = true
             template.questionsDb!!.map { question ->
@@ -320,20 +323,20 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         header_action_submit.isEnabled = false
         header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-        Variables.kaoContext?.earnedScoresThisTimeTemp = scoreEarned
+        VariablesKao.kaoContext?.earnedScoresThisTimeTemp = scoreEarned
 
         turnTo(
-            Variables.availableTemplatesMap[Variables.availableTemplateIds[Variables.currentTemplateIdIdx]]!!,
+            VariablesKao.availableTemplatesMap[VariablesKao.availableTemplateIds[VariablesKao.currentTemplateIdIdx]]!!,
             0
         )
 
         doAsync {
-            if (Variables.kaoContext?.type == KaoType.ExamSimulation) {
+            if (VariablesKao.kaoContext?.type == KaoType.ExamSimulation) {
 
                 RoomDB.get(applicationContext).myExamSimuHistory().insert(
                     MyExamSimuHistory(
-                        Variables.currentUserId,
-                        Variables.kaoContext!!.typedEntityId,
+                        VariablesKao.currentUserId,
+                        VariablesKao.kaoContext!!.typedEntityId,
                         myScores = scoreEarned,
                         myTotalCorrects = right,
                         myTotalMissing = missing,
@@ -345,11 +348,11 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                     checkedTemplates.flatMap { tempLat ->
                         tempLat.questionsDb?.map {
                             MyQuestionAnsweredHistory(
-                                userId = Variables.currentUserId,
+                                userId = VariablesKao.currentUserId,
                                 practiceQuestionId = it.id!!,
                                 answerIsCorrect = scoreEarned > 0,
                                 optionalPracticeTemplateId = tempLat.id,
-                                optionalPracticeTargetId = Variables.kaoContext?.typedEntityId
+                                optionalPracticeTargetId = VariablesKao.kaoContext?.typedEntityId
                             ).setMyAnswersJson(it.usersAnswers)
                         } ?: mutableListOf()
                     }.toMutableList()
@@ -390,19 +393,19 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             }
             .toMutableList()
         var myAction = RoomDB.get(applicationContext).myQuestionAction()
-            .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
+            .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(Variables.currentUserId, qs.id!!))
+                .insert(MyQuestionAction(VariablesKao.currentUserId, qs.id!!))
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
-                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
+                .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
         }
 
-        if (Variables.kaoContext?.loadLastExam == true) {
+        if (VariablesKao.kaoContext?.loadLastExam == true) {
             var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id!!)
+                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, qs.id!!)
 
             answeredHistory?.let {
                 qs.myQuestionAnsweredHistoryDb = it
@@ -428,7 +431,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         adapter.data = questions
         recycler_view_lian_item_questions.adapter = adapter
 
-        Variables.availableTemplatesMap[template.id!!] = template
+        VariablesKao.availableTemplatesMap[template.id!!] = template
     }
 
     private fun checkUserAnsweredResult(template: PracticeTemplate) {
@@ -444,7 +447,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             pq.userAnswersChecks = mutableMapOf()
 
             MyQuestionAnsweredHistory(
-                Variables.currentUserId,
+                VariablesKao.currentUserId,
                 pq.id!!,
                 answerIsCorrect = result,
                 optionalPracticeTemplateId = template.id
@@ -471,22 +474,22 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     private fun turnTo(oldTemplate: PracticeTemplate, step: Int) {
         //Load next template
         if (step != 0) {
-            var toIndex = Variables.currentTemplateIdIdx + step
+            var toIndex = VariablesKao.currentTemplateIdIdx + step
             when {
-                toIndex >= Variables.availableTemplateIds.size -> {
-                    Variables.currentTemplateIdIdx =
-                        Variables.availableTemplateIds.size - 1
+                toIndex >= VariablesKao.availableTemplateIds.size -> {
+                    VariablesKao.currentTemplateIdIdx =
+                        VariablesKao.availableTemplateIds.size - 1
                     Toast.makeText(this, "已到最后一题", Toast.LENGTH_SHORT).show()
                 }
                 toIndex < 0 -> {
-                    Variables.currentTemplateIdIdx = 0
+                    VariablesKao.currentTemplateIdIdx = 0
                     Toast.makeText(this, "已到第一题", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     //Stop the timer first for previous question
                     oldTemplate.countDownTimer?.cancel()
                     stopPlayer()
-                    Variables.currentTemplateIdIdx = toIndex
+                    VariablesKao.currentTemplateIdIdx = toIndex
                     loadCurrentQuestionTemplate()
                 }
             }
@@ -550,8 +553,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     private fun doGoBack() {
         super@KaoPage0ActivityExamination.onBackPressed()
         stopPlayer()
-        Variables.availableTemplateIds.clear()
-        Variables.currentTemplateIdIdx = -1
+        VariablesKao.availableTemplateIds.clear()
+        VariablesKao.currentTemplateIdIdx = -1
     }
 
 

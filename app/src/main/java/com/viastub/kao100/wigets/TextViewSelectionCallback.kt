@@ -12,7 +12,7 @@ import androidx.core.view.forEach
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.ActivityUtils
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,7 +76,7 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
                         CoroutineScope(Dispatchers.IO).launch {
                             RoomDB.get(context).myCollectedNote().insert(
                                 MyCollectedNote(
-                                    userId = Variables.currentUserId,
+                                    userId = VariablesKao.currentUserId,
                                     collectedText = selectedText.trim().toString()
                                 )
                             )

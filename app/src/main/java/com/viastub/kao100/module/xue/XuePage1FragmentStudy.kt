@@ -18,25 +18,18 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
         return R.layout.activity_xue_detail_page_frag_study
     }
 
-    var currentIndex = -1
-
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
 
         pageSnapshotPaths?.let {
-            currentIndex = 0
-            VariablesXue.xueContext?.currentPageIndex = currentIndex
-
-            teaching_book_unit_progress.max = it.size
-            teaching_book_unit_progress.secondaryProgress = currentIndex + 1
-            flipper.addView(getImageView(File(it[currentIndex])));
+            loadPage(0)
         }
 
         teaching_book_unit_page_next.setOnClickListener {
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
             pageSnapshotPaths?.let {
-                currentIndex++
+                var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) + 1
                 if (currentIndex < it.size) {
                     flipper.removeAllViews()
                     flipper.addView(getImageView(File(it[currentIndex])))
@@ -53,7 +46,7 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
             flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
             flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
             pageSnapshotPaths?.let {
-                currentIndex--
+                var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) - 1
                 if (currentIndex >= 0) {
                     flipper.removeAllViews()
                     flipper.addView(getImageView(File(it[currentIndex])))
@@ -67,6 +60,15 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
             }
         }
 
+    }
+
+    fun loadPage(idx: Int) {
+        pageSnapshotPaths?.let {
+            VariablesXue.xueContext?.currentPageIndex = idx
+            teaching_book_unit_progress.max = it.size
+            teaching_book_unit_progress.secondaryProgress = idx + 1
+            flipper.addView(getImageView(File(it[idx])))
+        }
     }
 
 

@@ -10,13 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ViewFlipper
-            android:id="@+id/flipper"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <ProgressBar
             android:id="@+id/teaching_book_unit_progress"
             android:layout_width="match_parent"
@@ -29,6 +22,14 @@
             android:progress="0"
             android:progressDrawable="@drawable/progress_horizontal"
             android:secondaryProgress="0" />
+
+        <ViewFlipper
+            android:id="@+id/flipper"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
     </LinearLayout>
 
     <TextView

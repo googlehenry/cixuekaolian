@@ -11,7 +11,7 @@ import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -53,7 +53,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             summary_exam_name.text = exam.name
             awaitAsync({
                 it.myExamSimuHistory = RoomDB.get(applicationContext).myExamSimuHistory()
-                    .getByUserIdOfExam(Variables.currentUserId, it.id)
+                    .getByUserIdOfExam(VariablesKao.currentUserId, it.id)
                 it.practiceSectionsDb = it.practiceSections()?.let {
                     RoomDB.get(applicationContext).practiceSection().getByIds(it)
                         ?.mapIndexed { index, practiceSection ->
@@ -77,7 +77,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        Variables.kaoContext?.earnedScoresThisTimeTemp?.let {
+        VariablesKao.kaoContext?.earnedScoresThisTimeTemp?.let {
             if (it >= 0.0) {
                 summary_exam_lastScores.visibility = View.VISIBLE
                 summary_exam_lastScores.text = "本次得分:${it}"
@@ -144,10 +144,10 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             KaoType.ExamSimulation,
             exam.id,
             partial,
-            earnedScoresThisTimeTemp = Variables.kaoContext?.earnedScoresThisTimeTemp,
+            earnedScoresThisTimeTemp = VariablesKao.kaoContext?.earnedScoresThisTimeTemp,
             earnedScoresLastTime = exam.totalScores() > 0,
             loadLastExam = resumeExam,
-            previousExamSimuLoaded = (Variables.kaoContext?.previousExamSimuLoaded == true)
+            previousExamSimuLoaded = (VariablesKao.kaoContext?.previousExamSimuLoaded == true)
         )
 
         intent.putExtra("sections", secs)
@@ -157,7 +157,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        var tempScore = Variables.kaoContext?.earnedScoresThisTimeTemp
+        var tempScore = VariablesKao.kaoContext?.earnedScoresThisTimeTemp
         if (tempScore != null && tempScore < 0.0) {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
             dialog.setTitle("未交卷题目不会保存,退出考试吗?")
@@ -173,10 +173,10 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun doGoBack() {
         super@KaoExamSummaryActivity.onBackPressed()
-        Variables.availableTemplateIds.clear()
-        Variables.currentTemplateIdIdx = -1
-        Variables.availableTemplatesMap.clear()
-        Variables.kaoContext = null
+        VariablesKao.availableTemplateIds.clear()
+        VariablesKao.currentTemplateIdIdx = -1
+        VariablesKao.availableTemplatesMap.clear()
+        VariablesKao.kaoContext = null
     }
 
 

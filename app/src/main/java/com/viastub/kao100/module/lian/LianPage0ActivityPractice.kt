@@ -20,7 +20,7 @@ import com.viastub.kao100.adapter.QuestionActionListener
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.*
-import com.viastub.kao100.utils.Variables
+import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesLian
 import com.viastub.kao100.wigets.TextViewSelectionCallback
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
@@ -57,7 +57,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             lianContext.sections?.map {
                 it.mySectionPracticeHistory =
                     RoomDB.get(applicationContext).mySectionPracticeHistory()
-                        .getByUserIdAndSectionId(Variables.currentUserId, it.id!!)
+                        .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
                 it
             }
         }, {
@@ -132,6 +132,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         lian_item_seq.text =
             "${VariablesLian.currentTemplateIdIdx + 1}/${VariablesLian.availableTemplateIds.size}"
+        teaching_book_practice_progress.max = VariablesLian.availableTemplateIds.size
+        teaching_book_practice_progress.secondaryProgress = VariablesLian.currentTemplateIdIdx + 1
         lian_item_category.text = template.category
         lian_item_requirment.text =
             "要求:${template.requirement} (本题${template.totalScore}分,共${template.practiceQuestions()?.size ?: 0}小题,每小题${template.totalScore / (template.practiceQuestions()?.size ?: 1)}分)"
@@ -287,19 +289,19 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             }
             .toMutableList()
         var myAction = RoomDB.get(applicationContext).myQuestionAction()
-            .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
+            .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(Variables.currentUserId, qs.id!!))
+                .insert(MyQuestionAction(VariablesKao.currentUserId, qs.id!!))
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
-                .getByQuestionIdsOfUser(Variables.currentUserId, qs.id!!)
+                .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
         }
 
         if (VariablesLian.loadLastTimeSubmittedAnswers) {
             var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                .getByUserIdOfAnsweredHistory(Variables.currentUserId, qs.id!!)
+                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, qs.id!!)
 
             answeredHistory?.let {
                 qs.myQuestionAnsweredHistoryDb = it
@@ -557,7 +559,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
             var answeredHistories = template.questionsDb?.map {
                 MyQuestionAnsweredHistory(
-                    userId = Variables.currentUserId,
+                    userId = VariablesKao.currentUserId,
                     practiceQuestionId = it.id!!,
                     answerIsCorrect = scoreEarned > 0,
                     optionalPracticeTemplateId = template.id
@@ -573,10 +575,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 it.practiceTemplateIds()?.contains(template.id) == true
             }?.let {
                 it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
-                    .getByUserIdAndSectionId(Variables.currentUserId, it.id!!)
+                    .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
                 if (it.mySectionPracticeHistory == null) {
                     var his = MySectionPracticeHistory(
-                        Variables.currentUserId,
+                        VariablesKao.currentUserId,
                         it.id!!,
                         template.id.toString()
                     )

@@ -55,13 +55,13 @@ class XuePage1Activity : BaseActivity() {
                 val commonViewPagerAdapter =
                     CommonViewPagerAdapter(
                         supportFragmentManager,
-                        mutableListOf("教材", "中文", "英文", "单词", "精解")
+                        mutableListOf("教材", "中文", "英文", "精解", "单词")
                     ).apply {
                         addFragment(XuePage1FragmentStudy(it.pageSnapshotPaths()))
                         addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, false))
                         addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, true))
-                        addFragment(XuePage1FragmentWords(it.bookWordItemsDb))
                         addFragment(XuePage1FragmentTeach(it.bookTeachingPointsDb))
+                        addFragment(XuePage1FragmentWords(it.bookWordItemsDb))
                     }
 
                 val currentIdx = 0
@@ -75,7 +75,15 @@ class XuePage1Activity : BaseActivity() {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         currentFragment =
                             commonViewPagerAdapter.getItem(tab!!.position) as BaseFragment
-                        currentFragment!!.onResume()
+
+                        when (currentFragment) {
+                            is XuePage1FragmentStudy -> (currentFragment as XuePage1FragmentStudy).loadPage(
+                                VariablesXue.xueContext?.currentPageIndex!!
+                            )
+                            is XuePage1FragmentTrans -> (currentFragment as XuePage1FragmentTrans).loadPage(
+                                VariablesXue.xueContext?.currentPageIndex!!
+                            )
+                        }
                     }
 
                     override fun onTabUnselected(tab: TabLayout.Tab?) {}
