@@ -2,6 +2,7 @@ package com.viastub.kao100.beans
 
 import android.os.Parcelable
 import com.viastub.kao100.db.DictionaryConfig
+import com.viastub.kao100.db.MyWordHistory
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -19,7 +20,8 @@ data class CiContext(
     var currentWordList: MutableList<String>? = mutableListOf(),
     var currentIndex: Int = 0,
     var initIndex: Int = 0,
-    var currentword: String? = null
+    var currentword: String? = null,
+    var currentWordHistory: MyWordHistory? = null
 
 
 ) : Parcelable

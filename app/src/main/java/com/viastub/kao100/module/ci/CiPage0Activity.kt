@@ -77,6 +77,24 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
         gotoWordFromDict(0)
 
+
+        action_favorite.setOnClickListener {
+            VariablesCi.ciContext!!.currentWordHistory?.let {
+                it.isFavorite = it.isFavorite != true
+                if (it.isFavorite == true) {
+                    action_favorite.setImageResource(R.drawable.ci_word_heart_selected)
+                } else {
+                    action_favorite.setImageResource(R.drawable.ci_word_heart)
+                }
+            }
+            doAsync {
+                VariablesCi.ciContext!!.currentWordHistory?.let {
+                    RoomDB.get(applicationContext).myWordHistory().insert(it)
+                }
+            }
+        }
+
+
         action_settings.setOnClickListener {
             startActivity(Intent(this, CiPage1SettingActivity::class.java))
         }
@@ -358,7 +376,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             }
         }
 
-        doAsync {
+        awaitAsync({
             val roomDb = RoomDB.get(applicationContext)
             var myWordHistory = roomDb.myWordHistory()
                 .getByUserIdAndWord(Variables.currentUserId, VariablesCi.ciContext!!.currentword!!)
@@ -370,7 +388,18 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             myWordHistory.visitCount += 1
             roomDb.myWordHistory().insert(myWordHistory)
 
-        }
+            VariablesCi.ciContext!!.currentWordHistory = myWordHistory
+
+            myWordHistory
+        }, {
+            if (it.isFavorite == true) {
+                action_favorite.setImageResource(R.drawable.ci_word_heart_selected)
+            } else {
+                action_favorite.setImageResource(R.drawable.ci_word_heart)
+            }
+        })
+
+
     }
 
     private fun getHtmlData(data: String): String {

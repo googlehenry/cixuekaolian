@@ -736,7 +736,7 @@ data class MyQuestionAnsweredHistory(
     }
 }
 
-
+@Parcelize
 @Entity
 data class MyWordHistory(
     @PrimaryKey(autoGenerate = true)
@@ -746,10 +746,12 @@ data class MyWordHistory(
     @ColumnInfo
     var word: String?,
     @ColumnInfo
+    var isFavorite: Boolean? = null,
+    @ColumnInfo
     var visitCount: Int = 0,
     @ColumnInfo
     var dateAdded: String = Date().toString()
-)
+) : Parcelable
 
 
 @Entity
