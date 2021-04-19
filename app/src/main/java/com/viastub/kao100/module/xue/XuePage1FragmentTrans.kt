@@ -17,9 +17,6 @@ class XuePage1FragmentTrans(
 ) :
     BaseFragment(), View.OnClickListener {
 
-    var pageLoadedMap: MutableMap<Int, Boolean> = mutableMapOf()
-
-
     override fun id(): Int {
         return R.layout.activity_xue_detail_page_frag_transcript
     }
@@ -70,9 +67,6 @@ class XuePage1FragmentTrans(
                 var adapter = TranscriptItemAdapter(showEngText)
                 adapter.data = mutableListOf(oneTrans)
                 recycler_view_transcipt.adapter = adapter
-                pageLoadedMap[index] = true
-                teaching_book_unit_progress.secondaryProgress = index + 1
-                teaching_book_unit_progress.max = it.size
             }
             teaching_book_unit_progress.secondaryProgress = index + 1
             teaching_book_unit_progress.max = it.size

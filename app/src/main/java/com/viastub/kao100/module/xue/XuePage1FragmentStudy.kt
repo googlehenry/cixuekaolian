@@ -21,6 +21,7 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        VariablesXue.xueContext?.currentPageIndex = 0
         pageSnapshotPaths?.let {
             loadPage(0)
         }
@@ -67,7 +68,9 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
             VariablesXue.xueContext?.currentPageIndex = idx
             teaching_book_unit_progress.max = it.size
             teaching_book_unit_progress.secondaryProgress = idx + 1
+            flipper.removeAllViews()
             flipper.addView(getImageView(File(it[idx])))
+            flipper.showNext()
         }
     }
 
