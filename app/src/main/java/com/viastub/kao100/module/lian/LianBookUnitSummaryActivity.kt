@@ -81,10 +81,13 @@ class LianBookUnitSummaryActivity : BaseActivity() {
 
     override fun onBackPressed() {
 
-        var submittedCurrent =
-            VariablesLian.availableTemplatesMap[VariablesLian.availableTemplateIds[VariablesLian.currentTemplateIdIdx]]?.submitted
 
-        if (submittedCurrent == true) {
+        var submittedCurrent = true
+        if (VariablesLian.currentTemplateIdIdx >= 0) {
+            submittedCurrent =
+                VariablesLian.availableTemplatesMap[VariablesLian.availableTemplateIds[VariablesLian.currentTemplateIdIdx]]?.submitted == true
+        }
+        if (submittedCurrent) {
             doGoBack()
         } else {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
