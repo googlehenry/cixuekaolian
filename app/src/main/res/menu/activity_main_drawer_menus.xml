@@ -5,11 +5,11 @@
         <item
             android:id="@+id/nav_collect"
             android:icon="@drawable/ic_menu_favorite"
-            android:title="我的收藏" />
+            android:title="我的单词" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_drawer_menu_notebook"
-            android:title="我的笔记" />
+            android:title="我的收集" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_drawer_menu_errorbook"
