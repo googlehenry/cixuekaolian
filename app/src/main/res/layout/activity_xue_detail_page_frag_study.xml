@@ -3,25 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/selector_background_light"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ProgressBar
-            android:id="@+id/teaching_book_unit_progress"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_gravity="center_vertical"
-            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-            android:indeterminateOnly="false"
-            android:max="100"
-            android:mirrorForRtl="true"
-            android:progress="0"
-            android:progressDrawable="@drawable/progress_horizontal"
-            android:secondaryProgress="0" />
 
         <ViewFlipper
             android:id="@+id/flipper"
@@ -44,7 +31,7 @@
         android:gravity="center"
         android:background="@drawable/shape_xue_textbook_controls"
         android:textColor="#FFFFFF"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/teaching_book_unit_page_next"
@@ -58,5 +45,5 @@
         android:gravity="center"
         android:background="@drawable/shape_xue_textbook_controls_mirror"
         android:textColor="#FFFFFF"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

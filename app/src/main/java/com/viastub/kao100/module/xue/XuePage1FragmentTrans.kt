@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_transcript.*
 
 
 class XuePage1FragmentTrans(
+    var progressUpdatedListener: ProgressUpdatedListener,
     var bookTranslationsDb: MutableList<TeachingTranslation>?,
     var showEngText: Boolean = false
 ) :
@@ -68,8 +69,7 @@ class XuePage1FragmentTrans(
                 adapter.data = mutableListOf(oneTrans)
                 recycler_view_transcipt.adapter = adapter
             }
-            teaching_book_unit_progress.secondaryProgress = index + 1
-            teaching_book_unit_progress.max = it.size
+            progressUpdatedListener.updateProgress(index + 1, 0, it.size)
             VariablesXue.xueContext?.currentPageIndex = index
         }
 

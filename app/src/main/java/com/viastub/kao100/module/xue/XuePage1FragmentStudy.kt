@@ -3,7 +3,6 @@ package com.viastub.kao100.module.xue
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.utils.VariablesXue
@@ -12,7 +11,10 @@ import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_study.*
 import java.io.File
 
 
-class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseFragment() {
+class XuePage1FragmentStudy(
+    var progressUpdatedListener: ProgressUpdatedListener,
+    var pageSnapshotPaths: MutableList<String>?
+) : BaseFragment() {
 
     override fun id(): Int {
         return R.layout.activity_xue_detail_page_frag_study
@@ -27,8 +29,8 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
         }
 
         teaching_book_unit_page_next.setOnClickListener {
-            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
-            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
+//            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
+//            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
             pageSnapshotPaths?.let {
                 var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) + 1
                 if (currentIndex < it.size) {
@@ -40,12 +42,16 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
                     toast("已经到最后一页")
                 }
                 VariablesXue.xueContext?.currentPageIndex = currentIndex
-                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+                progressUpdatedListener.updateProgress(
+                    currentIndex + 1,
+                    0,
+                    pageSnapshotPaths!!.size
+                )
             }
         }
         teaching_book_unit_page_prev.setOnClickListener {
-            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
-            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
+//            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
+//            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
             pageSnapshotPaths?.let {
                 var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) - 1
                 if (currentIndex >= 0) {
@@ -57,7 +63,11 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
                     toast("已经到第一页")
                 }
                 VariablesXue.xueContext?.currentPageIndex = currentIndex
-                teaching_book_unit_progress.secondaryProgress = currentIndex + 1
+                progressUpdatedListener.updateProgress(
+                    currentIndex + 1,
+                    0,
+                    pageSnapshotPaths!!.size
+                )
             }
         }
 
@@ -66,8 +76,7 @@ class XuePage1FragmentStudy(var pageSnapshotPaths: MutableList<String>?) : BaseF
     fun loadPage(idx: Int) {
         pageSnapshotPaths?.let {
             VariablesXue.xueContext?.currentPageIndex = idx
-            teaching_book_unit_progress.max = it.size
-            teaching_book_unit_progress.secondaryProgress = idx + 1
+            progressUpdatedListener.updateProgress(idx + 1, 0, pageSnapshotPaths!!.size)
             flipper.removeAllViews()
             flipper.addView(getImageView(File(it[idx])))
             flipper.showNext()

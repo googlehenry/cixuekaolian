@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_xue_detail_page.*
 import java.io.File
 
 
-class XuePage1Activity : BaseActivity() {
+class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
     var currentFragment: BaseFragment? = null
     var currentPlayAudioIndex = -1
 
@@ -57,9 +57,26 @@ class XuePage1Activity : BaseActivity() {
                         supportFragmentManager,
                         mutableListOf("教材", "中文", "英文", "精解", "单词")
                     ).apply {
-                        addFragment(XuePage1FragmentStudy(it.pageSnapshotPaths()))
-                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, false))
-                        addFragment(XuePage1FragmentTrans(it.bookTranslationsDb, true))
+                        addFragment(
+                            XuePage1FragmentStudy(
+                                this@XuePage1Activity,
+                                it.pageSnapshotPaths()
+                            )
+                        )
+                        addFragment(
+                            XuePage1FragmentTrans(
+                                this@XuePage1Activity,
+                                it.bookTranslationsDb,
+                                false
+                            )
+                        )
+                        addFragment(
+                            XuePage1FragmentTrans(
+                                this@XuePage1Activity,
+                                it.bookTranslationsDb,
+                                true
+                            )
+                        )
                         addFragment(XuePage1FragmentTeach(it.bookTeachingPointsDb))
                         addFragment(XuePage1FragmentWords(it.bookWordItemsDb))
                     }
@@ -94,10 +111,6 @@ class XuePage1Activity : BaseActivity() {
                     currentPlayAudioIndex = 0
 
                     playAnother(0)
-//                    var audioFileInit = File(it)
-//                    player_current_item_name.text = "当前音频:${audioFileInit.name}"
-//                    mediaPlayer = MediaPlayer.create(this, audioFileInit.toUri())
-//                    mediaPlayer?.setVolume(1.0f, 1.0f)
                 }
 
             })
@@ -231,4 +244,14 @@ class XuePage1Activity : BaseActivity() {
         super.onBackPressed()
     }
 
+    override fun updateProgress(secondary: Int, primary: Int, max: Int) {
+        teaching_book_unit_progress.max = max
+        teaching_book_unit_progress.progress = primary
+        teaching_book_unit_progress.secondaryProgress = secondary
+    }
+
+}
+
+interface ProgressUpdatedListener {
+    fun updateProgress(secondary: Int, primary: Int, max: Int)
 }

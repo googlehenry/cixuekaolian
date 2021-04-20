@@ -38,16 +38,20 @@
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
-            <!--            <ImageView-->
-            <!--                android:id="@+id/header_action"-->
-            <!--                android:layout_width="26dp"-->
-            <!--                android:layout_height="26dp"-->
-            <!--                android:layout_gravity="center_vertical"-->
-            <!--                android:layout_marginRight="2dp"-->
-            <!--                android:layout_alignParentRight="true"-->
-            <!--                android:background="@drawable/selector_menu_options"-->
-            <!--                android:tooltipText="这里菜单选项" />-->
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/teaching_book_unit_progress"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:mirrorForRtl="true"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_horizontal"
+            android:secondaryProgress="0" />
 
         <LinearLayout
             android:layout_width="match_parent"
