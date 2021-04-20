@@ -3,6 +3,7 @@ package com.viastub.kao100.module.xue
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.utils.VariablesXue
@@ -29,7 +30,7 @@ class XuePage1FragmentStudy(
         }
 
         teaching_book_unit_page_next.setOnClickListener {
-//            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
+            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_in)
 //            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_left_out)
             pageSnapshotPaths?.let {
                 var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) + 1
@@ -50,7 +51,7 @@ class XuePage1FragmentStudy(
             }
         }
         teaching_book_unit_page_prev.setOnClickListener {
-//            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
+            flipper.inAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_in)
 //            flipper.outAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_out)
             pageSnapshotPaths?.let {
                 var currentIndex = (VariablesXue.xueContext?.currentPageIndex ?: 0) - 1

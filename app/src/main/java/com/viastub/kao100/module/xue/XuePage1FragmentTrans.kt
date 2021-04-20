@@ -18,6 +18,8 @@ class XuePage1FragmentTrans(
 ) :
     BaseFragment(), View.OnClickListener {
 
+    var cachedIndex: Int = -1
+
     override fun id(): Int {
         return R.layout.activity_xue_detail_page_frag_transcript
     }
@@ -61,16 +63,19 @@ class XuePage1FragmentTrans(
     }
 
     fun loadPage(index: Int) {
-        bookTranslationsDb?.let {
-            if (index < it.size) {
-                var oneTrans = it[index]
-                oneTrans.sequence = index + 1
-                var adapter = TranscriptItemAdapter(showEngText)
-                adapter.data = mutableListOf(oneTrans)
-                recycler_view_transcipt.adapter = adapter
+        if (cachedIndex != index) {
+            bookTranslationsDb?.let {
+                if (index < it.size) {
+                    var oneTrans = it[index]
+                    oneTrans.sequence = index + 1
+                    var adapter = TranscriptItemAdapter(showEngText)
+                    adapter.data = mutableListOf(oneTrans)
+                    recycler_view_transcipt.adapter = adapter
+                }
+                progressUpdatedListener.updateProgress(index + 1, 0, it.size)
+                VariablesXue.xueContext?.currentPageIndex = index
+                cachedIndex = index
             }
-            progressUpdatedListener.updateProgress(index + 1, 0, it.size)
-            VariablesXue.xueContext?.currentPageIndex = index
         }
 
     }

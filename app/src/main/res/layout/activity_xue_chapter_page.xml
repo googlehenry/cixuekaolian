@@ -101,7 +101,7 @@
                 style="@style/rectangle_blue"
                 android:layout_width="@dimen/dp_140"
                 android:layout_height="@dimen/dp_40"
-                android:text="开始学习 — GO" />
+                android:text="开始学习" />
         </LinearLayout>
     </LinearLayout>
 

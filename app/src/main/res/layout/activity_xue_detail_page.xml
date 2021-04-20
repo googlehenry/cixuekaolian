@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="@color/colorPrimary"
-                app:tabIndicatorFullWidth="true"
+                app:tabIndicatorFullWidth="false"
                 app:tabIndicatorHeight="3dp"
                 app:tabSelectedTextColor="@color/colorPrimary"
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
