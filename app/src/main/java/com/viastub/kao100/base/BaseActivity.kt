@@ -97,7 +97,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
         dialog
             .setTitle("收集一个新项")
-            .setSingle(false).setOnClickBottomListener(object : OnClickBottomListener {
+            .setSingle(false)
+            .setOnClickBottomListener(object : OnClickBottomListener {
                 override fun onPositiveClick() {
                     val inputName = dialog.message
                     if (inputName.split(" ").size > 1) {
@@ -121,7 +122,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 override fun onNegtiveClick() {
                     dialog.dismiss()
                 }
-            }).show()
+            })
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(true)
     }
 
 
