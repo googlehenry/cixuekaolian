@@ -38,8 +38,6 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
             )
         )
 
-        loadMyHistory()
-
         radiogroup_start.isChecked = true
         radiogroup_all.isChecked = true
 
@@ -74,6 +72,11 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadMyHistory()
+    }
+
     private fun loadMyHistory() {
         awaitAsync({
             var roomDb = RoomDB.get(this)
@@ -86,14 +89,13 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
     }
 
     fun updateUI(wordHistory: List<MyWordHistory>) {
-
-        var mSearchedWordAdapter = SearchedWordHistoryAdapter(this)
-        mSearchedWordAdapter.data =
+        this.wordHistory =
             wordHistory.map { SearchedWord(it.word!!, "", it.visitCount, it.isFavorite == true) }
                 .sortedByDescending { it.count }
                 ?.toMutableList()
-        recycler_view_high.adapter = mSearchedWordAdapter
-        this.wordHistory = mSearchedWordAdapter.data
+
+        recycler_view_high.adapter = SearchedWordHistoryAdapter(this)
+
 
         searchView.isSubmitButtonEnabled = false
         searchView.onActionViewExpanded()
@@ -109,6 +111,8 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
             }
 
         })
+
+        searchItem("")?.let { updateLayout(it) }
 
     }
 
