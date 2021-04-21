@@ -31,9 +31,8 @@ class WordLineAdapter(var onItemClickListener: View.OnClickListener) :
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.word_line_holder)
         bookItemHolder.setTag(R.id.word_line_holder, item)
-        bookItemHolder.setOnLongClickListener {
+        bookItemHolder.setOnClickListener {
             onItemClickListener.onClick(it)
-            true
         }
     }
 

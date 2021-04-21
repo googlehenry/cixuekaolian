@@ -37,7 +37,6 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
                 DividerItemDecoration.VERTICAL
             )
         )
-
         radiogroup_start.isChecked = true
         radiogroup_all.isChecked = true
 
@@ -112,14 +111,16 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
 
         })
 
-        searchItem("")?.let { updateLayout(it) }
+        searchItem(searchView.query.toString())?.let { updateLayout(it) }
 
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
         val filteredList = ArrayList<SearchedWord>()
         //SearchedWord("unless", "柯林斯双解")
+
         var fullset = this.wordHistory
+
 
         if (VariablesCi.myWordShowFavoriteOnly) {
             fullset = fullset.filter { it.favorite }
@@ -144,9 +145,6 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
                     filteredList.addAll(it)
                 }
 
-                if (!filteredList.any { it.word.equals(enteredKey, true) }) {
-                    filteredList.add(SearchedWord(enteredKey, "", 0, false))
-                }
             }
         }
         if (filteredList.isEmpty()) {
