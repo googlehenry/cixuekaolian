@@ -4,13 +4,13 @@
     <!-- 连框颜色值 -->
     <item>
         <shape>
-            <solid android:color="#4ec5ff" />
+            <solid android:color="#673AB7" />
         </shape>
     </item>
     <!-- 主体背景颜色值 -->
     <item
         android:top="1dp"
-        android:bottom="1dp">
+        android:bottom="0dp">
         <shape>
             <solid android:color="#ffffff" />
         </shape>

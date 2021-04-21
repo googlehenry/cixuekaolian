@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.wigets.CommonDialog
 import com.viastub.kao100.wigets.CommonDialog.OnClickBottomListener
@@ -127,5 +128,7 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(true)
     }
 
-
+    fun goToDictionary(wordlist: List<String>, word: String) {
+        ActivityUtils.goToDictionary(this, wordlist, word)
+    }
 }

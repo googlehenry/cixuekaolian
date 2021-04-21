@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/searched_word_item_holder_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/selector_button_round_corner_dark">
+
+    <LinearLayout
+        android:id="@+id/searched_word_item_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.viastub.kao100.wigets.BrandTextView
+                android:id="@+id/ci_word"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14" />
+
+            <com.viastub.kao100.wigets.BrandTextView
+                android:id="@+id/ci_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14" />
+
+            <ImageView
+                android:id="@+id/ci_heart"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:gravity="center"
+                android:text="标题"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ci_goin"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:layout_marginRight="@dimen/dp_20"
+            android:contentDescription="进入词条"
+            android:clickable="true"
+            android:src="@drawable/shape_arrow_forward_dark" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -438,6 +438,9 @@ interface MyWordHistoryDao {
     @Query("SELECT * FROM MyWordHistory where userId=:userId and word=:word order by id desc limit 1")
     fun getByUserIdAndWord(userId: Int, word: String): MyWordHistory?
 
+    @Query("SELECT * FROM MyWordHistory where userId=:userId")
+    fun getByUserId(userId: Int): List<MyWordHistory>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: MyWordHistory): Long
 

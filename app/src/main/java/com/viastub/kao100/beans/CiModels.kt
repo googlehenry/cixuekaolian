@@ -9,7 +9,8 @@ import java.util.*
 data class SearchedWord(
     val word: String,
     val source: String,
-    val collect: Boolean = false
+    var count: Int = 0,
+    val favorite: Boolean = false
 )
 
 @Parcelize

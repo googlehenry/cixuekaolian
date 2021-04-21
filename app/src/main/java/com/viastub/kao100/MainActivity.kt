@@ -12,6 +12,7 @@ import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
 import com.viastub.kao100.module.lian.LianFragment
+import com.viastub.kao100.module.my.MyCiPage
 import com.viastub.kao100.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
@@ -79,10 +80,22 @@ class MainActivity : BaseActivity() {
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.
             when (it.itemId) {
+                R.id.nav_mywordhistory -> {
+                    var intent = Intent(this, MyCiPage::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_mycollect -> {
+
+                }
+                R.id.nav_mywrongquestions -> {
+
+                }
+
                 R.id.nav_vpn_manage -> {
                     var intent = Intent(this, NavPageVpnActivity::class.java)
                     startActivity(intent)
                 }
+
                 R.id.nav_db_cleanHistory -> {
                     doAsync {
                         RoomDB.get(applicationContext).mySectionPracticeHistory().deleteAll()

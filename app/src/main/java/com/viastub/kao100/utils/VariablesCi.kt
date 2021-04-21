@@ -9,5 +9,7 @@ class VariablesCi {
         var ciContext: CiContext? = null
         var searchMode: SearchMode = SearchMode.START
         var autoTimer: Timer? = null
+        var myWordShowFavoriteOnly: Boolean = false
+
     }
 }
