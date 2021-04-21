@@ -128,15 +128,11 @@ class MainActivity : BaseActivity() {
                 bottom_navigation.menu.getItem(position).isChecked = true
                 //设置checked为true，但是不能触发ItemSelected事件，所以滑动时也要设置一下标题
                 when (position) {
-                    0 -> toolbar.title =
-                        resources.getString(R.string.activity_main_content_bottom_menu_ci)
-                    1 -> toolbar.title =
-                        resources.getString(R.string.activity_main_content_bottom_menu_xue)
-                    2 -> toolbar.title =
-                        resources.getString(R.string.activity_main_content_bottom_menu_lian)
-                    3 -> toolbar.title =
-                        resources.getString(R.string.activity_main_content_bottom_menu_kao)
-                    else -> toolbar.title = resources.getString(R.string.app_name)
+                    0 -> toolbar.title = "词汇巩固"
+                    1 -> toolbar.title = "教材复习"
+                    2 -> toolbar.title = "练习刷题"
+                    3 -> toolbar.title = "考试模拟"
+                    else -> toolbar.title = "词学练考100分"
                 }
             }
         })
