@@ -18,7 +18,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class TextViewSelectionCallback(var context: Context, private var textView: TextView) :
+class TextViewSelectionCallback(
+    var context: Context,
+    private var textView: TextView,
+    var tags: String?
+) :
     ActionMode.Callback {
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu): Boolean {
 //        menu.removeItem(android.R.id.selectAll)
@@ -77,7 +81,8 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
                             RoomDB.get(context).myCollectedNote().insert(
                                 MyCollectedNote(
                                     userId = VariablesKao.currentUserId,
-                                    collectedText = selectedText.trim().toString()
+                                    collectedText = selectedText.trim().toString(),
+                                    tags = tags
                                 )
                             )
                         }
@@ -95,9 +100,6 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
                 val regex = Regex("[a-zA-Z]+[\\-\\']?[a-z]*")
                 var wordListX = regex.findAll(selectedText).map { it.value }.toList()
                 var sortedList = wordListX
-//                var sortedList = wordListX.asSequence().map { it to 1 }
-//                    .groupBy { it.first }.map { it.key to it.value.map{it.second}.sum() }.sortedBy { it.second }.map { it.first }
-//                    .toList()
 
                 if (!sortedList.isNullOrEmpty()) {
                     ActivityUtils.goToDictionary(context, sortedList, sortedList[0])

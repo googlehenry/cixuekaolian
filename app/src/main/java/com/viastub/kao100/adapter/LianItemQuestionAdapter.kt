@@ -18,10 +18,6 @@ import com.viastub.kao100.utils.Constants
 import com.viastub.kao100.wigets.TextViewSelectionCallback
 
 
-/**
- * Created by yechao on 2020/1/17/017.
- * Describe :
- */
 class LianItemQuestionAdapter(
     var lianItem: PracticeTemplate,
     var questionsHolder: RecyclerView,
@@ -39,7 +35,7 @@ class LianItemQuestionAdapter(
         var questionMainText = holder.getView<TextView>(R.id.lian_item_question_main_text)
         questionMainText.visibility = if (item.text == null) View.GONE else View.VISIBLE
         questionMainText.customSelectionActionModeCallback =
-            TextViewSelectionCallback(context, questionMainText)
+            TextViewSelectionCallback(context, questionMainText, "练习,问题")
 
         var questionOptionsHolder =
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
@@ -102,9 +98,9 @@ class LianItemQuestionAdapter(
             if (lianItem.submitted && item.answerKeyPoints != null) View.VISIBLE else View.GONE
 
         answerReviewed.customSelectionActionModeCallback =
-            TextViewSelectionCallback(context, answerReviewed)
+            TextViewSelectionCallback(context, answerReviewed, "练习,答案")
         answerExplained.customSelectionActionModeCallback =
-            TextViewSelectionCallback(context, answerExplained)
+            TextViewSelectionCallback(context, answerExplained, "练习,解析")
 
         questionOptionsHolder.setTag(R.id.recycler_lian_item_question_options_holder, item)
 

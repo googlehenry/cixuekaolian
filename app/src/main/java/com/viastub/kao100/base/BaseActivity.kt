@@ -90,10 +90,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-    fun addNewCollectDialog(item: String) {
+    fun addNewCollectDialog(item: String, tags: String?) {
         val dialog = CommonDialog(this)
         if (!item.trim().isNullOrBlank() && item.split(" ").size > 1) {
-            dialog.internalEditText.setText(item.toCharArray(), 0, item.length)
+            dialog.message = item
         }
 
         dialog
@@ -108,7 +108,8 @@ abstract class BaseActivity : AppCompatActivity() {
                             RoomDB.get(applicationContext).myCollectedNote().insert(
                                 MyCollectedNote(
                                     userId = VariablesKao.currentUserId,
-                                    collectedText = inputName
+                                    collectedText = inputName,
+                                    tags = tags
                                 )
                             )
                         }

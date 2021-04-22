@@ -45,7 +45,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
 //            cm.setPrimaryClip(ClipData.newPlainText("", ""));
-            addNewCollectDialog(txt)
+            addNewCollectDialog(txt, "词汇,手动添加")
         }
 
         ci_word_detail.webViewClient = object : WebViewClient() {

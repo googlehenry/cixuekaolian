@@ -92,7 +92,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
 //            cm.setPrimaryClip(ClipData.newPlainText("", ""));
-            addNewCollectDialog(txt)
+            addNewCollectDialog(txt, "练习,手动添加")
         }
 
     }
@@ -139,7 +139,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             "要求:${template.requirement} (本题${template.totalScore}分,共${template.practiceQuestions()?.size ?: 0}小题,每小题${template.totalScore / (template.practiceQuestions()?.size ?: 1)}分)"
         lian_item_main_text.text = template.itemMainText
         lian_item_main_text.customSelectionActionModeCallback =
-            TextViewSelectionCallback(this, lian_item_main_text)
+            TextViewSelectionCallback(this, lian_item_main_text, "练习,题干")
 
         lian_item_main_text.visibility =
             if (template.itemMainAudioPath != null) View.GONE else View.VISIBLE
@@ -189,7 +189,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         lian_item_explanations.visibility = View.GONE
         lian_item_explanations.text = template.keyPoints
         lian_item_explanations.customSelectionActionModeCallback =
-            TextViewSelectionCallback(this, lian_item_explanations)
+            TextViewSelectionCallback(this, lian_item_explanations, "练习,解析")
 
         lian_item_main_audio_start.setOnClickListener {
             template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }

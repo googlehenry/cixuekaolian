@@ -24,7 +24,7 @@ class ExpandableTextAdapter :
 
 
         expandableText.customSelectionActionModeCallback =
-            TextViewSelectionCallback(context, expandableText)
+            TextViewSelectionCallback(context, expandableText, "单元知识点")
 
     }
 

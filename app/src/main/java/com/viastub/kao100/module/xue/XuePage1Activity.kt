@@ -122,7 +122,7 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
 //            cm.setPrimaryClip(ClipData.newPlainText("", ""));
-            addNewCollectDialog(txt)
+            addNewCollectDialog(txt, "学习,手动添加")
         }
 
         play_pause.setOnClickListener {

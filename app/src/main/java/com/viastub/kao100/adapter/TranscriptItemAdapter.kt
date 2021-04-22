@@ -31,8 +31,10 @@ class TranscriptItemAdapter(
         bookItemHolder.setTag(R.id.transcript_holder, item)
         bookItemHolder.setOnClickListener(null)
 
-        engText.customSelectionActionModeCallback = TextViewSelectionCallback(context, engText)
-        zhText.customSelectionActionModeCallback = TextViewSelectionCallback(context, zhText)
+        engText.customSelectionActionModeCallback =
+            TextViewSelectionCallback(context, engText, "单元,英文课本")
+        zhText.customSelectionActionModeCallback =
+            TextViewSelectionCallback(context, zhText, "单元,中文课本")
     }
 
 }

@@ -29,7 +29,7 @@ class TestExamAdapter(var itemClickListener: View.OnClickListener) :
             var data = it.mapIndexed { index, tag ->
                 TestPaperTag(index + 1, tag)
             }.toMutableList()
-            tagsHolder.adapter = TestExamTagAdapter(context, data)
+            tagsHolder.adapter = SimpleTagAdapter(context, data)
         }
 
 

@@ -9,7 +9,7 @@ import com.viastub.kao100.beans.TestPaperTag
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 
-class TestExamTagAdapter(var context: Context, data: List<TestPaperTag>) :
+class SimpleTagAdapter(var context: Context, data: List<TestPaperTag>) :
     TagAdapter<TestPaperTag>(data) {
 
     override fun getView(parent: FlowLayout?, position: Int, tag: TestPaperTag?): View {

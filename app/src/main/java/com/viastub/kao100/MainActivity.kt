@@ -13,6 +13,7 @@ import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
 import com.viastub.kao100.module.lian.LianFragment
 import com.viastub.kao100.module.my.MyCiPage
+import com.viastub.kao100.module.my.MyCollectionPage
 import com.viastub.kao100.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
@@ -37,10 +38,6 @@ class MainActivity : BaseActivity() {
         initListener()
 
 
-//        doAsync(
-//            dataAction = { RoomDB.get(this).practiceSection().getAll() },
-//            uiAction = { Toast.makeText(this, "result:$it", Toast.LENGTH_SHORT).show() }
-//        )
 
     }
 
@@ -85,7 +82,8 @@ class MainActivity : BaseActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_mycollect -> {
-
+                    var intent = Intent(this, MyCollectionPage::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_mywrongquestions -> {
 
