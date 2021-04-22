@@ -83,7 +83,7 @@ class TextViewSelectionCallback(var context: Context, private var textView: Text
                         }
                         Toast.makeText(context, "选中文本已添加到我的收集", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "单个单词无法收集", Toast.LENGTH_SHORT).show()
+                        ActivityUtils.showMessageAlert(context, "请输入/选择句子或小短文")
                     }
                 }
                 mode.finish()

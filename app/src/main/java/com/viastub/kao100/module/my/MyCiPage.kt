@@ -37,8 +37,6 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
                 DividerItemDecoration.VERTICAL
             )
         )
-        radiogroup_start.isChecked = true
-        radiogroup_all.isChecked = true
 
         radiogroup_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -46,13 +44,7 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
                     R.id.radiogroup_start -> VariablesCi.searchMode = SearchMode.START
                     R.id.radiogroup_contains -> VariablesCi.searchMode = SearchMode.CONTAINS
                 }
-
-                searchView.query.toString().trim()?.let {
-                    if (it.isNotEmpty()) {
-                        searchItem(it)?.let { updateLayout(it) }
-                    }
-                }
-
+                searchItem(VariablesCi.myWordSearchQuery)?.let { updateLayout(it) }
             }
         })
         radiogroup_group2.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
@@ -62,12 +54,13 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
                     R.id.radiogroup_favorite -> VariablesCi.myWordShowFavoriteOnly = true
                 }
 
-                searchView.query.toString().trim()?.let {
-                    searchItem(it)?.let { updateLayout(it) }
-                }
-
+                searchItem(VariablesCi.myWordSearchQuery)?.let { updateLayout(it) }
             }
         })
+
+        VariablesCi.myWordSearchQuery?.let {
+            searchView.setQuery(it, false)
+        }
 
     }
 
@@ -88,6 +81,8 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
     }
 
     fun updateUI(wordHistory: List<MyWordHistory>) {
+        //TODO not working
+
         this.wordHistory =
             wordHistory.map { SearchedWord(it.word!!, "", it.visitCount, it.isFavorite == true) }
                 .sortedByDescending { it.count }
@@ -95,23 +90,38 @@ class MyCiPage : BaseActivity(), View.OnClickListener {
 
         recycler_view_high.adapter = SearchedWordHistoryAdapter(this)
 
-
         searchView.isSubmitButtonEnabled = false
         searchView.onActionViewExpanded()
-        searchView.clearFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchItem(newText)?.let { updateLayout(it) }
+                VariablesCi.myWordSearchQuery = newText
+                searchItem(VariablesCi.myWordSearchQuery)?.let { updateLayout(it) }
                 return true
             }
 
         })
 
-        searchItem(searchView.query.toString())?.let { updateLayout(it) }
+
+        VariablesCi.myWordSearchQuery?.let { searchView.setQuery(it, false) }
+        VariablesCi.searchMode.let {
+            when (it) {
+                SearchMode.CONTAINS -> radiogroup_contains.isChecked = true
+                else -> radiogroup_start.isChecked = true
+            }
+        }
+        VariablesCi.myWordShowFavoriteOnly.let {
+            when (it) {
+                true -> radiogroup_favorite.isChecked = true
+                false -> radiogroup_all.isChecked = true
+            }
+        }
+
+
+        searchItem(VariablesCi.myWordSearchQuery)?.let { updateLayout(it) }
 
     }
 

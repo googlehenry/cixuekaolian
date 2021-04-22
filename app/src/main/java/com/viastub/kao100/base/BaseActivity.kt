@@ -93,7 +93,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun addNewCollectDialog(item: String) {
         val dialog = CommonDialog(this)
         if (!item.trim().isNullOrBlank() && item.split(" ").size > 1) {
-            dialog.message = item
+            dialog.internalEditText.setText(item.toCharArray(), 0, item.length)
         }
 
         dialog
@@ -101,7 +101,8 @@ abstract class BaseActivity : AppCompatActivity() {
             .setSingle(false)
             .setOnClickBottomListener(object : OnClickBottomListener {
                 override fun onPositiveClick() {
-                    val inputName = dialog.message
+                    val inputName = dialog.internalEditText.text.toString()
+
                     if (inputName.split(" ").size > 1) {
                         doAsync {
                             RoomDB.get(applicationContext).myCollectedNote().insert(
@@ -114,7 +115,7 @@ abstract class BaseActivity : AppCompatActivity() {
                         dialog.message = ""
                         Toast.makeText(this@BaseActivity, "该文本已添加到我的收集", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this@BaseActivity, "单个单词无法收集", Toast.LENGTH_SHORT).show()
+                        showMessageAlert("收集项目太短\n请输入/选择句子或小短文")
                     }
 
                     dialog.dismiss()
@@ -130,5 +131,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun goToDictionary(wordlist: List<String>, word: String) {
         ActivityUtils.goToDictionary(this, wordlist, word)
+    }
+
+    fun showMessageAlert(message: String) {
+        ActivityUtils.showMessageAlert(this, message)
     }
 }

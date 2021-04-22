@@ -10,6 +10,6 @@ class VariablesCi {
         var searchMode: SearchMode = SearchMode.START
         var autoTimer: Timer? = null
         var myWordShowFavoriteOnly: Boolean = false
-
+        var myWordSearchQuery: String? = null
     }
 }
