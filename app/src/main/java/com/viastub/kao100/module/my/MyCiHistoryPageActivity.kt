@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.my_ci.*
 import java.util.*
 
 
-class MyCiPage : BaseActivity(), View.OnClickListener {
+class MyCiHistoryPageActivity : BaseActivity(), View.OnClickListener {
     override fun id(): Int {
         return R.layout.my_ci
     }

@@ -82,7 +82,13 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 } else -1
 
             if (VariablesLian.currentTemplateIdIdx >= 0) {
-                loadCurrentQuestionTemplate()
+                //For My Question history
+                if (VariablesLian.lianContext!!.book.id == -1) {
+                    loadCurrentQuestionTemplate(loadReviewMode = true)
+                } else {
+                    //For xue module
+                    loadCurrentQuestionTemplate()
+                }
             }
         })
         floating_button_add.setOnClickListener {
@@ -97,7 +103,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     }
 
-    private fun loadCurrentQuestionTemplate(loadReviewMode: Boolean = true) {
+    private fun loadCurrentQuestionTemplate(loadReviewMode: Boolean? = null) {
         val templateId = VariablesLian.availableTemplateIds!![VariablesLian.currentTemplateIdIdx]
 
         VariablesLian.lianContext?.sections?.find {
@@ -108,8 +114,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     templateId
                 )
         }
-        if (!loadReviewMode) {
-            VariablesLian.loadLastTimeSubmittedAnswers = false
+        loadReviewMode?.let {
+            VariablesLian.loadLastTimeSubmittedAnswers = loadReviewMode
         }
 
         VariablesLian.availableTemplatesMap[templateId]?.let {
@@ -250,7 +256,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 dataAction = {
                     RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
                         .mapIndexed { qidx, qs ->
-                            prepareQuestionData(qs, qidx)
+                            prepareQuestionData(qs, qidx, template)
                             qs
                         }
                         .toMutableList()
@@ -280,7 +286,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         startActivity(intent)
     }
 
-    private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int) {
+    private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int, template: PracticeTemplate) {
         var options = RoomDB.get(applicationContext).practiceAnswerOption()
             .getByIds(qs.optionPractices()!!)
             .mapIndexed { index, practiceAnswerOption ->
@@ -293,7 +299,13 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(VariablesKao.currentUserId, qs.id!!))
+                .insert(
+                    MyQuestionAction(
+                        VariablesKao.currentUserId,
+                        qs.id!!,
+                        practiceTemplateId = template.id
+                    )
+                )
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
                 .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
@@ -301,7 +313,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         if (VariablesLian.loadLastTimeSubmittedAnswers) {
             var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, qs.id!!)
+                .getByUserAndQuestionId(VariablesKao.currentUserId, qs.id!!)
 
             answeredHistory?.let {
                 qs.myQuestionAnsweredHistoryDb = it
@@ -562,7 +574,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
             var answeredHistories = template.questionsDb?.map {
                 var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
-                    .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, it.id!!)
+                    .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
                     ?: MyQuestionAnsweredHistory(
                         userId = VariablesKao.currentUserId,
                         practiceQuestionId = it.id!!,

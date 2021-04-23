@@ -12,8 +12,9 @@ import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
 import com.viastub.kao100.module.lian.LianFragment
-import com.viastub.kao100.module.my.MyCiPage
-import com.viastub.kao100.module.my.MyCollectionPage
+import com.viastub.kao100.module.my.MyCiHistoryPageActivity
+import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
@@ -78,15 +79,16 @@ class MainActivity : BaseActivity() {
             // Handle navigation view item clicks here.
             when (it.itemId) {
                 R.id.nav_mywordhistory -> {
-                    var intent = Intent(this, MyCiPage::class.java)
+                    var intent = Intent(this, MyCiHistoryPageActivity::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_mycollect -> {
-                    var intent = Intent(this, MyCollectionPage::class.java)
+                    var intent = Intent(this, MyCollectionHistoryPageActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.nav_mywrongquestions -> {
-
+                R.id.nav_mypracticehistory -> {
+                    var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
+                    startActivity(intent)
                 }
 
                 R.id.nav_vpn_manage -> {

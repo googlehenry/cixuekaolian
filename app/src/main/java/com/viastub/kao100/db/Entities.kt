@@ -692,6 +692,8 @@ data class MyQuestionAction(
     var note: String? = null,
     @ColumnInfo
     var tags: String? = null,
+    @ColumnInfo
+    var practiceTemplateId: Int? = null
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

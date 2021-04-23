@@ -232,7 +232,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                 dataAction = {
                     RoomDB.get(applicationContext).practiceQuestion().getByIds(it)
                         .mapIndexed { qidx, qs ->
-                            prepareQuestionData(qs, qidx)
+                            prepareQuestionData(qs, qidx, template)
                             qs
                         }
                         .toMutableList()
@@ -352,7 +352,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                         tempLat.questionsDb?.map {
 
                             var questionHistoryRecord = roomDB.myQuestionAnsweredHistory()
-                                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, it.id!!)
+                                .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
                                 ?: MyQuestionAnsweredHistory(
                                     userId = VariablesKao.currentUserId,
                                     practiceQuestionId = it.id!!,
@@ -396,7 +396,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         startActivity(intent)
     }
 
-    private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int) {
+    private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int, template: PracticeTemplate) {
         var options = RoomDB.get(applicationContext).practiceAnswerOption()
             .getByIds(qs.optionPractices()!!)
             .mapIndexed { index, practiceAnswerOption ->
@@ -409,7 +409,13 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         if (myAction == null) {
             RoomDB.get(applicationContext).myQuestionAction()
-                .insert(MyQuestionAction(VariablesKao.currentUserId, qs.id!!))
+                .insert(
+                    MyQuestionAction(
+                        VariablesKao.currentUserId,
+                        qs.id!!,
+                        practiceTemplateId = template.id
+                    )
+                )
 
             myAction = RoomDB.get(applicationContext).myQuestionAction()
                 .getByQuestionIdsOfUser(VariablesKao.currentUserId, qs.id!!)
@@ -417,7 +423,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         if (VariablesKao.kaoContext?.loadLastExam == true) {
             var answeredHistory = RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, qs.id!!)
+                .getByUserAndQuestionId(VariablesKao.currentUserId, qs.id!!)
 
             answeredHistory?.let {
                 qs.myQuestionAnsweredHistoryDb = it

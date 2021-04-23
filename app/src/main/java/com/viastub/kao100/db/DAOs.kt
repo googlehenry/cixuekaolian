@@ -342,6 +342,9 @@ interface MyQuestionActionDao {
     @Query("SELECT * FROM MyQuestionAction where userId=:userId and practiceQuestionId=:questionId limit 1")
     fun getByQuestionIdsOfUser(userId: Int, questionId: Int): MyQuestionAction?
 
+    @Query("SELECT * FROM MyQuestionAction where userId=:userId")
+    fun getByUser(userId: Int): List<MyQuestionAction>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: MyQuestionAction)
 
@@ -364,7 +367,10 @@ interface MyQuestionAnsweredHistoryDao {
     fun getAll(): MutableList<MyQuestionAnsweredHistory>
 
     @Query("SELECT * FROM MyQuestionAnsweredHistory where userId=:userId and practiceQuestionId=:questionId order by id desc limit 1")
-    fun getByUserIdOfAnsweredHistory(userId: Int, questionId: Int): MyQuestionAnsweredHistory?
+    fun getByUserAndQuestionId(userId: Int, questionId: Int): MyQuestionAnsweredHistory?
+
+    @Query("SELECT * FROM MyQuestionAnsweredHistory where practiceQuestionId in (:ids)")
+    fun getByQuestionIds(ids: MutableList<Int>): List<MyQuestionAnsweredHistory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: MyQuestionAnsweredHistory)

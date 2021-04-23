@@ -12,9 +12,9 @@
                 android:icon="@drawable/ic_drawer_menu_notebook"
                 android:title="我的收集" />
             <item
-                android:id="@+id/nav_mywrongquestions"
+                android:id="@+id/nav_mypracticehistory"
                 android:icon="@drawable/ic_drawer_menu_errorbook"
-                android:title="我的错题" />
+                android:title="我的习题" />
         </menu>
     </item>
 

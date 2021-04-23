@@ -28,7 +28,7 @@ import androidx.room.RoomDatabase
         MyWordHistory::class,
         MyCollectedNote::class
     ],
-    version = 20,
+    version = 21,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {

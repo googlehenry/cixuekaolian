@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.my_collection.*
 import java.util.*
 
 
-class MyCollectionPage : BaseActivity(), View.OnClickListener {
+class MyCollectionHistoryPageActivity : BaseActivity(), View.OnClickListener {
     override fun id(): Int {
         return R.layout.my_collection
     }
@@ -143,7 +143,11 @@ class MyCollectionPage : BaseActivity(), View.OnClickListener {
                         )
                     }
                     dialog.message = ""
-                    Toast.makeText(this@MyCollectionPage, "收集项已保存", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@MyCollectionHistoryPageActivity,
+                        "收集项已保存",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     dialog.dismiss()
                 }
@@ -153,7 +157,11 @@ class MyCollectionPage : BaseActivity(), View.OnClickListener {
                         RoomDB.get(applicationContext).myCollectedNote().delete(item)
                     }
                     dialog.message = ""
-                    Toast.makeText(this@MyCollectionPage, "收集项已删除", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@MyCollectionHistoryPageActivity,
+                        "收集项已删除",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     dialog.dismiss()
                 }
