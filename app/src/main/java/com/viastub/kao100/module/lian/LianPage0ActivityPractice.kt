@@ -539,6 +539,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 }
             }
 
+            question.checkAnswerResultCorrect = result
+
             question.scoreEarned =
                 (if (result == true) scorePerQuestion else 0.0)
 
@@ -557,13 +559,24 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         awaitAsync({
             var roomDb = RoomDB.get(applicationContext)
 
+
             var answeredHistories = template.questionsDb?.map {
-                MyQuestionAnsweredHistory(
-                    userId = VariablesKao.currentUserId,
-                    practiceQuestionId = it.id!!,
-                    answerIsCorrect = scoreEarned > 0,
-                    optionalPracticeTemplateId = template.id
-                ).setMyAnswersJson(it.usersAnswers)
+                var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
+                    .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, it.id!!)
+                    ?: MyQuestionAnsweredHistory(
+                        userId = VariablesKao.currentUserId,
+                        practiceQuestionId = it.id!!,
+                        answerIsCorrect = it.checkAnswerResultCorrect,
+                        practiceTemplateId = template.id
+                    ).setMyAnswersJson(it.usersAnswers)
+
+                when (it.checkAnswerResultCorrect) {
+                    null -> questionHistoryRecord.skippedAttemptNo += 1
+                    true -> questionHistoryRecord.correctAttemptNo += 1
+                    false -> questionHistoryRecord.wrongAttemptNo += 1
+                }
+
+                questionHistoryRecord
             } ?: mutableListOf()
 
             answeredHistories?.toMutableList()?.let {

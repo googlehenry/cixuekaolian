@@ -304,6 +304,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                     }
                 }
 
+                question.checkAnswerResultCorrect = result
+
                 question.scoreEarned =
                     (if (result == true) scorePerQuestion else 0.0)
 
@@ -331,9 +333,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         )
 
         doAsync {
+            var roomDB = RoomDB.get(applicationContext)
             if (VariablesKao.kaoContext?.type == KaoType.ExamSimulation) {
 
-                RoomDB.get(applicationContext).myExamSimuHistory().insert(
+                roomDB.myExamSimuHistory().insert(
                     MyExamSimuHistory(
                         VariablesKao.currentUserId,
                         VariablesKao.kaoContext!!.typedEntityId,
@@ -347,13 +350,22 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                 var answeredHistories =
                     checkedTemplates.flatMap { tempLat ->
                         tempLat.questionsDb?.map {
-                            MyQuestionAnsweredHistory(
-                                userId = VariablesKao.currentUserId,
-                                practiceQuestionId = it.id!!,
-                                answerIsCorrect = scoreEarned > 0,
-                                optionalPracticeTemplateId = tempLat.id,
-                                optionalPracticeTargetId = VariablesKao.kaoContext?.typedEntityId
-                            ).setMyAnswersJson(it.usersAnswers)
+
+                            var questionHistoryRecord = roomDB.myQuestionAnsweredHistory()
+                                .getByUserIdOfAnsweredHistory(VariablesKao.currentUserId, it.id!!)
+                                ?: MyQuestionAnsweredHistory(
+                                    userId = VariablesKao.currentUserId,
+                                    practiceQuestionId = it.id!!,
+                                    answerIsCorrect = it.checkAnswerResultCorrect,
+                                    practiceTemplateId = tempLat.id
+                                ).setMyAnswersJson(it.usersAnswers)
+
+                            when (it.checkAnswerResultCorrect) {
+                                null -> questionHistoryRecord.skippedAttemptNo += 1
+                                true -> questionHistoryRecord.correctAttemptNo += 1
+                                false -> questionHistoryRecord.wrongAttemptNo += 1
+                            }
+                            questionHistoryRecord
                         } ?: mutableListOf()
                     }.toMutableList()
 
@@ -450,7 +462,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                 VariablesKao.currentUserId,
                 pq.id!!,
                 answerIsCorrect = result,
-                optionalPracticeTemplateId = template.id
+                practiceTemplateId = template.id
             ).setMyAnswersJson(pq.usersAnswers)
         }?.toMutableList()
 

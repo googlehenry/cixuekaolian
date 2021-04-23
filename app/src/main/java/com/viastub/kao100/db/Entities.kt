@@ -447,6 +447,9 @@ data class PracticeQuestion(
     @Ignore
     var scoreEarned: Double = 0.0
 
+    @Ignore
+    var checkAnswerResultCorrect: Boolean? = null
+
     //Used to hold user's input/selected value
     @Ignore
     var usersAnswers: MutableMap<Int, String> = mutableMapOf()
@@ -705,18 +708,17 @@ data class MyQuestionAnsweredHistory(
     @ColumnInfo
     var answerIsCorrect: Boolean? = null,//正确，错误，没回答
     @ColumnInfo
+    var correctAttemptNo: Int = 0,
+    @ColumnInfo
+    var wrongAttemptNo: Int = 0,
+    @ColumnInfo
+    var skippedAttemptNo: Int = 0,
+
+    @ColumnInfo
     var dateAdded: String = Date().toString(),
 
     @ColumnInfo
-    var optionalPracticeTemplateId: Int? = null,
-    @ColumnInfo
-    var optionalPracticeSectionId: Int? = null,
-    @ColumnInfo
-    var optionalExamSimulationId: Int? = null,
-    @ColumnInfo
-    var optionalPracticeBookId: Int? = null,
-    @ColumnInfo
-    var optionalPracticeTargetId: Int? = null,
+    var practiceTemplateId: Int? = null,
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
