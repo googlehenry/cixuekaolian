@@ -5,10 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import java.util.*
 
-/**
- * Created by yechao on 2020/1/13/013.
- * Describe :
- */
 class CommonViewPagerAdapter : FragmentPagerAdapter {
 
     private var mTitles: List<String>? = null

@@ -14,10 +14,6 @@ import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeTarget
 import com.viastub.kao100.module.lian.OnExcercistStartListener
 
-/**
- * Created by yechao on 2020/1/17/017.
- * Describe :
- */
 class ExcerciseByBookAdapter(
     var itemClickListener: View.OnClickListener,
     val excerciseListener: OnExcercistStartListener, val excercistTarget: PracticeTarget
