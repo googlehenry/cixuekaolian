@@ -1,6 +1,8 @@
 package com.viastub.kao100.module.my
 
+import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.MyCollectItemAdapter
@@ -8,11 +10,17 @@ import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesKao
+import com.viastub.kao100.wigets.CommonDialog
 import kotlinx.android.synthetic.main.my_ci.*
+import kotlinx.android.synthetic.main.my_ci.header_back
+import kotlinx.android.synthetic.main.my_ci.recycler_view_high
+import kotlinx.android.synthetic.main.my_ci.searchView
+import kotlinx.android.synthetic.main.my_ci.title_high
+import kotlinx.android.synthetic.main.my_collection.*
 import java.util.*
 
 
-class MyCollectionPage : BaseActivity() {
+class MyCollectionPage : BaseActivity(), View.OnClickListener {
     override fun id(): Int {
         return R.layout.my_collection
     }
@@ -31,9 +39,16 @@ class MyCollectionPage : BaseActivity() {
             )
         )
 
-        loadMyNotes()
+        header_action_refresh.setOnClickListener {
+            loadMyNotes()
+        }
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadMyNotes()
+    }
 
     private fun loadMyNotes() {
         awaitAsync({
@@ -48,7 +63,7 @@ class MyCollectionPage : BaseActivity() {
 
     fun updateUI(wordHistory: List<MyCollectedNote>) {
         //TODO not working
-        var adapter = MyCollectItemAdapter()
+        var adapter = MyCollectItemAdapter(this)
 
         this.myCollectedNotesDB = wordHistory.sortedByDescending { it.id }
         adapter.data = this.myCollectedNotesDB.toMutableList()
@@ -73,7 +88,6 @@ class MyCollectionPage : BaseActivity() {
 
     fun searchItem(name: String?): List<MyCollectedNote> {
         val filteredList = ArrayList<MyCollectedNote>()
-        //SearchedWord("unless", "柯林斯双解")
 
         var fullset = this.myCollectedNotesDB
 
@@ -103,6 +117,49 @@ class MyCollectionPage : BaseActivity() {
     fun updateLayout(obj: List<MyCollectedNote>) {
         (recycler_view_high.adapter as MyCollectItemAdapter).data = obj.toMutableList()
         recycler_view_high.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onClick(v: View?) {
+        var item = v?.getTag(R.id.note_collect_holder_root)?.let { it as MyCollectedNote }!!
+
+        val dialog = CommonDialog(this)
+        dialog.message = item.collectedText
+        dialog.positive = "保存修改"
+        dialog.negtive = "删除该项"
+        dialog
+            .setTitle("修改一个收集项")
+            .setSingle(false)
+            .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
+                override fun onPositiveClick() {
+                    val inputName = dialog.internalEditText.text.toString()
+                    doAsync {
+                        RoomDB.get(applicationContext).myCollectedNote().insert(
+                            MyCollectedNote(
+                                id = item.id,
+                                userId = VariablesKao.currentUserId,
+                                collectedText = inputName,
+                                tags = item.tags
+                            )
+                        )
+                    }
+                    dialog.message = ""
+                    Toast.makeText(this@MyCollectionPage, "收集项已保存", Toast.LENGTH_SHORT)
+                        .show()
+                    dialog.dismiss()
+                }
+
+                override fun onNegtiveClick() {
+                    doAsync {
+                        RoomDB.get(applicationContext).myCollectedNote().delete(item)
+                    }
+                    dialog.message = ""
+                    Toast.makeText(this@MyCollectionPage, "收集项已删除", Toast.LENGTH_SHORT)
+                        .show()
+                    dialog.dismiss()
+                }
+            })
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(true)
     }
 
 
