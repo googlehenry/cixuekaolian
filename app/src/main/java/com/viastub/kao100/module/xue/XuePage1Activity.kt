@@ -183,8 +183,8 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
                 mediaPlayer?.let {
                     it.stop()
-                    play_pause.setImageResource(R.drawable.player_icon_pause)
-                }
+                    play_pause.setImageResource(R.drawable.player_icon_play)
+                } ?: play_pause.setImageResource(R.drawable.player_icon_pause)
 
                 mediaPlayer = MediaPlayer.create(this, availableNextAudio.toUri())
                 mediaPlayer?.setVolume(1.0f, 1.0f)
