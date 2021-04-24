@@ -51,8 +51,8 @@ class TextViewSelectionCallback(
         // Here is an example MenuItem
 
         menu.add(0, 997, 99997, "复制")
-        menu.add(0, 998, 99998, "收集")
-        menu.add(0, 999, 99999, "查词")
+        menu.add(0, 998, 99998, "加笔记")
+        menu.add(0, 999, 99999, "查词典")
 
 
         return true
@@ -76,20 +76,18 @@ class TextViewSelectionCallback(
                 val selectedText: CharSequence = getSelectedText()
 
                 if (selectedText.trim().isNotEmpty()) {
-                    if (selectedText.split(" ").size > 1) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            RoomDB.get(context).myCollectedNote().insert(
-                                MyCollectedNote(
-                                    userId = VariablesKao.currentUserId,
-                                    collectedText = selectedText.trim().toString(),
-                                    tags = tags
-                                )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        RoomDB.get(context).myCollectedNote().insert(
+                            MyCollectedNote(
+                                userId = VariablesKao.currentUserId,
+                                collectedText = selectedText.trim().toString(),
+                                tags = tags
                             )
-                        }
-                        Toast.makeText(context, "选中文本已添加到我的收集", Toast.LENGTH_SHORT).show()
-                    } else {
-                        ActivityUtils.showMessageAlert(context, "请输入/选择句子或小短文")
+                        )
                     }
+                    Toast.makeText(context, "已保存", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "未选中文本", Toast.LENGTH_SHORT).show()
                 }
                 mode.finish()
                 true

@@ -20,11 +20,6 @@ class ActivityUtils {
             )
         }
 
-        fun showMessageAlert(context: Context, message: String) {
-            val dialog: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-            dialog.setTitle(message)
-            dialog.show()
-        }
     }
 
 }

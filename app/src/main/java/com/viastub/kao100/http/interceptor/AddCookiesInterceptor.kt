@@ -7,10 +7,6 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-/**
- * Created by yechao on 2020/3/10/010.
- * Describe : 从响应头里拿到cookie并存起来，后面的每次请求再添加到请求头里
- */
 class AddCookiesInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="我的习题"
+            android:text="我的历史题目"
             android:textColor="#fff"
             android:textSize="18sp" />
 

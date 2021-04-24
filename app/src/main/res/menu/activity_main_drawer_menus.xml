@@ -6,15 +6,15 @@
             <item
                 android:id="@+id/nav_mywordhistory"
                 android:icon="@drawable/ic_menu_favorite"
-                android:title="我的单词" />
+                android:title="单词本" />
             <item
                 android:id="@+id/nav_mycollect"
                 android:icon="@drawable/ic_drawer_menu_notebook"
-                android:title="我的收集" />
+                android:title="笔记本" />
             <item
                 android:id="@+id/nav_mypracticehistory"
                 android:icon="@drawable/ic_drawer_menu_errorbook"
-                android:title="我的习题" />
+                android:title="错题本" />
         </menu>
     </item>
 

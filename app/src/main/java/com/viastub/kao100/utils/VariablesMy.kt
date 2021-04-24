@@ -2,7 +2,7 @@ package com.viastub.kao100.utils
 
 class VariablesMy {
     companion object {
-        var questionSearchMode: QuestionSearchMode = QuestionSearchMode.ALL
+        var questionSearchMode: QuestionSearchMode = QuestionSearchMode.ERRORED
         var myCurrentSearchedWord: String? = null
     }
 }

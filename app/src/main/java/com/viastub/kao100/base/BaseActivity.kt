@@ -19,10 +19,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
-/**
- * Created by yechao on 2020/1/3/003.
- * Describe :
- */
 abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,13 +93,13 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         dialog
-            .setTitle("收集一个新项")
+            .setTitle("+加笔记")
             .setSingle(false)
             .setOnClickBottomListener(object : OnClickBottomListener {
                 override fun onPositiveClick() {
                     val inputName = dialog.internalEditText.text.toString()
 
-                    if (inputName.split(" ").size > 1) {
+                    if (inputName.isNotBlank()) {
                         doAsync {
                             RoomDB.get(applicationContext).myCollectedNote().insert(
                                 MyCollectedNote(
@@ -114,9 +110,9 @@ abstract class BaseActivity : AppCompatActivity() {
                             )
                         }
                         dialog.message = ""
-                        Toast.makeText(this@BaseActivity, "该文本已添加到我的收集", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@BaseActivity, "已保存", Toast.LENGTH_SHORT).show()
                     } else {
-                        showMessageAlert("收集项目太短\n请输入/选择句子或小短文")
+                        Toast.makeText(this@BaseActivity, "内容为空", Toast.LENGTH_SHORT).show()
                     }
 
                     dialog.dismiss()
@@ -134,7 +130,4 @@ abstract class BaseActivity : AppCompatActivity() {
         ActivityUtils.goToDictionary(this, wordlist, word)
     }
 
-    fun showMessageAlert(message: String) {
-        ActivityUtils.showMessageAlert(this, message)
-    }
 }

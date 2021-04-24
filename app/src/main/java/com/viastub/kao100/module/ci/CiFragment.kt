@@ -129,9 +129,9 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                     filteredList.addAll(it)
                 }
 
-                if (!filteredList.contains(enteredKey)) {
-                    filteredList.add(enteredKey)
-                }
+//                if (!filteredList.contains(enteredKey)) {
+//                    filteredList.add(enteredKey)
+//                }
             }
         }
         if (filteredList.isEmpty()) {

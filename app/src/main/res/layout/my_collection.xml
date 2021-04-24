@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="我的收集"
+            android:text="我的笔记本"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_ci_search"
             android:iconifiedByDefault="true"
-            android:queryHint="输入关键字查找收集项" />
+            android:queryHint="输入关键字查找笔记" />
 
     </LinearLayout>
 

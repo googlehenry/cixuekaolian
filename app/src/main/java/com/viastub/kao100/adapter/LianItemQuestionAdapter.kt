@@ -1,10 +1,7 @@
 package com.viastub.kao100.adapter
 
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -41,7 +38,6 @@ class LianItemQuestionAdapter(
             holder.getView<RecyclerView>(R.id.recycler_lian_item_question_options_holder)
 
         var questionFunctions = holder.getView<LinearLayout>(R.id.question_functions)
-        questionFunctions.visibility = if (lianItem.submitted) View.VISIBLE else View.GONE
 
         item.optionsDb?.let {
             if (item.type == Constants.practice_question_type_fill) {
@@ -106,21 +102,19 @@ class LianItemQuestionAdapter(
 
 
         //Functions zone
-        var buttonFavorite = holder.getView<Button>(R.id.question_functions_favorite_btn)
+        var buttonFavorite = holder.getView<ImageView>(R.id.question_functions_favorite_btn)
         var buttonNote = holder.getView<Button>(R.id.question_functions_takenote_btn)
 //        var buttonReport = holder.getView<Button>(R.id.question_functions_report_btn)
         var inputBoxNotes = holder.getView<EditText>(R.id.question_functions_notes_inputbox)
 
         item.myQuestionActionDb?.let {
             if (it.isFavorite == true) {
-                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_red)
-                buttonFavorite.text = "已收藏"
+                buttonFavorite.setBackgroundResource(R.drawable.ci_word_heart_selected)
             } else {
-                buttonFavorite.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
-                buttonFavorite.text = "收藏"
+                buttonFavorite.setBackgroundResource(R.drawable.ci_word_heart_gray)
             }
             if (it.note.isNullOrBlank()) {
-                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
+                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_gray)
                 buttonNote.text = "添加笔记"
             } else {
                 inputBoxNotes.setText(it.note!!.toCharArray(), 0, it.note!!.length)

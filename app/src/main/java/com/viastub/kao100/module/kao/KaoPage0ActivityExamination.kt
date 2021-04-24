@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -135,20 +136,19 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
             if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
-        if (VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
-            lian_item_switch_next_btn.isEnabled = true
+
+        lian_item_switch_next_btn.visibility = View.GONE
+        if (VariablesKao.currentTemplateIdIdx >= 0 && VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
             lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
-        } else {
-            lian_item_switch_next_btn.isEnabled = false
-            lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
+            lian_item_switch_next_btn.visibility = View.VISIBLE
         }
-        if (VariablesKao.currentTemplateIdIdx <= 0) {
-            lian_item_switch_prev_btn.isEnabled = false
-            lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
-        } else {
-            lian_item_switch_prev_btn.isEnabled = true
+
+        lian_item_switch_prev_btn.visibility = View.GONE
+        if (VariablesKao.currentTemplateIdIdx > 0 && VariablesKao.currentTemplateIdIdx <= VariablesKao.availableTemplateIds.size - 1) {
             lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+            lian_item_switch_prev_btn.visibility = View.VISIBLE
         }
+
         if (header_action_submit.isEnabled) {
             if (VariablesKao.currentTemplateIdIdx == VariablesKao.availableTemplateIds.size - 1
                 && !VariablesKao.kaoContext!!.currentIsPartialQuestions
@@ -606,11 +606,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             it.isFavorite = (it.isFavorite != true)
 
             if (it.isFavorite == true) {
-                v.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_red)
-                (v as Button).text = "已收藏"
+                (v as ImageView).setImageResource(R.drawable.ci_word_heart_selected)
+                Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show()
             } else {
-                v.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
-                (v as Button).text = "收藏"
+                (v as ImageView).setImageResource(R.drawable.ci_word_heart_gray)
             }
 
             doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }

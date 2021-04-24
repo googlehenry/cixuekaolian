@@ -178,7 +178,7 @@
                     android:layout_height="35dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/selector_button_round_cornor_grayed"
+                    android:visibility="gone"
                     android:focusable="true"
                     android:text="上一大题"
                     android:textColor="#ffffff" />
@@ -189,7 +189,7 @@
                     android:layout_height="35dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/selector_button_round_cornor_grayed"
+                    android:visibility="gone"
                     android:focusable="true"
                     android:text="下一大题"
                     android:textColor="#ffffff" />
