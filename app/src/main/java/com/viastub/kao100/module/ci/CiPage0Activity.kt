@@ -391,7 +391,13 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             myWordHistory.visitCount += 1
             roomDb.myWordHistory().insert(myWordHistory)
 
-            VariablesCi.ciContext!!.currentWordHistory = myWordHistory
+
+            //reload from DB to have ID from DB
+            VariablesCi.ciContext!!.currentWordHistory = roomDb.myWordHistory()
+                .getByUserIdAndWord(
+                    VariablesKao.currentUserId,
+                    VariablesCi.ciContext!!.currentword!!
+                )
 
             myWordHistory
         }, {
