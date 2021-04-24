@@ -1,6 +1,7 @@
 package com.viastub.kao100
 
 import android.content.Intent
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
@@ -68,11 +69,12 @@ class MainActivity : BaseActivity() {
         view_pager.adapter = viewPagerAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initListener() {
+        var header = nav_view.getHeaderView(0)
+        var profileSetting = header.findViewById<ImageView>(R.id.myprofile_settings)
+//        profileSetting.setOnClickListener {
+//            startActivity(Intent(this, MyProfileSettingActivity::class.java))
+//        }
 
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.

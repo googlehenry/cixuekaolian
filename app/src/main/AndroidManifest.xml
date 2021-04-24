@@ -40,6 +40,7 @@
         <activity android:name="com.viastub.kao100.module.my.MyCiHistoryPageActivity" />
         <activity android:name="com.viastub.kao100.module.my.MyCollectionHistoryPageActivity" />
         <activity android:name="com.viastub.kao100.module.my.MyPracticeHistoryPageActivity" />
+        <activity android:name="com.viastub.kao100.module.my.MyProfileSettingActivity" />
     </application>
 
 </manifest>
