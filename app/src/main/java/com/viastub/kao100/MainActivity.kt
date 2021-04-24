@@ -39,7 +39,6 @@ class MainActivity : BaseActivity() {
         initListener()
 
 
-
     }
 
 
@@ -98,10 +97,13 @@ class MainActivity : BaseActivity() {
 
                 R.id.nav_db_cleanHistory -> {
                     doAsync {
-                        RoomDB.get(applicationContext).mySectionPracticeHistory().deleteAll()
-                        RoomDB.get(applicationContext).myExamSimuHistory().deleteAll()
-                        RoomDB.get(applicationContext).myQuestionAnsweredHistory().deleteAll()
-                        RoomDB.get(applicationContext).myQuestionAction().deleteAll()
+                        var roomDB = RoomDB.get(applicationContext)
+                        roomDB.myCollectedNote().deleteAll()
+                        roomDB.myWordHistory().deleteAll()
+                        roomDB.mySectionPracticeHistory().deleteAll()
+                        roomDB.myExamSimuHistory().deleteAll()
+                        roomDB.myQuestionAnsweredHistory().deleteAll()
+                        roomDB.myQuestionAction().deleteAll()
                     }
                 }
 

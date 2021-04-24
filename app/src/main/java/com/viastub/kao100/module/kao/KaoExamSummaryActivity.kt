@@ -3,6 +3,7 @@ package com.viastub.kao100.module.kao
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestSectionAdapter
 import com.viastub.kao100.base.BaseActivity
@@ -126,9 +127,11 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var item = v?.getTag(R.id.section_item_holder) as PracticeSection
         var exam = v?.getTag(-1) as ExamSimulation
-        item?.let {
-            startExam(exam, arrayListOf<PracticeSection>(it), true)
-        }
+
+        Toast.makeText(this, "请点击模拟考试", Toast.LENGTH_SHORT).show()
+//        item?.let {
+//            startExam(exam, arrayListOf<PracticeSection>(it), true)
+//        }
     }
 
     fun startExam(

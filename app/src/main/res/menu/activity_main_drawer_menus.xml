@@ -36,7 +36,7 @@
             <item
                 android:id="@+id/nav_db_cleanHistory"
                 android:icon="@drawable/ic_menu_info"
-                android:title="删除答题记录" />
+                android:title="删除历史记录" />
         </menu>
     </item>
 

@@ -102,48 +102,52 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         action_autoNext.setOnClickListener {
             Toast.makeText(this, "切换模式", Toast.LENGTH_SHORT).show()
 
+//            CoroutineScope(Dispatchers.IO).launch {
+
             if (VariablesCi.autoTimer == null) {
-                header_status.text =
-                    "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
-                action_autoNext.setBackgroundResource(R.drawable.ci_word_timer_off)
-            } else {
-                header_status.text = "手动模式"
-                action_autoNext.setBackgroundResource(R.drawable.ci_word_timer_on)
-            }
+                synchronized(this) {
+                    if (VariablesCi.autoTimer == null) {
+                        VariablesCi.autoTimer = Timer()
 
-            CoroutineScope(Dispatchers.IO).launch {
+                        header_status.text =
+                            "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
+                        action_autoNext.setImageResource(R.drawable.ci_word_timer_on)
 
-                if (VariablesCi.autoTimer == null) {
-                    VariablesCi.autoTimer = Timer()
-                    val interval =
-                        VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
-                    var countDownTimer: CountDownTimer? = null
-                    VariablesCi.autoTimer!!.scheduleAtFixedRate(
-                        object : TimerTask() {
-                            override fun run() {
-                                if (VariablesCi.ciContext!!.currentIndex >= VariablesCi.ciContext!!.currentWordList!!.size - 1) {
-                                    VariablesCi.autoTimer?.cancel()
-                                    VariablesCi.autoTimer = null
-                                } else {
-                                    runOnUiThread {
-                                        gotoWordFromDict(1)
-                                        countDownTimer?.let { it.cancel() }
-                                        countDownTimer = setUpTimer(interval)
-                                        countDownTimer?.start()
+
+                        val interval =
+                            VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
+                        VariablesCi.autoTimer!!.scheduleAtFixedRate(
+                            object : TimerTask() {
+                                override fun run() {
+                                    if (VariablesCi.ciContext!!.currentIndex >= VariablesCi.ciContext!!.currentWordList!!.size - 1) {
+                                        VariablesCi.autoTimer?.cancel()
+                                        VariablesCi.autoTimer = null
+                                    } else {
+                                        runOnUiThread {
+                                            gotoWordFromDict(1)
+                                            myWordTimer?.let { it.cancel() }
+                                            myWordTimer = setUpTimer(interval)
+                                            myWordTimer?.start()
+                                        }
                                     }
                                 }
-                            }
 
-                        },
-                        1000,
-                        interval
-                    )
-                } else {
-                    VariablesCi.autoTimer?.cancel()
-                    VariablesCi.autoTimer = null
-
+                            },
+                            1000,
+                            interval
+                        )
+                    }
                 }
+            } else {
+                VariablesCi.autoTimer?.cancel()
+                VariablesCi.autoTimer = null
+                header_status.text = "手动模式"
+                action_autoNext.setImageResource(R.drawable.ci_word_timer_off)
             }
+
+//            }
+
+
         }
 
         action_speak.setOnClickListener {
@@ -209,23 +213,30 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
     }
 
 
+    var myWordTimer: CountDownTimer? = null
     fun setUpTimer(milliSeconds: Long): CountDownTimer {
 
-        var countDownTimer = object : CountDownTimer(milliSeconds, 500) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (VariablesCi.autoTimer != null) {
-                    var seconds = millisUntilFinished / 1000
-                    header_status.text =
-                        "自动模式[${if (seconds < 10) "0" + seconds else seconds}]"
+        if (myWordTimer == null) {
+            synchronized(this) {
+                if (myWordTimer == null) {
+                    myWordTimer = object : CountDownTimer(milliSeconds, 500) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            if (VariablesCi.autoTimer != null) {
+                                var seconds = millisUntilFinished / 1000
+                                header_status.text =
+                                    "自动模式[${if (seconds < 10) "0" + seconds else seconds}]"
+                            }
+                        }
+
+                        override fun onFinish() {
+
+                        }
+
+                    }
                 }
             }
-
-            override fun onFinish() {
-
-            }
-
         }
-        return countDownTimer
+        return myWordTimer!!
     }
 
 

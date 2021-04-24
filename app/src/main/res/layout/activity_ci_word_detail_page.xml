@@ -131,7 +131,7 @@
                         android:layout_gravity="center_horizontal"
                         android:clickable="true"
                         android:contentDescription="自动播放"
-                        android:src="@drawable/ci_word_timer_on" />
+                        android:src="@drawable/ci_word_timer_off" />
                 </LinearLayout>
 
                 <LinearLayout

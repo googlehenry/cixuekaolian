@@ -51,7 +51,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         VariablesKao.availableTemplateIds =
             sections?.flatMap { it.practiceTemplateIds() ?: mutableListOf() }.toMutableList()
         VariablesKao.currentTemplateIdIdx =
-            if (VariablesKao.availableTemplateIds!!.size > 0) 0 else -1
+            if (VariablesKao.currentTemplateIdIdx >= 0 && VariablesKao.currentTemplateIdIdx <= (VariablesKao.availableTemplateIds.size - 1)) VariablesKao.currentTemplateIdIdx else (if (VariablesKao.availableTemplateIds!!.size > 0) 0 else -1)
 
         //flag last exam answer data loaded if clicked check last exam
         if (VariablesKao.kaoContext?.loadLastExam == true) {
@@ -571,8 +571,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     private fun doGoBack() {
         super@KaoPage0ActivityExamination.onBackPressed()
         stopPlayer()
-        VariablesKao.availableTemplateIds.clear()
-        VariablesKao.currentTemplateIdIdx = -1
+//        VariablesKao.availableTemplateIds.clear()
+//        VariablesKao.currentTemplateIdIdx = -1
     }
 
 

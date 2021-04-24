@@ -40,7 +40,7 @@ class CiPage1SettingActivity : BaseActivity() {
         }
 
         btn_dict_config_save.setOnClickListener {
-            onBackPressed()
+            saveConfig()
         }
     }
 
@@ -66,7 +66,7 @@ class CiPage1SettingActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        saveConfig()
+//        saveConfig()
     }
 
 }
