@@ -41,9 +41,4 @@ class XuePage1FragmentWords(
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        toast("长按单词进入词典")
-    }
-
 }
