@@ -224,6 +224,14 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         template.itemMainAudioPath?.let {
             mediaPlayer = MediaPlayer.create(this, File(it).toUri())
+            mediaPlayer!!.setOnCompletionListener {
+                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+            }
+            mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                false
+            }
+
         }
 
 
@@ -410,8 +418,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
     private fun plyDemoMp3Reading(audioFile: String) {
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
         } else {
             mediaPlayer?.start()
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_red)
         }
     }
 
@@ -501,6 +511,18 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 (v as Button).text = "保存笔记"
             }
 
+        }
+    }
+
+    override fun errorButtonClicked(
+        v: View?,
+        myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory?
+    ) {
+        myQuestionAnsweredHistoryDb?.let {
+            doAsync {
+                RoomDB.get(applicationContext).myQuestionAnsweredHistory().delete(it)
+            }
+            (v?.let { it as Button })?.visibility = View.GONE
         }
     }
 

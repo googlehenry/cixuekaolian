@@ -104,7 +104,7 @@
 
                 <FrameLayout
                     android:id="@+id/lian_item_main_holder"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/selector_background_light"
@@ -113,7 +113,7 @@
 
                     <TextView
                         android:id="@+id/lian_item_main_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="true"
                         android:padding="@dimen/dp_5"

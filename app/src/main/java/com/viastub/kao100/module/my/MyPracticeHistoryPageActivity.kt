@@ -33,7 +33,9 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
         supportActionBar?.hide()
         header_back.setOnClickListener { onBackPressed() }
 
-
+        header_action_refresh.setOnClickListener {
+            loadQuestionHistory()
+        }
 
         radiogroup_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -74,6 +76,11 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
         searchView.onActionViewExpanded()
         radiogroup_questions_errors.isChecked = true
 
+        loadQuestionHistory()
+
+    }
+
+    private fun loadQuestionHistory() {
         awaitAsync({
             var roomDB = RoomDB.get(applicationContext)
             var questionActions = roomDB.myQuestionAction().getByUser(VariablesKao.currentUserId)
@@ -116,25 +123,8 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
 
             questionMap = myMap.toMutableMap()
         }, {
-            // get from initialized maps
-
-//            var categoryData = templateMap.values?.groupBy {
-//                it.category
-//            }.filterKeys { it != null }.toMap().map {
-//                CategoryMap(
-//                    it.key,
-//                    it.value?.size ?: 0,
-//                    it.value.map { it.practiceQuestions()?.size ?: 0 }.sum()
-//                )
-//            }.toMutableList()
-//
-//            updateGrid(categoryData)
-
-
             updateGrid(searchItem(null))
-
         })
-
     }
 
     private fun searchItem(newText: String?): MutableList<CategoryMap> {

@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.MyQuestionAction
+import com.viastub.kao100.db.MyQuestionAnsweredHistory
 import com.viastub.kao100.db.PracticeQuestion
 import com.viastub.kao100.db.PracticeTemplate
 import com.viastub.kao100.utils.Constants
@@ -104,14 +105,14 @@ class LianItemQuestionAdapter(
         //Functions zone
         var buttonFavorite = holder.getView<ImageView>(R.id.question_functions_favorite_btn)
         var buttonNote = holder.getView<Button>(R.id.question_functions_takenote_btn)
-//        var buttonReport = holder.getView<Button>(R.id.question_functions_report_btn)
+        var buttonError = holder.getView<Button>(R.id.question_functions_errorbook_btn)
         var inputBoxNotes = holder.getView<EditText>(R.id.question_functions_notes_inputbox)
 
         item.myQuestionActionDb?.let {
             if (it.isFavorite == true) {
-                buttonFavorite.setBackgroundResource(R.drawable.ci_word_heart_selected)
+                buttonFavorite.setImageResource(R.drawable.ci_word_heart_selected)
             } else {
-                buttonFavorite.setBackgroundResource(R.drawable.ci_word_heart_gray)
+                buttonFavorite.setImageResource(R.drawable.ci_word_heart_gray)
             }
             if (it.note.isNullOrBlank()) {
                 buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_gray)
@@ -123,12 +124,22 @@ class LianItemQuestionAdapter(
             }
         }
 
+        buttonError.visibility = View.GONE
+        item.myQuestionAnsweredHistoryDb?.let {
+            if (it.wrongAttemptNo > 0) {
+                buttonError.visibility = View.VISIBLE
+            }
+        }
+
         questionEventListener?.let { actionListener ->
             buttonFavorite.setOnClickListener {
                 actionListener.favoriteButtonClicked(it, item.myQuestionActionDb)
             }
             buttonNote.setOnClickListener {
                 actionListener.noteButtonClicked(it, inputBoxNotes, item.myQuestionActionDb)
+            }
+            buttonError.setOnClickListener {
+                actionListener.errorButtonClicked(it, item.myQuestionAnsweredHistoryDb)
             }
         }
 
@@ -139,4 +150,5 @@ class LianItemQuestionAdapter(
 interface QuestionActionListener {
     fun favoriteButtonClicked(v: View, myAction: MyQuestionAction?)
     fun noteButtonClicked(v: View, input: EditText, myAction: MyQuestionAction?)
+    fun errorButtonClicked(it: View?, myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory?)
 }

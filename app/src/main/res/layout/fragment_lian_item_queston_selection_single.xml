@@ -99,6 +99,17 @@
                         android:textColor="#fff"
                         android:textSize="@dimen/sp_10" />
 
+                    <Button
+                        android:id="@+id/question_functions_errorbook_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:background="@drawable/selector_button_round_cornor_question_functions_gray"
+                        android:text="移除错题"
+                        android:visibility="gone"
+                        android:textColor="#fff"
+                        android:textSize="@dimen/sp_10" />
+
                 </LinearLayout>
 
                 <LinearLayout

@@ -244,6 +244,13 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         }
         template.itemMainAudioPath?.let {
             mediaPlayer = MediaPlayer.create(this, File(it).toUri())
+            mediaPlayer!!.setOnCompletionListener {
+                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+            }
+            mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                false
+            }
         }
 
 
@@ -559,8 +566,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     private fun plyDemoMp3Reading(audioFile: String) {
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
         } else {
             mediaPlayer?.start()
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_red)
         }
     }
 
@@ -599,6 +608,18 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         }
         return countDownTimer
+    }
+
+    override fun errorButtonClicked(
+        v: View?,
+        myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory?
+    ) {
+        myQuestionAnsweredHistoryDb?.let {
+            doAsync {
+                RoomDB.get(applicationContext).myQuestionAnsweredHistory().delete(it)
+            }
+            (v?.let { it as Button })?.visibility = View.GONE
+        }
     }
 
     override fun favoriteButtonClicked(v: View, myAction: MyQuestionAction?) {

@@ -32,6 +32,15 @@
             android:textColor="#fff"
             android:textSize="18sp" />
 
+        <Button
+            android:id="@+id/header_action_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="2dp"
+            android:text="刷新列表"
+            android:textColor="#fff"
+            android:background="@drawable/selector_button_round_cornor_orange" />
     </LinearLayout>
 
     <LinearLayout
