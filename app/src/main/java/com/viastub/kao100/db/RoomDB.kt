@@ -28,8 +28,8 @@ import androidx.room.RoomDatabase
         MyWordHistory::class,
         MyCollectedNote::class
     ],
-    version = 21,
-    exportSchema = false
+    version = 22,
+    exportSchema = true
 )
 abstract class RoomDB : RoomDatabase() {
     abstract fun practiceSection(): PracticeSectionDao

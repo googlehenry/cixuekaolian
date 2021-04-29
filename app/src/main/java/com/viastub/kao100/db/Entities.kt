@@ -319,6 +319,8 @@ data class PracticeSection(
     @ColumnInfo
     var name: String? = null,
     @ColumnInfo
+    var displaySeq: Int? = 0,
+    @ColumnInfo
     var practiceTemplateIds: String? = null,
     @ColumnInfo
     var description: String? = null,
@@ -336,9 +338,6 @@ data class PracticeSection(
 
     @Ignore
     var mySectionPracticeHistory: MySectionPracticeHistory? = null
-
-    @Ignore
-    var displaySeq: Int = 0
 
     fun bindTemplatesDbToThis(templates: MutableList<PracticeTemplate>?): PracticeSection {
         templatesDB = mutableListOf()
