@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.viastub.kao100.R
@@ -19,7 +18,10 @@ import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.PracticeTarget
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.http.DownloadUtil
+import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.VariablesKao
+import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_lian.*
 
 class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
@@ -67,11 +69,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             var adapter = ExcerciseTargetsAdapter(this)
             adapter.data = it
             recycler_view_lian_targets.adapter = adapter
-            recycler_view_lian_targets.postDelayed(200) {
-                recycler_view_lian_targets.getChildAt(0)?.let {
-                    it.performClick()
-                }
-            }
+//            it.firstOrNull()?.let {
+//                loadBooksOfTarget(it)
+//            }
+
         }
 
     }
@@ -124,6 +125,84 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun start(book: PracticeBook, unitSection: PracticeSection) {
+
+
+        if (!unitSection.downloaded) {
+            toast("下载中...")
+            doAsync(0, {
+                var roomDb = RoomDB.get(mContext)
+
+                RemoteAPIDataService.apis.getUnitById(unitSection.id!!).subscribe { section ->
+                    var links = mutableListOf<String>()
+                    section.templatesDB?.forEach { template ->
+                        template.questionsDb?.forEach { question ->
+                            question.optionsDb?.forEach {
+                                roomDb.practiceAnswerOption().insert(it)
+                            }
+                            roomDb.practiceQuestion().insert(question)
+                        }
+                        template.itemMainAudioPath?.let {
+                            if (it.isNotBlank()) {
+                                links.add(it)
+                            }
+                            template.itemMainAudioPath =
+                                (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                    "//",
+                                    "/"
+                                )
+                        }
+                        roomDb.practiceTemplate().insert(template)
+                    }
+                    roomDb.practiceSection().insert(section)
+
+                    LogUtilKt.i("links:$links")
+                    if (links.isNotEmpty()) {
+                        val url =
+                            RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
+                        LogUtilKt.i("url:$url")
+                        DownloadUtil.get()
+                            .downloadToDataFolder(url,
+                                object : DownloadUtil.OnDownloadListener {
+                                    override fun onDownloadSuccess() {
+                                        //Mark download completed
+                                        unitSection.downloaded = true
+                                        roomDb.practiceSection().insert(unitSection)
+                                        main_downloading_progress.max = 100
+                                        main_downloading_progress.secondaryProgress = 0
+                                        openUnit(unitSection, book)
+                                    }
+
+                                    override fun onDownloading(
+                                        progress: Int,
+                                        total: Long
+                                    ) {
+                                        LogUtilKt.i("process:$progress / $total")
+                                        main_downloading_progress.max =
+                                            (total % Int.MAX_VALUE).toInt()
+                                        main_downloading_progress.secondaryProgress = progress
+                                    }
+
+                                    override fun onDownloadFailed() {
+                                        toast("下载失败,请重试!")
+                                    }
+
+                                })
+
+                    } else {
+                        openUnit(unitSection, book)
+                    }
+
+                }
+            }, {})
+
+        } else {
+            openUnit(unitSection, book)
+        }
+
+
+    }
+
+    fun openUnit(unitSection: PracticeSection, book: PracticeBook) {
         var intent = Intent(mContext, LianBookUnitSummaryActivity::class.java)
         intent.putExtra("section", unitSection)
         intent.putExtra("book", book)

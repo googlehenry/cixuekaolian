@@ -11,6 +11,9 @@ interface PracticeSectionDao {
     @Query("SELECT * FROM PracticeSection where id in (:ids)")
     fun getByIds(ids: MutableList<Int>): List<PracticeSection>?
 
+    @Query("SELECT * FROM PracticeSection where id=:id")
+    fun getById(id: Int): PracticeSection?
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -124,6 +127,9 @@ interface PracticeTargetDao {
     @Query("SELECT * FROM PracticeTarget where name=:name")
     fun getByName(name: String): List<PracticeTarget>?
 
+    @Query("SELECT * FROM PracticeTarget where id=:id")
+    fun getById(id: Int): PracticeTarget?
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -206,6 +212,9 @@ interface TeachingBookUnitSectionDao {
 
     @Query("SELECT * FROM TeachingBookUnitSection where id in(:ids)")
     fun getByIds(ids: MutableList<Int>): List<TeachingBookUnitSection>?
+
+    @Query("SELECT * FROM TeachingBookUnitSection where id=:id")
+    fun getById(id: Int): TeachingBookUnitSection?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: TeachingBookUnitSection)

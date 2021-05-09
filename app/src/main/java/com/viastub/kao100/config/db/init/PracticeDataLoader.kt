@@ -2,13 +2,60 @@ package com.viastub.kao100.config.db.init
 
 import com.viastub.kao100.R
 import com.viastub.kao100.db.*
+import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.TempUtil
 
 
 class PracticeDataLoader : DataLoader {
     override fun load(roomDb: RoomDB): Int {
-        loadTextBook1(roomDb)
+        tryPullOnlineTargetBooks(roomDb)
         return -1
+    }
+
+    private fun tryPullOnlineTargetBooks(roomDb: RoomDB) {
+        try {
+            RemoteAPIDataService.apis.getTargets().subscribe { targets ->
+                targets?.let {
+                    it.filter { onlineTarget ->
+                        var targetDb = roomDb.practiceTarget().getById(onlineTarget.id!!)
+                        targetDb?.let {
+                            (onlineTarget.version ?: 0) > (it.version ?: 0)
+                        } ?: true
+                    }.forEach {
+                        it.downloaded = false
+                        roomDb.practiceTarget().insert(it)
+                    }
+
+                    it.forEach {
+                        it.booksDb?.filter { onlineBook ->
+                            var bookDb = roomDb.practiceBook().getById(onlineBook.id!!)
+                            bookDb?.let {
+                                (onlineBook.version ?: 0) > (it.version ?: 0)
+                            } ?: true
+                        }?.forEach {
+                            it.downloaded = false
+                            roomDb.practiceBook().insert(it)
+                        }
+                    }
+
+                    it.flatMap {
+                        it.booksDb?.flatMap { it.unitSectionsDb ?: mutableListOf() }
+                            ?: mutableListOf()
+                    }.filter { onlineUnit ->
+                        var sectionDb = roomDb.practiceSection().getById(onlineUnit.id!!)
+                        sectionDb?.let {
+                            (onlineUnit.version ?: 0) > (it.version ?: 0)
+                        } ?: true
+                    }?.forEach {
+                        it.downloaded = false
+                        roomDb.practiceSection().insert(it)
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
     }
 
     private fun loadTextBook1(roomDb: RoomDB) {

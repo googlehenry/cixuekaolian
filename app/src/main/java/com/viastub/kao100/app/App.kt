@@ -1,10 +1,7 @@
 package com.viastub.kao100.app
 
 import android.app.Application
-import com.viastub.kao100.config.db.init.ConfigGlobalLoader
-import com.viastub.kao100.config.db.init.ExamDataLoader
-import com.viastub.kao100.config.db.init.PracticeDataLoader
-import com.viastub.kao100.config.db.init.TeachingBookDataLoader
+import com.viastub.kao100.config.db.init.*
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.exception.UnCaughtExceptionHandler
 import com.viastub.kao100.utils.VariablesKao
@@ -30,6 +27,7 @@ class App : Application() {
                 ExamDataLoader().load(it)
                 PracticeDataLoader().load(it)
                 TeachingBookDataLoader().load(it)
+                UserDataLoader().load(it)
             }
         }
 

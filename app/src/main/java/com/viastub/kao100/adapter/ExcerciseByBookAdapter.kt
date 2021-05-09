@@ -1,8 +1,6 @@
 package com.viastub.kao100.adapter
 
-import android.net.Uri
 import android.view.View
-import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,11 +23,11 @@ class ExcerciseByBookAdapter(
         holder.setText(R.id.lian_book_item_seq, item.id.toString())
         holder.setText(R.id.lian_book_item_title, item.name)
 
-        var groupIcon = holder.getView<ImageView>(R.id.lian_book_item_icon)
-        groupIcon.visibility = View.VISIBLE
-        item.coverImage()?.let {
-            groupIcon.setImageURI(Uri.fromFile(it))
-        }
+//        var groupIcon = holder.getView<ImageView>(R.id.lian_book_item_icon)
+//        groupIcon.visibility = View.VISIBLE
+//        item.coverImage()?.let {
+//            groupIcon.setImageURI(Uri.fromFile(it))
+//        }
 
         item.unitSectionsDb?.let {
             var recyclerViewUnits = holder.getView<RecyclerView>(R.id.recycler_units)

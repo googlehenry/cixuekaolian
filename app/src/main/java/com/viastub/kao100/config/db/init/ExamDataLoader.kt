@@ -8,15 +8,7 @@ import com.viastub.kao100.utils.TempUtil
 
 class ExamDataLoader : DataLoader {
     override fun load(roomDb: RoomDB): Int {
-        loadBasicSection5(roomDb)
-        loadBasicSection4(roomDb)
-        loadBasicSection3(roomDb)
-        loadBasicSection2(roomDb)
-        loadBasicSection1(roomDb)
-        loadBasicExam(roomDb)
-        loadBasicUsers(roomDb)
         tryPullOnlineExams(roomDb)
-//        loadOnlineExam(roomDb)
         return -1
     }
 
@@ -227,12 +219,6 @@ class ExamDataLoader : DataLoader {
         roomDb.practiceSection().insert(testQuestionSection5)
 
     }
-
-    private fun loadBasicUsers(roomDb: RoomDB) {
-        var user1 = MyUser(1, "henry", "no_nick_name")
-        roomDb.myUser().insert(user1)
-    }
-
 
     private fun loadBasicSection4(roomDb: RoomDB) {
         var testQuestionSection4 = PracticeSection(

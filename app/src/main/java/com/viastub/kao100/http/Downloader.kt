@@ -75,7 +75,7 @@ class DownloadUtil private constructor() {
                         }
 
                     }
-                }
+                } ?: listener.onDownloadFailed()
 
 
             }

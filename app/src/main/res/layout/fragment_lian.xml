@@ -4,40 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".module.lian.LianFragment">
 
-    <FrameLayout
-        android:layout_width="45dp"
-        android:layout_height="match_parent">
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="3dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:background="#673AB7" />-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_lian_targets"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/fragment_lian_target_item" />
-
-    </FrameLayout>
+    <ProgressBar
+        android:id="@+id/main_downloading_progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="center_vertical"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:mirrorForRtl="true"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:secondaryProgress="0" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_excercise_nav_groups"
+        <FrameLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_lian_targets"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/fragment_lian_target_item" />
+
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/fragment_lian_book_item" />
-    </LinearLayout>
+            android:orientation="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_excercise_nav_groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/fragment_lian_book_item" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

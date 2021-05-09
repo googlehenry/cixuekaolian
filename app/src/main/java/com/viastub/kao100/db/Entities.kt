@@ -254,7 +254,11 @@ data class PracticeTarget(
     @ColumnInfo
     var description: String? = null,
     @ColumnInfo
-    var bookIdsString: String? = null
+    var bookIdsString: String? = null,
+    @ColumnInfo
+    var version: Int = 0,
+    @ColumnInfo
+    var downloaded: Boolean = true,
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
@@ -288,6 +292,10 @@ data class PracticeBook(
     var coverImagePath: String? = null,
     @ColumnInfo
     var unitSectionIdsString: String? = null,//section can be any type of blocks
+    @ColumnInfo
+    var version: Int = 0,
+    @ColumnInfo
+    var downloaded: Boolean = true,
 ) : Parcelable {
 
     fun coverImage(): File? = coverImagePath?.let { File(it) }
@@ -325,6 +333,10 @@ data class PracticeSection(
     var practiceTemplateIds: String? = null,
     @ColumnInfo
     var description: String? = null,
+    @ColumnInfo
+    var version: Int = 0,
+    @ColumnInfo
+    var downloaded: Boolean = true,
 ) : Parcelable {
     fun bindId(id: Int): PracticeSection {
         return this.also { this.id = id }
@@ -549,7 +561,7 @@ data class ExamSimulation(
     @ColumnInfo
     var tags: String?,
     @ColumnInfo
-    var version: Int = 1,
+    var version: Int = 0,
     @ColumnInfo
     var downloaded: Boolean = true,
     @ColumnInfo

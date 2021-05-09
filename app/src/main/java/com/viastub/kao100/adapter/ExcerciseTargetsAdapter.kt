@@ -22,6 +22,18 @@ class ExcerciseTargetsAdapter(var itemClickListener: View.OnClickListener) :
         bookItemHolder.setOnClickListener {
             itemClickListener.onClick(it)
         }
+
+        if (item.id == 1) {
+            bookItemHolder.performClick()
+//            bookItemHolder?.setBackgroundResource(R.drawable.shape_button_all_rounded_white)
+//            bookItemHolder?.findViewById<TextView>(R.id.nav_target_name)
+//                ?.setTextColor(Color.parseColor("#000000"))
+        }
+//        else{
+//            bookItemHolder.setBackgroundResource(R.drawable.shape_button_half_rounded)
+//            bookItemHolder.findViewById<TextView>(R.id.nav_target_name)
+//                ?.setTextColor(Color.parseColor("#FFFFFF"))
+//        }
     }
 
 
