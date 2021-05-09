@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -17,12 +18,22 @@ class TestExamAdapter(var itemClickListener: View.OnClickListener) :
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: ExamSimulation) {
-        holder.setText(R.id.test_paper_title, item.name)
+        holder.setText(
+            R.id.test_paper_title,
+            "${item.name}"
+        )
         holder.setText(
             R.id.test_paper_last_score,
             "[${item.myExamSimuHistory?.myScores?.toString() ?: 0}分]"
         )
-
+        var paperTitle =
+            holder.getView<TextView>(R.id.test_paper_title)
+        //(${if (!item.downloaded) "未下载" else "本地"})
+        if (item.downloaded) {
+            paperTitle.setTextColor(Color.parseColor("#000000"))
+        } else {
+            paperTitle.setTextColor(Color.parseColor("#aaaaaa"))
+        }
         item.tags()?.let {
             var tagsHolder =
                 holder.getView<TagFlowLayout>(R.id.tag_flow_layout)

@@ -12,8 +12,11 @@ import com.viastub.kao100.beans.Province
 import com.viastub.kao100.beans.TestType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.http.DownloadUtil
+import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.Constants
 import com.viastub.kao100.utils.VariablesKao
+import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_kao.*
 
 class KaoFragment : BaseFragment(), View.OnClickListener {
@@ -74,18 +77,31 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         if (recycler_view_test_papers.adapter != null) {
-            var province = spin_test_province.selectedItem as String
-            var grade = spin_test_grade.selectedItem as String
-            var type = spin_test_type.selectedItem as String
+            var province: String? = spin_test_province.selectedItem as String
+            var grade: String? = spin_test_grade.selectedItem as String
+            var type: String? = spin_test_type.selectedItem as String
+
+            if (province == "全国") {
+                province = null
+            }
+            if (grade == "全部") {
+                grade = null
+            }
+            if (type == "所有") {
+                type = null
+            }
 
             filterTestPapers(province, type, grade)
         }
+
     }
 
     private fun updateTestPaperList(exams: MutableList<ExamSimulation>?) {
         var adapter = TestExamAdapter(this)
         adapter.data = exams ?: mutableListOf()
         recycler_view_test_papers.adapter = adapter
+        recycler_view_test_papers.adapter!!.notifyDataSetChanged()
+        LogUtilKt.i("data:${exams?.size}")
     }
 
     fun applyToUi(provinces: MutableList<Province>) {
@@ -178,11 +194,88 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         v?.let {
-            var exam = it.getTag(R.id.paper_holder) as ExamSimulation
-            var intent = Intent(mContext, KaoExamSummaryActivity::class.java)
-            intent.putExtra("exam", exam)
-            startActivity(intent)
+            var examUI = it.getTag(R.id.paper_holder) as ExamSimulation
+
+            if (!examUI.downloaded) {
+                toast("下载中...")
+                doAsync(0, {
+                    var roomDb = RoomDB.get(mContext)
+
+                    RemoteAPIDataService.apis.getExamById(examUI.id).subscribe { exam ->
+                        var links = mutableListOf<String>()
+                        exam.practiceSectionsDb?.forEach { section ->
+                            section.templatesDB?.forEach { template ->
+                                template.questionsDb?.forEach { question ->
+                                    question.optionsDb?.forEach {
+                                        roomDb.practiceAnswerOption().insert(it)
+                                    }
+                                    roomDb.practiceQuestion().insert(question)
+                                }
+                                template.itemMainAudioPath?.let {
+                                    if (it.isNotBlank()) {
+                                        links.add(it)
+                                    }
+                                    template.itemMainAudioPath =
+                                        (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                            "//",
+                                            "/"
+                                        )
+                                }
+                                roomDb.practiceTemplate().insert(template)
+                            }
+                            roomDb.practiceSection().insert(section)
+                        }
+                        roomDb.examSimulation().insert(exam)
+                        LogUtilKt.i("links:$links")
+                        if (links.isNotEmpty()) {
+                            val url = RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
+                            LogUtilKt.i("url:$url")
+                            DownloadUtil.get()
+                                .downloadToDataFolder(url,
+                                    object : DownloadUtil.OnDownloadListener {
+                                        override fun onDownloadSuccess() {
+                                            //Mark download completed
+                                            exam.downloaded = true
+                                            roomDb.examSimulation().insert(exam)
+                                            main_downloading_progress.max = 100
+                                            main_downloading_progress.secondaryProgress = 0
+                                            openExam(exam)
+                                        }
+
+                                        override fun onDownloading(
+                                            progress: Int,
+                                            total: Long
+                                        ) {
+                                            LogUtilKt.i("process:$progress / $total")
+                                            main_downloading_progress.max =
+                                                (total % Int.MAX_VALUE).toInt()
+                                            main_downloading_progress.secondaryProgress = progress
+                                        }
+
+                                        override fun onDownloadFailed() {
+                                            toast("下载失败,请重试!")
+                                        }
+
+                                    })
+
+                        } else {
+                            openExam(exam)
+                        }
+
+                    }
+                }, {})
+
+            } else {
+                openExam(examUI)
+            }
         }
+    }
+
+    private fun openExam(exam: ExamSimulation) {
+        var intent =
+            Intent(mContext, KaoExamSummaryActivity::class.java)
+        intent.putExtra("exam", exam)
+        startActivity(intent)
     }
 
 }

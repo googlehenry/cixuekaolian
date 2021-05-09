@@ -265,7 +265,7 @@ data class PracticeTarget(
     fun bindId(id: Int): PracticeTarget = this.also { this.id = id }
 
     fun bookIds(): MutableList<Int>? =
-        bookIdsString?.split(",")?.map { it.toInt() }?.toMutableList()
+        bookIdsString?.split(",")?.filter { it.isNotBlank() }?.map { it.toInt() }?.toMutableList()
 
     fun bindBooksDBToThis(books: MutableList<PracticeBook>?): PracticeTarget {
         booksDb = mutableListOf()
@@ -297,7 +297,8 @@ data class PracticeBook(
     fun bindId(id: Int): PracticeBook = this.also { this.id = id }
 
     fun unitSectionIds(): MutableList<Int>? =
-        unitSectionIdsString?.split(",")?.map { it.toInt() }?.toMutableList()
+        unitSectionIdsString?.split(",")?.filter { it.isNotBlank() }?.map { it.toInt() }
+            ?.toMutableList()
 
     fun bindUnitSectionsDBToThis(sections: MutableList<PracticeSection>?): PracticeBook {
         unitSectionsDb = mutableListOf()
@@ -330,7 +331,8 @@ data class PracticeSection(
     }
 
     fun practiceTemplateIds(): MutableList<Int>? {
-        return practiceTemplateIds?.split(",")?.map { it.toInt() }?.toMutableList()
+        return practiceTemplateIds?.split(",")?.filter { it.isNotBlank() }?.map { it.toInt() }
+            ?.toMutableList()
     }
 
     @Ignore
@@ -389,7 +391,8 @@ data class PracticeTemplate(
     var submitted: Boolean = false
 
     fun practiceQuestions(): MutableList<Int>? {
-        return practiceQuestionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+        return practiceQuestionIds?.split(",")?.filter { it.isNotBlank() }?.map { it.toInt() }
+            ?.toMutableList()
     }
 
     @Ignore
@@ -471,7 +474,8 @@ data class PracticeQuestion(
     }
 
     fun optionPractices(): MutableList<Int>? {
-        return practiceAnswerOptionIds?.split(",")?.map { it.toInt() }?.toMutableList()
+        return practiceAnswerOptionIds?.split(",")?.filter { it.isNotBlank() }?.map { it.toInt() }
+            ?.toMutableList()
     }
 
     fun bindId(id: Int): PracticeQuestion = this.also { this.id = id }
@@ -544,6 +548,10 @@ data class ExamSimulation(
     var name: String,
     @ColumnInfo
     var tags: String?,
+    @ColumnInfo
+    var version: Int = 1,
+    @ColumnInfo
+    var downloaded: Boolean = true,
     @ColumnInfo
     var practiceSectionIds: String?
 

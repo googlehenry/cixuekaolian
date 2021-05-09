@@ -2,6 +2,7 @@ package com.viastub.kao100.config.db.init
 
 import com.viastub.kao100.R
 import com.viastub.kao100.db.*
+import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.TempUtil
 
 
@@ -14,7 +15,48 @@ class ExamDataLoader : DataLoader {
         loadBasicSection1(roomDb)
         loadBasicExam(roomDb)
         loadBasicUsers(roomDb)
+        tryPullOnlineExams(roomDb)
+//        loadOnlineExam(roomDb)
         return -1
+    }
+
+    private fun tryPullOnlineExams(roomDb: RoomDB) {
+        try {
+            RemoteAPIDataService.apis.getExams().subscribe {
+                it?.let {
+                    it.filter { onlineExam ->
+                        var examDb = roomDb.examSimulation().getById(onlineExam.id)
+                        examDb?.let {
+                            (onlineExam.version ?: 0) > (it.version ?: 0)
+                        } ?: true
+                    }.forEach {
+                        it.downloaded = false
+                        roomDb.examSimulation().insert(it)
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+    }
+
+    private fun loadOnlineExam(roomDb: RoomDB) {
+        RemoteAPIDataService.apis.getExamById(4).subscribe { exam ->
+            exam.practiceSectionsDb?.forEach { section ->
+                section.templatesDB?.forEach { template ->
+                    template.questionsDb?.forEach { question ->
+                        question.optionsDb?.forEach {
+                            roomDb.practiceAnswerOption().insert(it)
+                        }
+                        roomDb.practiceQuestion().insert(question)
+                    }
+                    roomDb.practiceTemplate().insert(template)
+                }
+                roomDb.practiceSection().insert(section)
+            }
+            roomDb.examSimulation().insert(exam)
+        }
     }
 
     private fun loadBasicSection5(roomDb: RoomDB) {

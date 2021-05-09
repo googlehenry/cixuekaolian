@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context=".module.kao.KaoFragment">
 
+    <ProgressBar
+        android:id="@+id/main_downloading_progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="center_vertical"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:mirrorForRtl="true"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:secondaryProgress="0" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,19 +61,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_test_papers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/fragment_kao_item_test_pater_item" />
 
-
-    <!--https://github.com/iglaweb/Ferris-Wheel-->
-    <!--    <ru.github.igla.ferriswheel.FerrisWheelView-->
-    <!--        android:id="@+id/ferrisWheelView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        app:fwv_cabinsNumber="8"-->
-    <!--        app:fwv_rotateSpeed="6" />-->
 
 </LinearLayout>

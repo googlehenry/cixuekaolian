@@ -52,4 +52,20 @@
                 app:menu="@menu/activity_main_content_bottom_menus" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/floating_button_sync"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="right|bottom"-->
+    <!--        android:layout_marginRight="20dp"-->
+    <!--        android:layout_marginBottom="70dp"-->
+    <!--        android:src="@drawable/ic_floating_buttons_sync_from_server"-->
+    <!--        app:rippleColor="#ffe5e5e5"-->
+    <!--        app:backgroundTint="#ffffffff"-->
+    <!--        app:elevation="6dp"-->
+    <!--        app:pressedTranslationZ="6dp"-->
+    <!--        app:fabSize="mini"-->
+    <!--        app:borderWidth="0dp" />-->
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

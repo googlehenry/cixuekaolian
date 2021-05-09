@@ -67,8 +67,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             var adapter = ExcerciseTargetsAdapter(this)
             adapter.data = it
             recycler_view_lian_targets.adapter = adapter
-            recycler_view_lian_targets.postDelayed(100) {
-                recycler_view_lian_targets.getChildAt(0).performClick()
+            recycler_view_lian_targets.postDelayed(200) {
+                recycler_view_lian_targets.getChildAt(0)?.let {
+                    it.performClick()
+                }
             }
         }
 

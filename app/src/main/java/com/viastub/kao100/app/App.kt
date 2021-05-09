@@ -6,6 +6,7 @@ import com.viastub.kao100.config.db.init.ExamDataLoader
 import com.viastub.kao100.config.db.init.PracticeDataLoader
 import com.viastub.kao100.config.db.init.TeachingBookDataLoader
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.exception.UnCaughtExceptionHandler
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.LogUtilKt
@@ -18,6 +19,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        UnCaughtExceptionHandler().init(applicationContext)
         YUtilsKt.initialize(this)
         LogUtilKt.setIsLog(true)
         registerActivityLifecycleCallbacks(ActivityUtilKt.activityLifecycleCallbacks)
