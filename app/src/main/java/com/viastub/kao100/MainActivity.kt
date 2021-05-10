@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
+import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
@@ -39,7 +40,10 @@ class MainActivity : BaseActivity() {
         initFragments()
         initListener()
 
-
+        header_action_refresh.setOnClickListener {
+            var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
+            (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment).refresh()
+        }
     }
 
 
@@ -188,4 +192,5 @@ class MainActivity : BaseActivity() {
         }
         //super.onBackPressed()
     }
+
 }

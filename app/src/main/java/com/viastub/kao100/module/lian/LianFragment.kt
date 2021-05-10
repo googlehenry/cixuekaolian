@@ -32,6 +32,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
+        loadTargets()
+    }
+
+    private fun loadTargets() {
         doAsync(0, {
             val roomDB: RoomDB = RoomDB.get(applicationContext = mContext)
             roomDB.practiceTarget().getAll()?.toMutableList()
@@ -39,7 +43,6 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             {
                 updateUI(it)
             })
-
     }
 
     private fun loadBooksFromDB(
@@ -114,6 +117,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                     }
 
                 }, this, target)
+                it.sortBy { it.id }
+                it.mapIndexed { index, practiceBook ->
+                    practiceBook.displaySeq = index + 1
+                }
                 adapterBooks.data = it
                 recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
                 recycler_view_excercise_nav_groups.adapter = adapterBooks
@@ -209,6 +216,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         startActivity(intent)
     }
 
+    override fun refresh() {
+        loadTargets()
+    }
 
 }
 

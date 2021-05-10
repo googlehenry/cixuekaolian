@@ -297,6 +297,8 @@ data class PracticeBook(
     @ColumnInfo
     var downloaded: Boolean = true,
 ) : Parcelable {
+    @Ignore
+    var displaySeq: Int? = 0
 
     fun coverImage(): File? = coverImagePath?.let { File(it) }
 

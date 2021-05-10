@@ -74,28 +74,6 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (recycler_view_test_papers.adapter != null) {
-            var province: String? = spin_test_province.selectedItem as String
-            var grade: String? = spin_test_grade.selectedItem as String
-            var type: String? = spin_test_type.selectedItem as String
-
-            if (province == "全国") {
-                province = null
-            }
-            if (grade == "全部") {
-                grade = null
-            }
-            if (type == "所有") {
-                type = null
-            }
-
-            filterTestPapers(province, type, grade)
-        }
-
-    }
-
     private fun updateTestPaperList(exams: MutableList<ExamSimulation>?) {
         var adapter = TestExamAdapter(this)
         adapter.data = exams ?: mutableListOf()
@@ -276,6 +254,26 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
             Intent(mContext, KaoExamSummaryActivity::class.java)
         intent.putExtra("exam", exam)
         startActivity(intent)
+    }
+
+    override fun refresh() {
+        if (recycler_view_test_papers.adapter != null) {
+            var province: String? = spin_test_province.selectedItem as String
+            var grade: String? = spin_test_grade.selectedItem as String
+            var type: String? = spin_test_type.selectedItem as String
+
+            if (province == "全国") {
+                province = null
+            }
+            if (grade == "全部") {
+                grade = null
+            }
+            if (type == "所有") {
+                type = null
+            }
+
+            filterTestPapers(province, type, grade)
+        }
     }
 
 }

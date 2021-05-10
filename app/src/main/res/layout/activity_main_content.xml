@@ -22,7 +22,19 @@
             app:contentInsetRight="@dimen/dp_0"
             app:titleMargin="@dimen/dp_0"
             app:contentInsetStartWithNavigation="0dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <Button
+                android:id="@+id/header_action_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="2dp"
+                android:text="刷新页面"
+                android:textColor="#fff"
+                android:background="@drawable/selector_button_round_cornor_orange" />
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
