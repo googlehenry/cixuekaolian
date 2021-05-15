@@ -23,6 +23,9 @@ import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_lian.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
 
@@ -139,68 +142,69 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
 
-                RemoteAPIDataService.apis.getUnitById(unitSection.id!!).subscribe { section ->
-                    var links = mutableListOf<String>()
-                    section.templatesDB?.forEach { template ->
-                        template.questionsDb?.forEach { question ->
-                            question.optionsDb?.forEach {
-                                roomDb.practiceAnswerOption().insert(it)
+                RemoteAPIDataService.apis.getUnitById(unitSection.id!!)
+                    .onErrorReturn { unitSection }.subscribe { section ->
+                        var links = mutableListOf<String>()
+                        section.templatesDB?.forEach { template ->
+                            template.questionsDb?.forEach { question ->
+                                question.optionsDb?.forEach {
+                                    roomDb.practiceAnswerOption().insert(it)
+                                }
+                                roomDb.practiceQuestion().insert(question)
                             }
-                            roomDb.practiceQuestion().insert(question)
-                        }
-                        template.itemMainAudioPath?.let {
-                            if (it.isNotBlank()) {
-                                links.add(it)
+                            template.itemMainAudioPath?.let {
+                                if (it.isNotBlank()) {
+                                    links.add(it)
+                                }
+                                template.itemMainAudioPath =
+                                    (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                        "//",
+                                        "/"
+                                    )
                             }
-                            template.itemMainAudioPath =
-                                (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
-                                    "//",
-                                    "/"
-                                )
+                            roomDb.practiceTemplate().insert(template)
                         }
-                        roomDb.practiceTemplate().insert(template)
+                        roomDb.practiceSection().insert(section)
+
+                        LogUtilKt.i("links:$links")
+                        if (links.isNotEmpty()) {
+                            val url =
+                                RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
+                            LogUtilKt.i("url:$url")
+                            DownloadUtil.get()
+                                .downloadToDataFolder(url,
+                                    object : DownloadUtil.OnDownloadListener {
+                                        override fun onDownloadSuccess() {
+                                            //Mark download completed
+                                            unitSection.downloaded = true
+                                            roomDb.practiceSection().insert(unitSection)
+                                            main_downloading_progress.max = 100
+                                            main_downloading_progress.secondaryProgress = 0
+                                            openUnit(unitSection, book)
+                                            refresh()
+                                        }
+
+                                        override fun onDownloading(
+                                            progress: Int,
+                                            total: Long
+                                        ) {
+                                            LogUtilKt.i("process:$progress / $total")
+                                            main_downloading_progress.max =
+                                                (total % Int.MAX_VALUE).toInt()
+                                            main_downloading_progress.secondaryProgress = progress
+                                        }
+
+                                        override fun onDownloadFailed() {
+                                            toast("下载失败,请重试!")
+                                        }
+
+                                    })
+
+                        } else {
+                            openUnit(unitSection, book)
+                        }
+
                     }
-                    roomDb.practiceSection().insert(section)
-
-                    LogUtilKt.i("links:$links")
-                    if (links.isNotEmpty()) {
-                        val url =
-                            RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
-                        LogUtilKt.i("url:$url")
-                        DownloadUtil.get()
-                            .downloadToDataFolder(url,
-                                object : DownloadUtil.OnDownloadListener {
-                                    override fun onDownloadSuccess() {
-                                        //Mark download completed
-                                        unitSection.downloaded = true
-                                        roomDb.practiceSection().insert(unitSection)
-                                        main_downloading_progress.max = 100
-                                        main_downloading_progress.secondaryProgress = 0
-                                        openUnit(unitSection, book)
-                                        refresh()
-                                    }
-
-                                    override fun onDownloading(
-                                        progress: Int,
-                                        total: Long
-                                    ) {
-                                        LogUtilKt.i("process:$progress / $total")
-                                        main_downloading_progress.max =
-                                            (total % Int.MAX_VALUE).toInt()
-                                        main_downloading_progress.secondaryProgress = progress
-                                    }
-
-                                    override fun onDownloadFailed() {
-                                        toast("下载失败,请重试!")
-                                    }
-
-                                })
-
-                    } else {
-                        openUnit(unitSection, book)
-                    }
-
-                }
             }, {})
 
         } else {
@@ -218,6 +222,99 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun refresh() {
+        CoroutineScope(Dispatchers.IO).launch {
+            var roomDb = RoomDB.get(mContext.applicationContext)
+            RemoteAPIDataService.apis.getTargets().onErrorReturn { mutableListOf<PracticeTarget>() }
+                .subscribe { targets ->
+
+                    var links = mutableListOf<String>()
+                    targets?.let {
+                        it.filter { onlineTarget ->
+                            var targetDb = roomDb.practiceTarget().getById(onlineTarget.id!!)
+                            targetDb?.let {
+                                (onlineTarget.version ?: 0) > (it.version ?: 0)
+                            } ?: true
+                        }.forEach {
+                            it.downloaded = false
+                            roomDb.practiceTarget().insert(it)
+                        }
+
+                        it.forEach {
+                            it.booksDb?.filter { onlineBook ->
+                                var bookDb = roomDb.practiceBook().getById(onlineBook.id!!)
+                                bookDb?.let {
+                                    (onlineBook.version ?: 0) > (it.version ?: 0)
+                                } ?: true
+                            }?.forEach { onlineBook ->
+                                onlineBook.downloaded = false
+                                onlineBook.coverImagePath?.let {
+                                    if (it.isNotBlank()) {
+                                        var path =
+                                            (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                                "//",
+                                                "/"
+                                            )
+//                                        if (!File(path).exists()) {
+                                        onlineBook.coverImagePath = path
+                                        links.add(it)
+//                                        }
+                                    }
+                                }
+
+                                roomDb.practiceBook().insert(onlineBook)
+
+                            }
+                        }
+
+                        it.flatMap {
+                            it.booksDb?.flatMap { it.unitSectionsDb ?: mutableListOf() }
+                                ?: mutableListOf()
+                        }.filter { onlineUnit ->
+                            var sectionDb = roomDb.practiceSection().getById(onlineUnit.id!!)
+                            sectionDb?.let {
+                                (onlineUnit.version ?: 0) > (it.version ?: 0)
+                            } ?: true
+                        }?.forEach {
+                            it.downloaded = false
+                            roomDb.practiceSection().insert(it)
+                        }
+                    }
+
+                    //download book covers file
+                    if (links.isNotEmpty()) {
+                        val url =
+                            RemoteAPIDataService.BASE_URL + "client/targets/bookCovers"
+                        LogUtilKt.i("url:$url")
+                        DownloadUtil.get()
+                            .downloadToDataFolder(url,
+                                object : DownloadUtil.OnDownloadListener {
+                                    override fun onDownloadSuccess() {
+                                        //Mark download completed
+                                        LogUtilKt.i("Download book covers done")
+                                    }
+
+                                    override fun onDownloading(
+                                        progress: Int,
+                                        total: Long
+                                    ) {
+                                        LogUtilKt.i("process:$progress / $total")
+                                        main_downloading_progress.max = 100
+                                        main_downloading_progress.secondaryProgress = 0
+                                    }
+
+                                    override fun onDownloadFailed() {
+                                        LogUtilKt.i("Download book covers failed")
+                                    }
+
+                                })
+
+                    }
+
+                    if (targets.isNullOrEmpty()) {
+                        toast("服务器没有更新数据")
+                    }
+                }
+        }
         loadTargets()
     }
 

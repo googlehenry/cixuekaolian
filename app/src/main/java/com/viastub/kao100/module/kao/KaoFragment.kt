@@ -18,6 +18,9 @@ import com.viastub.kao100.utils.Constants
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_kao.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class KaoFragment : BaseFragment(), View.OnClickListener {
 
@@ -179,69 +182,72 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                 doAsync(0, {
                     var roomDb = RoomDB.get(mContext)
 
-                    RemoteAPIDataService.apis.getExamById(examUI.id).subscribe { exam ->
-                        var links = mutableListOf<String>()
-                        exam.practiceSectionsDb?.forEach { section ->
-                            section.templatesDB?.forEach { template ->
-                                template.questionsDb?.forEach { question ->
-                                    question.optionsDb?.forEach {
-                                        roomDb.practiceAnswerOption().insert(it)
+                    RemoteAPIDataService.apis.getExamById(examUI.id).onErrorReturn { examUI }
+                        .subscribe { exam ->
+                            var links = mutableListOf<String>()
+                            exam.practiceSectionsDb?.forEach { section ->
+                                section.templatesDB?.forEach { template ->
+                                    template.questionsDb?.forEach { question ->
+                                        question.optionsDb?.forEach {
+                                            roomDb.practiceAnswerOption().insert(it)
+                                        }
+                                        roomDb.practiceQuestion().insert(question)
                                     }
-                                    roomDb.practiceQuestion().insert(question)
-                                }
-                                template.itemMainAudioPath?.let {
-                                    if (it.isNotBlank()) {
-                                        links.add(it)
+                                    template.itemMainAudioPath?.let {
+                                        if (it.isNotBlank()) {
+                                            links.add(it)
+                                        }
+                                        template.itemMainAudioPath =
+                                            (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                                "//",
+                                                "/"
+                                            )
                                     }
-                                    template.itemMainAudioPath =
-                                        (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
-                                            "//",
-                                            "/"
-                                        )
+                                    roomDb.practiceTemplate().insert(template)
                                 }
-                                roomDb.practiceTemplate().insert(template)
+                                roomDb.practiceSection().insert(section)
                             }
-                            roomDb.practiceSection().insert(section)
+                            roomDb.examSimulation().insert(exam)
+                            LogUtilKt.i("links:$links")
+                            if (links.isNotEmpty()) {
+                                val url =
+                                    RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
+                                LogUtilKt.i("url:$url")
+                                DownloadUtil.get()
+                                    .downloadToDataFolder(url,
+                                        object : DownloadUtil.OnDownloadListener {
+                                            override fun onDownloadSuccess() {
+                                                //Mark download completed
+                                                exam.downloaded = true
+                                                roomDb.examSimulation().insert(exam)
+                                                main_downloading_progress.max = 100
+                                                main_downloading_progress.secondaryProgress = 0
+                                                openExam(exam)
+                                                refresh()
+                                            }
+
+                                            override fun onDownloading(
+                                                progress: Int,
+                                                total: Long
+                                            ) {
+                                                LogUtilKt.i("process:$progress / $total")
+                                                main_downloading_progress.max =
+                                                    (total % Int.MAX_VALUE).toInt()
+                                                main_downloading_progress.secondaryProgress =
+                                                    progress
+                                            }
+
+                                            override fun onDownloadFailed() {
+                                                toast("下载失败,请重试!")
+                                            }
+
+                                        })
+
+                            } else {
+                                openExam(exam)
+                            }
+
                         }
-                        roomDb.examSimulation().insert(exam)
-                        LogUtilKt.i("links:$links")
-                        if (links.isNotEmpty()) {
-                            val url = RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
-                            LogUtilKt.i("url:$url")
-                            DownloadUtil.get()
-                                .downloadToDataFolder(url,
-                                    object : DownloadUtil.OnDownloadListener {
-                                        override fun onDownloadSuccess() {
-                                            //Mark download completed
-                                            exam.downloaded = true
-                                            roomDb.examSimulation().insert(exam)
-                                            main_downloading_progress.max = 100
-                                            main_downloading_progress.secondaryProgress = 0
-                                            openExam(exam)
-                                            refresh()
-                                        }
-
-                                        override fun onDownloading(
-                                            progress: Int,
-                                            total: Long
-                                        ) {
-                                            LogUtilKt.i("process:$progress / $total")
-                                            main_downloading_progress.max =
-                                                (total % Int.MAX_VALUE).toInt()
-                                            main_downloading_progress.secondaryProgress = progress
-                                        }
-
-                                        override fun onDownloadFailed() {
-                                            toast("下载失败,请重试!")
-                                        }
-
-                                    })
-
-                        } else {
-                            openExam(exam)
-                        }
-
-                    }
                 }, {})
 
             } else {
@@ -258,6 +264,27 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun refresh() {
+        CoroutineScope(Dispatchers.IO).launch {
+            var roomDb = RoomDB.get(mContext.applicationContext)
+            RemoteAPIDataService.apis.getExams().onErrorReturn { mutableListOf<ExamSimulation>() }
+                .subscribe {
+                    it?.let {
+                        it.filter { onlineExam ->
+                            var examDb = roomDb.examSimulation().getById(onlineExam.id)
+                            examDb?.let {
+                                (onlineExam.version ?: 0) > (it.version ?: 0)
+                            } ?: true
+                        }.forEach {
+                            it.downloaded = false
+                            roomDb.examSimulation().insert(it)
+                        }
+                    }
+                    if (it.isNullOrEmpty()) {
+                        toast("服务器没有更新数据")
+                    }
+                }
+        }
+
         if (recycler_view_test_papers.adapter != null) {
             var province: String? = spin_test_province.selectedItem as String
             var grade: String? = spin_test_grade.selectedItem as String

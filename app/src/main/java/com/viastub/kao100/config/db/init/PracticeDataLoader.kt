@@ -1,22 +1,23 @@
 package com.viastub.kao100.config.db.init
 
+import android.content.Context
+import com.viastub.kao100.db.PracticeTarget
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.http.DownloadUtil
 import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
-import java.io.File
 
 
 class PracticeDataLoader : DataLoader {
-    override fun load(roomDb: RoomDB): Int {
-        tryPullOnlineTargetBooks(roomDb)
+    override fun load(applicationContext: Context, roomDb: RoomDB): Int {
+        tryPullOnlineTargetBooks(applicationContext, roomDb)
         return -1
     }
 
-    private fun tryPullOnlineTargetBooks(roomDb: RoomDB) {
-        try {
-            RemoteAPIDataService.apis.getTargets().subscribe { targets ->
+    private fun tryPullOnlineTargetBooks(applicationContext: Context, roomDb: RoomDB) {
+        RemoteAPIDataService.apis.getTargets().onErrorReturn { mutableListOf<PracticeTarget>() }
+            .subscribe { targets ->
 
                 var links = mutableListOf<String>()
                 targets?.let {
@@ -45,10 +46,10 @@ class PracticeDataLoader : DataLoader {
                                             "//",
                                             "/"
                                         )
-                                    if (!File(path).exists()) {
+//                                    if (!File(path).exists()) {
                                         onlineBook.coverImagePath = path
                                         links.add(it)
-                                    }
+//                                    }
                                 }
                             }
 
@@ -99,9 +100,6 @@ class PracticeDataLoader : DataLoader {
 
                 }
             }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
 
     }
 }

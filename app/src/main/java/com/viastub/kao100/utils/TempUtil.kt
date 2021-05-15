@@ -15,9 +15,6 @@ class TempUtil {
                 outFolder.mkdirs()
             }
             var outFile: File = File(outFolder.absolutePath + "/$filename")
-            if (outFile.exists() && outFile.length() > 100) {
-                return outFile.absolutePath
-            }
 
 
             var inputStream: InputStream =

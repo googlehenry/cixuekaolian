@@ -1,18 +1,20 @@
 package com.viastub.kao100.config.db.init
 
+import android.content.Context
+import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.http.RemoteAPIDataService
 
 
 class ExamDataLoader : DataLoader {
-    override fun load(roomDb: RoomDB): Int {
-        tryPullOnlineExams(roomDb)
+    override fun load(applicationContext: Context, roomDb: RoomDB): Int {
+        tryPullOnlineExams(applicationContext, roomDb)
         return -1
     }
 
-    private fun tryPullOnlineExams(roomDb: RoomDB) {
-        try {
-            RemoteAPIDataService.apis.getExams().subscribe {
+    private fun tryPullOnlineExams(applicationContext: Context, roomDb: RoomDB) {
+        RemoteAPIDataService.apis.getExams().onErrorReturn { mutableListOf<ExamSimulation>() }
+            .subscribe {
                 it?.let {
                     it.filter { onlineExam ->
                         var examDb = roomDb.examSimulation().getById(onlineExam.id)
@@ -25,9 +27,6 @@ class ExamDataLoader : DataLoader {
                     }
                 }
             }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
 
     }
 

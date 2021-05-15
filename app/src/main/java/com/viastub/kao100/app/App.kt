@@ -23,11 +23,11 @@ class App : Application() {
         VariablesKao.globalApplication = applicationContext
         CoroutineScope(Dispatchers.IO).launch {
             RoomDB.get(applicationContext).let {
-                ConfigGlobalLoader().load(it)
-                ExamDataLoader().load(it)
-                PracticeDataLoader().load(it)
-                TeachingBookDataLoader().load(it)
-                UserDataLoader().load(it)
+                ConfigGlobalLoader().load(applicationContext, it)
+                ExamDataLoader().load(applicationContext, it)
+                PracticeDataLoader().load(applicationContext, it)
+                TeachingBookDataLoader().load(applicationContext, it)
+                BasicDataLoader().load(applicationContext, it)
             }
         }
 
