@@ -125,6 +125,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                             main_downloading_progress.max = 100
                                             main_downloading_progress.secondaryProgress = 0
                                             openBook(bookDb)
+                                            refresh()
                                         }
 
                                         override fun onDownloading(

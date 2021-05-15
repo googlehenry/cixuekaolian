@@ -11,8 +11,13 @@ class TempUtil {
             //路径：data/data/包名/file
             var defaultFileFolder: File = VariablesKao.globalApplication.filesDir
             var outFolder: File = File(defaultFileFolder, "/demo")
-            outFolder.mkdirs()
+            if (!outFolder.exists()) {
+                outFolder.mkdirs()
+            }
             var outFile: File = File(outFolder.absolutePath + "/$filename")
+            if (outFile.exists() && outFile.length() > 100) {
+                return outFile.absolutePath
+            }
 
 
             var inputStream: InputStream =

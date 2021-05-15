@@ -177,6 +177,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
                                         openUnit(unitSection, book)
+                                        refresh()
                                     }
 
                                     override fun onDownloading(

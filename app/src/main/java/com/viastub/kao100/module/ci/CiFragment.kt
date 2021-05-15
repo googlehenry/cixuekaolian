@@ -16,6 +16,7 @@ import com.viastub.kao100.beans.SearchedWord
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesCi
 import kotlinx.android.synthetic.main.fragment_ci.*
+import java.io.File
 import java.util.*
 
 
@@ -36,10 +37,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             )
         )
 
-        var dictId = 1
-
-
-        loadDictWithId(dictId)
+        loadDictWithId(1)
 
 
         radiogroup_start.isChecked = true
@@ -64,13 +62,15 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun loadDictWithId(dictId: Int) {
-        doAsync(0, {
+        doAsync(200, {
             var roomDb = RoomDB.get(mContext)
             var dictDb = roomDb.dictionaryConfig().getById(dictId)
             dictDb?.let {
                 VariablesCi.ciContext?.dictConfig = it
             }
-            val mdct = dictDb?.dictFilePath?.let { mdict(it) }
+            val mdct = dictDb?.dictFilePath?.let {
+                if (it.isNotBlank() && File(it).exists()) mdict(it) else null
+            }
             dictDb?.mdict = mdct
             if (VariablesCi.ciContext?.wordKeys == null) {
                 VariablesCi.ciContext?.wordKeys = mdct?.getKeys(null)?.toMutableList()
@@ -162,4 +162,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    override fun refresh() {
+        loadDictWithId(1)
+    }
 }
