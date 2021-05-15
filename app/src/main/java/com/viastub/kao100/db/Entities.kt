@@ -534,7 +534,7 @@ data class PracticeAnswerOption(
 
     fun correctAnswers(): MutableList<String>? {
         return correctAnswersSplitByPipes?.let {
-            return it.split("|")?.toMutableList()
+            it.split("|")?.filter { it.trim().isNotEmpty() }.toMutableList()
         }
     }
 

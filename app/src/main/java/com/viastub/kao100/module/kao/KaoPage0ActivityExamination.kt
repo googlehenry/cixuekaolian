@@ -275,7 +275,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                     template.totalScore / (template.practiceQuestions()?.size ?: 1)
 
                 val answeredMatchResults =
-                    question.optionsDb?.filter { it.correctAnswers() != null }
+                    question.optionsDb?.filter { !it.correctAnswers().isNullOrEmpty() }
                         ?.map { option ->
                             when (question.type) {
                                 QuestionType.FILL.name -> {

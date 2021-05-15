@@ -42,7 +42,7 @@ class LianQuestionOptionAdapter(
         } else {
             question.usersAnswers?.let {
                 if (it.contains(item.id!!)) {
-                    if (item.correctAnswers() != null) {
+                    if (!item.correctAnswers().isNullOrEmpty()) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
@@ -54,7 +54,7 @@ class LianQuestionOptionAdapter(
                         question.userAnswersChecks[item.id!!] = false
                     }
                 } else if (!it.isNullOrEmpty()) {
-                    if (item.correctAnswers() != null) {
+                    if (!item.correctAnswers().isNullOrEmpty()) {
                         itemOption.setTextColor(Color.parseColor("#2ea5ef"))
                         indicator.setBackgroundResource(R.drawable.icon_lian_result_tick)
                         indicator.visibility = View.VISIBLE
