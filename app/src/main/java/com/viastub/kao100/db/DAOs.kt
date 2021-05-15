@@ -194,6 +194,9 @@ interface TeachingBookDao {
     @Query("SELECT * FROM TeachingBook order by grade desc")
     fun getAll(): List<TeachingBook>?
 
+    @Query("SELECT * FROM TeachingBook where id=:id")
+    fun getBookById(id: Int): TeachingBook?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: TeachingBook)
 

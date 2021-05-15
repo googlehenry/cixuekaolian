@@ -8,6 +8,7 @@ import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.XueContext
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.db.TeachingBook
+import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.activity_xue_chapter_page.*
 
 class XuePage0Activity : BaseActivity() {
@@ -24,7 +25,12 @@ class XuePage0Activity : BaseActivity() {
         header_back.setOnClickListener { onBackPressed() }
 
 
-        teachingBook?.coverImage()?.let { textbook_coverImage.setImageURI(Uri.fromFile(it)) }
+        teachingBook?.coverImage()?.let {
+            if (!it.exists()) {
+                LogUtilKt.i("Path not existed:$it")
+            }
+            textbook_coverImage.setImageURI(Uri.fromFile(it))
+        }
         textbook_name.text = teachingBook?.name
 
 

@@ -66,8 +66,12 @@ data class TeachingBook(
     @ColumnInfo
     var bookCoverImagePath: String?,
     @ColumnInfo
-    var unitIdsString: String? = null
+    var unitIdsString: String? = null,
 
+    @ColumnInfo
+    var version: Int = 0,
+    @ColumnInfo
+    var downloaded: Boolean = true,
 ) : Parcelable {
     @Ignore
     var unitsDb: MutableList<TeachingBookUnitSection>? = null
@@ -112,7 +116,10 @@ data class TeachingBookUnitSection(
     @ColumnInfo
     var bookWordItemIdsInString: String? = null, //word ids, collection
 
-
+    @ColumnInfo
+    var version: Int = 0,
+    @ColumnInfo
+    var downloaded: Boolean = true,
 ) : Parcelable {
     @Ignore
     var bookTranslationsDb: MutableList<TeachingTranslation>? = null
@@ -192,6 +199,9 @@ data class TeachingPoint(
     var explained: String? = null,
     @ColumnInfo
     var type: String? = null,//TeachingPointType,
+
+    @ColumnInfo
+    var version: Int = 0,
 ) {
     @Ignore
     var sequence: Int? = null
@@ -208,7 +218,10 @@ data class TeachingTranslation(
     @ColumnInfo
     var text_eng: String?,
     @ColumnInfo
-    var text_zh: String?
+    var text_zh: String?,
+
+    @ColumnInfo
+    var version: Int = 0,
 ) {
     @Ignore
     var sequence: Int? = null
@@ -228,7 +241,10 @@ data class TeachingBookWord(
     @ColumnInfo
     var grammerType: String?,
     @ColumnInfo
-    var meaning: String?
+    var meaning: String?,
+
+    @ColumnInfo
+    var version: Int = 0,
 ) {
     fun bindId(id: Int) = this.also { this.id = id }
 }
@@ -238,7 +254,7 @@ enum class TeachingBookPhase {
 }
 
 enum class TeachingPointType {
-    SENTENCE_PATTERN, PHRASES_IDIOMS_COLLOCATIONS, GRAMMER;
+    SENTENCE_PATTERN, PHRASES_IDIOMS_COLLOCATIONS, GRAMMER, PLAIN_POINT;
 }
 
 enum class WordImportance {

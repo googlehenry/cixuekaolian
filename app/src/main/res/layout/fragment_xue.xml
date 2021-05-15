@@ -7,6 +7,19 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/main_downloading_progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="center_vertical"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:mirrorForRtl="true"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:secondaryProgress="0" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_textbooks"
         android:layout_width="match_parent"

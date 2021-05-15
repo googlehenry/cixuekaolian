@@ -24,6 +24,16 @@ fun main(args: Array<String>) {
 class ZipUtil {
 
     companion object {
+
+        fun concateLocalStorePath(cloudPath: String): String {
+            var path =
+                (VariablesKao.globalApplication.filesDir.absolutePath + cloudPath).replace(
+                    "//",
+                    "/"
+                )
+            return path
+        }
+
         fun zip(sourceFiles: List<File>?, zipFile: File?) {
             var fos: FileOutputStream? = null
             var zos: ZipOutputStream? = null

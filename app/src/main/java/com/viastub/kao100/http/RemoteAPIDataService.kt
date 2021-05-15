@@ -3,6 +3,7 @@ package com.viastub.kao100.http
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.PracticeTarget
+import com.viastub.kao100.db.TeachingBook
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,6 +38,13 @@ class RemoteAPIDataService {
         @GET("client/targets")
         fun getTargets(): Observable<List<PracticeTarget>?>
 
+        @GET("client/books")
+        fun getBooks(): Observable<List<TeachingBook>?>
+
+        @GET("client/book/{bookId}")
+        fun getBookById(
+            @Path("bookId") bookId: Int
+        ): Observable<TeachingBook?>
     }
 
     companion object {
