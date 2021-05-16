@@ -20,6 +20,7 @@ import com.viastub.kao100.db.PracticeTarget
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.http.DownloadUtil
 import com.viastub.kao100.http.RemoteAPIDataService
+import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_lian.*
@@ -138,12 +139,13 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
 
         if (!unitSection.downloaded) {
-            toast("下载中...")
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
 
                 RemoteAPIDataService.apis.getUnitById(unitSection.id!!)
-                    .onErrorReturn { unitSection }.subscribe { section ->
+                    .onErrorReturn {
+                        unitSection
+                    }.subscribe { section ->
                         var links = mutableListOf<String>()
                         section.templatesDB?.forEach { template ->
                             template.questionsDb?.forEach { question ->
@@ -168,6 +170,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
                         LogUtilKt.i("links:$links")
                         if (links.isNotEmpty()) {
+                            ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                             val url =
                                 RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
                             LogUtilKt.i("url:$url")
@@ -182,6 +185,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                             main_downloading_progress.secondaryProgress = 0
                                             openUnit(unitSection, book)
                                             refresh()
+                                            ActivityUtils.showToastFromThread(mContext, "数据下载完成")
                                         }
 
                                         override fun onDownloading(
@@ -195,13 +199,16 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         }
 
                                         override fun onDownloadFailed() {
-                                            toast("下载失败,请重试!")
+                                            main_downloading_progress.max = 100
+                                            main_downloading_progress.secondaryProgress = 0
+                                            ActivityUtils.showToastFromThread(mContext, "数据下载失败")
                                         }
 
                                     })
 
                         } else {
                             openUnit(unitSection, book)
+                            ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
                         }
 
                     }
@@ -222,21 +229,29 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun refresh() {
+        loadTargets()
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
-            RemoteAPIDataService.apis.getTargets().onErrorReturn { mutableListOf<PracticeTarget>() }
+            RemoteAPIDataService.apis.getTargets().onErrorReturn {
+                mutableListOf<PracticeTarget>()
+            }
                 .subscribe { targets ->
 
                     var links = mutableListOf<String>()
+                    var updatedOnlineTargets = mutableListOf<PracticeTarget>()
+                    var updatedOnlineBooks = mutableListOf<PracticeBook>()
+                    var updatedOnlineUnits = mutableListOf<PracticeSection>()
+
                     targets?.let {
                         it.filter { onlineTarget ->
                             var targetDb = roomDb.practiceTarget().getById(onlineTarget.id!!)
                             targetDb?.let {
                                 (onlineTarget.version ?: 0) > (it.version ?: 0)
                             } ?: true
-                        }.forEach {
+                        }.map {
                             it.downloaded = false
                             roomDb.practiceTarget().insert(it)
+                            updatedOnlineTargets.add(it)
                         }
 
                         it.forEach {
@@ -254,15 +269,13 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                                 "//",
                                                 "/"
                                             )
-//                                        if (!File(path).exists()) {
                                         onlineBook.coverImagePath = path
                                         links.add(it)
-//                                        }
                                     }
                                 }
 
                                 roomDb.practiceBook().insert(onlineBook)
-
+                                updatedOnlineBooks.add(onlineBook)
                             }
                         }
 
@@ -277,6 +290,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }?.forEach {
                             it.downloaded = false
                             roomDb.practiceSection().insert(it)
+                            updatedOnlineUnits.add(it)
                         }
                     }
 
@@ -291,6 +305,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                     override fun onDownloadSuccess() {
                                         //Mark download completed
                                         LogUtilKt.i("Download book covers done")
+                                        loadTargets()
+                                        main_downloading_progress.max = 100
+                                        main_downloading_progress.secondaryProgress = 0
+                                        ActivityUtils.showToastFromThread(mContext, "数据下载完成")
                                     }
 
                                     override fun onDownloading(
@@ -298,24 +316,36 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         total: Long
                                     ) {
                                         LogUtilKt.i("process:$progress / $total")
-                                        main_downloading_progress.max = 100
-                                        main_downloading_progress.secondaryProgress = 0
+                                        main_downloading_progress.max =
+                                            (total % Int.MAX_VALUE).toInt()
+                                        main_downloading_progress.secondaryProgress = progress
                                     }
 
                                     override fun onDownloadFailed() {
                                         LogUtilKt.i("Download book covers failed")
+                                        loadTargets()
+                                        main_downloading_progress.max = 100
+                                        main_downloading_progress.secondaryProgress = 0
+                                        ActivityUtils.showToastFromThread(mContext, "数据下载失败")
                                     }
 
                                 })
 
                     }
 
-                    if (targets.isNullOrEmpty()) {
-                        toast("服务器没有更新数据")
+                    if (updatedOnlineBooks.isNullOrEmpty() && updatedOnlineTargets.isNullOrEmpty() && updatedOnlineUnits.isNullOrEmpty()) {
+                        ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
+                    } else {
+                        if (links.isNotEmpty()) {
+                            ActivityUtils.showToastFromThread(mContext, "开始下载文件")
+                        } else {
+                            loadTargets()
+                            ActivityUtils.showToastFromThread(mContext, "数据更新完成")
+                        }
                     }
                 }
         }
-        loadTargets()
+
     }
 
 }

@@ -1,7 +1,8 @@
 package com.viastub.kao100.app
 
 import android.app.Application
-import com.viastub.kao100.config.db.init.*
+import com.viastub.kao100.config.db.init.BasicDataLoader
+import com.viastub.kao100.config.db.init.ConfigGlobalLoader
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.exception.UnCaughtExceptionHandler
 import com.viastub.kao100.utils.VariablesKao
@@ -24,10 +25,10 @@ class App : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             RoomDB.get(applicationContext).let {
                 ConfigGlobalLoader().load(applicationContext, it)
-                ExamDataLoader().load(applicationContext, it)
-                PracticeDataLoader().load(applicationContext, it)
-                TeachingBookDataLoader().load(applicationContext, it)
                 BasicDataLoader().load(applicationContext, it)
+//                ExamDataLoader().load(applicationContext, it)
+//                PracticeDataLoader().load(applicationContext, it)
+//                TeachingBookDataLoader().load(applicationContext, it)
             }
         }
 

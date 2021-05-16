@@ -14,6 +14,7 @@ import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.http.DownloadUtil
 import com.viastub.kao100.http.RemoteAPIDataService
+import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.Constants
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
@@ -178,11 +179,12 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
             var examUI = it.getTag(R.id.paper_holder) as ExamSimulation
 
             if (!examUI.downloaded) {
-                toast("下载中...")
                 doAsync(0, {
                     var roomDb = RoomDB.get(mContext)
 
-                    RemoteAPIDataService.apis.getExamById(examUI.id).onErrorReturn { examUI }
+                    RemoteAPIDataService.apis.getExamById(examUI.id).onErrorReturn {
+                        examUI
+                    }
                         .subscribe { exam ->
                             var links = mutableListOf<String>()
                             exam.practiceSectionsDb?.forEach { section ->
@@ -210,6 +212,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                             roomDb.examSimulation().insert(exam)
                             LogUtilKt.i("links:$links")
                             if (links.isNotEmpty()) {
+                                ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                                 val url =
                                     RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
                                 LogUtilKt.i("url:$url")
@@ -224,6 +227,10 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                                 main_downloading_progress.secondaryProgress = 0
                                                 openExam(exam)
                                                 refresh()
+                                                ActivityUtils.showToastFromThread(
+                                                    mContext,
+                                                    "数据下载完成"
+                                                )
                                             }
 
                                             override fun onDownloading(
@@ -238,7 +245,12 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                             }
 
                                             override fun onDownloadFailed() {
-                                                toast("下载失败,请重试!")
+                                                main_downloading_progress.max = 100
+                                                main_downloading_progress.secondaryProgress = 0
+                                                ActivityUtils.showToastFromThread(
+                                                    mContext,
+                                                    "数据下载失败"
+                                                )
                                             }
 
                                         })
@@ -264,27 +276,39 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun refresh() {
+        loadExams()
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
-            RemoteAPIDataService.apis.getExams().onErrorReturn { mutableListOf<ExamSimulation>() }
-                .subscribe {
-                    it?.let {
-                        it.filter { onlineExam ->
-                            var examDb = roomDb.examSimulation().getById(onlineExam.id)
-                            examDb?.let {
-                                (onlineExam.version ?: 0) > (it.version ?: 0)
-                            } ?: true
-                        }.forEach {
-                            it.downloaded = false
-                            roomDb.examSimulation().insert(it)
-                        }
-                    }
-                    if (it.isNullOrEmpty()) {
-                        toast("服务器没有更新数据")
+            RemoteAPIDataService.apis.getExams().onErrorReturn {
+                mutableListOf<ExamSimulation>()
+            }.subscribe {
+                var updatedOnlineExams = it?.let {
+                    it.filter { onlineExam ->
+                        var examDb = roomDb.examSimulation().getById(onlineExam.id)
+                        examDb?.let {
+                            (onlineExam.version ?: 0) > (it.version ?: 0)
+                        } ?: true
+                    }.map {
+                        it.downloaded = false
+                        roomDb.examSimulation().insert(it)
+                        it
                     }
                 }
+
+                if (updatedOnlineExams.isNullOrEmpty()) {
+                    ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
+                } else {
+                    loadExams()
+                    ActivityUtils.showToastFromThread(mContext, "数据更新完成")
+                }
+
+            }
         }
 
+
+    }
+
+    private fun loadExams() {
         if (recycler_view_test_papers.adapter != null) {
             var province: String? = spin_test_province.selectedItem as String
             var grade: String? = spin_test_grade.selectedItem as String
@@ -293,10 +317,10 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
             if (province == "全国") {
                 province = null
             }
-            if (grade == "全部") {
+            if (grade == "所有年级") {
                 grade = null
             }
-            if (type == "所有") {
+            if (type == "全部测试") {
                 type = null
             }
 

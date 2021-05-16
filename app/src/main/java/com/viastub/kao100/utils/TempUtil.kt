@@ -71,7 +71,8 @@ class TempUtil {
             )
             reader.readLines().mapIndexed { index, line ->
                 var eles = line.split("|")
-                if (eles.size == 5) {
+                //skip header
+                if (index > 0 && eles.size >= 5) {
                     words.add(TeachingBookWord(index, eles[1], eles[0], eles[2], eles[3], eles[4]))
                 }
             }

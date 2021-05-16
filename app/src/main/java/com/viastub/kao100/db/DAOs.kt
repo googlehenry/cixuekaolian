@@ -139,6 +139,9 @@ interface PracticeTargetDao {
 
     @Delete
     fun delete(item: PracticeTarget)
+
+    @Query("DELETE FROM PracticeTarget")
+    fun deleteAll()
 }
 
 
@@ -186,6 +189,9 @@ interface ExamSimulationDao {
 
     @Delete
     fun delete(item: ExamSimulation)
+
+    @Query("DELETE FROM ExamSimulation")
+    fun deleteAll()
 }
 
 
@@ -205,6 +211,9 @@ interface TeachingBookDao {
 
     @Delete
     fun delete(item: TeachingBook)
+
+    @Query("DELETE FROM TeachingBook")
+    fun deleteAll()
 }
 
 

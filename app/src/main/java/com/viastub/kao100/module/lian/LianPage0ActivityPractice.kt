@@ -2,7 +2,6 @@ package com.viastub.kao100.module.lian
 
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.CountDownTimer
@@ -275,14 +274,14 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         missing: Int,
         rate: Int
     ) {
-        var intent = Intent(this, LianPageScorePageActivityPractice::class.java)
-        intent.putExtra("scoreEarned", scoreEarned)
-        intent.putExtra("rate", rate)
-
-        intent.putExtra("right", right)
-        intent.putExtra("wrong", wrong)
-        intent.putExtra("missing", missing)
-        startActivity(intent)
+//        var intent = Intent(this, LianPageScorePageActivityPractice::class.java)
+//        intent.putExtra("scoreEarned", scoreEarned)
+//        intent.putExtra("rate", rate)
+//
+//        intent.putExtra("right", right)
+//        intent.putExtra("wrong", wrong)
+//        intent.putExtra("missing", missing)
+//        startActivity(intent)
     }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int, template: PracticeTemplate) {

@@ -6,13 +6,13 @@
         android:icon="@drawable/ic_menu_favorite"
         android:title="单词本" />
     <item
-        android:id="@+id/nav_mycollect"
-        android:icon="@drawable/ic_drawer_menu_notebook"
-        android:title="笔记本" />
-    <item
         android:id="@+id/nav_mypracticehistory"
         android:icon="@drawable/ic_drawer_menu_errorbook"
         android:title="错题本" />
+    <item
+        android:id="@+id/nav_mycollect"
+        android:icon="@drawable/ic_drawer_menu_notebook"
+        android:title="笔记本" />
 
     <item android:title="账号设置 ">
         <menu>
@@ -31,8 +31,20 @@
         <menu>
             <item
                 android:id="@+id/nav_db_cleanHistory"
-                android:icon="@drawable/ic_menu_info"
-                android:title="删除历史记录" />
+                android:icon="@drawable/ic_menu_delete"
+                android:title="删除我的历史" />
+            <item
+                android:id="@+id/nav_db_cleanExams"
+                android:icon="@drawable/ic_menu_delete"
+                android:title="删除考试" />
+            <item
+                android:id="@+id/nav_db_cleanPractices"
+                android:icon="@drawable/ic_menu_delete"
+                android:title="删除练习" />
+            <item
+                android:id="@+id/nav_db_cleanTextBooks"
+                android:icon="@drawable/ic_menu_delete"
+                android:title="删除教材" />
             <item
                 android:id="@+id/nav_vpn_manage"
                 android:icon="@drawable/ic_menu_info"

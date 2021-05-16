@@ -2,6 +2,8 @@ package com.viastub.kao100.utils
 
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
+import android.widget.Toast
 import com.viastub.kao100.module.ci.CiPage0Activity
 
 class ActivityUtils {
@@ -18,6 +20,12 @@ class ActivityUtils {
             context.startActivity(
                 intent
             )
+        }
+
+        fun showToastFromThread(mContext: Context, message: String) {
+            Looper.prepare()
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+            Looper.loop()
         }
 
     }

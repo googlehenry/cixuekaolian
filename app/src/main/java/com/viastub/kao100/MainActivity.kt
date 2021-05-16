@@ -112,6 +112,24 @@ class MainActivity : BaseActivity() {
                         roomDB.myQuestionAction().deleteAll()
                     }
                 }
+                R.id.nav_db_cleanExams -> {
+                    doAsync {
+                        var roomDB = RoomDB.get(applicationContext)
+                        roomDB.examSimulation().deleteAll()
+                    }
+                }
+                R.id.nav_db_cleanPractices -> {
+                    doAsync {
+                        var roomDB = RoomDB.get(applicationContext)
+                        roomDB.practiceTarget().deleteAll()
+                    }
+                }
+                R.id.nav_db_cleanTextBooks -> {
+                    doAsync {
+                        var roomDB = RoomDB.get(applicationContext)
+                        roomDB.teachingBook().deleteAll()
+                    }
+                }
 
             }
 
