@@ -115,18 +115,46 @@ class MainActivity : BaseActivity() {
                 R.id.nav_db_cleanExams -> {
                     doAsync {
                         var roomDB = RoomDB.get(applicationContext)
+                        roomDB.examSimulation().getAll()?.forEach {
+                            it.practiceSections()?.let {
+                                roomDB.practiceSection().getByIds(it)?.forEach {
+                                    roomDB.practiceSection().delete(it)
+                                }
+                            }
+                        }
+
                         roomDB.examSimulation().deleteAll()
                     }
                 }
                 R.id.nav_db_cleanPractices -> {
                     doAsync {
                         var roomDB = RoomDB.get(applicationContext)
+                        roomDB.practiceTarget().getAll()?.forEach {
+                            it.bookIds()?.forEach {
+                                var book = roomDB.practiceBook().getById(it)
+                                book?.unitSectionIds()?.let {
+                                    var units = roomDB.teachingBookUnitSection().getByIds(it)
+                                    units?.forEach { roomDB.teachingBookUnitSection().delete(it) }
+                                }
+                                book?.let {
+                                    roomDB.practiceBook().delete(it)
+                                }
+                            }
+                        }
+
                         roomDB.practiceTarget().deleteAll()
                     }
                 }
                 R.id.nav_db_cleanTextBooks -> {
                     doAsync {
                         var roomDB = RoomDB.get(applicationContext)
+                        roomDB.teachingBook().getAll()?.forEach {
+                            it.unitIds()?.let {
+                                var units = roomDB.teachingBookUnitSection().getByIds(it)
+                                units?.forEach { roomDB.teachingBookUnitSection().delete(it) }
+                            }
+                        }
+
                         roomDB.teachingBook().deleteAll()
                     }
                 }

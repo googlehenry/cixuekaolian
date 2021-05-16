@@ -76,12 +76,15 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             var adapter = ExcerciseTargetsAdapter(this)
             adapter.data = it
             recycler_view_lian_targets.adapter = adapter
-//            it.firstOrNull()?.let {
-//                loadBooksOfTarget(it)
-//            }
 
         }
 
+        if (targets.isNullOrEmpty() && recycler_view_excercise_nav_groups.adapter != null) {
+            var booksAdapter =
+                (recycler_view_excercise_nav_groups.adapter as ExcerciseByBookAdapter)
+            booksAdapter.data.clear()
+            booksAdapter.notifyDataSetChanged()
+        }
     }
 
     var lastSelectedItem: CardView? = null
