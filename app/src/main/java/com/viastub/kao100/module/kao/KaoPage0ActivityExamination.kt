@@ -21,7 +21,6 @@ import com.viastub.kao100.adapter.LianItemQuestionAdapter
 import com.viastub.kao100.adapter.QuestionActionListener
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.KaoContext
-import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.wigets.TextViewSelectionCallback
@@ -280,7 +279,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                             when (question.type) {
                                 QuestionType.FILL.name -> {
                                     question.usersAnswers?.get(option.id)?.let {
-                                        option.correctAnswersSplitByPipes == it
+                                        option.correctAnswers()?.contains(it)
                                     }
                                 }
                                 QuestionType.SELECT.name -> {
@@ -341,45 +340,45 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         doAsync {
             var roomDB = RoomDB.get(applicationContext)
-            if (VariablesKao.kaoContext?.type == KaoType.ExamSimulation) {
 
-                roomDB.myExamSimuHistory().insert(
-                    MyExamSimuHistory(
-                        VariablesKao.currentUserId,
-                        VariablesKao.kaoContext!!.typedEntityId,
-                        myScores = scoreEarned,
-                        myTotalCorrects = right,
-                        myTotalMissing = missing,
-                        myTotalWrongs = wrong
-                    )
+            roomDB.myExamSimuHistory().insert(
+                MyExamSimuHistory(
+                    VariablesKao.currentUserId,
+                    VariablesKao.kaoContext!!.typedEntityId,
+                    myScores = scoreEarned,
+                    myTotalCorrects = right,
+                    myTotalMissing = missing,
+                    myTotalWrongs = wrong
                 )
+            )
 
-                var answeredHistories =
-                    checkedTemplates.flatMap { tempLat ->
-                        tempLat.questionsDb?.map {
+            var answeredHistories =
+                checkedTemplates.flatMap { tempLat ->
+                    tempLat.questionsDb?.map {
 
-                            var questionHistoryRecord = roomDB.myQuestionAnsweredHistory()
-                                .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
-                                ?: MyQuestionAnsweredHistory(
-                                    userId = VariablesKao.currentUserId,
-                                    practiceQuestionId = it.id!!,
-                                    answerIsCorrect = it.checkAnswerResultCorrect,
-                                    practiceTemplateId = tempLat.id
-                                ).setMyAnswersJson(it.usersAnswers)
+                        var questionHistoryRecord = roomDB.myQuestionAnsweredHistory()
+                            .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
+                            ?: MyQuestionAnsweredHistory(
+                                userId = VariablesKao.currentUserId,
+                                practiceQuestionId = it.id!!,
+                                practiceTemplateId = tempLat.id
+                            )
 
-                            when (it.checkAnswerResultCorrect) {
-                                null -> questionHistoryRecord.skippedAttemptNo += 1
-                                true -> questionHistoryRecord.correctAttemptNo += 1
-                                false -> questionHistoryRecord.wrongAttemptNo += 1
-                            }
-                            questionHistoryRecord
-                        } ?: mutableListOf()
-                    }.toMutableList()
+                        questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
+                        questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
 
-                answeredHistories?.let {
-                    RoomDB.get(applicationContext).myQuestionAnsweredHistory()
-                        .insertAll(it)
-                }
+                        when (it.checkAnswerResultCorrect) {
+                            null -> questionHistoryRecord.skippedAttemptNo += 1
+                            true -> questionHistoryRecord.correctAttemptNo += 1
+                            false -> questionHistoryRecord.wrongAttemptNo += 1
+                        }
+                        questionHistoryRecord
+                    } ?: mutableListOf()
+                }.toMutableList()
+
+            answeredHistories?.let {
+                RoomDB.get(applicationContext).myQuestionAnsweredHistory()
+                    .insertAll(it)
             }
         }
 

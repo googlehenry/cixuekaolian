@@ -37,7 +37,7 @@ class LianQuestionAnswerAdapter(
             answerInput.isEnabled = false
             question.usersAnswers?.get(item.id)?.let {
                 var correct: Boolean =
-                    item.correctAnswersSplitByPipes?.let { ans -> (ans == it) } ?: false
+                    item.correctAnswers()?.let { ans -> (ans.contains(it)) } ?: false
                 answerInput.setText(it.toCharArray(), 0, it.length)
                 if (correct) {
                     indicator.visibility = View.VISIBLE

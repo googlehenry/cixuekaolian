@@ -538,7 +538,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                         when (question.type) {
                             QuestionType.FILL.name -> {
                                 question.usersAnswers?.get(option.id)?.let {
-                                    option.correctAnswersSplitByPipes == it
+                                    option.correctAnswers()?.contains(it)
                                 }
                             }
                             QuestionType.SELECT.name -> {
@@ -596,9 +596,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     ?: MyQuestionAnsweredHistory(
                         userId = VariablesKao.currentUserId,
                         practiceQuestionId = it.id!!,
-                        answerIsCorrect = it.checkAnswerResultCorrect,
                         practiceTemplateId = template.id
-                    ).setMyAnswersJson(it.usersAnswers)
+                    )
+                questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
+                questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
 
                 when (it.checkAnswerResultCorrect) {
                     null -> questionHistoryRecord.skippedAttemptNo += 1

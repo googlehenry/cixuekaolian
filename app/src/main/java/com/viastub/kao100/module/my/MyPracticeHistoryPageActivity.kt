@@ -204,8 +204,8 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
                         }
 
                         matchedSize
-                    }.sum()
-
+                    }.sum(),
+                    it.value?.toMutableList()
                 )
             }.toMutableList()
         }
@@ -226,9 +226,8 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var categoryMap = v?.getTag(R.id.question_holder_root)?.let { it as CategoryMap }!!
 
-        var templates =
-            templateMap.values?.filter { it.category.equals(categoryMap.category, true) }
-                .toMutableList()
+        var templates = categoryMap.templates
+        templates.forEach { it.submitted = true }
         var dummySection = PracticeSection(-1, BrowseMode.SEQUENCE.name, categoryMap.category)
             .bindTemplatesDbToThis(templates)
 
@@ -245,7 +244,8 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
 data class CategoryMap(
     var category: String?,
     var countTemplates: Int = 0,
-    var countQuestions: Int = 0
+    var countQuestions: Int = 0,
+    var templates: MutableList<PracticeTemplate> = mutableListOf()
 )
 
 data class MyPracticeHistory(
