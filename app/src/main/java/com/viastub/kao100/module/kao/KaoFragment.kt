@@ -212,7 +212,6 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                             roomDb.examSimulation().insert(exam)
                             LogUtilKt.i("links:$links")
                             if (links.isNotEmpty()) {
-                                ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                                 val url =
                                     RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
                                 LogUtilKt.i("url:$url")
@@ -254,7 +253,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                             }
 
                                         })
-
+                                ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                             } else {
                                 openExam(exam)
                             }

@@ -170,7 +170,6 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
                         LogUtilKt.i("links:$links")
                         if (links.isNotEmpty()) {
-                            ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                             val url =
                                 RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
                             LogUtilKt.i("url:$url")
@@ -205,7 +204,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         }
 
                                     })
-
+                            ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
                             openUnit(unitSection, book)
                             ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
