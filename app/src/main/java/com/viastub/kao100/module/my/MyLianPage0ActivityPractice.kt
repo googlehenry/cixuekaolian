@@ -1,8 +1,7 @@
-package com.viastub.kao100.module.lian
+package com.viastub.kao100.module.my
 
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.CountDownTimer
@@ -32,7 +31,7 @@ import java.io.File
 import java.util.*
 
 
-class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
+class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     override fun id(): Int {
         return R.layout.activity_lian_item_page
@@ -83,7 +82,13 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 } else -1
 
             if (VariablesLian.currentTemplateIdIdx >= 0) {
-                loadCurrentQuestionTemplate()
+                //For My Question history
+                if (VariablesLian.lianContext!!.book.id == -1) {
+                    loadCurrentQuestionTemplate(loadReviewMode = true)
+                } else {
+                    //For xue module
+                    loadCurrentQuestionTemplate()
+                }
             }
         })
         floating_button_add.setOnClickListener {
@@ -275,14 +280,6 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         missing: Int,
         rate: Int
     ) {
-        var intent = Intent(this, LianPageScorePageActivityPractice::class.java)
-        intent.putExtra("scoreEarned", scoreEarned)
-        intent.putExtra("rate", rate)
-
-        intent.putExtra("right", right)
-        intent.putExtra("wrong", wrong)
-        intent.putExtra("missing", missing)
-        startActivity(intent)
     }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int, template: PracticeTemplate) {
@@ -361,14 +358,22 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     oldTemplate.countDownTimer?.cancel()
                     stopPlayer()
                     VariablesLian.currentTemplateIdIdx = toIndex
-                    loadCurrentQuestionTemplate()
+                    if (VariablesLian.lianContext!!.book.id == -1) {
+                        loadCurrentQuestionTemplate(loadReviewMode = true)
+                    } else {
+                        loadCurrentQuestionTemplate()
+                    }
                 }
             }
 
         } else {
             oldTemplate.countDownTimer?.cancel()
             stopPlayer()
-            loadCurrentQuestionTemplate()
+            if (VariablesLian.lianContext!!.book.id == -1) {
+                loadCurrentQuestionTemplate(loadReviewMode = true)
+            } else {
+                loadCurrentQuestionTemplate()
+            }
         }
     }
 
@@ -419,12 +424,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
     }
 
-    override fun onBackPressed() {
-        doGoBack()
-    }
-
     private fun doGoBack() {
-        super@LianPage0ActivityPractice.onBackPressed()
+        super@MyLianPage0ActivityPractice.onBackPressed()
         stopPlayer()
     }
 

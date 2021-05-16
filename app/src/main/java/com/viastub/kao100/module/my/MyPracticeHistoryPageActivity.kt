@@ -10,9 +10,9 @@ import com.viastub.kao100.adapter.CategoryMapAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.*
-import com.viastub.kao100.module.lian.LianPage0ActivityPractice
 import com.viastub.kao100.utils.QuestionSearchMode
 import com.viastub.kao100.utils.VariablesKao
+import com.viastub.kao100.utils.VariablesLian
 import com.viastub.kao100.utils.VariablesMy
 import kotlinx.android.synthetic.main.my_ci.header_back
 import kotlinx.android.synthetic.main.my_ci.recycler_view_high
@@ -231,12 +231,20 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
         var dummySection = PracticeSection(-1, BrowseMode.SEQUENCE.name, categoryMap.category)
             .bindTemplatesDbToThis(templates)
 
-        var intent = Intent(this, LianPage0ActivityPractice::class.java)
+        var intent = Intent(this, MyLianPage0ActivityPractice::class.java)
         var secs = arrayListOf<PracticeSection>(dummySection)
 
         intent.putExtra("context", LianContext(PracticeBook(-1, name = "我的习题"), secs))
 
         startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        VariablesLian.lianContext = null
+        VariablesLian.availableTemplatesMap.clear()
+        VariablesLian.availableTemplateIds.clear()
+        VariablesLian.currentTemplateIdIdx = -1
     }
 
 }
