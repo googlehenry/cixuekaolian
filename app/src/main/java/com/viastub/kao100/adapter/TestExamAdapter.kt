@@ -3,6 +3,7 @@ package com.viastub.kao100.adapter
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -29,11 +30,13 @@ class TestExamAdapter(var itemClickListener: View.OnClickListener) :
         var paperTitle =
             holder.getView<TextView>(R.id.test_paper_title)
         //(${if (!item.downloaded) "未下载" else "本地"})
+        var downloadedImg = holder.getView<ImageView>(R.id.test_paper_download)
         if (item.downloaded) {
-            paperTitle.setTextColor(Color.parseColor("#000000"))
+            downloadedImg.setImageResource(R.drawable.ic_icon_saved)
         } else {
-            paperTitle.setTextColor(Color.parseColor("#aaaaaa"))
+            downloadedImg.setImageResource(R.drawable.ic_floating_buttons_sync_from_server)
         }
+
         item.tags()?.let {
             var tagsHolder =
                 holder.getView<TagFlowLayout>(R.id.tag_flow_layout)

@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_ci"
-        android:icon="@drawable/ic_func_dictionary3"
+        android:icon="@drawable/tc_ci"
         android:title="@string/activity_main_content_bottom_menu_ci" />
 
     <item
         android:id="@+id/navigation_xue"
-        android:icon="@drawable/ic_func_textbook"
+        android:icon="@drawable/tc_xue"
         android:title="@string/activity_main_content_bottom_menu_xue" />
 
     <!--    <item-->
@@ -19,12 +19,12 @@
 
     <item
         android:id="@+id/navigation_lian"
-        android:icon="@drawable/ic_func_exam"
+        android:icon="@drawable/tc_lian"
         android:title="@string/activity_main_content_bottom_menu_lian" />
 
     <item
         android:id="@+id/navigation_kao"
-        android:icon="@drawable/ic_func_practice"
+        android:icon="@drawable/tc_kao"
         android:title="@string/activity_main_content_bottom_menu_kao" />
 
 

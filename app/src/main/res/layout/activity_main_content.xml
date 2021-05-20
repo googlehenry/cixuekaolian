@@ -24,15 +24,15 @@
             app:contentInsetStartWithNavigation="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <Button
+            <ImageView
                 android:id="@+id/header_action_refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="26dp"
+                android:clickable="true"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="2dp"
-                android:text="刷新数据"
-                android:textColor="#fff"
-                android:background="@drawable/selector_button_round_cornor_orange" />
+                android:layout_marginRight="5dp"
+                android:tooltipText="刷新列表"
+                android:src="@drawable/ic_icon_refresh" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -65,19 +65,5 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/floating_button_sync"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="right|bottom"-->
-    <!--        android:layout_marginRight="20dp"-->
-    <!--        android:layout_marginBottom="70dp"-->
-    <!--        android:src="@drawable/ic_floating_buttons_sync_from_server"-->
-    <!--        app:rippleColor="#ffe5e5e5"-->
-    <!--        app:backgroundTint="#ffffffff"-->
-    <!--        app:elevation="6dp"-->
-    <!--        app:pressedTranslationZ="6dp"-->
-    <!--        app:fabSize="mini"-->
-    <!--        app:borderWidth="0dp" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

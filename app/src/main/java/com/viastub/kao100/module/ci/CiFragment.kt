@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.knziha.plod.dictionary.mdict
 import com.viastub.kao100.R
@@ -62,7 +63,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun loadDictWithId(dictId: Int) {
-        doAsync(200, {
+        doAsync(0, {
             var roomDb = RoomDB.get(mContext)
             var dictDb = roomDb.dictionaryConfig().getById(dictId)
             dictDb?.let {
@@ -164,5 +165,6 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
     override fun refresh() {
         loadDictWithId(1)
+        Toast.makeText(mContext, "已刷新数据", Toast.LENGTH_SHORT).show()
     }
 }

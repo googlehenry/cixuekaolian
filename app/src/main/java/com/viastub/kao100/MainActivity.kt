@@ -82,6 +82,10 @@ class MainActivity : BaseActivity() {
 
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.
+
+            var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
+            var currentFragment = (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+
             when (it.itemId) {
                 R.id.nav_mywordhistory -> {
                     var intent = Intent(this, MyCiHistoryPageActivity::class.java)
@@ -113,7 +117,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.nav_db_cleanExams -> {
-                    doAsync {
+                    awaitAsync({
                         var roomDB = RoomDB.get(applicationContext)
                         roomDB.examSimulation().getAll()?.forEach {
                             it.practiceSections()?.let {
@@ -124,10 +128,13 @@ class MainActivity : BaseActivity() {
                         }
 
                         roomDB.examSimulation().deleteAll()
-                    }
+
+                    }, {
+                        currentFragment.onResume()
+                    })
                 }
                 R.id.nav_db_cleanPractices -> {
-                    doAsync {
+                    awaitAsync({
                         var roomDB = RoomDB.get(applicationContext)
                         roomDB.practiceTarget().getAll()?.forEach {
                             it.bookIds()?.forEach {
@@ -143,10 +150,12 @@ class MainActivity : BaseActivity() {
                         }
 
                         roomDB.practiceTarget().deleteAll()
-                    }
+                    }, {
+                        currentFragment.onResume()
+                    })
                 }
                 R.id.nav_db_cleanTextBooks -> {
-                    doAsync {
+                    awaitAsync({
                         var roomDB = RoomDB.get(applicationContext)
                         roomDB.teachingBook().getAll()?.forEach {
                             it.unitIds()?.let {
@@ -156,8 +165,11 @@ class MainActivity : BaseActivity() {
                         }
 
                         roomDB.teachingBook().deleteAll()
-                    }
+                    }, {
+                        currentFragment.onResume()
+                    })
                 }
+
 
             }
 
@@ -182,10 +194,10 @@ class MainActivity : BaseActivity() {
                 bottom_navigation.menu.getItem(position).isChecked = true
                 //设置checked为true，但是不能触发ItemSelected事件，所以滑动时也要设置一下标题
                 when (position) {
-                    0 -> toolbar.title = "词汇巩固"
-                    1 -> toolbar.title = "教材复习"
-                    2 -> toolbar.title = "练习刷题"
-                    3 -> toolbar.title = "考试模拟"
+                    0 -> toolbar.title = "词典"
+                    1 -> toolbar.title = "教材学习"
+                    2 -> toolbar.title = "配套刷题"
+                    3 -> toolbar.title = "试卷真题"
                     else -> toolbar.title = "词学练考100分"
                 }
             }

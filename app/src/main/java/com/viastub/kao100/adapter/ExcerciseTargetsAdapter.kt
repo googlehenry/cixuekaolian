@@ -8,7 +8,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
 import com.viastub.kao100.db.PracticeTarget
 
-class ExcerciseTargetsAdapter(var itemClickListener: View.OnClickListener) :
+class ExcerciseTargetsAdapter(
+    var itemClickListener: View.OnClickListener,
+    var selectedTargetId: Int
+) :
     BaseQuickAdapter<PracticeTarget, BaseViewHolder>(R.layout.fragment_lian_target_item),
     LoadMoreModule {
 
@@ -23,7 +26,7 @@ class ExcerciseTargetsAdapter(var itemClickListener: View.OnClickListener) :
             itemClickListener.onClick(it)
         }
 
-        if (item.id == 1) {
+        if (item.id == selectedTargetId) {
             bookItemHolder.performClick()
 //            bookItemHolder?.setBackgroundResource(R.drawable.shape_button_all_rounded_white)
 //            bookItemHolder?.findViewById<TextView>(R.id.nav_target_name)

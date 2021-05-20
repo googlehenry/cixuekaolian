@@ -1,6 +1,5 @@
 package com.viastub.kao100.module.lian
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.view.View
@@ -82,25 +81,7 @@ class LianBookUnitSummaryActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-
-
-        var submittedCurrent = true
-        if (VariablesLian.currentTemplateIdIdx >= 0) {
-            submittedCurrent =
-                VariablesLian.availableTemplatesMap[VariablesLian.availableTemplateIds[VariablesLian.currentTemplateIdIdx]]?.submitted == true
-        }
-        if (submittedCurrent) {
-            doGoBack()
-        } else {
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-            dialog.setTitle("未提交答案不会保存,退出练习吗?")
-            dialog.setPositiveButton("退出") { dialog, which ->
-                doGoBack()
-            }
-            dialog.setNegativeButton("不退出") { dialog, which -> dialog?.dismiss() }
-            dialog.show()
-        }
-
+        doGoBack()
     }
 
     private fun doGoBack() {

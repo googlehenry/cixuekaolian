@@ -1,5 +1,6 @@
 package com.viastub.kao100.adapter
 
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -24,6 +25,14 @@ class ExcerciseByUnitAdapter(
 
         val max = (item?.practiceTemplateIds()?.size ?: 0)
         val done = (item.mySectionPracticeHistory?.myFinishedTemplateIds()?.size ?: 0)
+
+        //book_unit_download
+        var downloadedImg = holder.getView<ImageView>(R.id.book_unit_download)
+        if (item.downloaded) {
+            downloadedImg.setImageResource(R.drawable.ic_icon_saved)
+        } else {
+            downloadedImg.setImageResource(R.drawable.ic_floating_buttons_sync_from_server)
+        }
 
         unitDone.text = "$done"
         unitTotal.text = "/${max}"

@@ -20,6 +20,13 @@ class BookItemAdapter(var itemClickListener: View.OnClickListener) :
 
         var coverImg = holder.getView<ImageView>(R.id.book_cover_image)
         item.coverImage()?.let { coverImg.setImageURI(Uri.fromFile(it)) }
+        //textbook_download
+        var downloadedImg = holder.getView<ImageView>(R.id.textbook_download)
+        if (item.downloaded) {
+            downloadedImg.setImageResource(R.drawable.ic_icon_saved)
+        } else {
+            downloadedImg.setImageResource(R.drawable.ic_floating_buttons_sync_from_server)
+        }
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.book_item_holder)
         bookItemHolder.setTag(R.id.book_item_holder, item)

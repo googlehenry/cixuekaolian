@@ -1,11 +1,13 @@
 package com.viastub.kao100.module.lian
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,13 +41,14 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         loadTargets()
     }
 
-    private fun loadTargets() {
+    var currentTargetId: Int? = null
+    private fun loadTargets(selectedTargetId: Int = 1) {
         doAsync(0, {
             val roomDB: RoomDB = RoomDB.get(applicationContext = mContext)
             roomDB.practiceTarget().getAll()?.toMutableList()
         },
             {
-                updateUI(it)
+                updateUI(it, selectedTargetId)
             })
     }
 
@@ -71,9 +74,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         target.bindBooksDBToThis(books = books)
     }
 
-    private fun updateUI(targets: MutableList<PracticeTarget>?) {
+    private fun updateUI(targets: MutableList<PracticeTarget>?, selectedTargetId: Int = 0) {
         targets?.let {
-            var adapter = ExcerciseTargetsAdapter(this)
+            var adapter = ExcerciseTargetsAdapter(this, selectedTargetId)
             adapter.data = it
             recycler_view_lian_targets.adapter = adapter
 
@@ -103,12 +106,12 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             v?.findViewById<TextView>(R.id.nav_target_name)
                 ?.setTextColor(Color.parseColor("#000000"))
             lastSelectedItem = v as CardView
-        } else {
-            toast("没有更多内容了")
         }
     }
 
     private fun loadBooksOfTarget(target: PracticeTarget) {
+        currentTargetId = target.id
+
         doAsync(0, {
             loadBooksFromDB(target, RoomDB.get(applicationContext = mContext))
         }, {
@@ -124,7 +127,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                     }
 
                 }, this, target)
-                it.sortBy { it.id }
+                it.sortBy { it.displaySeq ?: 0 }
                 it.mapIndexed { index, practiceBook ->
                     practiceBook.displaySeq = index + 1
                 }
@@ -138,10 +141,22 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
     }
 
+    var downloadingId: Int? = null
     override fun start(book: PracticeBook, unitSection: PracticeSection) {
-
-
+        if (downloadingId != null) {
+            Toast.makeText(mContext, "正在下载...", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (!unitSection.downloaded) {
+
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+            dialogBuilder.setTitle("正在下载")
+            dialogBuilder.setCancelable(false)
+            dialogBuilder.setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            val dialog = dialogBuilder.show()
+
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
 
@@ -171,8 +186,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }
                         roomDb.practiceSection().insert(section)
 
+                        dialog.dismiss()
                         LogUtilKt.i("links:$links")
                         if (links.isNotEmpty()) {
+                            downloadingId = unitSection.id
                             val url =
                                 RemoteAPIDataService.BASE_URL + "client/section/${section.id}/files"
                             LogUtilKt.i("url:$url")
@@ -181,12 +198,13 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                     object : DownloadUtil.OnDownloadListener {
                                         override fun onDownloadSuccess() {
                                             //Mark download completed
+                                            downloadingId = null
                                             unitSection.downloaded = true
                                             roomDb.practiceSection().insert(unitSection)
                                             main_downloading_progress.max = 100
                                             main_downloading_progress.secondaryProgress = 0
+                                            loadTargets(currentTargetId ?: 1)
                                             openUnit(unitSection, book)
-                                            refresh()
                                             ActivityUtils.showToastFromThread(mContext, "数据下载完成")
                                         }
 
@@ -201,6 +219,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         }
 
                                         override fun onDownloadFailed() {
+                                            downloadingId = null
+                                            unitSection.downloaded = false
+                                            unitSection.version -= 1
+                                            roomDb.practiceSection().insert(unitSection)
                                             main_downloading_progress.max = 100
                                             main_downloading_progress.secondaryProgress = 0
                                             ActivityUtils.showToastFromThread(mContext, "数据下载失败")
@@ -209,8 +231,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                     })
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
+                            loadTargets()
                             openUnit(unitSection, book)
-                            ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
+                            ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                         }
 
                     }
@@ -231,7 +254,14 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
     }
 
     override fun refresh() {
-        loadTargets()
+        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+        dialogBuilder.setTitle("正在刷新列表")
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.show()
+
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
             RemoteAPIDataService.apis.getTargets().onErrorReturn {
@@ -296,8 +326,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }
                     }
 
+                    dialog.dismiss()
                     //download book covers file
                     if (links.isNotEmpty()) {
+                        downloadingId = 1
                         val url =
                             RemoteAPIDataService.BASE_URL + "client/targets/bookCovers"
                         LogUtilKt.i("url:$url")
@@ -307,6 +339,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                     override fun onDownloadSuccess() {
                                         //Mark download completed
                                         LogUtilKt.i("Download book covers done")
+                                        downloadingId = null
                                         loadTargets()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -325,6 +358,14 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
                                     override fun onDownloadFailed() {
                                         LogUtilKt.i("Download book covers failed")
+                                        downloadingId = null
+                                        roomDb.practiceTarget().getAll()?.forEach { target ->
+                                            target.version?.let {
+                                                target.version -= 1
+                                                roomDb.practiceTarget().insert(target)
+                                            }
+                                        }
+
                                         loadTargets()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -336,7 +377,8 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                     }
 
                     if (updatedOnlineBooks.isNullOrEmpty() && updatedOnlineTargets.isNullOrEmpty() && updatedOnlineUnits.isNullOrEmpty()) {
-                        ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
+                        loadTargets()
+                        ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
                         if (links.isNotEmpty()) {
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
@@ -348,6 +390,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                 }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadTargets(currentTargetId ?: 1)
     }
 
 }

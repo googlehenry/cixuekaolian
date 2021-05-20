@@ -117,7 +117,6 @@
                     android:clickable="true"
                     android:contentDescription="发音"
                     android:src="@drawable/selector_button_speak_icon" />
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -130,10 +129,8 @@
                         android:layout_height="32dp"
                         android:layout_gravity="center_horizontal"
                         android:clickable="true"
-                        android:contentDescription="自动播放"
-                        android:src="@drawable/ci_word_timer_off" />
+                        android:src="@drawable/ic_icon_play_dark" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

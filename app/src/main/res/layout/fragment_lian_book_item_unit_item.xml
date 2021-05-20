@@ -38,6 +38,12 @@
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintStart_toEndOf="@id/start_excercise"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/book_unit_download"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/ic_floating_buttons_sync_from_server" />
         </LinearLayout>
 
         <LinearLayout

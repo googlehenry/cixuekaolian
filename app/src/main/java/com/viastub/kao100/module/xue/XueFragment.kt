@@ -1,8 +1,10 @@
 package com.viastub.kao100.module.xue
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.BookItemAdapter
@@ -42,9 +44,22 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         })
     }
 
+    var downloadingId: Int? = null
     override fun onClick(v: View?) {
+        if (downloadingId != null) {
+            Toast.makeText(mContext, "正在下载...", Toast.LENGTH_SHORT).show()
+            return
+        }
         var bookDb: TeachingBook = v?.getTag(R.id.book_item_holder)?.let { it as TeachingBook }!!
         if (!bookDb.downloaded) {
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+            dialogBuilder.setTitle("正在下载")
+            dialogBuilder.setCancelable(false)
+            dialogBuilder.setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            val dialog = dialogBuilder.show()
+
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
 
@@ -113,24 +128,27 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                 roomDb.teachingBookUnitSection().insert(onlineUnit)
                             }
 
-
-
+                            dialog.dismiss()
                             LogUtilKt.i("links:$links")
                             if (links.isNotEmpty()) {
+                                downloadingId = bookDb.id
+
                                 val url =
                                     RemoteAPIDataService.BASE_URL + "client/book/${bookDb.id}/files"
                                 LogUtilKt.i("url:$url")
                                 DownloadUtil.get()
-                                    .downloadToDataFolder(url,
+                                    .downloadToDataFolder(
+                                        url,
                                         object : DownloadUtil.OnDownloadListener {
                                             override fun onDownloadSuccess() {
                                                 //Mark download completed
+                                                downloadingId = null
                                                 bookDb.downloaded = true
                                                 roomDb.teachingBook().insert(bookDb)
                                                 main_downloading_progress.max = 100
                                                 main_downloading_progress.secondaryProgress = 0
+                                                loadBooks()
                                                 openBook(bookDb)
-                                                refresh()
                                                 ActivityUtils.showToastFromThread(
                                                     mContext,
                                                     "数据下载完成"
@@ -149,6 +167,10 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                             }
 
                                             override fun onDownloadFailed() {
+                                                downloadingId = null
+                                                bookDb.downloaded = false
+                                                bookDb.version -= 1
+                                                roomDb.teachingBook().insert(bookDb)
                                                 main_downloading_progress.max = 100
                                                 main_downloading_progress.secondaryProgress = 0
                                                 ActivityUtils.showToastFromThread(
@@ -162,6 +184,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                             } else {
                                 bookDb.downloaded = true
                                 roomDb.teachingBook().insert(bookDb)
+                                loadBooks()
                                 openBook(bookDb)
                                 ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                             }
@@ -173,7 +196,6 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
         } else {
             openBook(bookDb)
-
         }
     }
 
@@ -186,7 +208,14 @@ class XueFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun refresh() {
-        loadBooks()
+        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+        dialogBuilder.setTitle("正在刷新列表")
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.show()
+
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
             RemoteAPIDataService.apis.getBooks().onErrorReturn {
@@ -216,8 +245,9 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                         }
                     }
 
-
+                    dialog.dismiss()
                     if (links.isNotEmpty()) {
+                        downloadingId = 1
                         val url =
                             RemoteAPIDataService.BASE_URL + "client/books/covers"
                         LogUtilKt.i("url:$url")
@@ -227,6 +257,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                     override fun onDownloadSuccess() {
                                         //Mark download completed
                                         LogUtilKt.i("Download book covers done")
+                                        downloadingId = null
                                         loadBooks()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -245,7 +276,19 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                     }
 
                                     override fun onDownloadFailed() {
+
                                         LogUtilKt.i("Download book covers failed")
+                                        downloadingId = null
+                                        var booksDb = roomDb.teachingBook().getAll()?.map { book ->
+                                            book.version?.let {
+                                                book.version -= 1
+                                            }
+                                            book
+                                        }
+                                        booksDb?.let {
+                                            roomDb.teachingBook().insert(it.toMutableList())
+                                        }
+
                                         loadBooks()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -257,7 +300,8 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                     }
 
                     if (onlineUpdatedBooks.isNullOrEmpty()) {
-                        ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
+                        loadBooks()
+                        ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
                         if (links.isNotEmpty()) {
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
@@ -271,6 +315,11 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadBooks()
     }
 
 }

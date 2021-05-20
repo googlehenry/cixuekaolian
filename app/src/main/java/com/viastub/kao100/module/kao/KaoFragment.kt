@@ -1,8 +1,10 @@
 package com.viastub.kao100.module.kao
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestExamAdapter
@@ -174,11 +176,25 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
     }
 
+    var downloadingId: Int? = null
     override fun onClick(v: View?) {
         v?.let {
-            var examUI = it.getTag(R.id.paper_holder) as ExamSimulation
+            if (downloadingId != null) {
+                Toast.makeText(mContext, "正在下载...", Toast.LENGTH_SHORT).show()
+                return
+            }
 
+            var examUI = it.getTag(R.id.paper_holder) as ExamSimulation
             if (!examUI.downloaded) {
+                downloadingId = examUI.id
+                val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+                dialogBuilder.setTitle("正在下载数据")
+                dialogBuilder.setCancelable(false)
+                dialogBuilder.setPositiveButton("OK") { dialog, which ->
+                    dialog.dismiss()
+                }
+                val dialog = dialogBuilder.show()
+
                 doAsync(0, {
                     var roomDb = RoomDB.get(mContext)
 
@@ -211,6 +227,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                             }
                             roomDb.examSimulation().insert(exam)
                             LogUtilKt.i("links:$links")
+                            dialog.dismiss()
                             if (links.isNotEmpty()) {
                                 val url =
                                     RemoteAPIDataService.BASE_URL + "client/exam/${exam.id}/files"
@@ -220,12 +237,13 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                         object : DownloadUtil.OnDownloadListener {
                                             override fun onDownloadSuccess() {
                                                 //Mark download completed
+                                                downloadingId = null
                                                 exam.downloaded = true
                                                 roomDb.examSimulation().insert(exam)
                                                 main_downloading_progress.max = 100
                                                 main_downloading_progress.secondaryProgress = 0
                                                 openExam(exam)
-                                                refresh()
+                                                this@KaoFragment.loadExams()
                                                 ActivityUtils.showToastFromThread(
                                                     mContext,
                                                     "数据下载完成"
@@ -244,6 +262,10 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                             }
 
                                             override fun onDownloadFailed() {
+                                                downloadingId = null
+                                                exam.downloaded = false
+                                                exam.version -= 1
+                                                roomDb.examSimulation().insert(exam)
                                                 main_downloading_progress.max = 100
                                                 main_downloading_progress.secondaryProgress = 0
                                                 ActivityUtils.showToastFromThread(
@@ -275,7 +297,13 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun refresh() {
-        loadExams()
+        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+        dialogBuilder.setTitle("正在刷新列表")
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.show()
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
             RemoteAPIDataService.apis.getExams().onErrorReturn {
@@ -293,14 +321,13 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                         it
                     }
                 }
-
+                dialog.dismiss()
+                loadExams()
                 if (updatedOnlineExams.isNullOrEmpty()) {
-                    ActivityUtils.showToastFromThread(mContext, "服务器没有更新数据")
-                } else {
-                    loadExams()
                     ActivityUtils.showToastFromThread(mContext, "数据更新完成")
+                } else {
+                    ActivityUtils.showToastFromThread(mContext, "列表更新完成")
                 }
-
             }
         }
 
@@ -325,6 +352,11 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
             filterTestPapers(province, type, grade)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadExams()
     }
 
 }

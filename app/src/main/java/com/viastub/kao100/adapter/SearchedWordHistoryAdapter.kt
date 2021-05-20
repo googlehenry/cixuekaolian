@@ -28,6 +28,7 @@ class SearchedWordHistoryAdapter(var itemClickListener: View.OnClickListener) :
 
         var searchItemHolder = holder.getView<LinearLayout>(R.id.searched_word_item_holder_root)
         searchItemHolder.setTag(R.id.searched_word_item_holder_root, item)
+
         searchItemHolder.setOnClickListener(null)
         searchItemHolder.setOnTouchListener { view: View, motionEvent: MotionEvent ->
             when (motionEvent.action) {

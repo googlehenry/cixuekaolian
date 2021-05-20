@@ -62,6 +62,7 @@ class DownloadUtil private constructor() {
                             // 下载完成
                             listener.onDownloadSuccess()
                         } catch (e: Exception) {
+                            LogUtilKt.e(e.message ?: "unknown exception when downloading...")
                             listener.onDownloadFailed()
                         } finally {
                             try {

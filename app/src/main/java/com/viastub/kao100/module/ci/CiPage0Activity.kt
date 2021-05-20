@@ -100,7 +100,6 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         }
 
         action_autoNext.setOnClickListener {
-            Toast.makeText(this, "切换模式", Toast.LENGTH_SHORT).show()
 
 //            CoroutineScope(Dispatchers.IO).launch {
 
@@ -111,8 +110,8 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
 
                         header_status.text =
                             "自动模式[${VariablesCi.ciContext?.dictConfig?.autoNextIntervalSeconds}s]"
-                        action_autoNext.setImageResource(R.drawable.ci_word_timer_on)
-
+                        action_autoNext.setImageResource(R.drawable.ic_icon_pause)
+                        Toast.makeText(this, "自动模式", Toast.LENGTH_SHORT).show()
 
                         val interval =
                             VariablesCi.ciContext!!.dictConfig!!.autoNextIntervalSeconds * 1000.toLong()
@@ -142,7 +141,8 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                 VariablesCi.autoTimer?.cancel()
                 VariablesCi.autoTimer = null
                 header_status.text = "手动模式"
-                action_autoNext.setImageResource(R.drawable.ci_word_timer_off)
+                action_autoNext.setImageResource(R.drawable.ic_icon_play_dark)
+                Toast.makeText(this, "手动模式", Toast.LENGTH_SHORT).show()
             }
 
 //            }
