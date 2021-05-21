@@ -27,24 +27,12 @@
         </menu>
     </item>
 
-    <item android:title="数据管理">
+    <item android:title="后台管理">
         <menu>
             <item
-                android:id="@+id/nav_db_cleanHistory"
+                android:id="@+id/nav_db_management"
                 android:icon="@drawable/ic_menu_delete"
-                android:title="删除我的历史" />
-            <item
-                android:id="@+id/nav_db_cleanExams"
-                android:icon="@drawable/ic_menu_delete"
-                android:title="删除考试" />
-            <item
-                android:id="@+id/nav_db_cleanPractices"
-                android:icon="@drawable/ic_menu_delete"
-                android:title="删除练习" />
-            <item
-                android:id="@+id/nav_db_cleanTextBooks"
-                android:icon="@drawable/ic_menu_delete"
-                android:title="删除教材" />
+                android:title="清除数据?" />
             <item
                 android:id="@+id/nav_vpn_manage"
                 android:icon="@drawable/ic_menu_info"

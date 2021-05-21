@@ -28,4 +28,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/fragment_xue_book_item" />
 
+    <TextView
+        android:id="@+id/what_if_no_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:text="没有内容怎么办?\n选择年级>点击刷新..." />
+
 </LinearLayout>

@@ -643,8 +643,8 @@ data class GlobalConfigKaoFiltersType(
     @ColumnInfo
     var description: String? = null
 ) {
-    fun grades(): MutableList<String> {
-        return grades.split(",").toMutableList()
+    fun grades(): MutableList<String>? {
+        return grades.split(",").filter { it.isNotBlank() }.toMutableList()
     }
 }
 

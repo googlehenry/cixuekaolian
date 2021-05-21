@@ -21,6 +21,9 @@ import com.viastub.kao100.utils.Constants
 import com.viastub.kao100.utils.VariablesKao
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_kao.*
+import kotlinx.android.synthetic.main.fragment_kao.main_downloading_progress
+import kotlinx.android.synthetic.main.fragment_kao.what_if_no_content
+import kotlinx.android.synthetic.main.fragment_lian.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,7 +63,7 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
                         var gradeModels = typeDB?.grades()?.mapIndexed { gradeIdx, gradeDbName ->
                             Grade(gradeIdx + 1, gradeDbName)
-                        }.toMutableList()
+                        }?.toMutableList()
 
                         TestType(typeDB.id, typeDB.type, gradeModels)
                     }.toMutableList()
@@ -85,7 +88,13 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
         adapter.data = exams ?: mutableListOf()
         recycler_view_test_papers.adapter = adapter
         recycler_view_test_papers.adapter!!.notifyDataSetChanged()
-        LogUtilKt.i("data:${exams?.size}")
+
+        if (exams.isNullOrEmpty()) {
+            what_if_no_content.visibility = View.VISIBLE
+        } else {
+            what_if_no_content.visibility = View.GONE
+        }
+
     }
 
     fun applyToUi(provinces: MutableList<Province>) {

@@ -40,7 +40,7 @@ class TestExamAdapter(var itemClickListener: View.OnClickListener) :
         item.tags()?.let {
             var tagsHolder =
                 holder.getView<TagFlowLayout>(R.id.tag_flow_layout)
-            var data = it.mapIndexed { index, tag ->
+            var data = it?.filter { it.isNotBlank() }.mapIndexed { index, tag ->
                 TestPaperTag(index + 1, tag)
             }.toMutableList()
             tagsHolder.adapter = SimpleTagAdapter(context, data)

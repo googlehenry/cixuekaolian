@@ -327,6 +327,9 @@ interface GlobalConfigKaoFiltersTypeDao {
     @Query("SELECT * FROM GlobalConfigKaoFiltersType")
     fun getAll(): MutableList<GlobalConfigKaoFiltersType>
 
+    @Query("SELECT * FROM GlobalConfigKaoFiltersType where type=:type")
+    fun getByType(type: String): GlobalConfigKaoFiltersType?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: GlobalConfigKaoFiltersType)
 

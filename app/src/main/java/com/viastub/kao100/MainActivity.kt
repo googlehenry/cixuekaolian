@@ -1,6 +1,7 @@
 package com.viastub.kao100
 
 import android.content.Intent
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -16,12 +17,14 @@ import com.viastub.kao100.module.kao.KaoFragment
 import com.viastub.kao100.module.lian.LianFragment
 import com.viastub.kao100.module.my.MyCiHistoryPageActivity
 import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyDataManagmentActivity
 import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.module.xue.XueFragment
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_content.*
+import kotlinx.android.synthetic.main.fragment_kao.*
 
 class MainActivity : BaseActivity() {
 
@@ -40,10 +43,20 @@ class MainActivity : BaseActivity() {
         initFragments()
         initListener()
 
+
         header_action_refresh.setOnClickListener {
             var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
             (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment).refresh()
         }
+
+        awaitAsync({
+            RoomDB.get(applicationContext).globalConfigKaoFiltersTypes().getByType("全部测试")
+        }, {
+            it?.grades()?.let {
+                spin_my_grade.attachDataSource(it)
+            }
+        })
+
     }
 
 
@@ -76,9 +89,6 @@ class MainActivity : BaseActivity() {
     private fun initListener() {
         var header = nav_view.getHeaderView(0)
         var profileSetting = header.findViewById<ImageView>(R.id.myprofile_settings)
-//        profileSetting.setOnClickListener {
-//            startActivity(Intent(this, MyProfileSettingActivity::class.java))
-//        }
 
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.
@@ -99,80 +109,16 @@ class MainActivity : BaseActivity() {
                     var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
                     startActivity(intent)
                 }
-
                 R.id.nav_vpn_manage -> {
                     var intent = Intent(this, NavPageVpnActivity::class.java)
                     startActivity(intent)
                 }
-
-                R.id.nav_db_cleanHistory -> {
-                    doAsync {
-                        var roomDB = RoomDB.get(applicationContext)
-                        roomDB.myCollectedNote().deleteAll()
-                        roomDB.myWordHistory().deleteAll()
-                        roomDB.mySectionPracticeHistory().deleteAll()
-                        roomDB.myExamSimuHistory().deleteAll()
-                        roomDB.myQuestionAnsweredHistory().deleteAll()
-                        roomDB.myQuestionAction().deleteAll()
-                    }
+                R.id.nav_db_management -> {
+                    var intent = Intent(this, MyDataManagmentActivity::class.java)
+                    startActivity(intent)
                 }
-                R.id.nav_db_cleanExams -> {
-                    awaitAsync({
-                        var roomDB = RoomDB.get(applicationContext)
-                        roomDB.examSimulation().getAll()?.forEach {
-                            it.practiceSections()?.let {
-                                roomDB.practiceSection().getByIds(it)?.forEach {
-                                    roomDB.practiceSection().delete(it)
-                                }
-                            }
-                        }
-
-                        roomDB.examSimulation().deleteAll()
-
-                    }, {
-                        currentFragment.onResume()
-                    })
-                }
-                R.id.nav_db_cleanPractices -> {
-                    awaitAsync({
-                        var roomDB = RoomDB.get(applicationContext)
-                        roomDB.practiceTarget().getAll()?.forEach {
-                            it.bookIds()?.forEach {
-                                var book = roomDB.practiceBook().getById(it)
-                                book?.unitSectionIds()?.let {
-                                    var units = roomDB.teachingBookUnitSection().getByIds(it)
-                                    units?.forEach { roomDB.teachingBookUnitSection().delete(it) }
-                                }
-                                book?.let {
-                                    roomDB.practiceBook().delete(it)
-                                }
-                            }
-                        }
-
-                        roomDB.practiceTarget().deleteAll()
-                    }, {
-                        currentFragment.onResume()
-                    })
-                }
-                R.id.nav_db_cleanTextBooks -> {
-                    awaitAsync({
-                        var roomDB = RoomDB.get(applicationContext)
-                        roomDB.teachingBook().getAll()?.forEach {
-                            it.unitIds()?.let {
-                                var units = roomDB.teachingBookUnitSection().getByIds(it)
-                                units?.forEach { roomDB.teachingBookUnitSection().delete(it) }
-                            }
-                        }
-
-                        roomDB.teachingBook().deleteAll()
-                    }, {
-                        currentFragment.onResume()
-                    })
-                }
-
 
             }
-
             //关闭侧边栏
             drawer_layout.closeDrawer(GravityCompat.START)
 
@@ -194,10 +140,22 @@ class MainActivity : BaseActivity() {
                 bottom_navigation.menu.getItem(position).isChecked = true
                 //设置checked为true，但是不能触发ItemSelected事件，所以滑动时也要设置一下标题
                 when (position) {
-                    0 -> toolbar.title = "词典"
-                    1 -> toolbar.title = "教材学习"
-                    2 -> toolbar.title = "配套刷题"
-                    3 -> toolbar.title = "试卷真题"
+                    0 -> {
+                        toolbar.title = "词典"
+                        spin_my_grade.visibility = View.GONE
+                    }
+                    1 -> {
+                        toolbar.title = "教材学习"
+                        spin_my_grade.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        toolbar.title = "配套刷题"
+                        spin_my_grade.visibility = View.VISIBLE
+                    }
+                    3 -> {
+                        toolbar.title = "试卷真题"
+                        spin_my_grade.visibility = View.GONE
+                    }
                     else -> toolbar.title = "词学练考100分"
                 }
             }

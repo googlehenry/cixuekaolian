@@ -41,6 +41,11 @@ class XueFragment : BaseFragment(), View.OnClickListener {
             adapter.data = it
             recycler_view_textbooks.layoutManager = GridLayoutManager(mContext, 3)
             recycler_view_textbooks.adapter = adapter
+            if (it.isEmpty()) {
+                what_if_no_content.visibility = View.VISIBLE
+            } else {
+                what_if_no_content.visibility = View.GONE
+            }
         })
     }
 

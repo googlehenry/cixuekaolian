@@ -44,7 +44,6 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                     ?.let { it as ClipboardManager }
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
             addNewCollectDialog(txt, "词汇,手动添加")
         }
 

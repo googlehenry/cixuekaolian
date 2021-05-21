@@ -247,4 +247,5 @@
         <attr name="water_wave_speed" format="integer" />
         //水波--速度
     </declare-styleable>
+
 </resources>

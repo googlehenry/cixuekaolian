@@ -88,6 +88,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             booksAdapter.data.clear()
             booksAdapter.notifyDataSetChanged()
         }
+        if (targets.isNullOrEmpty()) {
+            what_if_no_content.visibility = View.VISIBLE
+        } else {
+            what_if_no_content.visibility = View.GONE
+        }
     }
 
     var lastSelectedItem: CardView? = null
@@ -135,6 +140,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                 recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
                 recycler_view_excercise_nav_groups.adapter = adapterBooks
 
+            }
+            if (target.booksDb.isNullOrEmpty()) {
+                what_if_no_content.visibility = View.VISIBLE
+            } else {
+                what_if_no_content.visibility = View.GONE
             }
         })
 
