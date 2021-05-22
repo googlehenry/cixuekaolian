@@ -304,43 +304,47 @@ interface TeachingBookWordDao {
     fun delete(item: TeachingBookWord)
 }
 
+
 @Dao
-interface GlobalConfigKaoFiltersProvinceDao {
-    @Query("SELECT * FROM GlobalConfigKaoFiltersProvince")
-    fun getAll(): MutableList<GlobalConfigKaoFiltersProvince>
+interface ConfigGlobalDao {
+    @Query("SELECT * FROM ConfigGlobal")
+    fun getAll(): MutableList<ConfigGlobal>?
+
+    @Query("SELECT * FROM ConfigGlobal where configKey=:configKey")
+    fun getByKey(configKey: String): ConfigGlobal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: GlobalConfigKaoFiltersProvince)
+    fun insert(item: ConfigGlobal)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(items: MutableList<GlobalConfigKaoFiltersProvince>)
+    fun insert(items: MutableList<ConfigGlobal>)
 
     @Delete
-    fun delete(item: GlobalConfigKaoFiltersProvince)
+    fun delete(item: ConfigGlobal)
 
     @Delete
-    fun delete(items: MutableList<GlobalConfigKaoFiltersProvince>)
+    fun delete(items: MutableList<ConfigGlobal>)
 }
 
 @Dao
-interface GlobalConfigKaoFiltersTypeDao {
-    @Query("SELECT * FROM GlobalConfigKaoFiltersType")
-    fun getAll(): MutableList<GlobalConfigKaoFiltersType>
+interface MyConfigGlobalDao {
+    @Query("SELECT * FROM MyConfigGlobal")
+    fun getAll(): MutableList<MyConfigGlobal>?
 
-    @Query("SELECT * FROM GlobalConfigKaoFiltersType where type=:type")
-    fun getByType(type: String): GlobalConfigKaoFiltersType?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(item: GlobalConfigKaoFiltersType)
+    @Query("SELECT * FROM MyConfigGlobal where configKey=:configKey")
+    fun getByKey(configKey: String): MyConfigGlobal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(items: MutableList<GlobalConfigKaoFiltersType>)
+    fun insert(item: MyConfigGlobal)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<MyConfigGlobal>)
 
     @Delete
-    fun delete(item: GlobalConfigKaoFiltersType)
+    fun delete(item: MyConfigGlobal)
 
     @Delete
-    fun delete(items: MutableList<GlobalConfigKaoFiltersType>)
+    fun delete(items: MutableList<MyConfigGlobal>)
 }
 
 @Dao

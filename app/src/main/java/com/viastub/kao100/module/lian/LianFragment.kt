@@ -24,6 +24,7 @@ import com.viastub.kao100.http.DownloadUtil
 import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesKao
+import com.viastub.kao100.utils.VariablesMain
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_lian.*
 import kotlinx.coroutines.CoroutineScope
@@ -120,7 +121,16 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         doAsync(0, {
             loadBooksFromDB(target, RoomDB.get(applicationContext = mContext))
         }, {
-            target.booksDb?.let {
+            target.booksDb?.let { books ->
+                var booksFiltered = books
+                VariablesMain.selectedGrade?.let { gradeSelected ->
+                    if (!gradeSelected.contains("所有") && !gradeSelected.contains("全部")) {
+                        booksFiltered =
+                            booksFiltered.filter { it.grade?.trim().equals(gradeSelected) }
+                                .toMutableList()
+                    }
+                }
+
                 var adapterBooks = ExcerciseByBookAdapter(object : View.OnClickListener {
                     override fun onClick(v: View?) {//onclick books
                         val unitHolder = v?.findViewById<RecyclerView>(R.id.recycler_units)
@@ -130,21 +140,20 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                             if (unitHolder?.isVisible == true) View.GONE else View.VISIBLE
                         folderImageView?.setImageResource(if (unitHolder?.isVisible == true) R.drawable.icon_button_minus else R.drawable.icon_button_plus)
                     }
-
                 }, this, target)
-                it.sortBy { it.displaySeq ?: 0 }
-                it.mapIndexed { index, practiceBook ->
+                booksFiltered.sortBy { it.displaySeq ?: 0 }
+                booksFiltered.mapIndexed { index, practiceBook ->
                     practiceBook.displaySeq = index + 1
                 }
-                adapterBooks.data = it
+                adapterBooks.data = booksFiltered
                 recycler_view_excercise_nav_groups.layoutManager = LinearLayoutManager(context)
                 recycler_view_excercise_nav_groups.adapter = adapterBooks
 
-            }
-            if (target.booksDb.isNullOrEmpty()) {
-                what_if_no_content.visibility = View.VISIBLE
-            } else {
-                what_if_no_content.visibility = View.GONE
+                if (booksFiltered.isNullOrEmpty()) {
+                    what_if_no_content.visibility = View.VISIBLE
+                } else {
+                    what_if_no_content.visibility = View.GONE
+                }
             }
         })
 
@@ -404,6 +413,10 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
     override fun onResume() {
         super.onResume()
+        loadTargets(currentTargetId ?: 1)
+    }
+
+    override fun gradeChanged() {
         loadTargets(currentTargetId ?: 1)
     }
 

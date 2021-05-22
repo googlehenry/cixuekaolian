@@ -18,8 +18,8 @@ import androidx.room.RoomDatabase
         TeachingPoint::class,
         TeachingTranslation::class,
         TeachingBookWord::class,
-        GlobalConfigKaoFiltersProvince::class,
-        GlobalConfigKaoFiltersType::class,
+        ConfigGlobal::class,
+        MyConfigGlobal::class,
         MyUser::class,
         MyQuestionAction::class,
         MyQuestionAnsweredHistory::class,
@@ -28,8 +28,8 @@ import androidx.room.RoomDatabase
         MyWordHistory::class,
         MyCollectedNote::class
     ],
-    version = 28,
-    exportSchema = true
+    version = 30,
+    exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
     abstract fun practiceSection(): PracticeSectionDao
@@ -45,8 +45,8 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun teachingTranslation(): TeachingTranslationDao
     abstract fun teachingPoint(): TeachingPointDao
     abstract fun teachingBookWord(): TeachingBookWordDao
-    abstract fun globalConfigKaoFiltersProvinces(): GlobalConfigKaoFiltersProvinceDao
-    abstract fun globalConfigKaoFiltersTypes(): GlobalConfigKaoFiltersTypeDao
+    abstract fun configGlobal(): ConfigGlobalDao
+    abstract fun myConfigGlobal(): MyConfigGlobalDao
     abstract fun myUser(): MyUserDao
     abstract fun myQuestionAction(): MyQuestionActionDao
     abstract fun myQuestionAnsweredHistory(): MyQuestionAnsweredHistoryDao
@@ -60,7 +60,6 @@ abstract class RoomDB : RoomDatabase() {
         private var roomDb: RoomDB? = null
 
         fun get(applicationContext: Context, dbName: String = "local_db_01"): RoomDB {
-//            applicationContext.deleteDatabase(dbName)
             return roomDb ?: (Room.databaseBuilder(
                 applicationContext,
                 RoomDB::class.java, dbName

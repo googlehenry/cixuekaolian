@@ -14,6 +14,7 @@ import com.viastub.kao100.db.TeachingBook
 import com.viastub.kao100.http.DownloadUtil
 import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.ActivityUtils
+import com.viastub.kao100.utils.VariablesMain
 import com.viastub.kao100.utils.ZipUtil
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_xue.*
@@ -36,12 +37,20 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         doAsync(0, {
             var roomDb = RoomDB.get(mContext)
             roomDb.teachingBook().getAll()?.toMutableList() ?: mutableListOf()
-        }, {
+        }, { books ->
+            var booksFiltered = books
+            VariablesMain.selectedGrade?.let { gradeSelected ->
+                if (!gradeSelected.contains("所有") && !gradeSelected.contains("全部")) {
+                    booksFiltered = booksFiltered.filter { it.grade?.trim().equals(gradeSelected) }
+                        .toMutableList()
+                }
+            }
+
             var adapter = BookItemAdapter(this)
-            adapter.data = it
+            adapter.data = booksFiltered
             recycler_view_textbooks.layoutManager = GridLayoutManager(mContext, 3)
             recycler_view_textbooks.adapter = adapter
-            if (it.isEmpty()) {
+            if (booksFiltered.isEmpty()) {
                 what_if_no_content.visibility = View.VISIBLE
             } else {
                 what_if_no_content.visibility = View.GONE
@@ -324,6 +333,10 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        loadBooks()
+    }
+
+    override fun gradeChanged() {
         loadBooks()
     }
 

@@ -10,6 +10,9 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.base.BaseFragment
+import com.viastub.kao100.config.db.init.BasicDataLoader
+import com.viastub.kao100.config.db.init.ConfigGlobalLoader
+import com.viastub.kao100.db.ConfigGlobal
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
@@ -20,6 +23,7 @@ import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
 import com.viastub.kao100.module.my.MyDataManagmentActivity
 import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.module.xue.XueFragment
+import com.viastub.kao100.utils.VariablesMain
 import com.yechaoa.yutilskt.ActivityUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,10 +54,20 @@ class MainActivity : BaseActivity() {
         }
 
         awaitAsync({
-            RoomDB.get(applicationContext).globalConfigKaoFiltersTypes().getByType("全部测试")
+            var roomDb = RoomDB.get(applicationContext)
+            BasicDataLoader().load(applicationContext, roomDb)
+            ConfigGlobalLoader().load(applicationContext, roomDb)
+            roomDb.configGlobal().getByKey(ConfigGlobal.key_grades)
         }, {
-            it?.grades()?.let {
+            it?.valuesByComma()?.let {
                 spin_my_grade.attachDataSource(it)
+                spin_my_grade.setOnSpinnerItemSelectedListener { parent, view, position, id ->
+                    VariablesMain.selectedGrade = spin_my_grade.selectedItem as String
+                    var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
+                    var currentFragment =
+                        (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+                    currentFragment.gradeChanged()
+                }
             }
         })
 
@@ -154,7 +168,7 @@ class MainActivity : BaseActivity() {
                     }
                     3 -> {
                         toolbar.title = "试卷真题"
-                        spin_my_grade.visibility = View.GONE
+                        spin_my_grade.visibility = View.VISIBLE
                     }
                     else -> toolbar.title = "词学练考100分"
                 }

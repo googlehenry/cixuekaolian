@@ -61,8 +61,7 @@ data class TeachingBook(
     @ColumnInfo
     var phase: String?,//TeachingBookPhase
     @ColumnInfo
-    var grade: Int = 0,
-
+    var grade: String?,
     @ColumnInfo
     var bookCoverImagePath: String?,
     @ColumnInfo
@@ -302,6 +301,8 @@ data class PracticeBook(
     var id: Int? = null,
     @ColumnInfo
     var name: String,
+    @ColumnInfo
+    var grade: String? = "所有年级",
     @ColumnInfo
     var description: String? = null,
     @ColumnInfo
@@ -615,36 +616,48 @@ data class ExamSimulation(
 }
 
 
+//@Entity
 @Entity
-data class GlobalConfigKaoFiltersProvince(
+data class ConfigGlobal(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var province: String,
+    var configKey: String,
     @ColumnInfo
-    var types: String,
+    var configValue: String?,
     @ColumnInfo
     var description: String? = null
 ) {
-    fun types(): MutableList<String> {
-        return types.split(",").toMutableList()
+    fun valuesByComma(): MutableList<String>? {
+        return configValue?.split(",")?.filter { it.isNotBlank() }?.toMutableList()
     }
 
+    companion object {
+        val key_provinces: String = "PROVINCES"
+        val key_types: String = "TYPES"
+        val key_grades: String = "GRADES"
+    }
 }
 
 @Entity
-data class GlobalConfigKaoFiltersType(
+data class MyConfigGlobal(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
-    var type: String,
+    var configKey: String,
     @ColumnInfo
-    var grades: String,
+    var configValue: String?,
     @ColumnInfo
     var description: String? = null
 ) {
-    fun grades(): MutableList<String>? {
-        return grades.split(",").filter { it.isNotBlank() }.toMutableList()
+    fun valuesByComma(): MutableList<String>? {
+        return configValue?.split(",")?.filter { it.isNotBlank() }?.toMutableList()
+    }
+
+    companion object {
+        val selected_key_province: String = "PROVINCE"
+        val selected_key_type: String = "TYPE"
+        val selected_key_grade: String = "GRADE"
     }
 }
 

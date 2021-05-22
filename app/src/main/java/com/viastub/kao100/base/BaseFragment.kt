@@ -64,8 +64,7 @@ abstract class BaseFragment : Fragment() {
         ActivityUtils.goToDictionary(mContext, wordlist, word)
     }
 
-    open fun refresh() {
-
-    }
+    open fun refresh() {}
+    open fun gradeChanged() {}
 
 }
