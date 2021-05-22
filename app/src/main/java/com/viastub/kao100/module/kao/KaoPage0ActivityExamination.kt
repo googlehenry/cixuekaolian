@@ -112,6 +112,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     }
 
     private fun updateUI(template: PracticeTemplate) {
+        template.itemMainAudioPath =
+            if (template.itemMainAudioPath.isNullOrBlank()) null else template.itemMainAudioPath
 
         if (VariablesKao.kaoContext?.loadLastExam == true) {
             template.submitted = true
@@ -242,13 +244,15 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
         }
         template.itemMainAudioPath?.let {
-            mediaPlayer = MediaPlayer.create(this, File(it).toUri())
-            mediaPlayer!!.setOnCompletionListener {
-                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-            }
-            mediaPlayer!!.setOnErrorListener { mp, what, extra ->
-                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                false
+            if (it.isNotBlank()) {
+                mediaPlayer = MediaPlayer.create(this, File(it).toUri())
+                mediaPlayer!!.setOnCompletionListener {
+                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                }
+                mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                    false
+                }
             }
         }
 

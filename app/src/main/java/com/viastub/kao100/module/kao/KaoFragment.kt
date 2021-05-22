@@ -52,8 +52,6 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                     roomDB.configGlobal().getByKey(ConfigGlobal.key_provinces)
                 configMap[ConfigGlobal.key_types] =
                     roomDB.configGlobal().getByKey(ConfigGlobal.key_types)
-//                configMap[ConfigGlobal.key_grades] =
-//                    roomDB.configGlobal().getByKey(ConfigGlobal.key_grades)
                 configMap
             },
             {
@@ -69,12 +67,6 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                         loadExams()
                     }
                 }
-//                configMap[ConfigGlobal.key_grades]?.valuesByComma()?.let {
-//                    spin_test_grade.attachDataSource(it)
-//                    spin_test_grade.setOnSpinnerItemSelectedListener { parent, view, position, id ->
-//                        loadExams()
-//                    }
-//                }
 
                 filterTestPapers(null, null, null)
             }
@@ -157,12 +149,13 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
                                     template.itemMainAudioPath?.let {
                                         if (it.isNotBlank()) {
                                             links.add(it)
+                                            template.itemMainAudioPath =
+                                                (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                                    "//",
+                                                    "/"
+                                                )
                                         }
-                                        template.itemMainAudioPath =
-                                            (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
-                                                "//",
-                                                "/"
-                                            )
+
                                     }
                                     roomDb.practiceTemplate().insert(template)
                                 }

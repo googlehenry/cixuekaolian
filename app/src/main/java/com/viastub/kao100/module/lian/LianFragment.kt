@@ -194,12 +194,13 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                             template.itemMainAudioPath?.let {
                                 if (it.isNotBlank()) {
                                     links.add(it)
+                                    template.itemMainAudioPath =
+                                        (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
+                                            "//",
+                                            "/"
+                                        )
                                 }
-                                template.itemMainAudioPath =
-                                    (VariablesKao.globalApplication.filesDir.absolutePath + it).replace(
-                                        "//",
-                                        "/"
-                                    )
+
                             }
                             roomDb.practiceTemplate().insert(template)
                         }

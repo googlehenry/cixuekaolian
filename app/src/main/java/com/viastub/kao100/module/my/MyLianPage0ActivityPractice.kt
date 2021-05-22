@@ -131,6 +131,8 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     private fun updateUI(template: PracticeTemplate) {
 
+        template.itemMainAudioPath =
+            if (template.itemMainAudioPath.isNullOrBlank()) null else template.itemMainAudioPath
 
         if (VariablesLian.loadLastTimeSubmittedAnswers) {
             template.submitted = true
