@@ -32,7 +32,7 @@
             <item
                 android:id="@+id/nav_db_management"
                 android:icon="@drawable/ic_menu_delete"
-                android:title="清除数据?" />
+                android:title="清除数据" />
             <item
                 android:id="@+id/nav_vpn_manage"
                 android:icon="@drawable/ic_menu_info"

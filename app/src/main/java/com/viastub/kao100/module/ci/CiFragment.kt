@@ -60,6 +60,16 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
+        ci_search_zh_to_en.setOnClickListener {
+            searchView.query.toString().trim()?.let {
+                if (it.isNotEmpty()) {
+                    goToFileDictionary(it)
+                } else {
+                    Toast.makeText(mContext, "请输入所查词语", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     }
 
     private fun loadDictWithId(dictId: Int) {
@@ -130,9 +140,6 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                     filteredList.addAll(it)
                 }
 
-//                if (!filteredList.contains(enteredKey)) {
-//                    filteredList.add(enteredKey)
-//                }
             }
         }
         if (filteredList.isEmpty()) {
@@ -166,5 +173,11 @@ class CiFragment : BaseFragment(), View.OnClickListener {
     override fun refresh() {
         loadDictWithId(1)
         Toast.makeText(mContext, "已刷新数据", Toast.LENGTH_SHORT).show()
+    }
+
+    fun goToFileDictionary(zhWord: String) {
+        var intent = Intent(mContext, CiPage1Activity::class.java)
+        intent.putExtra("zhWord", zhWord)
+        startActivity(intent)
     }
 }

@@ -81,6 +81,7 @@
 
 
             <LinearLayout
+                android:id="@+id/bottom_function_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/dp_10"
@@ -167,9 +168,9 @@
         android:layout_gravity="right|bottom"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="70dp"
-        android:src="@drawable/icon_button_plus"
+        android:src="@drawable/ic_drawer_menu_notebook_white"
         app:rippleColor="#ffe5e5e5"
-        app:backgroundTint="#ffffffff"
+        app:backgroundTint="#000000"
         app:elevation="6dp"
         app:pressedTranslationZ="6dp"
         app:fabSize="mini"

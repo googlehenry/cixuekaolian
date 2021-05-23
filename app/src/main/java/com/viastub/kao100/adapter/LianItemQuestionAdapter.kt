@@ -105,7 +105,7 @@ class LianItemQuestionAdapter(
         //Functions zone
         var buttonFavorite = holder.getView<ImageView>(R.id.question_functions_favorite_btn)
         var buttonNote = holder.getView<Button>(R.id.question_functions_takenote_btn)
-        var buttonError = holder.getView<Button>(R.id.question_functions_errorbook_btn)
+        var buttonError = holder.getView<ImageView>(R.id.question_functions_errorbook_btn)
         var inputBoxNotes = holder.getView<EditText>(R.id.question_functions_notes_inputbox)
 
         item.myQuestionActionDb?.let {
@@ -115,7 +115,7 @@ class LianItemQuestionAdapter(
                 buttonFavorite.setImageResource(R.drawable.ci_word_heart_gray)
             }
             if (it.note.isNullOrBlank()) {
-                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_gray)
+                buttonNote.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
                 buttonNote.text = "添加笔记"
             } else {
                 inputBoxNotes.setText(it.note!!.toCharArray(), 0, it.note!!.length)

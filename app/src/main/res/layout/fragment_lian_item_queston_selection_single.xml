@@ -83,32 +83,34 @@
 
                     <ImageView
                         android:id="@+id/question_functions_favorite_btn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:clickable="true"
                         android:layout_marginRight="@dimen/dp_5"
                         android:src="@drawable/ci_word_heart_gray" />
+
+                    <ImageView
+                        android:id="@+id/question_functions_errorbook_btn"
+                        android:clickable="true"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:src="@drawable/ic_drawer_menu_errorbook_red"
+                        android:visibility="gone"
+                        android:textColor="#fff"
+                        android:tooltipText="已加入错题本"
+                        android:textSize="@dimen/sp_10" />
 
                     <Button
                         android:id="@+id/question_functions_takenote_btn"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="@dimen/dp_5"
-                        android:background="@drawable/selector_button_round_cornor_question_functions_gray"
+                        android:background="@drawable/selector_button_round_cornor_question_functions_blue"
                         android:text="笔记"
                         android:textColor="#fff"
                         android:textSize="@dimen/sp_10" />
 
-                    <Button
-                        android:id="@+id/question_functions_errorbook_btn"
-                        android:layout_width="50dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="@dimen/dp_5"
-                        android:background="@drawable/selector_button_round_cornor_question_functions_gray"
-                        android:text="移除错题"
-                        android:visibility="gone"
-                        android:textColor="#fff"
-                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 

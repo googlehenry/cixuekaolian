@@ -76,9 +76,9 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             loadCurrentQuestionTemplate()
         }
 
-        VariablesKao.kaoContext?.earnedScoresLastTime?.let {
-            Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
-        }
+//        VariablesKao.kaoContext?.earnedScoresLastTime?.let {
+//            Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
+//        }
         floating_button_add.setOnClickListener {
             val cm: ClipboardManager? =
                 getSystemService(Context.CLIPBOARD_SERVICE)

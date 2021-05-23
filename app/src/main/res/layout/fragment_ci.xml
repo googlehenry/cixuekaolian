@@ -20,14 +20,31 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
 
-            <SearchView
-                android:id="@+id/searchView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:iconifiedByDefault="true"
-                android:background="@drawable/shape_ci_search"
-                android:queryHint="输入您要查找的单词" />
+                android:orientation="horizontal">
 
+                <SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:iconifiedByDefault="true"
+                    android:background="@drawable/shape_ci_search"
+                    android:queryHint="输入单词或词语" />
+
+                <Button
+                    android:id="@+id/ci_search_zh_to_en"
+                    android:layout_width="64dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_2"
+                    android:layout_marginRight="@dimen/dp_2"
+                    android:background="@drawable/selector_button_round_cornor_question_functions_white"
+                    android:text="汉->英"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
             <RadioGroup
                 android:id="@+id/radiogroup_group"
                 android:layout_width="wrap_content"

@@ -66,8 +66,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             }.maxOrNull()
             val startedIndex = latestTemplateDone?.let {
                 templateIds.indexOf(it).let {
-                    if (it < 0) 0 else (it + 1).also {
-                        Toast.makeText(this, "从上次接着练习", Toast.LENGTH_SHORT).show()
+                    if (it < 0) 0 else (it).also {
+                        Toast.makeText(this, "进入上次位置", Toast.LENGTH_SHORT).show()
                     }
                 }
             } ?: 0
@@ -517,7 +517,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             doAsync {
                 RoomDB.get(applicationContext).myQuestionAnsweredHistory().delete(it)
             }
-            (v?.let { it as Button })?.visibility = View.GONE
+            (v?.let { it as ImageView })?.visibility = View.GONE
+            Toast.makeText(this, "已从错题本中移除", Toast.LENGTH_SHORT).show()
         }
     }
 
