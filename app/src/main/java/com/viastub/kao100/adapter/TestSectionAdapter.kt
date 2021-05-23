@@ -20,7 +20,7 @@ class TestSectionAdapter(
 
     override fun convert(holder: BaseViewHolder, item: PracticeSection) {
         holder.setText(R.id.section_seq, item.displaySeq.toString())
-        holder.setText(R.id.section_title, "${item.name} (${item.totalScores()}分)")
+        holder.setText(R.id.section_title, item.name)
 
         var sectionHolder = holder.getView<CardView>(R.id.section_item_holder)
         sectionHolder.setTag(R.id.section_item_holder, item)

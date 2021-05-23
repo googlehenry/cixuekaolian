@@ -132,11 +132,11 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             TextViewSelectionCallback(this, lian_item_main_text, "试卷,题干")
 
         lian_item_main_text.visibility =
-            if (template.itemMainAudioPath != null) View.GONE else View.VISIBLE
+            if (!template.itemMainAudioPath.isNullOrBlank()) View.GONE else View.VISIBLE
         lian_item_main_audio_start.visibility =
-            if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
+            if (!template.itemMainAudioPath.isNullOrBlank()) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
-            if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
+            if (template.itemMainAudioPath.isNullOrBlank() && template.itemMainText.isNullOrBlank()) View.GONE else View.VISIBLE
 
         lian_item_switch_next_btn.visibility = View.GONE
         if (VariablesKao.currentTemplateIdIdx >= 0 && VariablesKao.currentTemplateIdIdx < VariablesKao.availableTemplateIds.size - 1) {
@@ -186,7 +186,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             TextViewSelectionCallback(this, lian_item_explanations, "试卷,解析")
 
         lian_item_main_audio_start.setOnClickListener {
-            template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
+            template.itemMainAudioPath?.let { if (!it.isNullOrBlank()) plyDemoMp3Reading(it) }
         }
 
         if (!template.submitted && VariablesKao.kaoContext?.earnedScoresThisTimeTemp!! < 0) {
@@ -555,7 +555,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             lian_item_explanations.visibility = View.VISIBLE
             lian_item_main_text.visibility = View.VISIBLE
             lian_item_main_holder.visibility =
-                if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
+                if (template.itemMainAudioPath.isNullOrBlank() && template.itemMainText.isNullOrBlank()) View.GONE else View.VISIBLE
         } else {
             lian_item_explanations.visibility = View.GONE
             lian_item_main_text.visibility = View.INVISIBLE

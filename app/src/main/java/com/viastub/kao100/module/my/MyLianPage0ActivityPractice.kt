@@ -150,11 +150,11 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             TextViewSelectionCallback(this, lian_item_main_text, "练习,题干")
 
         lian_item_main_text.visibility =
-            if (template.itemMainAudioPath != null) View.GONE else View.VISIBLE
+            if (!template.itemMainAudioPath.isNullOrBlank()) View.GONE else View.VISIBLE
         lian_item_main_audio_start.visibility =
-            if (template.itemMainAudioPath != null) View.VISIBLE else View.GONE
+            if (!template.itemMainAudioPath.isNullOrBlank()) View.VISIBLE else View.GONE
         lian_item_main_holder.visibility =
-            if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
+            if (template.itemMainAudioPath.isNullOrBlank() && template.itemMainText.isNullOrBlank()) View.GONE else View.VISIBLE
 
 
         lian_item_switch_next_btn.visibility = View.GONE
@@ -196,7 +196,7 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             TextViewSelectionCallback(this, lian_item_explanations, "练习,解析")
 
         lian_item_main_audio_start.setOnClickListener {
-            template.itemMainAudioPath?.let { plyDemoMp3Reading(it) }
+            template.itemMainAudioPath?.let { if (!it.isNullOrBlank()) plyDemoMp3Reading(it) }
         }
 
         header_action_submit.visibility = View.GONE
@@ -224,15 +224,16 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
 
         template.itemMainAudioPath?.let {
-            mediaPlayer = MediaPlayer.create(this, File(it).toUri())
-            mediaPlayer!!.setOnCompletionListener {
-                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+            if (!it.isNullOrBlank()) {
+                mediaPlayer = MediaPlayer.create(this, File(it).toUri())
+                mediaPlayer!!.setOnCompletionListener {
+                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                }
+                mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+                    false
+                }
             }
-            mediaPlayer!!.setOnErrorListener { mp, what, extra ->
-                lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                false
-            }
-
         }
 
 
@@ -405,7 +406,7 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             lian_item_explanations.visibility = View.VISIBLE
             lian_item_main_text.visibility = View.VISIBLE
             lian_item_main_holder.visibility =
-                if (template.itemMainAudioPath == null && template.itemMainText == null) View.GONE else View.VISIBLE
+                if (template.itemMainAudioPath.isNullOrBlank() && template.itemMainText.isNullOrBlank()) View.GONE else View.VISIBLE
         } else {
             lian_item_explanations.visibility = View.GONE
             lian_item_main_text.visibility = View.INVISIBLE
