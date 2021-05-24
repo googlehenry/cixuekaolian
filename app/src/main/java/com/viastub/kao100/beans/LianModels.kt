@@ -9,4 +9,12 @@ import kotlinx.android.parcel.Parcelize
 data class LianContext(
     var book: PracticeBook,
     var sections: MutableList<PracticeSection> = mutableListOf(),
+    var startIdx: Int?
 ) : Parcelable
+
+
+data class TemplateIDStatus(
+    var seq: Int,
+    var templateId: Int,
+    var finished: Boolean = false
+)

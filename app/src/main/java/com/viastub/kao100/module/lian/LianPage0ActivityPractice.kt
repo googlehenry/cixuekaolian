@@ -48,7 +48,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         var templateIds =
             lianContext.sections?.flatMap {
                 it.practiceTemplateIds()?.toSortedSet()?.toMutableList() ?: mutableListOf()
-            }
+            }.sorted()
                 .toMutableList()
         VariablesLian.availableTemplateIds = templateIds
 
@@ -64,13 +64,13 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             var latestTemplateDone = lianContext.sections?.flatMap {
                 it.mySectionPracticeHistory?.let { it.myFinishedTemplateIds() } ?: sortedSetOf()
             }.maxOrNull()
-            val startedIndex = latestTemplateDone?.let {
+            val startedIndex = lianContext.startIdx ?: (latestTemplateDone?.let {
                 templateIds.indexOf(it).let {
                     if (it < 0) 0 else (it).also {
                         Toast.makeText(this, "进入上次位置", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } ?: 0
+            } ?: 0)
 
             VariablesLian.currentTemplateIdIdx =
                 if (VariablesLian.availableTemplateIds!!.size > 0) {
@@ -151,32 +151,31 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
 
         lian_item_switch_next_btn.visibility = View.GONE
-        if (template.submitted) {
-            if (VariablesLian.currentTemplateIdIdx >= 0 && VariablesLian.currentTemplateIdIdx < (VariablesLian.availableTemplateIds.size - 1)) {
-                lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
-                lian_item_switch_next_btn.visibility = View.VISIBLE
-            }
+//        if (template.submitted) {
+        if (VariablesLian.currentTemplateIdIdx >= 0 && VariablesLian.currentTemplateIdIdx < (VariablesLian.availableTemplateIds.size - 1)) {
+            lian_item_switch_next_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+            lian_item_switch_next_btn.visibility = View.VISIBLE
         }
+//        }
 
         lian_item_switch_prev_btn.visibility = View.GONE
-        if (template.submitted) {
-            if (VariablesLian.currentTemplateIdIdx > 0 && VariablesLian.currentTemplateIdIdx <= (VariablesLian.availableTemplateIds.size - 1)) {
-                lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
-                lian_item_switch_prev_btn.visibility = View.VISIBLE
-            }
+//        if (template.submitted) {
+        if (VariablesLian.currentTemplateIdIdx > 0 && VariablesLian.currentTemplateIdIdx <= (VariablesLian.availableTemplateIds.size - 1)) {
+            lian_item_switch_prev_btn.setBackgroundResource(R.drawable.selector_button_round_cornor_orange)
+            lian_item_switch_prev_btn.visibility = View.VISIBLE
         }
+//        }
 
         lian_item_switch_prev_btn.setOnClickListener {
-
             turnTo(template, -1)
             loseFocusForEditable(template)
         }
 
         lian_item_switch_next_btn.setOnClickListener {
-            if (template.submitted) {
-                turnTo(template, 1)
-                loseFocusForEditable(template)
-            }
+//            if (template.submitted) {
+            turnTo(template, 1)
+            loseFocusForEditable(template)
+//            }
         }
 
         lian_item_explanations.setOnClickListener {

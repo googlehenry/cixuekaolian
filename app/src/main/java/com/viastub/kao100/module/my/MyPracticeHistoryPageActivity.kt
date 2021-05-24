@@ -234,7 +234,7 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
         var intent = Intent(this, MyLianPage0ActivityPractice::class.java)
         var secs = arrayListOf<PracticeSection>(dummySection)
 
-        intent.putExtra("context", LianContext(PracticeBook(-1, name = "我的习题"), secs))
+        intent.putExtra("context", LianContext(PracticeBook(-1, name = "我的习题"), secs, null))
 
         startActivity(intent)
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,16 +36,6 @@
                 android:text="试卷概要"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/sp_16" />
-
-
-            <!--            <ImageView-->
-            <!--                android:id="@+id/header_action"-->
-            <!--                android:layout_width="26dp"-->
-            <!--                android:layout_height="26dp"-->
-            <!--                android:layout_gravity="center_vertical"-->
-            <!--                android:layout_marginRight="2dp"-->
-            <!--                android:background="@drawable/selector_menu_options"-->
-            <!--                android:tooltipText="这里菜单选项" />-->
 
         </LinearLayout>
 
@@ -125,7 +116,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
@@ -139,7 +130,18 @@
                 android:layout_height="match_parent"
                 android:padding="1dp"
                 android:scaleType="fitCenter" />
-        </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_templateSeqList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/fragment_xue_item_word_line" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <LinearLayout
