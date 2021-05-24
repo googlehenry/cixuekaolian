@@ -1,22 +1,39 @@
 package com.viastub.kao100.config.db.init
 
 import android.content.Context
+import android.os.Build
+import android.provider.Settings
 import com.viastub.kao100.R
 import com.viastub.kao100.db.DictionaryConfig
 import com.viastub.kao100.db.MyUser
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.TempUtil
+import java.util.*
 
 
 class BasicDataLoader : DataLoader {
     override fun load(applicationContext: Context, roomDb: RoomDB): Int {
         loadDictionary(roomDb)
-        loadBasicUsers(roomDb)
+        loadBasicUsers(roomDb, applicationContext)
         return -1
     }
 
-    private fun loadBasicUsers(roomDb: RoomDB) {
-        var user1 = MyUser(1, "viastub", "no_nick_name")
+    private fun loadBasicUsers(roomDb: RoomDB, applicationContext: Context) {
+
+        var user1 = MyUser(
+            1,
+            UUID.randomUUID().toString().replace("-", ""),
+            "viastub", "no_nick_name",
+            deviceBrand = Build.BRAND,
+            deviceBoard = Build.BOARD,
+            deviceDevice = Build.DEVICE,
+            deviceHardware = Build.HARDWARE,
+            deviceManufacturer = Build.MANUFACTURER,
+            deviceAndroidId = Settings.System.getString(
+                applicationContext.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
+        )
         roomDb.myUser().insert(user1)
     }
 

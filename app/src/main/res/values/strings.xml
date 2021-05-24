@@ -3,6 +3,7 @@
 
     <string name="activity_main_content_bottom_menu_ci">词典</string>
     <string name="activity_main_content_bottom_menu_xue">教材</string>
+    <string name="activity_main_content_bottom_menu_huo">...</string>
     <string name="activity_main_content_bottom_menu_lian">刷题</string>
     <string name="activity_main_content_bottom_menu_kao">试卷</string>
 

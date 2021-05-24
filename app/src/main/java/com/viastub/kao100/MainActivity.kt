@@ -69,6 +69,10 @@ class MainActivity : BaseActivity() {
                     currentFragment.gradeChanged()
                 }
             }
+            //send client info to server
+            doAsync {
+
+            }
         })
 
     }

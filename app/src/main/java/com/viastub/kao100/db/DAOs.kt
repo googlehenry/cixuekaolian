@@ -352,7 +352,7 @@ interface MyUserDao {
     @Query("SELECT * FROM MyUser")
     fun getAll(): MutableList<MyUser>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item: MyUser)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

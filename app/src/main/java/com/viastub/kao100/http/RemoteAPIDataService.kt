@@ -1,17 +1,13 @@
 package com.viastub.kao100.http
 
-import com.viastub.kao100.db.ExamSimulation
-import com.viastub.kao100.db.PracticeSection
-import com.viastub.kao100.db.PracticeTarget
-import com.viastub.kao100.db.TeachingBook
+import com.viastub.kao100.db.*
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 class RemoteAPIDataService {
@@ -22,6 +18,13 @@ class RemoteAPIDataService {
     pay attention to the path: VariablesKao.globalApplication.filesDir 储存下载文件的SDCard目录
      */
     interface APIS {
+
+        @FormUrlEncoded
+        @POST("/client/student/signup")
+        fun signUpUser(
+            @Body myUser: MyUser
+        ): Observable<MyUser>
+
         @GET("client/exam/{examId}")
         fun getExamById(
             @Path("examId") examId: Int

@@ -666,6 +666,8 @@ data class MyUser(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo
+    var installationGuid: String?,
+    @ColumnInfo
     var officialName: String,
     @ColumnInfo
     var nickName: String? = null,
@@ -673,7 +675,21 @@ data class MyUser(
     var avtarImagePath: String? = null,
     @ColumnInfo
     var dateAdded: String = Date().toString(),
-)
+    @ColumnInfo
+    var deviceBrand: String? = null,
+    @ColumnInfo
+    var deviceManufacturer: String? = null,
+    @ColumnInfo
+    var deviceBoard: String? = null,
+    @ColumnInfo
+    var deviceHardware: String? = null,
+    @ColumnInfo
+    var deviceDevice: String? = null,
+    @ColumnInfo
+    var deviceAndroidId: String? = null,
+
+    )
+
 
 @Parcelize
 @Entity

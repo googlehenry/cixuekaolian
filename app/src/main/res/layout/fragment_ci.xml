@@ -32,7 +32,7 @@
                     android:layout_weight="1"
                     android:iconifiedByDefault="true"
                     android:background="@drawable/shape_ci_search"
-                    android:queryHint="输入单词或词语" />
+                    android:queryHint="输入搜索词" />
 
                 <Button
                     android:id="@+id/ci_search_zh_to_en"
@@ -56,28 +56,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
-                    android:text="以..开头" />
+                    android:text="以搜索词开头" />
 
                 <RadioButton
                     android:id="@+id/radiogroup_middle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
-                    android:text="在..中间" />
+                    android:text="搜索词在中间" />
 
                 <RadioButton
                     android:id="@+id/radiogroup_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
-                    android:text="以..结尾" />
+                    android:text="以搜索词结尾" />
 
                 <RadioButton
                     android:id="@+id/radiogroup_contains"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_10"
-                    android:text="包含.." />
+                    android:text="包含搜索词" />
             </RadioGroup>
 
             <View
