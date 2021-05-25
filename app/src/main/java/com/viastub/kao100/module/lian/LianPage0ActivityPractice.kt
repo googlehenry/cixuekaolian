@@ -22,6 +22,7 @@ import com.viastub.kao100.beans.LianContext
 import com.viastub.kao100.db.*
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesLian
+import com.viastub.kao100.wigets.CommonDialog
 import com.viastub.kao100.wigets.TextViewSelectionCallback
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
@@ -512,13 +513,32 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         v: View?,
         myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory?
     ) {
-        myQuestionAnsweredHistoryDb?.let {
-            doAsync {
-                RoomDB.get(applicationContext).myQuestionAnsweredHistory().delete(it)
-            }
-            (v?.let { it as ImageView })?.visibility = View.GONE
-            Toast.makeText(this, "已从错题本中移除", Toast.LENGTH_SHORT).show()
-        }
+        var errobook = (v?.let { it as ImageView })
+
+        val dialog = CommonDialog(this)
+        dialog
+            .setTitle("移除错题!")
+            .setReadOnly(true)
+            .setMessage("当前已收录于错题本，被移除错题后你将无法再将其加入,除非下次做题过程中再次犯错,确定吗?")
+            .setSingle(false)
+            .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
+                override fun onPositiveClick() {
+                    myQuestionAnsweredHistoryDb?.let {
+                        doAsync {
+                            it.wrongAttemptNo = 0
+                            RoomDB.get(applicationContext).myQuestionAnsweredHistory().insert(it)
+                        }
+                        errobook?.visibility = View.GONE
+                    }
+                    dialog.dismiss()
+                }
+
+                override fun onNegtiveClick() {
+                    dialog.dismiss()
+                }
+            })
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(true)
     }
 
     private fun checkAnswers(template: PracticeTemplate) {

@@ -32,6 +32,8 @@ public class CommonDialog extends Dialog {
      */
     private EditText messageET;
 
+    private TextView messageLabel;
+
     /**
      * 确认和取消按钮
      */
@@ -100,6 +102,13 @@ public class CommonDialog extends Dialog {
     /**
      * 初始化界面控件的显示数据
      */
+    Boolean readOnly = false;
+
+    public CommonDialog setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
+    }
+
     private void refreshView() {
         //如果用户自定了title和message
         if (!TextUtils.isEmpty(title)) {
@@ -108,8 +117,17 @@ public class CommonDialog extends Dialog {
         } else {
             titleTv.setVisibility(View.GONE);
         }
+
         if (!TextUtils.isEmpty(message)) {
-            messageET.setText(message);
+            if (readOnly) {
+                messageLabel.setVisibility(View.VISIBLE);
+                messageET.setVisibility(View.GONE);
+                messageLabel.setText(message);
+            } else {
+                messageLabel.setVisibility(View.GONE);
+                messageET.setVisibility(View.VISIBLE);
+                messageET.setText(message);
+            }
         }
         //如果设置按钮的文字
         if (!TextUtils.isEmpty(positive)) {
@@ -154,6 +172,7 @@ public class CommonDialog extends Dialog {
         negtiveBn = (Button) findViewById(R.id.negtive);
         positiveBn = (Button) findViewById(R.id.positive);
         titleTv = (TextView) findViewById(R.id.title);
+        messageLabel = (TextView) findViewById(R.id.messageLabel);
         messageET = (EditText) findViewById(R.id.message);
         imageIv = (ImageView) findViewById(R.id.image);
         columnLineView = findViewById(R.id.column_line);
