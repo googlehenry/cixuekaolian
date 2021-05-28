@@ -81,10 +81,11 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:gravity="bottom"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -106,8 +107,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/player_controls_holder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -120,6 +119,7 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="04:30"
+                    android:layout_marginEnd="10dp"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/player_seekbar"
                     app:layout_constraintTop_toBottomOf="@+id/player_seekbar" />
@@ -134,9 +134,21 @@
                     app:layout_constraintRight_toRightOf="parent">
 
                     <ImageView
+                        android:id="@+id/player_menu"
+                        android:clickable="true"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:src="@drawable/ic_tc_menu"
+                        android:contentDescription="当前播放"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
                         android:id="@+id/play_prev"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginRight="@dimen/dp_10"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="上一个"
                         android:src="@drawable/player_icon_previous" />
@@ -145,6 +157,7 @@
                         android:id="@+id/play_pause"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:layout_marginRight="@dimen/dp_10"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="暂停"
                         android:src="@drawable/player_icon_play" />
@@ -157,25 +170,6 @@
                         android:contentDescription="下一个"
                         android:src="@drawable/player_icon_next" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_20"
-                    app:layout_constraintTop_toBottomOf="@id/player_controls_holder"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintRight_toRightOf="parent">
-
-                    <TextView
-                        android:id="@+id/player_current_item_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_20"
-                        android:textColor="#cccccc"
-                        android:background="@drawable/selector_button_square_cornor_blue"
-                        android:gravity="center"
-                        android:padding="0dp" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -193,7 +187,7 @@
         android:layout_marginBottom="70dp"
         android:src="@drawable/ic_drawer_menu_notebook_white"
         app:rippleColor="#ffe5e5e5"
-        app:backgroundTint="#000000"
+        app:backgroundTint="@color/orange_01"
         app:elevation="6dp"
         app:pressedTranslationZ="6dp"
         app:fabSize="mini"

@@ -11,7 +11,7 @@
     <item android:id="@android:id/secondaryProgress">
         <clip android:layout_width="match_parent">
             <shape>
-                <solid android:color="#7C4DFF" />
+                <solid android:color="@color/colorAccent" />
                 <!--                <gradient-->
                 <!--                    android:angle="270"-->
                 <!--                    android:centerColor="#3eb5ff"-->

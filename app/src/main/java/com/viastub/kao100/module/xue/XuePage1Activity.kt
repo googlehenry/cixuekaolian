@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.view.MotionEvent
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.google.android.material.tabs.TabLayout
 import com.viastub.kao100.R
@@ -115,13 +116,20 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
             })
         }
+        player_menu.setOnClickListener {
+            Toast.makeText(
+                this,
+                "当前播放:$currentAudioName",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
         floating_button_add.setOnClickListener {
             val cm: ClipboardManager? =
                 getSystemService(Context.CLIPBOARD_SERVICE)
                     ?.let { it as ClipboardManager }
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
             addNewCollectDialog(txt, "学习,手动添加")
         }
 
@@ -171,6 +179,7 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
     }
 
+    var currentAudioName: String? = null
     private fun playAnother(step: Int) {
 
         currentPlayAudioIndex += step
@@ -179,7 +188,7 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
             if (currentPlayAudioIndex >= 0 && currentPlayAudioIndex < it.size) {
                 var availableNextAudio = File(it[currentPlayAudioIndex])
-                player_current_item_name.text = "当前音频:${availableNextAudio.name}"
+                currentAudioName = availableNextAudio.name
 
                 mediaPlayer?.let {
                     it.stop()

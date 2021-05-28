@@ -170,7 +170,7 @@
         android:layout_marginBottom="70dp"
         android:src="@drawable/ic_drawer_menu_notebook_white"
         app:rippleColor="#ffe5e5e5"
-        app:backgroundTint="#000000"
+        app:backgroundTint="@color/orange_01"
         app:elevation="6dp"
         app:pressedTranslationZ="6dp"
         app:fabSize="mini"
