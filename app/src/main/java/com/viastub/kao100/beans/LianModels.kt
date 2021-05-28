@@ -16,5 +16,6 @@ data class LianContext(
 data class TemplateIDStatus(
     var seq: Int,
     var templateId: Int,
-    var finished: Boolean = false
+    var finished: Boolean = false,
+    var shortCategory: String? = null
 )

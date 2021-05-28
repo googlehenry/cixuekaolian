@@ -37,6 +37,9 @@ interface PracticeTemplateDao {
     @Query("SELECT * FROM PracticeTemplate where id=:id")
     fun getById(id: Int): PracticeTemplate?
 
+    @Query("SELECT id,category,layoutQuestionsPerRow,totalScore,totalTimeInMinutes FROM PracticeTemplate where id in (:ids)")
+    fun getCatByIds(ids: MutableList<Int>): List<PracticeTemplate>?
+
     //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND last_name LIKE :last LIMIT 1")
@@ -49,6 +52,7 @@ interface PracticeTemplateDao {
 
     @Delete
     fun delete(item: PracticeTemplate)
+
 }
 
 

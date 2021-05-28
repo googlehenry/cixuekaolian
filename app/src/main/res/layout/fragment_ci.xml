@@ -26,12 +26,12 @@
                 android:orientation="horizontal">
 
                 <SearchView
+                    android:layout_marginLeft="5dp"
                     android:id="@+id/searchView"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:iconifiedByDefault="true"
-                    android:background="@drawable/shape_ci_search"
+                    android:background="@drawable/selector_textinput_round_cornor_grayed"
                     android:queryHint="输入搜索词..." />
 
                 <Button

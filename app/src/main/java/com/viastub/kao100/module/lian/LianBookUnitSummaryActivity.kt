@@ -1,7 +1,6 @@
 package com.viastub.kao100.module.lian
 
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.viastub.kao100.R
@@ -47,11 +46,11 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
             summary_book_unit_description.text = it
         }
 
-        currentBook?.coverImage()?.let {
-            if (it.exists()) {
-                summary_book_icon.setImageURI(Uri.fromFile(it))
-            }
-        }
+//        currentBook?.coverImage()?.let {
+//            if (it.exists()) {
+//                summary_book_icon.setImageURI(Uri.fromFile(it))
+//            }
+//        }
 
         btn_lian_start.text = "开始练习"
 
@@ -62,29 +61,43 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
 
         //load progress if any
         awaitAsync({
-            RoomDB.get(applicationContext).mySectionPracticeHistory()
+            var roomDb = RoomDB.get(applicationContext)
+            var sessionPracticeHistory = roomDb.mySectionPracticeHistory()
                 .getByUserIdAndSectionId(VariablesKao.currentUserId, currentSection?.id!!)
+
+            var catObj = currentSection?.practiceTemplateIds()
+                ?.let { roomDb.practiceTemplate().getCatByIds(it) }
+
+            Pair(sessionPracticeHistory, catObj)
         }, {
             it?.let {
                 progress_holder.visibility = View.VISIBLE
                 val max = (currentSection?.practiceTemplateIds()?.size ?: 0)
-                val done = (it.myFinishedTemplateIds()?.size ?: 0)
+                val done = (it.first?.myFinishedTemplateIds()?.size ?: 0)
                 summary_book_unit_total.text = "共计:${max}大题"
                 summary_book_unit_done.text = "完成:${done}"
                 summary_book_unit_progress.max = max
                 summary_book_unit_progress.secondaryProgress = done
                 summary_book_unit_progress.progress = 0//error
-
             }
-            val finishedTemplateIds = it?.myFinishedTemplateIds() ?: setOf<Int>()
-            currentSection?.practiceTemplateIds()?.let {
+            val finishedTemplateIds = it?.first?.myFinishedTemplateIds() ?: setOf<Int>()
+            it?.second?.let {
+                var lastCategory: String? = null
 
                 var pairList =
-                    it.sorted().mapIndexed { index, id ->
+                    it.sortedBy { it.category }.mapIndexed { index, catTpt ->
+                        var displayCat: String? = lastCategory
+
+                        if (catTpt.category != lastCategory) {
+                            lastCategory = catTpt.category
+                            displayCat = lastCategory
+                        }
+
                         TemplateIDStatus(
                             index + 1,
-                            id,
-                            finishedTemplateIds.contains(id)
+                            catTpt.id!!,
+                            finishedTemplateIds.contains(catTpt.id!!),
+                            displayCat
                         )
                     }.toMutableList()
                 val adapter = TemplateIDPairAdapter(this)

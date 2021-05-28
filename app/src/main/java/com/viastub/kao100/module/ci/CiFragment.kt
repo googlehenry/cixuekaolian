@@ -101,9 +101,13 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                 ?: mutableListOf()
         recycler_view_high.adapter = mSearchedWordAdapter
 
-        searchView.isSubmitButtonEnabled = false
-        searchView.onActionViewExpanded()
-        searchView.clearFocus()
+//        searchView.isSubmitButtonEnabled = false
+//        searchView.onActionViewExpanded()
+//        searchView.clearFocus()
+
+        searchView.setOnClickListener { searchView.onActionViewExpanded() }
+
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false

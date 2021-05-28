@@ -46,15 +46,20 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         var lianContext = intent?.extras?.get("context") as LianContext
         VariablesLian.lianContext = lianContext
 
-        var templateIds =
+        VariablesLian.availableTemplateIds =
             lianContext.sections?.flatMap {
                 it.practiceTemplateIds()?.toSortedSet()?.toMutableList() ?: mutableListOf()
             }.sorted()
                 .toMutableList()
-        VariablesLian.availableTemplateIds = templateIds
-
 
         awaitAsync({
+            VariablesLian.availableTemplateIds?.let {
+                var catObj = RoomDB.get(applicationContext).practiceTemplate().getCatByIds(it)
+                catObj?.sortedBy { it.category }?.map { it.id }?.filterNotNull()?.let {
+                    VariablesLian.availableTemplateIds = it.toMutableList()
+                }
+            }
+
             lianContext.sections?.map {
                 it.mySectionPracticeHistory =
                     RoomDB.get(applicationContext).mySectionPracticeHistory()
@@ -66,7 +71,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 it.mySectionPracticeHistory?.let { it.myFinishedTemplateIds() } ?: sortedSetOf()
             }.maxOrNull()
             val startedIndex = lianContext.startIdx ?: (latestTemplateDone?.let {
-                templateIds.indexOf(it).let {
+                VariablesLian.availableTemplateIds.indexOf(it).let {
                     if (it < 0) 0 else (it).also {
                         Toast.makeText(this, "进入上次位置", Toast.LENGTH_SHORT).show()
                     }
@@ -75,10 +80,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
             VariablesLian.currentTemplateIdIdx =
                 if (VariablesLian.availableTemplateIds!!.size > 0) {
-                    if (startedIndex < templateIds.size) {
+                    if (startedIndex < VariablesLian.availableTemplateIds.size) {
                         startedIndex
                     } else {
-                        templateIds.size - 1
+                        VariablesLian.availableTemplateIds.size - 1
                     }
                 } else -1
 
@@ -92,7 +97,6 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                     ?.let { it as ClipboardManager }
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
             addNewCollectDialog(txt, "练习,手动添加")
         }
 

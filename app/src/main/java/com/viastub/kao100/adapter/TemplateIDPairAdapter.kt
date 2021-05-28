@@ -15,6 +15,17 @@ class TemplateIDPairAdapter(var onItemClickListener: View.OnClickListener) :
 
     override fun convert(holder: BaseViewHolder, item: TemplateIDStatus) {
         holder.setText(R.id.template_seq, item.seq.toString())//seq
+
+        var len = item.shortCategory?.let {
+            if (it.length > 4) 4 else it.length
+        } ?: 0
+
+        item.shortCategory?.let {
+            holder.setText(
+                R.id.template_cat,
+                item.shortCategory?.substring(0, len)
+            )
+        }
         var template_seq_view = holder.getView<TextView>(R.id.template_seq)
 
         if (item.finished) {
@@ -22,6 +33,7 @@ class TemplateIDPairAdapter(var onItemClickListener: View.OnClickListener) :
         } else {
             template_seq_view.setBackgroundResource(R.drawable.shape_blue_round_cycle_solid)
         }
+
 
         var bookItemHolder = holder.getView<LinearLayout>(R.id.template_seq_holder)
         bookItemHolder.setTag(R.id.template_seq_holder, item)
