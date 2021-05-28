@@ -120,6 +120,12 @@ class CiFragment : BaseFragment(), View.OnClickListener {
 
         })
 
+        if (VariablesCi.ciContext?.wordKeys.isNullOrEmpty()) {
+            what_if_no_content.visibility = View.VISIBLE
+        } else {
+            what_if_no_content.visibility = View.GONE
+        }
+
     }
 
     fun searchItem(name: String?): List<SearchedWord> {
