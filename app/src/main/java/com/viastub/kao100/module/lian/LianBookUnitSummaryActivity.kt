@@ -27,6 +27,12 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
     var currentBook: PracticeBook? = null
     var currentSection: PracticeSection? = null
 
+    var sortedBy: SortedBy = SortedBy.CATEGORY
+
+    enum class SortedBy {
+        CATEGORY, CREATED_ID
+    }
+
     override fun afterCreated() {
         supportActionBar?.hide()
         header_back.setOnClickListener { onBackPressed() }
@@ -35,6 +41,20 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
 
         currentBook = intent?.extras?.get("book")?.let { it as PracticeBook }
         currentSection = intent?.extras?.get("section")?.let { it as PracticeSection }
+
+        radiogroup_sortby_category.isChecked = true
+        radiogroup_sortby_category.setOnClickListener {
+            if (sortedBy == SortedBy.CREATED_ID) {
+                sortedBy = SortedBy.CATEGORY
+                refreshPage()
+            }
+        }
+        radiogroup_sortby_createdID.setOnClickListener {
+            if (sortedBy == SortedBy.CATEGORY) {
+                sortedBy = SortedBy.CREATED_ID
+                refreshPage()
+            }
+        }
 
     }
 
@@ -82,26 +102,22 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             val finishedTemplateIds = it?.first?.myFinishedTemplateIds() ?: setOf<Int>()
             it?.second?.let {
-                var lastCategory: String? = null
 
-                var pairList =
-                    it.sortedBy { it.category }.mapIndexed { index, catTpt ->
-                        var displayCat: String? = lastCategory
+                var pairList = if (sortedBy == SortedBy.CATEGORY)
+                    it.sortedBy { it.category } else
+                    it.sortedBy { it.id }
 
-                        if (catTpt.category != lastCategory) {
-                            lastCategory = catTpt.category
-                            displayCat = lastCategory
-                        }
+                var sortedList = pairList.mapIndexed { index, catTpt ->
+                    TemplateIDStatus(
+                        index + 1,
+                        catTpt.id!!,
+                        finishedTemplateIds.contains(catTpt.id!!),
+                        catTpt.category
+                    )
+                }.toMutableList()
 
-                        TemplateIDStatus(
-                            index + 1,
-                            catTpt.id!!,
-                            finishedTemplateIds.contains(catTpt.id!!),
-                            displayCat
-                        )
-                    }.toMutableList()
                 val adapter = TemplateIDPairAdapter(this)
-                adapter.data = pairList
+                adapter.data = sortedList
                 recycler_view_templateSeqList.adapter = adapter
                 recycler_view_templateSeqList.layoutManager = GridLayoutManager(this, 6)
             }
@@ -116,7 +132,10 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
         var intent = Intent(this, LianPage0ActivityPractice::class.java)
         var secs = arrayListOf<PracticeSection>()
         secs.addAll(sections)
-        intent.putExtra("context", LianContext(book, sections.toMutableList(), startedIndex))
+        intent.putExtra(
+            "context",
+            LianContext(book, sections.toMutableList(), startedIndex, sortedBy)
+        )
 
         startActivity(intent)
     }

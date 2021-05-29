@@ -55,9 +55,17 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         awaitAsync({
             VariablesLian.availableTemplateIds?.let {
                 var catObj = RoomDB.get(applicationContext).practiceTemplate().getCatByIds(it)
-                catObj?.sortedBy { it.category }?.map { it.id }?.filterNotNull()?.let {
+                var sortedBy = VariablesLian.lianContext?.sortedBy
+                    ?: LianBookUnitSummaryActivity.SortedBy.CATEGORY
+
+                var sorted = if (sortedBy == LianBookUnitSummaryActivity.SortedBy.CATEGORY)
+                    catObj?.sortedBy { it.category } else
+                    catObj?.sortedBy { it.id }
+
+                sorted?.map { it.id }?.filterNotNull()?.let {
                     VariablesLian.availableTemplateIds = it.toMutableList()
                 }
+
             }
 
             lianContext.sections?.map {

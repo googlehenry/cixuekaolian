@@ -20,7 +20,7 @@ class RemoteAPIDataService {
     interface APIS {
 
         @FormUrlEncoded
-        @POST("/client/student/signup")
+        @POST("/client/student/saveDeviceUser")
         fun signUpUser(
             @Body myUser: MyUser
         ): Observable<MyUser>
