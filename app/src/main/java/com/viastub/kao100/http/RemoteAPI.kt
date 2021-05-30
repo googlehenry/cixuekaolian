@@ -1,7 +1,5 @@
 package com.viastub.kao100.http
 
-import com.viastub.kao100.beans.Article
-import com.viastub.kao100.beans.Banner
 import com.viastub.kao100.beans.BaseBean
 import com.viastub.kao100.http.interceptor.AddCookiesInterceptor
 import com.viastub.kao100.http.interceptor.ReceivedCookiesInterceptor
@@ -11,7 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
@@ -19,8 +16,8 @@ import java.util.concurrent.TimeUnit
 class RemoteAPI {
 
     interface APIS {
-        @GET("banner/json")
-        fun getBanner(): Observable<BaseBean<MutableList<Banner>>>
+//        @GET("banner/json")
+//        fun getBanner(): Observable<BaseBean<MutableList<Banner>>>
 
         //-----------------------【登录注册】----------------------
 
@@ -45,8 +42,8 @@ class RemoteAPI {
 //        //-----------------------【首页相关】----------------------
 //
         //首页文章列表
-        @GET("article/list/{page}/json")
-        fun getArticleList(@Path("page") page: Int): Observable<BaseBean<Article>>
+//        @GET("article/list/{page}/json")
+//        fun getArticleList(@Path("page") page: Int): Observable<BaseBean<Article>>
 
 
         //

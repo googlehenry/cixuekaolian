@@ -1,34 +1,40 @@
 package com.viastub.kao100
 
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
-import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.gson.Gson
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.base.BaseFragment
+import com.viastub.kao100.beans.UserSignupResponse
+import com.viastub.kao100.beans.UserSignupResponseCode
 import com.viastub.kao100.config.db.init.BasicDataLoader
 import com.viastub.kao100.config.db.init.ConfigGlobalLoader
 import com.viastub.kao100.db.ConfigGlobal
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.module.ci.CiFragment
 import com.viastub.kao100.module.drawer.NavPageVpnActivity
 import com.viastub.kao100.module.kao.KaoFragment
 import com.viastub.kao100.module.lian.LianFragment
-import com.viastub.kao100.module.my.MyCiHistoryPageActivity
-import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
-import com.viastub.kao100.module.my.MyDataManagmentActivity
-import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
+import com.viastub.kao100.module.my.*
 import com.viastub.kao100.module.xue.XueFragment
 import com.viastub.kao100.utils.VariablesMain
+import com.viastub.kao100.wigets.CommonDialog
 import com.yechaoa.yutilskt.ActivityUtilKt
+import com.yechaoa.yutilskt.LogUtilKt
 import com.yechaoa.yutilskt.ToastUtilKt
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_content.*
 import kotlinx.android.synthetic.main.fragment_kao.*
+import retrofit2.HttpException
 
 class MainActivity : BaseActivity() {
 
@@ -54,7 +60,7 @@ class MainActivity : BaseActivity() {
         }
 
         awaitAsync({
-            var roomDb = RoomDB.get(applicationContext)
+            val roomDb = RoomDB.get(applicationContext)
             BasicDataLoader().load(applicationContext, roomDb)
             ConfigGlobalLoader().load(applicationContext, roomDb)
             roomDb.configGlobal().getByKey(ConfigGlobal.key_grades)
@@ -69,12 +75,146 @@ class MainActivity : BaseActivity() {
                     currentFragment.gradeChanged()
                 }
             }
-            //send client info to server
-            doAsync {
+            //send client info to server & check login info
+            refreshUserAccountInfo()
+        })
+
+        floating_button_expiry.setOnClickListener {
+            val dialog = CommonDialog(this)
+            dialog
+                .setTitle("续费方法")
+                .setReadOnly(true)
+                .setMessage(
+                    """
+                    请联系客服微信: henry_lyc
+                    收费标准:
+                    贫困学生:2元/月
+                    普通学生:5元/月
+                    学生家长:20元/月
+                """.trimIndent()
+                )
+                .setSingle(true)
+                .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
+                    override fun onNegtiveClick() {
+                        if (accountExpiryInSeconds > 60) {
+                            dialog.dismiss()
+                        }
+                    }
+
+                    override fun onPositiveClick() {
+                        if (accountExpiryInSeconds > 60) {
+                            dialog.dismiss()
+                        }
+                    }
+                })
+            dialog.show()
+            if (accountExpiryInSeconds > 60) {
+                dialog.setCanceledOnTouchOutside(true)
+            } else {
+                dialog.setCancelable(false)
+            }
+        }
+
+    }
+
+    var accountExpiryInSeconds: Int = Int.MAX_VALUE
+
+    private fun refreshUserAccountInfo() {
+        awaitAsync({
+            val roomDb = RoomDB.get(applicationContext)
+            roomDb.myUser().getById(1)
+        }, {
+            it?.let {
+                var header = nav_view.getHeaderView(0)
+                var officialNameTV = header.findViewById<TextView>(R.id.textView_officialName)
+                it.officialName?.let {
+                    officialNameTV.text = if (it.isNullOrBlank()) "viastub" else it
+                }
+
+                if (it.officialName.isNullOrBlank() || it.expiryInSeconds == null) {
+                    val intent = Intent(this, MyProfileSettingActivity::class.java)
+                    intent.putExtra("blockBackAction", true)
+                    startActivity(intent)
+                }
+            }
+        })
+    }
+
+    private fun refreshExpiryTime() {
+        awaitAsync({
+            val roomDb = RoomDB.get(applicationContext)
+            roomDb.myUser().getById(1)
+        }, {
+            it?.let {
+                it.expiryInSeconds?.let {
+                    val hourTotal = (it / 3600).toInt()
+                    val day: Int = hourTotal / 24
+                    val hour: Int = hourTotal % 24
+                    val tlabel = createExpiryLabel(day, hour)
+                    floating_button_expiry.visibility = View.VISIBLE
+                    floating_button_expiry.text = tlabel
+                }
+
+                if (it.officialName.isNullOrBlank() || it.expiryInSeconds == null) {
+                } else if (it.expiryInSeconds!! < 60) {
+                    Toast.makeText(this, "免费时间即将到期", Toast.LENGTH_SHORT).show()
+                } else {
+                    //check latest expiryInSeconds
+                    doAsync {
+                        val roomDb = RoomDB.get(applicationContext)
+                        RemoteAPIDataService.apis.signUpUser(it.toMap()).onErrorReturn {
+                            var errobody =
+                                (it as HttpException).response()?.errorBody()?.string()
+                            LogUtilKt.e("login erro:$errobody")
+                            if ((it as HttpException).response()?.code() == 400) {
+                                Gson().fromJson(errobody, UserSignupResponse::class.java)
+                            } else {
+                                UserSignupResponse(null, null, null)
+                            }
+                        }.subscribe { resp ->
+                            when (resp.code) {
+                                UserSignupResponseCode.validated.name -> {
+                                    roomDb.myUser().getById(1)?.let {
+                                        it.expiryInSeconds = resp.expiryInSeconds
+                                        roomDb.myUser().update(it)
+                                    }
+                                    it.expiryInSeconds?.let {
+                                        val hourTotal = (it / 3600).toInt()
+                                        val day: Int = hourTotal / 24
+                                        val hour: Int = hourTotal % 24
+                                        val tlabel = createExpiryLabel(day, hour)
+                                        accountExpiryInSeconds = it
+
+                                        LogUtilKt.i(tlabel)
+                                        runOnUiThread {
+                                            floating_button_expiry.visibility = View.VISIBLE
+                                            floating_button_expiry.text = tlabel
+                                            if (day < 7) {
+                                                floating_button_expiry.setBackgroundColor(
+                                                    Color.parseColor(
+                                                        "#000000"
+                                                    )
+                                                )
+                                            }
+                                            if (accountExpiryInSeconds < 60) {
+                                                floating_button_expiry.performClick()
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
             }
         })
+    }
 
+    private fun createExpiryLabel(day: Int, hour: Int): String {
+        val tlabel = " ${day}天${hour}小时"
+        return tlabel
     }
 
 
@@ -106,7 +246,8 @@ class MainActivity : BaseActivity() {
 
     private fun initListener() {
         var header = nav_view.getHeaderView(0)
-        var profileSetting = header.findViewById<ImageView>(R.id.myprofile_settings)
+//        var officialNameTV = header.findViewById<ImageView>(R.id.textView_officialName)
+
 
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.
@@ -134,6 +275,9 @@ class MainActivity : BaseActivity() {
                 R.id.nav_db_management -> {
                     var intent = Intent(this, MyDataManagmentActivity::class.java)
                     startActivity(intent)
+                }
+                R.id.nav_myprofile_signup -> {
+                    startActivity(Intent(this, MyProfileSettingActivity::class.java))
                 }
 
             }
@@ -225,6 +369,11 @@ class MainActivity : BaseActivity() {
             }
         }
         //super.onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshExpiryTime()
     }
 
 }

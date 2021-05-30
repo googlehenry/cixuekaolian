@@ -1,6 +1,10 @@
 package com.viastub.kao100.http
 
-import com.viastub.kao100.db.*
+import com.viastub.kao100.beans.UserSignupResponse
+import com.viastub.kao100.db.ExamSimulation
+import com.viastub.kao100.db.PracticeSection
+import com.viastub.kao100.db.PracticeTarget
+import com.viastub.kao100.db.TeachingBook
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,13 +21,20 @@ class RemoteAPIDataService {
     https://www.jianshu.com/p/64bbae45e479
     pay attention to the path: VariablesKao.globalApplication.filesDir 储存下载文件的SDCard目录
      */
+
+    data class MySomeUser(
+        var officialName: String?,
+        var officialPassword: String?
+    )
+
     interface APIS {
+
 
         @FormUrlEncoded
         @POST("/client/student/saveDeviceUser")
         fun signUpUser(
-            @Body myUser: MyUser
-        ): Observable<MyUser>
+            @FieldMap params: MutableMap<String, Any?>
+        ): Observable<UserSignupResponse>
 
         @GET("client/exam/{examId}")
         fun getExamById(

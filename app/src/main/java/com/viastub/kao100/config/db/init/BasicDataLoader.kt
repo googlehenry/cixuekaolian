@@ -23,7 +23,7 @@ class BasicDataLoader : DataLoader {
         var user1 = MyUser(
             1,
             UUID.randomUUID().toString().replace("-", ""),
-            "viastub", "no_nick_name",
+            null, null,
             deviceBrand = Build.BRAND,
             deviceBoard = Build.BOARD,
             deviceDevice = Build.DEVICE,

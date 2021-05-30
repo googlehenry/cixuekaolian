@@ -55,7 +55,8 @@
         <TextView
             android:id="@+id/messageLabel"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:textIsSelectable="true"
+            android:layout_height="140dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:lineSpacingExtra="3dp"

@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/template_seq"
-        android:layout_width="@dimen/dp_40"
-        android:layout_height="@dimen/dp_40"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:background="@drawable/shape_blue_round_cycle_solid"
         android:textColor="#FFFFFF"
         android:gravity="center"

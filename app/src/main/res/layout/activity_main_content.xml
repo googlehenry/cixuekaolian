@@ -83,5 +83,37 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/floating_button_expiry"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="3d"
+        android:visibility="gone"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/selector_button_round_cornor_blue_radius"
+        android:layout_gravity="right|bottom"
+        android:drawableLeft="@drawable/ic_icon_shopping_cart"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="70dp" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:clickable="true"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left|bottom"
+        android:src="@drawable/anni_doggie"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="努力, 奋斗..."
+        android:textSize="12sp"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="100dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

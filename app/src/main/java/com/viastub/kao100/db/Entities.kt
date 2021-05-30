@@ -668,7 +668,9 @@ data class MyUser(
     @ColumnInfo
     var installationGuid: String?,
     @ColumnInfo
-    var officialName: String,
+    var officialName: String?,
+    @ColumnInfo
+    var officialPassword: String? = null,//business key
     @ColumnInfo
     var nickName: String? = null,
     @ColumnInfo
@@ -687,9 +689,29 @@ data class MyUser(
     var deviceDevice: String? = null,
     @ColumnInfo
     var deviceAndroidId: String? = null,
+    @ColumnInfo
+    var expiryInSeconds: Int? = null
 
-    )
-
+) {
+    fun toMap(): MutableMap<String, Any?> {
+        var map = mutableMapOf<String, Any?>()
+        id?.let { map["id"] = id }
+        installationGuid?.let { map["installationGuid"] = it }
+        officialName?.let { map["officialName"] = it }
+        officialPassword?.let { map["officialPassword"] = it }
+        nickName?.let { map["nickName"] = it }
+        avtarImagePath?.let { map["avtarImagePath"] = it }
+        dateAdded?.let { map["dateAdded"] = it }
+        deviceBrand?.let { map["deviceBrand"] = it }
+        deviceManufacturer?.let { map["deviceManufacturer"] = it }
+        deviceBoard?.let { map["deviceBoard"] = it }
+        deviceHardware?.let { map["deviceHardware"] = it }
+        deviceDevice?.let { map["deviceDevice"] = it }
+        deviceAndroidId?.let { map["deviceAndroidId"] = it }
+        expiryInSeconds?.let { map["expiryInSeconds"] = it }
+        return map
+    }
+}
 
 @Parcelize
 @Entity

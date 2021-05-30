@@ -32,12 +32,110 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="我的个人资料"
+                android:text="注册/绑定账号"
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/lableView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="#000000"
+                android:textSize="@dimen/sp_16"
+                android:text="注册/绑定帐号" />
+
+            <LinearLayout
+                android:id="@+id/usernameLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lableView"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="用户名:" />
+
+                <EditText
+                    android:id="@+id/usernameView"
+                    android:layout_width="0dp"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="用户名(长度至少6位)" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/passwordline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usernameLine"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="密 码:" />
+
+                <EditText
+                    android:id="@+id/passwordView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    android:hint="密码(长度至少8位)"
+                    android:inputType="textVisiblePassword" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/result_image"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/passwordline" />
+            <!--定义“取消”的按钮  -->
+            <Button
+                android:id="@+id/cancleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_below="@id/passwordline"
+                android:layout_alignParentRight="true"
+                android:textColor="#ffffff"
+                android:background="@drawable/selector_button_round_cornor_grayed"
+                android:text="取消" />
+
+            <!--定义“确定”的按钮，放在“取消”按钮的左边  -->
+            <Button
+                android:id="@+id/okButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@id/cancleButton"
+                android:layout_toLeftOf="@id/cancleButton"
+                android:layout_marginRight="10dp"
+                android:textColor="#ffffff"
+                android:background="@drawable/selector_button_round_cornor_blue"
+                android:text="确定" />
+
+            <TextView
+                android:id="@+id/result_message"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/result_image" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 

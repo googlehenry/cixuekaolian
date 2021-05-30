@@ -246,6 +246,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
+            floating_button_score.visibility = View.GONE
         } else {
             practice_countdown_timer.text = "[已结束]"
             showExplanationForTemplate(template)
@@ -555,9 +556,9 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     private fun checkAnswers(template: PracticeTemplate) {
         template.submitted = true
+        var scorePerQuestion =
+            template.totalScore / (template.practiceQuestions()?.size ?: 1)
         var summayrChecked = template.questionsDb!!.map { question ->
-            var scorePerQuestion =
-                template.totalScore / (template.practiceQuestions()?.size ?: 1)
 
             val answeredMatchResults =
                 question.optionsDb?.filter { !it.correctAnswers().isNullOrEmpty() }
@@ -613,61 +614,96 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         var rate =
             (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
-        awaitAsync({
-            var roomDb = RoomDB.get(applicationContext)
+        val earnedScore = (right * scorePerQuestion).toInt()
+        floating_button_score.text = "得分:${earnedScore}分"
+        floating_button_score.visibility = View.VISIBLE
+
+        floating_button_score.setOnClickListener {
+            val dialog = CommonDialog(this)
+            dialog
+                .setTitle("练习得分")
+                .setReadOnly(true)
+                .setMessage(
+                    """
+                    得分: ${earnedScore}
+                    总分: ${template.totalScore.toInt()}
+                    -----
+                    正确:${right}道 错误:${wrong} 未答:${missing}
+                """.trimIndent()
+                )
+                .setSingle(true)
+                .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
+                    override fun onNegtiveClick() {
+                        dialog.dismiss()
+                    }
+
+                    override fun onPositiveClick() {
+                        dialog.dismiss()
+                    }
+                })
+            dialog.show()
+            dialog.setCanceledOnTouchOutside(true)
+        }
+
+        awaitAsync(
+            {
+                var roomDb = RoomDB.get(applicationContext)
 
 
-            var answeredHistories = template.questionsDb?.map {
-                var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
-                    .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
-                    ?: MyQuestionAnsweredHistory(
-                        userId = VariablesKao.currentUserId,
-                        practiceQuestionId = it.id!!,
-                        practiceTemplateId = template.id
-                    )
-                questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
-                questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
+                var answeredHistories = template.questionsDb?.map {
+                    var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
+                        .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
+                        ?: MyQuestionAnsweredHistory(
+                            userId = VariablesKao.currentUserId,
+                            practiceQuestionId = it.id!!,
+                            practiceTemplateId = template.id
+                        )
+                    questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
+                    questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
 
-                when (it.checkAnswerResultCorrect) {
-                    null -> questionHistoryRecord.skippedAttemptNo += 1
-                    true -> questionHistoryRecord.correctAttemptNo += 1
-                    false -> questionHistoryRecord.wrongAttemptNo += 1
+                    when (it.checkAnswerResultCorrect) {
+                        null -> questionHistoryRecord.skippedAttemptNo += 1
+                        true -> questionHistoryRecord.correctAttemptNo += 1
+                        false -> questionHistoryRecord.wrongAttemptNo += 1
+                    }
+
+                    questionHistoryRecord
+                } ?: mutableListOf()
+
+                answeredHistories?.toMutableList()?.let {
+                    roomDb.myQuestionAnsweredHistory()
+                        .insertAll(it)
                 }
 
-                questionHistoryRecord
-            } ?: mutableListOf()
+                VariablesLian.lianContext?.sections?.find {
+                    it.practiceTemplateIds()?.contains(template.id) == true
+                }?.let {
+                    it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
+                        .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
+                    if (it.mySectionPracticeHistory == null) {
+                        var his = MySectionPracticeHistory(
+                            VariablesKao.currentUserId,
+                            it.id!!,
+                            template.id.toString()
+                        )
+                        var myId = roomDb.mySectionPracticeHistory().insert(his).toInt()
+                        his.id = myId
+                        it.mySectionPracticeHistory = his
+                    } else {
+                        var existingIds =
+                            it.mySectionPracticeHistory!!.myFinishedTemplateIds() ?: sortedSetOf()
+                        existingIds.add(template.id)
 
-            answeredHistories?.toMutableList()?.let {
-                roomDb.myQuestionAnsweredHistory()
-                    .insertAll(it)
-            }
-
-            VariablesLian.lianContext?.sections?.find {
-                it.practiceTemplateIds()?.contains(template.id) == true
-            }?.let {
-                it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
-                    .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
-                if (it.mySectionPracticeHistory == null) {
-                    var his = MySectionPracticeHistory(
-                        VariablesKao.currentUserId,
-                        it.id!!,
-                        template.id.toString()
-                    )
-                    var myId = roomDb.mySectionPracticeHistory().insert(his).toInt()
-                    his.id = myId
-                    it.mySectionPracticeHistory = his
-                } else {
-                    var existingIds =
-                        it.mySectionPracticeHistory!!.myFinishedTemplateIds() ?: sortedSetOf()
-                    existingIds.add(template.id)
-
-                    it.mySectionPracticeHistory!!.setMyFinishedTemplateIdsSortedString(existingIds.toMutableList())
-                    roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
+                        it.mySectionPracticeHistory!!.setMyFinishedTemplateIdsSortedString(
+                            existingIds.toMutableList()
+                        )
+                        roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
+                    }
                 }
-            }
-        }, {
-            turnTo(template, 0)
-        })
+            },
+            {
+                turnTo(template, 0)
+            })
 
         startExamSummaryActivity(scoreEarned, right, wrong, missing, rate)
     }

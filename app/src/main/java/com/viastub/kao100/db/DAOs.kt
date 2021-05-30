@@ -354,12 +354,18 @@ interface MyConfigGlobalDao {
 @Dao
 interface MyUserDao {
     @Query("SELECT * FROM MyUser")
-    fun getAll(): MutableList<MyUser>
+    fun getAll(): MutableList<MyUser>?
+
+    @Query("SELECT * FROM MyUser where id=:id")
+    fun getById(id: Int): MyUser?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item: MyUser)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun update(item: MyUser)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(items: MutableList<MyUser>)
 
     @Delete
