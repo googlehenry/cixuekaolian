@@ -14,8 +14,6 @@ import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
-import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
-import kotlinx.android.synthetic.main.activity_lian_item_page.*
 
 class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
@@ -80,14 +78,18 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         super.onResume()
         VariablesKao.kaoContext?.earnedScoresThisTimeTemp?.let {
             if (it >= 0.0) {
-                summary_exam_lastScores.visibility = View.VISIBLE
-                summary_exam_lastScores.text = "本次得分:${it}"
+                floating_button_score_holder.visibility = View.VISIBLE
+                floating_button_score_id.text = "本次"
+                floating_button_score.text = String.format("%.1f", it)
+
                 btn_lian_start.text = "查看本次结果"
                 btn_kao_resume.isEnabled = false
                 btn_kao_resume.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
             }
         }
     }
+
+    var lastScore: Double? = null
 
     private fun updateUI(exam: ExamSimulation) {
 
@@ -99,17 +101,20 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             }分钟, 总分:${sections.map { it.totalScores() }.sum()}分"
 
         exam.myExamSimuHistory?.let {
-            summary_exam_lastScores.visibility = View.VISIBLE
-            summary_exam_lastScores.text =
-                "上次得分:${it.myScores} (${(it.myTotalCorrects!!.toDouble() / (it.myTotalCorrects!! + it.myTotalWrongs!! + it.myTotalMissing!!).toDouble() * 100).toInt()}%)"
+            lastScore = it.myScores
+            floating_button_score_holder.visibility = View.VISIBLE
+            floating_button_score_id.text = "上次"
+            floating_button_score.text = String.format("%.1f", it.myScores)
 
             btn_kao_resume.visibility = View.VISIBLE
             btn_kao_resume.setOnClickListener {
                 exam?.let {
-                    awaitAsync(dataAction = {
-                        RoomDB.get(applicationContext).practiceSection()
-                            .getByIds(it.practiceSections()!!)?.toMutableList() ?: mutableListOf()
-                    },
+                    awaitAsync(
+                        dataAction = {
+                            RoomDB.get(applicationContext).practiceSection()
+                                .getByIds(it.practiceSections()!!)?.toMutableList()
+                                ?: mutableListOf()
+                        },
                         uiAction = {
                             startExam(exam, it, false, resumeExam = true)
                         }
@@ -129,9 +134,6 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         var exam = v?.getTag(-1) as ExamSimulation
 
         Toast.makeText(this, "请点击模拟考试", Toast.LENGTH_SHORT).show()
-//        item?.let {
-//            startExam(exam, arrayListOf<PracticeSection>(it), true)
-//        }
     }
 
     fun startExam(
@@ -148,7 +150,7 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             exam.id,
             partial,
             earnedScoresThisTimeTemp = VariablesKao.kaoContext?.earnedScoresThisTimeTemp,
-            earnedScoresLastTime = exam.totalScores() > 0,
+            earnedScoresLastTime = lastScore,
             loadLastExam = resumeExam,
             previousExamSimuLoaded = (VariablesKao.kaoContext?.previousExamSimuLoaded == true)
         )

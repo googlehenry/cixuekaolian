@@ -66,12 +66,6 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
             summary_book_unit_description.text = it
         }
 
-//        currentBook?.coverImage()?.let {
-//            if (it.exists()) {
-//                summary_book_icon.setImageURI(Uri.fromFile(it))
-//            }
-//        }
-
         btn_lian_start.text = "开始练习"
 
         btn_lian_start.setOnClickListener {

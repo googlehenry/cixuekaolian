@@ -61,15 +61,45 @@
             android:textColor="#000000"
             android:textSize="@dimen/sp_20" />
 
-        <TextView
-            android:id="@+id/summary_exam_lastScores"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:textColor="#FF0000"
-            android:textSize="@dimen/sp_20"
-            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/floating_button_score_holder"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_60"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            android:background="@drawable/ic_icon_double_underscore"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/floating_button_score_id"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="40dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/floating_button_score"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:paddingBottom="@dimen/dp_10"
+                android:textColor="#ff0000"
+                android:textSize="32sp"
+                android:textStyle="italic"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="20dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:textStyle="bold|italic"
+                android:text="分"
+                android:textColor="#ff0000" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/summary_exam_description"

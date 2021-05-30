@@ -13,7 +13,7 @@ data class KaoContext(
     var type: KaoType,
     var typedEntityId: Int,
     var currentIsPartialQuestions: Boolean,
-    var earnedScoresLastTime: Boolean = false,
+    var earnedScoresLastTime: Double? = null,
     var earnedScoresThisTimeTemp: Double? = null,
     var previousExamSimuLoaded: Boolean = false,
     var loadLastExam: Boolean = false

@@ -246,7 +246,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
-            floating_button_score.visibility = View.GONE
+            floating_button_score_holder.visibility = View.GONE
         } else {
             practice_countdown_timer.text = "[已结束]"
             showExplanationForTemplate(template)
@@ -276,28 +276,14 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 },
                 uiAction = {
                     updateQuestions(template, it)
+                    if (template.submitted) {
+                        checkAnswers(template, false)
+                    }
                 })
 
         }
     }
 
-
-    private fun startExamSummaryActivity(
-        scoreEarned: Double,
-        right: Int,
-        wrong: Int,
-        missing: Int,
-        rate: Int
-    ) {
-//        var intent = Intent(this, LianPageScorePageActivityPractice::class.java)
-//        intent.putExtra("scoreEarned", scoreEarned)
-//        intent.putExtra("rate", rate)
-//
-//        intent.putExtra("right", right)
-//        intent.putExtra("wrong", wrong)
-//        intent.putExtra("missing", missing)
-//        startActivity(intent)
-    }
 
     private fun prepareQuestionData(qs: PracticeQuestion, qidx: Int, template: PracticeTemplate) {
         var options = RoomDB.get(applicationContext).practiceAnswerOption()
@@ -554,7 +540,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         dialog.setCanceledOnTouchOutside(true)
     }
 
-    private fun checkAnswers(template: PracticeTemplate) {
+    private fun checkAnswers(template: PracticeTemplate, doSaveActionsWithScores: Boolean = true) {
         template.submitted = true
         var scorePerQuestion =
             template.totalScore / (template.practiceQuestions()?.size ?: 1)
@@ -614,9 +600,9 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         var rate =
             (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
 
-        val earnedScore = (right * scorePerQuestion).toInt()
-        floating_button_score.text = "得分:${earnedScore}分"
-        floating_button_score.visibility = View.VISIBLE
+        val earnedScore = (right * scorePerQuestion)
+        floating_button_score.text = "${String.format("%.1f", earnedScore)}"
+        floating_button_score_holder.visibility = View.VISIBLE
 
         floating_button_score.setOnClickListener {
             val dialog = CommonDialog(this)
@@ -645,66 +631,68 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             dialog.setCanceledOnTouchOutside(true)
         }
 
-        awaitAsync(
-            {
-                var roomDb = RoomDB.get(applicationContext)
+        if (doSaveActionsWithScores) {
+            awaitAsync(
+                {
+                    var roomDb = RoomDB.get(applicationContext)
 
 
-                var answeredHistories = template.questionsDb?.map {
-                    var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
-                        .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
-                        ?: MyQuestionAnsweredHistory(
-                            userId = VariablesKao.currentUserId,
-                            practiceQuestionId = it.id!!,
-                            practiceTemplateId = template.id
-                        )
-                    questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
-                    questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
+                    var answeredHistories = template.questionsDb?.map {
+                        var questionHistoryRecord = roomDb.myQuestionAnsweredHistory()
+                            .getByUserAndQuestionId(VariablesKao.currentUserId, it.id!!)
+                            ?: MyQuestionAnsweredHistory(
+                                userId = VariablesKao.currentUserId,
+                                practiceQuestionId = it.id!!,
+                                practiceTemplateId = template.id
+                            )
+                        questionHistoryRecord.setMyAnswersJson(it.usersAnswers)
+                        questionHistoryRecord.answerIsCorrect = it.checkAnswerResultCorrect
 
-                    when (it.checkAnswerResultCorrect) {
-                        null -> questionHistoryRecord.skippedAttemptNo += 1
-                        true -> questionHistoryRecord.correctAttemptNo += 1
-                        false -> questionHistoryRecord.wrongAttemptNo += 1
+                        when (it.checkAnswerResultCorrect) {
+                            null -> questionHistoryRecord.skippedAttemptNo += 1
+                            true -> questionHistoryRecord.correctAttemptNo += 1
+                            false -> questionHistoryRecord.wrongAttemptNo += 1
+                        }
+
+                        questionHistoryRecord
+                    } ?: mutableListOf()
+
+                    answeredHistories?.toMutableList()?.let {
+                        roomDb.myQuestionAnsweredHistory()
+                            .insertAll(it)
                     }
 
-                    questionHistoryRecord
-                } ?: mutableListOf()
+                    VariablesLian.lianContext?.sections?.find {
+                        it.practiceTemplateIds()?.contains(template.id) == true
+                    }?.let {
+                        it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
+                            .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
+                        if (it.mySectionPracticeHistory == null) {
+                            var his = MySectionPracticeHistory(
+                                VariablesKao.currentUserId,
+                                it.id!!,
+                                template.id.toString()
+                            )
+                            var myId = roomDb.mySectionPracticeHistory().insert(his).toInt()
+                            his.id = myId
+                            it.mySectionPracticeHistory = his
+                        } else {
+                            var existingIds =
+                                it.mySectionPracticeHistory!!.myFinishedTemplateIds()
+                                    ?: sortedSetOf()
+                            existingIds.add(template.id)
 
-                answeredHistories?.toMutableList()?.let {
-                    roomDb.myQuestionAnsweredHistory()
-                        .insertAll(it)
-                }
-
-                VariablesLian.lianContext?.sections?.find {
-                    it.practiceTemplateIds()?.contains(template.id) == true
-                }?.let {
-                    it.mySectionPracticeHistory = roomDb.mySectionPracticeHistory()
-                        .getByUserIdAndSectionId(VariablesKao.currentUserId, it.id!!)
-                    if (it.mySectionPracticeHistory == null) {
-                        var his = MySectionPracticeHistory(
-                            VariablesKao.currentUserId,
-                            it.id!!,
-                            template.id.toString()
-                        )
-                        var myId = roomDb.mySectionPracticeHistory().insert(his).toInt()
-                        his.id = myId
-                        it.mySectionPracticeHistory = his
-                    } else {
-                        var existingIds =
-                            it.mySectionPracticeHistory!!.myFinishedTemplateIds() ?: sortedSetOf()
-                        existingIds.add(template.id)
-
-                        it.mySectionPracticeHistory!!.setMyFinishedTemplateIdsSortedString(
-                            existingIds.toMutableList()
-                        )
-                        roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
+                            it.mySectionPracticeHistory!!.setMyFinishedTemplateIdsSortedString(
+                                existingIds.toMutableList()
+                            )
+                            roomDb.mySectionPracticeHistory().insert(it.mySectionPracticeHistory!!)
+                        }
                     }
-                }
-            },
-            {
-                turnTo(template, 0)
-            })
+                },
+                {
+                    turnTo(template, 0)
+                })
 
-        startExamSummaryActivity(scoreEarned, right, wrong, missing, rate)
+        }
     }
 }

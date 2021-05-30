@@ -77,16 +77,12 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             loadCurrentQuestionTemplate()
         }
 
-//        VariablesKao.kaoContext?.earnedScoresLastTime?.let {
-//            Toast.makeText(this, "已恢复上次答题状态", Toast.LENGTH_SHORT).show()
-//        }
         floating_button_add.setOnClickListener {
             val cm: ClipboardManager? =
                 getSystemService(Context.CLIPBOARD_SERVICE)
                     ?.let { it as ClipboardManager }
 
             var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
             addNewCollectDialog(txt, "考试,手动添加")
         }
     }
@@ -262,7 +258,14 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             template.countDownTimer =
                 setUpTimer((template.totalTimeInMinutes * 60 * 1000).toLong())
             template.countDownTimer?.start()
+            floating_button_score_holder.visibility = View.GONE
         } else {
+            floating_button_score_holder.visibility = View.VISIBLE
+            var score: Double = VariablesKao.kaoContext?.earnedScoresThisTimeTemp ?: -1.0
+            if (score < 0) score = VariablesKao.kaoContext?.earnedScoresLastTime ?: -1.0
+            if (score >= 0) {
+                floating_button_score.text = String.format("%.1f", score)
+            }
             practice_countdown_timer.text = "[已结束]"
             showExplanationForTemplate(template)
         }
@@ -272,6 +275,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     private fun checkAnswers() {
         var checkedTemplates = VariablesKao.availableTemplatesMap.values
             .filter { VariablesKao.availableTemplateIds.contains(it.id) }
+        val totalScoreX = checkedTemplates.map { it.totalScore }.sum().toInt()
+
         var summayrChecked = checkedTemplates.map { template ->
             template.submitted = true
             template.questionsDb!!.map { question ->
@@ -333,6 +338,36 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         var missing = summayrChecked?.get(null)?.size ?: 0
         var rate =
             (right.toDouble() / (right + wrong + missing).toDouble() * 100).toInt()
+
+        floating_button_score.text = "${String.format("%.1f", scoreEarned)}"
+        floating_button_score_holder.visibility = View.VISIBLE
+
+        floating_button_score.setOnClickListener {
+            val dialog = CommonDialog(this)
+            dialog
+                .setTitle("考试得分")
+                .setReadOnly(true)
+                .setMessage(
+                    """
+                    得分: ${scoreEarned.toInt()}
+                    总分: ${totalScoreX}
+                    -----
+                    正确:${right}道 错误:${wrong} 未答:${missing}
+                """.trimIndent()
+                )
+                .setSingle(true)
+                .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
+                    override fun onNegtiveClick() {
+                        dialog.dismiss()
+                    }
+
+                    override fun onPositiveClick() {
+                        dialog.dismiss()
+                    }
+                })
+            dialog.show()
+            dialog.setCanceledOnTouchOutside(true)
+        }
 
         header_action_submit.isEnabled = false
         header_action_submit.setBackgroundResource(R.drawable.selector_button_round_cornor_grayed)
