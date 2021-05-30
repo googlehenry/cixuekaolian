@@ -376,6 +376,30 @@ interface MyUserDao {
 }
 
 @Dao
+interface MyInspirationDao {
+    @Query("SELECT * FROM MyInspiration")
+    fun getAll(): MutableList<MyInspiration>?
+
+    @Query("SELECT * FROM MyInspiration where id=:id")
+    fun getById(id: Int): MyInspiration?
+
+    @Query("SELECT * FROM MyInspiration order by id desc limit 1")
+    fun getLatest(): MyInspiration?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(item: MyInspiration)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(items: MutableList<MyInspiration>)
+
+    @Delete
+    fun delete(item: MyInspiration)
+
+    @Delete
+    fun delete(items: MutableList<MyInspiration>)
+}
+
+@Dao
 interface MyQuestionActionDao {
     @Query("SELECT * FROM MyQuestionAction")
     fun getAll(): MutableList<MyQuestionAction>

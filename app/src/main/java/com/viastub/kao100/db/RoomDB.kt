@@ -21,6 +21,7 @@ import androidx.room.RoomDatabase
         ConfigGlobal::class,
         MyConfigGlobal::class,
         MyUser::class,
+        MyInspiration::class,
         MyQuestionAction::class,
         MyQuestionAnsweredHistory::class,
         MyExamSimuHistory::class,
@@ -28,7 +29,7 @@ import androidx.room.RoomDatabase
         MyWordHistory::class,
         MyCollectedNote::class
     ],
-    version = 37,
+    version = 39,
     exportSchema = false
 )
 abstract class RoomDB : RoomDatabase() {
@@ -48,6 +49,7 @@ abstract class RoomDB : RoomDatabase() {
     abstract fun configGlobal(): ConfigGlobalDao
     abstract fun myConfigGlobal(): MyConfigGlobalDao
     abstract fun myUser(): MyUserDao
+    abstract fun myInspiration(): MyInspirationDao
     abstract fun myQuestionAction(): MyQuestionActionDao
     abstract fun myQuestionAnsweredHistory(): MyQuestionAnsweredHistoryDao
     abstract fun myExamSimuHistory(): MyExamSimuHistoryDao

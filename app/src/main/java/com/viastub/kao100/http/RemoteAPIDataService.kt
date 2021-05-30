@@ -1,10 +1,7 @@
 package com.viastub.kao100.http
 
 import com.viastub.kao100.beans.UserSignupResponse
-import com.viastub.kao100.db.ExamSimulation
-import com.viastub.kao100.db.PracticeSection
-import com.viastub.kao100.db.PracticeTarget
-import com.viastub.kao100.db.TeachingBook
+import com.viastub.kao100.db.*
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,6 +42,9 @@ class RemoteAPIDataService {
         fun getUnitById(
             @Path("sectionId") sectionId: Int
         ): Observable<PracticeSection>
+
+        @GET("client/inspirations")
+        fun getInspirations(): Observable<List<MyInspiration>?>
 
         @GET("client/exams")
         fun getExams(): Observable<List<ExamSimulation>?>

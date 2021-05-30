@@ -37,9 +37,6 @@ class MyProfileSettingActivity : BaseActivity() {
                     usernameView.setText(it.toCharArray(), 0, it.length)
                     usernameView.isEnabled = false
                 }
-//                it.officialPassword?.let {
-//                    passwordView.setText(it.toCharArray(), 0, it.length)
-//                }
             }
         })
 

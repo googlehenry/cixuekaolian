@@ -713,6 +713,24 @@ data class MyUser(
     }
 }
 
+@Entity
+data class MyInspiration(
+    @ColumnInfo
+    var motto: String?,
+    @ColumnInfo
+    var videoTitle: String?,
+    @ColumnInfo
+    var videoLink: String?,
+    @ColumnInfo
+    var videoDesc: String?,
+    @ColumnInfo
+    var videoImageCoverLink: String?,
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}
+
+
 @Parcelize
 @Entity
 data class MySectionPracticeHistory(

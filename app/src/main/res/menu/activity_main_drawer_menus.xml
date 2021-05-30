@@ -18,8 +18,12 @@
         <menu>
             <item
                 android:id="@+id/nav_myprofile_signup"
-                android:icon="@drawable/ic_menu_exit"
+                android:icon="@drawable/ic_menu_profile"
                 android:title="注册/绑定账号" />
+            <item
+                android:id="@+id/nav_mygrowup"
+                android:icon="@drawable/ic_menu_grow"
+                android:title="今日一帖" />
             <item
                 android:id="@+id/nav_db_management"
                 android:icon="@drawable/ic_menu_delete"

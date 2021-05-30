@@ -99,6 +99,7 @@
         android:layout_marginBottom="70dp" />
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_daily_video"
         android:clickable="true"
         android:layout_width="80dp"
         android:layout_height="100dp"

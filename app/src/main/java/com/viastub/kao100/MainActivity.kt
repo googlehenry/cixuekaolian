@@ -59,6 +59,10 @@ class MainActivity : BaseActivity() {
             (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment).refresh()
         }
 
+        gif_daily_video.setOnClickListener {
+            startActivity(Intent(this, MyDailyVideoActivity::class.java))
+        }
+
         awaitAsync({
             val roomDb = RoomDB.get(applicationContext)
             BasicDataLoader().load(applicationContext, roomDb)
@@ -278,6 +282,9 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.nav_myprofile_signup -> {
                     startActivity(Intent(this, MyProfileSettingActivity::class.java))
+                }
+                R.id.nav_mygrowup -> {
+                    startActivity(Intent(this, MyDailyVideoActivity::class.java))
                 }
 
             }
