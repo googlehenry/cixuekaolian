@@ -304,6 +304,12 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
                                             .contains(it)
                                     } ?: null)
                                 }
+                                QuestionType.CORRECT_SINGLE.name -> {
+                                    //var correct: Boolean = item.correctAnswers()?.any { ans -> (ans == it) } ?: false
+                                    if (question.usersAnswers.isNullOrEmpty()) null else (question.usersAnswers[option.id]?.let {
+                                        option.correctAnswers()?.contains(it)
+                                    } ?: null)
+                                }
                                 else -> {
                                     //暂不支持第三种
                                     null

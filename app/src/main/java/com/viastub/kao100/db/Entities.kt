@@ -554,7 +554,7 @@ enum class BrowseMode {
 }
 
 enum class QuestionType {
-    FILL, SELECT, CORRECT
+    FILL, SELECT, CORRECT, CORRECT_SINGLE
 }
 
 enum class AnswerOptionUI {

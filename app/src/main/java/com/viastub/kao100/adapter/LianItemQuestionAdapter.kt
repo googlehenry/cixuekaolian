@@ -8,11 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.viastub.kao100.R
-import com.viastub.kao100.db.MyQuestionAction
-import com.viastub.kao100.db.MyQuestionAnsweredHistory
-import com.viastub.kao100.db.PracticeQuestion
-import com.viastub.kao100.db.PracticeTemplate
-import com.viastub.kao100.utils.Constants
+import com.viastub.kao100.db.*
 import com.viastub.kao100.wigets.TextViewSelectionCallback
 
 
@@ -41,7 +37,7 @@ class LianItemQuestionAdapter(
         var questionFunctions = holder.getView<LinearLayout>(R.id.question_functions)
 
         item.optionsDb?.let {
-            if (item.type == Constants.practice_question_type_fill) {
+            if (item.type == QuestionType.FILL.name) {
                 var adapter =
                     LianQuestionAnswerAdapter(
                         item,
@@ -55,7 +51,7 @@ class LianItemQuestionAdapter(
                     context,
                     item.layoutOptionsPerRow
                 )
-            } else if (item.type == Constants.practice_question_type_select) {
+            } else if (item.type == QuestionType.SELECT.name) {
                 var adapter =
                     LianQuestionOptionAdapter(
                         item,
@@ -69,7 +65,11 @@ class LianItemQuestionAdapter(
                     context,
                     item.layoutOptionsPerRow
                 )
-            } else if (item.type == Constants.practice_question_type_correct) {
+            } else if (item.type in listOf(
+                    QuestionType.CORRECT.name,
+                    QuestionType.CORRECT_SINGLE.name
+                )
+            ) {
                 var adapter =
                     LianQuestionCorrectionAdapter(
                         item,
