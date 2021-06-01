@@ -11,7 +11,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -660,7 +659,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         myQuestionAnsweredHistoryDb: MyQuestionAnsweredHistory?
     ) {
         val dialog = CommonDialog(this)
-        var errobook = (v?.let { it as ImageView })
+        var errobook = (v?.let { it as Button })
 
         dialog
             .setTitle("移除错题!")
@@ -692,10 +691,12 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             it.isFavorite = (it.isFavorite != true)
 
             if (it.isFavorite == true) {
-                (v as ImageView).setImageResource(R.drawable.ci_word_heart_selected)
+                (v as Button).text = "已收藏"
+                (v as Button).setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_red)
                 Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show()
             } else {
-                (v as ImageView).setImageResource(R.drawable.ci_word_heart_gray)
+                (v as Button).text = "收藏"
+                (v as Button).setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_blue)
             }
 
             doAsync { RoomDB.get(applicationContext).myQuestionAction().insert(it) }
@@ -720,7 +721,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
                 input.visibility = View.GONE
                 if (!entered.isNullOrBlank()) {
-                    (v as Button).text = "我的笔记"
+                    (v as Button).text = "查看笔记"
                     v.setBackgroundResource(R.drawable.selector_button_round_cornor_question_functions_orange)
                 } else {
                     (v as Button).text = "添加笔记"
