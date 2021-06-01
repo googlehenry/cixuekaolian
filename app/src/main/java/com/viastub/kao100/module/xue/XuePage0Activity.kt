@@ -2,12 +2,16 @@ package com.viastub.kao100.module.xue
 
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.beans.XueContext
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.db.TeachingBook
+import com.viastub.kao100.module.my.MyCiHistoryPageActivity
+import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.activity_xue_chapter_page.*
 
@@ -33,6 +37,21 @@ class XuePage0Activity : BaseActivity() {
         }
         textbook_name.text = teachingBook?.name
 
+        sidebar_action_mywords.setOnClickListener {
+            var intent = Intent(this, MyCiHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_myquestions.setOnClickListener {
+            var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_mynotes.setOnClickListener {
+            var intent = Intent(this, MyCollectionHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_hideme.setOnClickListener {
+            sidebar_action_holder.visibility = View.GONE
+        }
 
         teachingBook?.unitIds()?.let {
             awaitAsync({

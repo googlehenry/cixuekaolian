@@ -11,12 +11,20 @@ import com.viastub.kao100.beans.TemplateIDStatus
 import com.viastub.kao100.db.PracticeBook
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.module.my.MyCiHistoryPageActivity
+import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesLian
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.btn_lian_start
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_back
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.header_title
 import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.*
+import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.sidebar_action_hideme
+import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.sidebar_action_holder
+import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.sidebar_action_mynotes
+import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.sidebar_action_myquestions
+import kotlinx.android.synthetic.main.activity_lian_book_unit_summary.sidebar_action_mywords
 
 class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
 
@@ -54,6 +62,22 @@ class LianBookUnitSummaryActivity : BaseActivity(), View.OnClickListener {
                 sortedBy = SortedBy.CREATED_ID
                 refreshPage()
             }
+        }
+
+        sidebar_action_mywords.setOnClickListener {
+            var intent = Intent(this, MyCiHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_myquestions.setOnClickListener {
+            var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_mynotes.setOnClickListener {
+            var intent = Intent(this, MyCollectionHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_hideme.setOnClickListener {
+            sidebar_action_holder.visibility = View.GONE
         }
 
     }

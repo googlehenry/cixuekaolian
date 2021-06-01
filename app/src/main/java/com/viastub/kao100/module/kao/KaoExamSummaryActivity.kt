@@ -12,6 +12,9 @@ import com.viastub.kao100.beans.KaoType
 import com.viastub.kao100.db.ExamSimulation
 import com.viastub.kao100.db.PracticeSection
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.module.my.MyCiHistoryPageActivity
+import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 
@@ -42,6 +45,22 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                 )
 
             }
+        }
+
+        sidebar_action_mywords.setOnClickListener {
+            var intent = Intent(this, MyCiHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_myquestions.setOnClickListener {
+            var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_mynotes.setOnClickListener {
+            var intent = Intent(this, MyCollectionHistoryPageActivity::class.java)
+            startActivity(intent)
+        }
+        sidebar_action_hideme.setOnClickListener {
+            sidebar_action_holder.visibility = View.GONE
         }
 
         loadDb(exam)
