@@ -43,7 +43,6 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
                         startExam(exam, it, false)
                     }
                 )
-
             }
         }
 
