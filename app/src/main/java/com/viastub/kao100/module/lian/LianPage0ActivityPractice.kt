@@ -517,7 +517,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         val dialog = CommonDialog(this)
         dialog
-            .setTitle("移除错题!")
+            .setTitle("删除错题?")
             .setReadOnly(true)
             .setMessage("当前已收录于错题本，被移除错题后你将无法再将其加入,除非下次做题过程中再次犯错,确定吗?")
             .setSingle(false)
