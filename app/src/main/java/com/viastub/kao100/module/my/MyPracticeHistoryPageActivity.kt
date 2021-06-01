@@ -74,7 +74,7 @@ class MyPracticeHistoryPageActivity : BaseActivity(), View.OnClickListener {
 
         searchView.isSubmitButtonEnabled = false
         searchView.onActionViewExpanded()
-        radiogroup_questions_errors.isChecked = true
+        radiogroup_questions_all.isChecked = true
 
         loadQuestionHistory()
 

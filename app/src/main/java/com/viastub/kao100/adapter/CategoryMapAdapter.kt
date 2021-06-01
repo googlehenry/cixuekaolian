@@ -1,7 +1,7 @@
 package com.viastub.kao100.adapter
 
 import android.view.View
-import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -21,7 +21,7 @@ class CategoryMapAdapter(var itemClickListener: View.OnClickListener) :
 
         holder.setText(R.id.question_count, count)
 
-        var bookItemHolder = holder.getView<LinearLayout>(R.id.question_holder_root)
+        var bookItemHolder = holder.getView<CardView>(R.id.question_holder_root)
 
         bookItemHolder.setTag(R.id.question_holder_root, item)
         bookItemHolder.setOnClickListener {
