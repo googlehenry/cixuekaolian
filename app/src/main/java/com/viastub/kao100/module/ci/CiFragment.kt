@@ -101,10 +101,6 @@ class CiFragment : BaseFragment(), View.OnClickListener {
                 ?: mutableListOf()
         recycler_view_high.adapter = mSearchedWordAdapter
 
-//        searchView.isSubmitButtonEnabled = false
-//        searchView.onActionViewExpanded()
-//        searchView.clearFocus()
-
         searchView.setOnClickListener { searchView.onActionViewExpanded() }
 
 

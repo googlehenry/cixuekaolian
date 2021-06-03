@@ -2,17 +2,23 @@ package com.viastub.kao100.module.my
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.CountDownTimer
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.LianItemQuestionAdapter
 import com.viastub.kao100.adapter.QuestionActionListener
@@ -23,9 +29,9 @@ import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesLian
 import com.viastub.kao100.wigets.CommonDialog
 import com.viastub.kao100.wigets.TextViewSelectionCallback
-import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
+import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 import kotlinx.android.synthetic.main.activity_lian_item_page.*
-import kotlinx.android.synthetic.main.activity_lian_item_page.floating_button_add
+import kotlinx.android.synthetic.main.activity_lian_item_page.floating_buttons_menus
 import kotlinx.android.synthetic.main.activity_lian_item_page.header_back
 import java.io.File
 import java.util.*
@@ -91,15 +97,94 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 }
             }
         })
-        floating_button_add.setOnClickListener {
-            val cm: ClipboardManager? =
-                getSystemService(Context.CLIPBOARD_SERVICE)
-                    ?.let { it as ClipboardManager }
 
-            var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-//            cm.setPrimaryClip(ClipData.newPlainText("", ""));
-            addNewCollectDialog(txt, "练习,手动添加")
-        }
+        floatingButtonMenusSetup()
+
+    }
+
+    private fun floatingButtonMenusSetup() {
+
+        val itemBuilder = SubActionButton.Builder(this)
+        itemBuilder.setBackgroundDrawable(
+            BitmapDrawable(
+                resources,
+                BitmapFactory.decodeResource(resources, R.drawable.shape_button_round_white)
+            )
+        )
+
+        val actionMenu = FloatingActionMenu.Builder(this)
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.gray, null)
+                        it.setImageResource(R.drawable.ic_func_dictionary)
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.gray, null)
+                it.setImageResource(R.drawable.ic_func_textbook)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.gray, null)
+                it.setImageResource(R.drawable.ic_func_practice)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.setImageResource(R.drawable.icon_button_plus)
+
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    val cm: ClipboardManager? =
+                                        getSystemService(Context.CLIPBOARD_SERVICE)
+                                            ?.let { it as ClipboardManager }
+
+                                    var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+                                    addNewCollectDialog(txt, "试卷简介,手动添加")
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .setStartAngle(180)
+            .setEndAngle(270)
+            .attachTo(floating_buttons_menus)
+            .build()
+
+        floating_buttons_menus.postDelayed({
+            floating_buttons_menus.performClick()
+        }, 200)
 
     }
 

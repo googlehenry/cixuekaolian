@@ -1,9 +1,17 @@
 package com.viastub.kao100.module.kao
 
 import android.app.AlertDialog
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.TestSectionAdapter
 import com.viastub.kao100.base.BaseActivity
@@ -17,6 +25,7 @@ import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
 import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
+
 
 class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
 
@@ -33,6 +42,9 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
         header_title.text = "试卷信息"
 
 
+        floatingButtonMenusSetup()
+
+
         btn_lian_start.setOnClickListener {
             exam?.let {
                 awaitAsync(dataAction = {
@@ -46,23 +58,107 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        sidebar_action_mywords.setOnClickListener {
-            var intent = Intent(this, MyCiHistoryPageActivity::class.java)
-            startActivity(intent)
-        }
-        sidebar_action_myquestions.setOnClickListener {
-            var intent = Intent(this, MyPracticeHistoryPageActivity::class.java)
-            startActivity(intent)
-        }
-        sidebar_action_mynotes.setOnClickListener {
-            var intent = Intent(this, MyCollectionHistoryPageActivity::class.java)
-            startActivity(intent)
-        }
-        sidebar_action_hideme.setOnClickListener {
-            sidebar_action_holder.visibility = View.GONE
-        }
-
         loadDb(exam)
+    }
+
+    private fun floatingButtonMenusSetup() {
+
+        val itemBuilder = SubActionButton.Builder(this)
+        itemBuilder.setBackgroundDrawable(
+            BitmapDrawable(
+                resources,
+                BitmapFactory.decodeResource(resources, R.drawable.shape_button_round_white)
+            )
+        )
+
+        val actionMenu = FloatingActionMenu.Builder(this)
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.setImageResource(R.drawable.ic_func_dictionary)
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    startActivity(
+                                        Intent(
+                                            this,
+                                            MyCiHistoryPageActivity::class.java
+                                        )
+                                    )
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.setImageResource(R.drawable.ic_func_textbook)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MyCollectionHistoryPageActivity::class.java
+                                )
+                            )
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.setImageResource(R.drawable.ic_func_practice)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MyPracticeHistoryPageActivity::class.java
+                                )
+                            )
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.setImageResource(R.drawable.icon_button_plus)
+
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    val cm: ClipboardManager? =
+                                        getSystemService(Context.CLIPBOARD_SERVICE)
+                                            ?.let { it as ClipboardManager }
+
+                                    var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+                                    addNewCollectDialog(txt, "试卷简介,手动添加")
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .setStartAngle(180)
+            .setEndAngle(270)
+            .attachTo(floating_buttons_menus)
+            .build()
+
+        floating_buttons_menus.postDelayed({
+            floating_buttons_menus.performClick()
+        }, 200)
     }
 
     private fun loadDb(exam: ExamSimulation) {

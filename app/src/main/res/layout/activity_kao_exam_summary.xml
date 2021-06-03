@@ -137,68 +137,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/sidebar_action_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_buttons_menus"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
         android:layout_gravity="right|bottom"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="70dp"
-        android:orientation="vertical">
+        android:src="@drawable/ic_my_profile_solid"
+        app:rippleColor="#ffe5e5e5"
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="6dp"
+        app:pressedTranslationZ="6dp"
+        app:fabSize="mini"
+        app:borderWidth="0dp" />
 
-        <ImageView
-            android:id="@+id/sidebar_action_hideme"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="right"
-            android:clickable="true"
-            android:src="@drawable/selector_lian_result_cross_gray" />
 
-        <LinearLayout
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_button_square_cornor_primary_round5"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:gravity="center"
-                android:text="我的"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/sidebar_action_mywords"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/selector_button_square_cornor_blue"
-                android:text="单词"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:id="@+id/sidebar_action_myquestions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/selector_button_square_cornor_blue"
-                android:text="题"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:id="@+id/sidebar_action_mynotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:background="@drawable/selector_button_square_cornor_blue"
-                android:text="笔记"
-                android:textColor="#ffffff" />
-
-        </LinearLayout>
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

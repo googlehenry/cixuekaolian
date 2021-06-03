@@ -55,7 +55,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_ci_search"
+            android:background="@drawable/selector_textinput_round_cornor_grayed"
             android:iconifiedByDefault="true"
             android:queryHint="输入关键词搜索历史题目" />
 

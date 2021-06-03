@@ -179,15 +179,15 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/floating_buttons_menus"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
         android:layout_gravity="right|bottom"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="70dp"
-        android:src="@drawable/ic_drawer_menu_notebook_white"
+        android:src="@drawable/ic_my_profile_solid"
         app:rippleColor="#ffe5e5e5"
-        app:backgroundTint="@color/orange_01"
+        app:backgroundTint="@color/colorPrimary"
         app:elevation="6dp"
         app:pressedTranslationZ="6dp"
         app:fabSize="mini"

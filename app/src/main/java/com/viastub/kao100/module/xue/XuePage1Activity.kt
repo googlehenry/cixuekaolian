@@ -2,21 +2,36 @@ package com.viastub.kao100.module.xue
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.view.MotionEvent
+import android.view.View
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.google.android.material.tabs.TabLayout
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton
 import com.viastub.kao100.R
 import com.viastub.kao100.adapter.CommonViewPagerAdapter
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.beans.XueContext
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.module.my.MyCiHistoryPageActivity
+import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
+import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.utils.VariablesXue
+import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
+import kotlinx.android.synthetic.main.activity_xue_chapter_page.*
 import kotlinx.android.synthetic.main.activity_xue_detail_page.*
+import kotlinx.android.synthetic.main.activity_xue_detail_page.floating_buttons_menus
+import kotlinx.android.synthetic.main.activity_xue_detail_page.header_back
+import kotlinx.android.synthetic.main.activity_xue_detail_page.project_tab_layout
 import java.io.File
 
 
@@ -124,15 +139,6 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
             ).show()
         }
 
-        floating_button_add.setOnClickListener {
-            val cm: ClipboardManager? =
-                getSystemService(Context.CLIPBOARD_SERVICE)
-                    ?.let { it as ClipboardManager }
-
-            var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
-            addNewCollectDialog(txt, "学习,手动添加")
-        }
-
         play_pause.setOnClickListener {
             mediaPlayer?.let {
                 if (it.isPlaying) {
@@ -176,6 +182,109 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
             }
 
         })
+
+        floatingButtonMenusSetup()
+    }
+
+
+    private fun floatingButtonMenusSetup() {
+
+        val itemBuilder = SubActionButton.Builder(this)
+        itemBuilder.setBackgroundDrawable(
+            BitmapDrawable(
+                resources,
+                BitmapFactory.decodeResource(resources, R.drawable.shape_button_round_white)
+            )
+        )
+
+        val actionMenu = FloatingActionMenu.Builder(this)
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.setImageResource(R.drawable.ic_func_dictionary)
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    startActivity(
+                                        Intent(
+                                            this,
+                                            MyCiHistoryPageActivity::class.java
+                                        )
+                                    )
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.setImageResource(R.drawable.ic_func_textbook)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MyCollectionHistoryPageActivity::class.java
+                                )
+                            )
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
+                it.isClickable = true
+                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.setImageResource(R.drawable.ic_func_practice)
+                it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MyPracticeHistoryPageActivity::class.java
+                                )
+                            )
+                        }
+                    }
+                    false
+                }
+            }).build())
+            .addSubActionView(
+                itemBuilder
+                    .setContentView(ImageView(this).also {
+                        it.isClickable = true
+                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.setImageResource(R.drawable.icon_button_plus)
+
+                        it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+                            when (motionEvent.action) {
+                                MotionEvent.ACTION_DOWN -> {
+                                    val cm: ClipboardManager? =
+                                        getSystemService(Context.CLIPBOARD_SERVICE)
+                                            ?.let { it as ClipboardManager }
+
+                                    var txt = cm!!.primaryClip?.getItemAt(0)?.text.toString()
+                                    addNewCollectDialog(txt, "试卷简介,手动添加")
+                                }
+                            }
+                            false
+                        }
+                    }).build()
+            )
+            .setStartAngle(180)
+            .setEndAngle(270)
+            .attachTo(floating_buttons_menus)
+            .build()
+
+        floating_buttons_menus.postDelayed({
+            floating_buttons_menus.performClick()
+        }, 200)
 
     }
 

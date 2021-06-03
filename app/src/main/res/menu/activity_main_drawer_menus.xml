@@ -5,15 +5,15 @@
         <menu>
             <item
                 android:id="@+id/nav_mywordhistory"
-                android:icon="@drawable/ic_menu_favorite"
+                android:icon="@drawable/ic_func_dictionary"
                 android:title="单词记录" />
             <item
                 android:id="@+id/nav_mypracticehistory"
-                android:icon="@drawable/ic_drawer_menu_errorbook"
+                android:icon="@drawable/ic_func_practice"
                 android:title="做题历史" />
             <item
                 android:id="@+id/nav_mycollect"
-                android:icon="@drawable/ic_drawer_menu_notebook"
+                android:icon="@drawable/ic_func_textbook"
                 android:title="笔记收集" />
         </menu>
     </item>

@@ -91,7 +91,7 @@ class MyCiHistoryPageActivity : BaseActivity(), View.OnClickListener {
         recycler_view_high.adapter = SearchedWordHistoryAdapter(this)
 
         searchView.isSubmitButtonEnabled = false
-        searchView.onActionViewExpanded()
+        searchView.setOnClickListener { searchView.onActionViewExpanded() }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false

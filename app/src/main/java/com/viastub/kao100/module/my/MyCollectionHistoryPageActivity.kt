@@ -11,6 +11,7 @@ import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.wigets.CommonDialog
+import kotlinx.android.synthetic.main.fragment_ci.*
 import kotlinx.android.synthetic.main.my_ci.*
 import kotlinx.android.synthetic.main.my_ci.header_back
 import kotlinx.android.synthetic.main.my_ci.recycler_view_high
@@ -71,7 +72,7 @@ class MyCollectionHistoryPageActivity : BaseActivity(), View.OnClickListener {
         recycler_view_high.adapter = adapter
         title_high.text = "我的收集(共${myCollectedNotesDB.size}条)"
         searchView.isSubmitButtonEnabled = false
-        searchView.onActionViewExpanded()
+        searchView.setOnClickListener { searchView.onActionViewExpanded() }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
