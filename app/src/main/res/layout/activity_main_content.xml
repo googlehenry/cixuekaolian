@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/selector_spin_grades_primary"
             android:padding="@dimen/dp_0"
             app:contentInsetStart="@dimen/dp_0"
             app:contentInsetEnd="0dp"
@@ -36,19 +36,17 @@
                     app:textTint="#FFFFFF"
                     app:arrowTint="#FFFFFF"
                     app:backgroundSelector="@drawable/selector_spin_grades_primary"
-                    android:backgroundTint="@color/colorPrimary"
                     android:layout_width="@dimen/dp_120"
                     android:layout_height="wrap_content" />
 
-                <ImageView
+                <Button
                     android:id="@+id/header_action_refresh"
-                    android:clickable="true"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="28dp"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center_vertical"
-                    android:tooltipText="刷新列表"
-                    android:src="@drawable/ic_icon_refresh" />
+                    android:background="@drawable/selector_button_square_cornor_accent_round5"
+                    android:text="刷新数据" />
             </LinearLayout>
 
 

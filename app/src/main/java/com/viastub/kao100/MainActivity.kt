@@ -1,7 +1,6 @@
 package com.viastub.kao100
 
 import android.content.Intent
-import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -203,20 +202,11 @@ class MainActivity : BaseActivity() {
                 floating_button_expiry.visibility = View.VISIBLE
                 floating_button_expiry.text = tlabel
                 if (day < 7) {
-                    floating_button_expiry.setBackgroundColor(
-                        Color.parseColor(
-                            "#000000"
-                        )
-                    )
+                    floating_button_expiry.setBackgroundResource(R.drawable.selector_button_round_cornor_red_radius)
                 }
                 if (it < expiryLimit) {
                     floating_button_expiry.text = "点我续费"
                     currentFragment.timeExpired = true
-                    floating_button_expiry.setBackgroundColor(
-                        Color.parseColor(
-                            "#FF0000"
-                        )
-                    )
                     floating_button_expiry.postDelayed({
                         floating_button_expiry.performClick()
                     }, 200)
