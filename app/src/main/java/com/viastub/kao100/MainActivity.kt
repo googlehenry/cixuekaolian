@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
@@ -100,29 +99,25 @@ class MainActivity : BaseActivity() {
                 .setSingle(true)
                 .setOnClickBottomListener(object : CommonDialog.OnClickBottomListener {
                     override fun onNegtiveClick() {
-                        if (accountExpiryInSeconds > 60) {
-                            dialog.dismiss()
-                        }
+                        dialog.dismiss()
                     }
 
                     override fun onPositiveClick() {
-                        if (accountExpiryInSeconds > 60) {
-                            dialog.dismiss()
-                        }
+                        dialog.dismiss()
                     }
                 })
             dialog.show()
-            if (accountExpiryInSeconds > 60) {
+
+            accountExpiryInSeconds?.let {
                 dialog.setCanceledOnTouchOutside(true)
-            } else {
-                dialog.setCancelable(false)
             }
+
         }
 
     }
 
-    var accountExpiryInSeconds: Int = Int.MAX_VALUE
-
+    var accountExpiryInSeconds: Int? = null
+    val expiryLimit = 60
     private fun refreshUserAccountInfo() {
         awaitAsync({
             val roomDb = RoomDB.get(applicationContext)
@@ -136,7 +131,7 @@ class MainActivity : BaseActivity() {
                 }
 
                 if (it.officialName.isNullOrBlank() || it.expiryInSeconds == null) {
-                    val intent = Intent(this, MyProfileSettingActivity::class.java)
+                    val intent = Intent(this, MyBindingAccountActivity::class.java)
                     intent.putExtra("blockBackAction", true)
                     startActivity(intent)
                 }
@@ -150,18 +145,8 @@ class MainActivity : BaseActivity() {
             roomDb.myUser().getById(1)
         }, {
             it?.let {
-                it.expiryInSeconds?.let {
-                    val hourTotal = (it / 3600).toInt()
-                    val day: Int = hourTotal / 24
-                    val hour: Int = hourTotal % 24
-                    val tlabel = createExpiryLabel(day, hour)
-                    floating_button_expiry.visibility = View.VISIBLE
-                    floating_button_expiry.text = tlabel
-                }
 
                 if (it.officialName.isNullOrBlank() || it.expiryInSeconds == null) {
-                } else if (it.expiryInSeconds!! < 60) {
-                    Toast.makeText(this, "免费时间即将到期", Toast.LENGTH_SHORT).show()
                 } else {
                     //check latest expiryInSeconds
                     doAsync {
@@ -180,31 +165,12 @@ class MainActivity : BaseActivity() {
                                 UserSignupResponseCode.validated.name -> {
                                     roomDb.myUser().getById(1)?.let {
                                         it.expiryInSeconds = resp.expiryInSeconds
+                                        accountExpiryInSeconds = it.expiryInSeconds
                                         roomDb.myUser().update(it)
                                     }
-                                    it.expiryInSeconds?.let {
-                                        val hourTotal = (it / 3600).toInt()
-                                        val day: Int = hourTotal / 24
-                                        val hour: Int = hourTotal % 24
-                                        val tlabel = createExpiryLabel(day, hour)
-                                        accountExpiryInSeconds = it
 
-                                        LogUtilKt.i(tlabel)
-                                        runOnUiThread {
-                                            floating_button_expiry.visibility = View.VISIBLE
-                                            floating_button_expiry.text = tlabel
-                                            if (day < 7) {
-                                                floating_button_expiry.setBackgroundColor(
-                                                    Color.parseColor(
-                                                        "#000000"
-                                                    )
-                                                )
-                                            }
-                                            if (accountExpiryInSeconds < 60) {
-                                                floating_button_expiry.performClick()
-                                            }
-                                        }
-
+                                    runOnUiThread {
+                                        actForExpiryCheck()
                                     }
                                 }
                             }
@@ -214,6 +180,49 @@ class MainActivity : BaseActivity() {
 
             }
         })
+    }
+
+    private fun actForExpiryCheck() {
+        accountExpiryInSeconds?.let {
+            val hourTotal = (it / 3600).toInt()
+            val day: Int = hourTotal / 24
+            val hour: Int = hourTotal % 24
+            val tlabel = createExpiryLabel(day, hour)
+
+
+            var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
+            var currentFragment = (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+            currentFragment.timeExpired = false
+
+            if (currentFragment is CiFragment) {
+                //Ci is forever free to use
+                floating_button_expiry.text = "词典免费"
+                floating_button_expiry.visibility = View.VISIBLE
+                floating_button_expiry.setBackgroundResource(R.drawable.selector_button_round_cornor_blue_radius)
+            } else {
+                floating_button_expiry.visibility = View.VISIBLE
+                floating_button_expiry.text = tlabel
+                if (day < 7) {
+                    floating_button_expiry.setBackgroundColor(
+                        Color.parseColor(
+                            "#000000"
+                        )
+                    )
+                }
+                if (it < expiryLimit) {
+                    floating_button_expiry.text = "点我续费"
+                    currentFragment.timeExpired = true
+                    floating_button_expiry.setBackgroundColor(
+                        Color.parseColor(
+                            "#FF0000"
+                        )
+                    )
+                    floating_button_expiry.postDelayed({
+                        floating_button_expiry.performClick()
+                    }, 200)
+                }
+            }
+        }
     }
 
     private fun createExpiryLabel(day: Int, hour: Int): String {
@@ -281,7 +290,7 @@ class MainActivity : BaseActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_myprofile_signup -> {
-                    startActivity(Intent(this, MyProfileSettingActivity::class.java))
+                    startActivity(Intent(this, MyBindingAccountActivity::class.java))
                 }
                 R.id.nav_mygrowup -> {
                     startActivity(Intent(this, MyDailyVideoActivity::class.java))
@@ -327,6 +336,8 @@ class MainActivity : BaseActivity() {
                     }
                     else -> toolbar.title = "词学练考100分"
                 }
+
+                actForExpiryCheck()
             }
         })
 
@@ -354,6 +365,7 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
             }
+            //Ci is free, but for others, need check expiry check
             false
         }
         bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED

@@ -10,14 +10,14 @@ import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.http.RemoteAPIDataService
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.activity_ci_word_setting.header_back
-import kotlinx.android.synthetic.main.activity_my_profile_setting.*
+import kotlinx.android.synthetic.main.activity_my_account_setting.*
 import retrofit2.HttpException
 
 
-class MyProfileSettingActivity : BaseActivity() {
+class MyBindingAccountActivity : BaseActivity() {
 
     override fun id(): Int {
-        return R.layout.activity_my_profile_setting
+        return R.layout.activity_my_account_setting
     }
 
     var blockBackAction: Boolean = false
@@ -76,6 +76,8 @@ class MyProfileSettingActivity : BaseActivity() {
                                         passwordView.isEnabled = false
                                         result_image.setImageResource(R.drawable.icon_lian_result_tick)
                                         result_message.text = "注册/绑定账号成功"
+                                        Toast.makeText(this, "注册/绑定成功", Toast.LENGTH_SHORT).show()
+                                        onBackPressed()//auto return after success
                                     }
 
                                 }

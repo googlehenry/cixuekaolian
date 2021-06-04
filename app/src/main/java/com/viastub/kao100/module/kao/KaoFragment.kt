@@ -113,6 +113,10 @@ class KaoFragment : BaseFragment(), View.OnClickListener {
 
     var downloadingId: Int? = null
     override fun onClick(v: View?) {
+        if (timeExpired) {
+            Toast.makeText(mContext, "该功能无法使用,请点击右下角按钮续费.", Toast.LENGTH_SHORT).show()
+            return
+        }
         v?.let {
             if (downloadingId != null) {
                 Toast.makeText(mContext, "正在下载...", Toast.LENGTH_SHORT).show()

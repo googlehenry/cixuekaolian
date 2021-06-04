@@ -14,6 +14,7 @@ import kotlinx.coroutines.*
 
 abstract class BaseFragment : Fragment() {
     lateinit var mContext: Context
+    var timeExpired: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -162,6 +162,11 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
     var downloadingId: Int? = null
     override fun start(book: PracticeBook, unitSection: PracticeSection) {
+        if (timeExpired) {
+            Toast.makeText(mContext, "该功能无法使用,请点击右下角按钮续费.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (downloadingId != null) {
             Toast.makeText(mContext, "正在下载...", Toast.LENGTH_SHORT).show()
             return
