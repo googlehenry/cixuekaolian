@@ -65,7 +65,8 @@ abstract class BaseFragment : Fragment() {
         ActivityUtils.goToDictionary(mContext, wordlist, word)
     }
 
-    open fun refresh() {}
+    open fun initPageIfNoData() {}
+    open fun refresh(silentMode: Boolean = false) {}
     open fun gradeChanged() {}
 
 }

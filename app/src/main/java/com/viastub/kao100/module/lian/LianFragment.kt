@@ -93,6 +93,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             what_if_no_content.visibility = View.VISIBLE
         } else {
             what_if_no_content.visibility = View.GONE
+            what_if_no_content_gif.visibility = View.GONE
         }
     }
 
@@ -278,14 +279,25 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         startActivity(intent)
     }
 
-    override fun refresh() {
+    var isRefreshingList = false
+    override fun refresh(silentMode: Boolean) {
+        if (isRefreshingList) {
+            Toast.makeText(mContext, "正在刷新请稍等", Toast.LENGTH_SHORT).show()
+            return
+        }
+        isRefreshingList = true
+
+        what_if_no_content_gif.visibility = View.VISIBLE
         val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-        dialogBuilder.setTitle("正在刷新列表")
+        dialogBuilder.setTitle("正在刷新列表...")
         dialogBuilder.setCancelable(false)
-        dialogBuilder.setPositiveButton("OK") { dialog, which ->
+        dialogBuilder.setPositiveButton("确定") { dialog, which ->
             dialog.dismiss()
         }
-        val dialog = dialogBuilder.show()
+        var dialog: AlertDialog? = null
+        if (!silentMode) {
+            dialog = dialogBuilder.show()
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
@@ -351,7 +363,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }
                     }
 
-                    dialog.dismiss()
+                    dialog?.dismiss()
                     //download book covers file
                     if (links.isNotEmpty()) {
                         downloadingId = 1
@@ -364,6 +376,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                     override fun onDownloadSuccess() {
                                         //Mark download completed
                                         LogUtilKt.i("Download book covers done")
+                                        isRefreshingList = false
                                         downloadingId = null
                                         loadTargets()
                                         main_downloading_progress.max = 100
@@ -391,6 +404,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                             }
                                         }
 
+                                        isRefreshingList = false
                                         loadTargets()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -402,12 +416,14 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                     }
 
                     if (updatedOnlineBooks.isNullOrEmpty() && updatedOnlineTargets.isNullOrEmpty() && updatedOnlineUnits.isNullOrEmpty()) {
+                        isRefreshingList = false
                         loadTargets()
                         ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
                         if (links.isNotEmpty()) {
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
+                            isRefreshingList = false
                             loadTargets()
                             ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                         }
@@ -426,6 +442,15 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         loadTargets(currentTargetId ?: 1)
     }
 
+    override fun initPageIfNoData() {
+        recycler_view_lian_targets.adapter?.let {
+            var targets = (it as ExcerciseTargetsAdapter)?.data
+            if (targets.isNullOrEmpty()) {
+                refresh(true)
+            }
+        }
+
+    }
 }
 
 interface OnExcercistStartListener {

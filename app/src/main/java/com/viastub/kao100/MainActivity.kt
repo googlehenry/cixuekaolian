@@ -71,9 +71,8 @@ class MainActivity : BaseActivity() {
                 spin_my_grade.attachDataSource(it)
                 spin_my_grade.setOnSpinnerItemSelectedListener { parent, view, position, id ->
                     VariablesMain.selectedGrade = spin_my_grade.selectedItem as String
-                    var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
                     var currentFragment =
-                        (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+                        getCurrentFragment()
                     currentFragment.gradeChanged()
                 }
             }
@@ -169,7 +168,7 @@ class MainActivity : BaseActivity() {
                                     }
 
                                     runOnUiThread {
-                                        actForExpiryCheck()
+                                        actForExpiryCheck(getCurrentFragment())
                                     }
                                 }
                             }
@@ -181,16 +180,15 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    private fun actForExpiryCheck() {
+    private fun actForExpiryCheck(currentFragment: BaseFragment) {
         accountExpiryInSeconds?.let {
             val hourTotal = (it / 3600).toInt()
             val day: Int = hourTotal / 24
             val hour: Int = hourTotal % 24
             val tlabel = createExpiryLabel(day, hour)
 
+            currentFragment
 
-            var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
-            var currentFragment = (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
             currentFragment.timeExpired = false
 
             if (currentFragment is CiFragment) {
@@ -255,8 +253,7 @@ class MainActivity : BaseActivity() {
         nav_view.setNavigationItemSelectedListener {
             // Handle navigation view item clicks here.
 
-            var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
-            var currentFragment = (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+            getCurrentFragment()
 
             when (it.itemId) {
                 R.id.nav_mywordhistory -> {
@@ -326,8 +323,9 @@ class MainActivity : BaseActivity() {
                     }
                     else -> toolbar.title = "词学练考100分"
                 }
-
-                actForExpiryCheck()
+                var currentFragment = getCurrentFragment()
+                actForExpiryCheck(currentFragment)
+                currentFragment.initPageIfNoData()
             }
         })
 
@@ -360,6 +358,12 @@ class MainActivity : BaseActivity() {
         }
         bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         bottom_navigation.selectedItemId = R.id.navigation_ci
+    }
+
+    private fun getCurrentFragment(): BaseFragment {
+        var pagerAdapter = (view_pager.adapter as CommonViewPagerAdapter)
+        var currentFragment = (pagerAdapter.getItem(view_pager.currentItem) as BaseFragment)
+        return currentFragment
     }
 
     /**

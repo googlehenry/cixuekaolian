@@ -54,6 +54,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                 what_if_no_content.visibility = View.VISIBLE
             } else {
                 what_if_no_content.visibility = View.GONE
+                what_if_no_content_gif.visibility = View.GONE
             }
         })
     }
@@ -225,14 +226,25 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun refresh() {
+    var isRefreshingList = false
+    override fun refresh(silentMode: Boolean) {
+        if (isRefreshingList) {
+            Toast.makeText(mContext, "正在刷新请稍等", Toast.LENGTH_SHORT).show()
+            return
+        }
+        isRefreshingList = true
+
+        what_if_no_content_gif.visibility = View.VISIBLE
         val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-        dialogBuilder.setTitle("正在刷新列表")
+        dialogBuilder.setTitle("正在刷新列表...")
         dialogBuilder.setCancelable(false)
-        dialogBuilder.setPositiveButton("OK") { dialog, which ->
+        dialogBuilder.setPositiveButton("确定") { dialog, which ->
             dialog.dismiss()
         }
-        val dialog = dialogBuilder.show()
+        var dialog: AlertDialog? = null
+        if (!silentMode) {
+            dialog = dialogBuilder.show()
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             var roomDb = RoomDB.get(mContext.applicationContext)
@@ -263,7 +275,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                         }
                     }
 
-                    dialog.dismiss()
+                    dialog?.dismiss()
                     if (links.isNotEmpty()) {
                         downloadingId = 1
                         val url =
@@ -275,6 +287,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                     override fun onDownloadSuccess() {
                                         //Mark download completed
                                         LogUtilKt.i("Download book covers done")
+                                        isRefreshingList = false
                                         downloadingId = null
                                         loadBooks()
                                         main_downloading_progress.max = 100
@@ -296,6 +309,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                     override fun onDownloadFailed() {
 
                                         LogUtilKt.i("Download book covers failed")
+                                        isRefreshingList = false
                                         downloadingId = null
                                         var booksDb = roomDb.teachingBook().getAll()?.map { book ->
                                             book.version?.let {
@@ -318,12 +332,14 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                     }
 
                     if (onlineUpdatedBooks.isNullOrEmpty()) {
+                        isRefreshingList = false
                         loadBooks()
                         ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
                         if (links.isNotEmpty()) {
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
+                            isRefreshingList = false
                             loadBooks()
                             ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                         }
@@ -342,6 +358,15 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
     override fun gradeChanged() {
         loadBooks()
+    }
+
+    override fun initPageIfNoData() {
+        recycler_view_textbooks.adapter?.let {
+            var books = (it as BookItemAdapter).data
+            if (books.isNullOrEmpty()) {
+                refresh(true)
+            }
+        }
     }
 
 }

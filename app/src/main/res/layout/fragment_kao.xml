@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".module.kao.KaoFragment">
+    android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/main_downloading_progress"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_gravity="center_vertical"
-        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-        android:indeterminateOnly="false"
-        android:max="100"
-        android:mirrorForRtl="true"
-        android:progress="0"
-        android:progressDrawable="@drawable/progress_horizontal"
-        android:secondaryProgress="0" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context=".module.kao.KaoFragment">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="@dimen/dp_5">
-        <!--        app:cardCornerRadius="@dimen/dp_5"-->
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/main_downloading_progress"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:mirrorForRtl="true"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_horizontal"
+            android:secondaryProgress="0" />
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <org.angmarch.views.NiceSpinner
-                android:id="@+id/spin_test_province"
-                android:layout_width="0dp"
+            app:cardElevation="@dimen/dp_5">
+            <!--        app:cardCornerRadius="@dimen/dp_5"-->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="@dimen/dp_0" />
+                android:orientation="horizontal">
 
-            <org.angmarch.views.NiceSpinner
-                android:id="@+id/spin_test_type"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="@dimen/dp_0" />
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spin_test_province"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/dp_0"
+                    android:layout_weight="1" />
 
-            <!--            <org.angmarch.views.NiceSpinner-->
-            <!--                android:id="@+id/spin_test_grade"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_weight="1"-->
-            <!--                android:layout_marginTop="5dp"-->
-            <!--                android:layout_marginLeft="5dp" />-->
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spin_test_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/dp_0"
+                    android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/what_if_no_content"
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_test_papers"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/fragment_kao_item_test_pater_item" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:visibility="gone"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:text="没有内容怎么办?\n点击刷新..." />
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/dp_100"
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_test_papers"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/fragment_kao_item_test_pater_item" />
+        <TextView
+            android:id="@+id/what_if_no_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="没有内容怎么办?\n点击[右上角]手动刷新..."
+            android:textSize="20sp"
+            android:visibility="gone" />
 
-
-</LinearLayout>
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/what_if_no_content_gif"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/anni_loading"
+            android:visibility="gone" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

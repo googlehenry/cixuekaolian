@@ -87,15 +87,27 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/what_if_no_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:visibility="gone"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="没有内容怎么办?\n点击刷新..." />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/what_if_no_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="没有内容怎么办?\n点击[右上角]手动刷新..." />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/what_if_no_content_gif"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone"
+                android:src="@drawable/anni_loading" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_high"

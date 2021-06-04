@@ -89,6 +89,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             dictDb
         }, {
             it?.let {
+                isRefreshingList = false
                 updateUI()
             }
         })
@@ -120,6 +121,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             what_if_no_content.visibility = View.VISIBLE
         } else {
             what_if_no_content.visibility = View.GONE
+            what_if_no_content_gif.visibility = View.GONE
         }
 
     }
@@ -176,9 +178,22 @@ class CiFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun refresh() {
+    var isRefreshingList = false
+    override fun refresh(silentMode: Boolean) {
+        if (isRefreshingList) {
+            Toast.makeText(mContext, "正在刷新请稍等", Toast.LENGTH_SHORT).show()
+            return
+        }
+        isRefreshingList = true
+        what_if_no_content_gif.visibility = View.VISIBLE
         loadDictWithId(1)
         Toast.makeText(mContext, "已刷新数据", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun initPageIfNoData() {
+        if (VariablesCi.ciContext?.wordKeys.isNullOrEmpty()) {
+            refresh()
+        }
     }
 
     fun goToFileDictionary(zhWord: String) {

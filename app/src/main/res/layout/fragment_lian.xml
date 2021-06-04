@@ -1,68 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".module.lian.LianFragment">
+    android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/main_downloading_progress"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_gravity="center_vertical"
-        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
-        android:indeterminateOnly="false"
-        android:max="100"
-        android:mirrorForRtl="true"
-        android:progress="0"
-        android:progressDrawable="@drawable/progress_horizontal"
-        android:secondaryProgress="0" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="45dp"
-            android:layout_height="match_parent">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_lian_targets"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/fragment_lian_target_item" />
-
-        </FrameLayout>
+        <ProgressBar
+            android:id="@+id/main_downloading_progress"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:mirrorForRtl="true"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_horizontal"
+            android:secondaryProgress="0" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/what_if_no_content"
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="match_parent">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_lian_targets"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:listitem="@layout/fragment_lian_target_item" />
+
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:visibility="gone"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:text="没有内容怎么办?\n选择年级>点击刷新..." />
+                android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_excercise_nav_groups"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/fragment_lian_book_item" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_excercise_nav_groups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:listitem="@layout/fragment_lian_book_item" />
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/dp_100"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/what_if_no_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="没有内容怎么办?\n点击[右上角]手动刷新..."
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/what_if_no_content_gif"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/anni_loading"
+            android:visibility="gone" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
