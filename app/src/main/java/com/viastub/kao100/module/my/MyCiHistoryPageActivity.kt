@@ -12,7 +12,6 @@ import com.viastub.kao100.beans.SearchMode
 import com.viastub.kao100.beans.SearchedWord
 import com.viastub.kao100.db.MyWordHistory
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.module.ci.CiPage0Activity
 import com.viastub.kao100.utils.VariablesCi
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.my_ci.*
@@ -177,11 +176,11 @@ class MyCiHistoryPageActivity : BaseActivity(), View.OnClickListener {
         var word = v?.getTag(R.id.searched_word_item_holder_root)?.let { it as SearchedWord }
 
         word?.let {
-            var intent = Intent(this, CiPage0Activity::class.java)
+            var intent = Intent(this, MyCiPage0Activity::class.java)
             val wordList =
                 (recycler_view_high.adapter as SearchedWordHistoryAdapter).data.map { it.word }
 
-            goToDictionary(wordList, it.word)
+            goToDictionary(wordList, it.word, intent)
 
         }
     }

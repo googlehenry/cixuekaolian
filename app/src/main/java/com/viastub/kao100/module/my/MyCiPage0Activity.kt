@@ -1,4 +1,4 @@
-package com.viastub.kao100.module.ci
+package com.viastub.kao100.module.my
 
 import android.app.AlertDialog
 import android.content.ClipboardManager
@@ -20,9 +20,7 @@ import com.viastub.kao100.R
 import com.viastub.kao100.base.BaseActivity
 import com.viastub.kao100.db.MyWordHistory
 import com.viastub.kao100.db.RoomDB
-import com.viastub.kao100.module.my.MyCiHistoryPageActivity
-import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
-import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
+import com.viastub.kao100.module.ci.CiPage1SettingActivity
 import com.viastub.kao100.utils.VariablesCi
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.android.synthetic.main.activity_ci_word_detail_page.*
@@ -33,7 +31,7 @@ import kotlinx.coroutines.*
 import java.util.*
 
 
-class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
+class MyCiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
     var speech: TextToSpeech? = null
 
     override fun id(): Int {
@@ -220,17 +218,12 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
                 itemBuilder
                     .setContentView(ImageView(this).also {
                         it.isClickable = true
-                        it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                        it.imageTintList = resources.getColorStateList(R.color.gray, null)
                         it.setImageResource(R.drawable.ic_func_dictionary)
                         it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
                             when (motionEvent.action) {
                                 MotionEvent.ACTION_DOWN -> {
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            MyCiHistoryPageActivity::class.java
-                                        )
-                                    )
+                                    Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
                                 }
                             }
                             false
@@ -239,17 +232,12 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             )
             .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
                 it.isClickable = true
-                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.imageTintList = resources.getColorStateList(R.color.gray, null)
                 it.setImageResource(R.drawable.ic_func_textbook)
                 it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
                     when (motionEvent.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            startActivity(
-                                Intent(
-                                    this,
-                                    MyCollectionHistoryPageActivity::class.java
-                                )
-                            )
+                            Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
                         }
                     }
                     false
@@ -257,17 +245,12 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             }).build())
             .addSubActionView(itemBuilder.setContentView(ImageView(this).also {
                 it.isClickable = true
-                it.imageTintList = resources.getColorStateList(R.color.colorPrimary, null)
+                it.imageTintList = resources.getColorStateList(R.color.gray, null)
                 it.setImageResource(R.drawable.ic_func_practice)
                 it.setOnTouchListener { view: View, motionEvent: MotionEvent ->
                     when (motionEvent.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            startActivity(
-                                Intent(
-                                    this,
-                                    MyPracticeHistoryPageActivity::class.java
-                                )
-                            )
+                            Toast.makeText(this, "不支持该操作", Toast.LENGTH_SHORT).show()
                         }
                     }
                     false
@@ -320,7 +303,7 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
         if (findLinks.size == 1) {
             loadLinkedWord(word1)
         } else {
-            Toast.makeText(this@CiPage0Activity, "没有合适的链接", Toast.LENGTH_SHORT)
+            Toast.makeText(this@MyCiPage0Activity, "没有合适的链接", Toast.LENGTH_SHORT)
                 .show()
         }
     }

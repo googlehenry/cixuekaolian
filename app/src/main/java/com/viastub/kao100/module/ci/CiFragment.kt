@@ -16,18 +16,22 @@ import com.viastub.kao100.beans.SearchMode
 import com.viastub.kao100.beans.SearchedWord
 import com.viastub.kao100.db.RoomDB
 import com.viastub.kao100.utils.VariablesCi
+import com.viastub.kao100.wigets.DownloadingDialog
 import kotlinx.android.synthetic.main.fragment_ci.*
 import java.io.File
 import java.util.*
 
 
 class CiFragment : BaseFragment(), View.OnClickListener {
+    var downloadingDialog: DownloadingDialog? = null
 
     override fun id(): Int {
         return R.layout.fragment_ci
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
+        downloadingDialog = DownloadingDialog(mContext)
+        downloadingDialog?.setCanceledOnTouchOutside(false)
 
         VariablesCi.ciContext = CiContext()
         //https://www.jianshu.com/p/e68a0b5fd383
@@ -90,6 +94,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
         }, {
             it?.let {
                 isRefreshingList = false
+                downloadingDialog?.dismiss()
                 updateUI()
             }
         })
@@ -121,7 +126,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             what_if_no_content.visibility = View.VISIBLE
         } else {
             what_if_no_content.visibility = View.GONE
-            what_if_no_content_gif.visibility = View.GONE
+//            what_if_no_content_gif.visibility = View.GONE
         }
 
     }
@@ -173,7 +178,7 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             var intent = Intent(mContext, CiPage0Activity::class.java)
             val wordList = (recycler_view_high.adapter as SearchedWordAdapter).data.map { it.word }
 
-            goToDictionary(wordList, it.word)
+            goToDictionary(wordList, it.word, intent)
 
         }
     }
@@ -185,7 +190,8 @@ class CiFragment : BaseFragment(), View.OnClickListener {
             return
         }
         isRefreshingList = true
-        what_if_no_content_gif.visibility = View.VISIBLE
+        downloadingDialog?.show()
+//        what_if_no_content_gif.visibility = View.VISIBLE
         loadDictWithId(1)
         Toast.makeText(mContext, "已刷新数据", Toast.LENGTH_SHORT).show()
     }

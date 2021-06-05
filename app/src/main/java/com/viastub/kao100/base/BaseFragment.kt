@@ -1,6 +1,7 @@
 package com.viastub.kao100.base
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -61,8 +62,8 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-    fun goToDictionary(wordlist: List<String>, word: String) {
-        ActivityUtils.goToDictionary(mContext, wordlist, word)
+    fun goToDictionary(wordlist: List<String>, word: String, intent: Intent) {
+        ActivityUtils.goToDictionary(mContext, wordlist, word, intent)
     }
 
     open fun initPageIfNoData() {}

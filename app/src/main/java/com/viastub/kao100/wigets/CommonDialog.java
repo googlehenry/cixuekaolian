@@ -64,7 +64,7 @@ public class CommonDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_dialog_layout);
+        setContentView(R.layout.dialog_common_layout);
         //按空白处不能取消动画
         setCanceledOnTouchOutside(false);
         //初始化界面控件

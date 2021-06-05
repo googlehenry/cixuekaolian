@@ -1,6 +1,5 @@
 package com.viastub.kao100.module.lian
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -25,6 +24,7 @@ import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesKao
 import com.viastub.kao100.utils.VariablesMain
+import com.viastub.kao100.wigets.DownloadingDialog
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_lian.*
 import kotlinx.coroutines.CoroutineScope
@@ -33,12 +33,15 @@ import kotlinx.coroutines.launch
 
 class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListener {
 
+    var downloadingDialog: DownloadingDialog? = null
 
     override fun id(): Int {
         return R.layout.fragment_lian
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
+        downloadingDialog = DownloadingDialog(mContext)
+        downloadingDialog?.setCanceledOnTouchOutside(false)
         loadTargets()
     }
 
@@ -93,7 +96,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             what_if_no_content.visibility = View.VISIBLE
         } else {
             what_if_no_content.visibility = View.GONE
-            what_if_no_content_gif.visibility = View.GONE
+//            what_if_no_content_gif.visibility = View.GONE
         }
     }
 
@@ -173,14 +176,15 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
             return
         }
         if (!unitSection.downloaded) {
+            downloadingDialog?.show()
 
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-            dialogBuilder.setTitle("正在下载")
-            dialogBuilder.setCancelable(false)
-            dialogBuilder.setPositiveButton("OK") { dialog, which ->
-                dialog.dismiss()
-            }
-            val dialog = dialogBuilder.show()
+//            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+//            dialogBuilder.setTitle("正在下载")
+//            dialogBuilder.setCancelable(false)
+//            dialogBuilder.setPositiveButton("OK") { dialog, which ->
+//                dialog.dismiss()
+//            }
+//            val dialog = dialogBuilder.show()
 
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
@@ -212,7 +216,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }
                         roomDb.practiceSection().insert(section)
 
-                        dialog.dismiss()
+//                        dialog.dismiss()
                         LogUtilKt.i("links:$links")
                         if (links.isNotEmpty()) {
                             downloadingId = unitSection.id
@@ -226,6 +230,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                             //Mark download completed
                                             downloadingId = null
                                             unitSection.downloaded = true
+                                            downloadingDialog?.dismiss()
                                             roomDb.practiceSection().insert(unitSection)
                                             main_downloading_progress.max = 100
                                             main_downloading_progress.secondaryProgress = 0
@@ -247,6 +252,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         override fun onDownloadFailed() {
                                             downloadingId = null
                                             unitSection.downloaded = false
+                                            downloadingDialog?.dismiss()
                                             unitSection.version -= 1
                                             roomDb.practiceSection().insert(unitSection)
                                             main_downloading_progress.max = 100
@@ -287,16 +293,9 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         }
         isRefreshingList = true
 
-        what_if_no_content_gif.visibility = View.VISIBLE
-        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-        dialogBuilder.setTitle("正在刷新列表...")
-        dialogBuilder.setCancelable(false)
-        dialogBuilder.setPositiveButton("确定") { dialog, which ->
-            dialog.dismiss()
-        }
-        var dialog: AlertDialog? = null
+//        what_if_no_content_gif.visibility = View.VISIBLE
         if (!silentMode) {
-            dialog = dialogBuilder.show()
+            downloadingDialog?.show()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -363,7 +362,6 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                         }
                     }
 
-                    dialog?.dismiss()
                     //download book covers file
                     if (links.isNotEmpty()) {
                         downloadingId = 1
@@ -378,6 +376,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         LogUtilKt.i("Download book covers done")
                                         isRefreshingList = false
                                         downloadingId = null
+                                        downloadingDialog?.dismiss()
                                         loadTargets()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -405,6 +404,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                                         }
 
                                         isRefreshingList = false
+                                        downloadingDialog?.dismiss()
                                         loadTargets()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -417,6 +417,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
 
                     if (updatedOnlineBooks.isNullOrEmpty() && updatedOnlineTargets.isNullOrEmpty() && updatedOnlineUnits.isNullOrEmpty()) {
                         isRefreshingList = false
+                        downloadingDialog?.dismiss()
                         loadTargets()
                         ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
@@ -424,6 +425,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
                             isRefreshingList = false
+                            downloadingDialog?.dismiss()
                             loadTargets()
                             ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                         }
@@ -446,7 +448,7 @@ class LianFragment : BaseFragment(), View.OnClickListener, OnExcercistStartListe
         recycler_view_lian_targets.adapter?.let {
             var targets = (it as ExcerciseTargetsAdapter)?.data
             if (targets.isNullOrEmpty()) {
-                refresh(true)
+                refresh(false)
             }
         }
 

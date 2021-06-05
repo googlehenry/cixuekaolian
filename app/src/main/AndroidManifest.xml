@@ -39,6 +39,7 @@
         <activity android:name="com.viastub.kao100.module.kao.KaoPage0ActivityExamination" />
         <activity android:name="com.viastub.kao100.module.kao.KaoPageScorePageActivityExam" />
         <activity android:name="com.viastub.kao100.module.my.MyCiHistoryPageActivity" />
+        <activity android:name="com.viastub.kao100.module.my.MyCiPage0Activity" />
         <activity android:name="com.viastub.kao100.module.my.MyCollectionHistoryPageActivity" />
         <activity android:name="com.viastub.kao100.module.my.MyPracticeHistoryPageActivity" />
         <activity android:name="com.viastub.kao100.module.my.MyBindingAccountActivity" />

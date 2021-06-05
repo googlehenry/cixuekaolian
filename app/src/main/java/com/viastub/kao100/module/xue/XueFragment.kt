@@ -1,6 +1,5 @@
 package com.viastub.kao100.module.xue
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,6 +15,7 @@ import com.viastub.kao100.http.RemoteAPIDataService
 import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesMain
 import com.viastub.kao100.utils.ZipUtil
+import com.viastub.kao100.wigets.DownloadingDialog
 import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.fragment_xue.*
 import kotlinx.coroutines.CoroutineScope
@@ -24,12 +24,16 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class XueFragment : BaseFragment(), View.OnClickListener {
+    var downloadingDialog: DownloadingDialog? = null
 
     override fun id(): Int {
         return R.layout.fragment_xue
     }
 
     override fun afterViewCreated(view: View, savedInstanceState: Bundle?) {
+        downloadingDialog = DownloadingDialog(mContext)
+        downloadingDialog?.setCanceledOnTouchOutside(false)
+
         loadBooks()
     }
 
@@ -54,7 +58,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                 what_if_no_content.visibility = View.VISIBLE
             } else {
                 what_if_no_content.visibility = View.GONE
-                what_if_no_content_gif.visibility = View.GONE
+//                what_if_no_content_gif.visibility = View.GONE
             }
         })
     }
@@ -71,13 +75,14 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         }
         var bookDb: TeachingBook = v?.getTag(R.id.book_item_holder)?.let { it as TeachingBook }!!
         if (!bookDb.downloaded) {
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-            dialogBuilder.setTitle("正在下载")
-            dialogBuilder.setCancelable(false)
-            dialogBuilder.setPositiveButton("OK") { dialog, which ->
-                dialog.dismiss()
-            }
-            val dialog = dialogBuilder.show()
+            downloadingDialog?.show()
+//            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+//            dialogBuilder.setTitle("正在下载")
+//            dialogBuilder.setCancelable(false)
+//            dialogBuilder.setPositiveButton("OK") { dialog, which ->
+//                dialog.dismiss()
+//            }
+//            val dialog = dialogBuilder.show()
 
             doAsync(0, {
                 var roomDb = RoomDB.get(mContext)
@@ -147,7 +152,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                 roomDb.teachingBookUnitSection().insert(onlineUnit)
                             }
 
-                            dialog.dismiss()
+//                            dialog.dismiss()
                             LogUtilKt.i("links:$links")
                             if (links.isNotEmpty()) {
                                 downloadingId = bookDb.id
@@ -163,6 +168,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                                 //Mark download completed
                                                 downloadingId = null
                                                 bookDb.downloaded = true
+                                                downloadingDialog?.dismiss()
                                                 roomDb.teachingBook().insert(bookDb)
                                                 main_downloading_progress.max = 100
                                                 main_downloading_progress.secondaryProgress = 0
@@ -188,6 +194,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                             override fun onDownloadFailed() {
                                                 downloadingId = null
                                                 bookDb.downloaded = false
+                                                downloadingDialog?.dismiss()
                                                 bookDb.version -= 1
                                                 roomDb.teachingBook().insert(bookDb)
                                                 main_downloading_progress.max = 100
@@ -202,6 +209,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
                             } else {
                                 bookDb.downloaded = true
+                                downloadingDialog?.dismiss()
                                 roomDb.teachingBook().insert(bookDb)
                                 loadBooks()
                                 openBook(bookDb)
@@ -234,16 +242,16 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         }
         isRefreshingList = true
 
-        what_if_no_content_gif.visibility = View.VISIBLE
-        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-        dialogBuilder.setTitle("正在刷新列表...")
-        dialogBuilder.setCancelable(false)
-        dialogBuilder.setPositiveButton("确定") { dialog, which ->
-            dialog.dismiss()
-        }
-        var dialog: AlertDialog? = null
+//        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+//        dialogBuilder.setTitle("正在刷新列表...")
+//        dialogBuilder.setCancelable(false)
+//        dialogBuilder.setPositiveButton("确定") { dialog, which ->
+//            dialog.dismiss()
+//        }
+//        var dialog: AlertDialog? = null
         if (!silentMode) {
-            dialog = dialogBuilder.show()
+//            dialog = dialogBuilder.show()
+            downloadingDialog?.show()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -275,7 +283,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                         }
                     }
 
-                    dialog?.dismiss()
+//                    dialog?.dismiss()
                     if (links.isNotEmpty()) {
                         downloadingId = 1
                         val url =
@@ -289,6 +297,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                         LogUtilKt.i("Download book covers done")
                                         isRefreshingList = false
                                         downloadingId = null
+                                        downloadingDialog?.dismiss()
                                         loadBooks()
                                         main_downloading_progress.max = 100
                                         main_downloading_progress.secondaryProgress = 0
@@ -311,6 +320,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                                         LogUtilKt.i("Download book covers failed")
                                         isRefreshingList = false
                                         downloadingId = null
+                                        downloadingDialog?.dismiss()
                                         var booksDb = roomDb.teachingBook().getAll()?.map { book ->
                                             book.version?.let {
                                                 book.version -= 1
@@ -333,6 +343,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
 
                     if (onlineUpdatedBooks.isNullOrEmpty()) {
                         isRefreshingList = false
+                        downloadingDialog?.dismiss()
                         loadBooks()
                         ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                     } else {
@@ -340,6 +351,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                             ActivityUtils.showToastFromThread(mContext, "开始下载文件")
                         } else {
                             isRefreshingList = false
+                            downloadingDialog?.dismiss()
                             loadBooks()
                             ActivityUtils.showToastFromThread(mContext, "数据更新完成")
                         }
@@ -364,7 +376,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         recycler_view_textbooks.adapter?.let {
             var books = (it as BookItemAdapter).data
             if (books.isNullOrEmpty()) {
-                refresh(true)
+                refresh(false)
             }
         }
     }

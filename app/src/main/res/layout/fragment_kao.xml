@@ -82,11 +82,11 @@
             android:textSize="20sp"
             android:visibility="gone" />
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/what_if_no_content_gif"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/anni_loading"
-            android:visibility="gone" />
+        <!--        <pl.droidsonroids.gif.GifImageView-->
+        <!--            android:id="@+id/what_if_no_content_gif"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="200dp"-->
+        <!--            android:src="@drawable/anni_loading"-->
+        <!--            android:visibility="gone" />-->
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

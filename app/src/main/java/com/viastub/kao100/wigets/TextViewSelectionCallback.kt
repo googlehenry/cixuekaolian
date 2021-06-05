@@ -3,6 +3,7 @@ package com.viastub.kao100.wigets
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.core.view.forEach
 import com.viastub.kao100.db.MyCollectedNote
 import com.viastub.kao100.db.RoomDB
+import com.viastub.kao100.module.ci.CiPage0Activity
 import com.viastub.kao100.utils.ActivityUtils
 import com.viastub.kao100.utils.VariablesKao
 import kotlinx.coroutines.CoroutineScope
@@ -100,7 +102,12 @@ class TextViewSelectionCallback(
                 var sortedList = wordListX
 
                 if (!sortedList.isNullOrEmpty()) {
-                    ActivityUtils.goToDictionary(context, sortedList, sortedList[0])
+                    ActivityUtils.goToDictionary(
+                        context, sortedList, sortedList[0], Intent(
+                            context,
+                            CiPage0Activity::class.java
+                        )
+                    )
                     Toast.makeText(context, "查询选中单词", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "未选中单词", Toast.LENGTH_SHORT).show()

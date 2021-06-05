@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_download_root"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_button_all_rounded20_white"
+    android:layout_height="240dp"
+    android:paddingBottom="@dimen/dp_16">
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/doanloading_gif"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/anni_loading" />
+
+    <ImageView
+        android:id="@+id/dialog_img"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/dialog_btn_comfirm"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/selector_button_round_cornor_blue"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_30"
+        android:paddingBottom="@dimen/dp_6"
+        android:text="确定"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
+

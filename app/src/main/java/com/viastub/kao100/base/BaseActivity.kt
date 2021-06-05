@@ -1,5 +1,6 @@
 package com.viastub.kao100.base
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -126,8 +127,8 @@ abstract class BaseActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(true)
     }
 
-    fun goToDictionary(wordlist: List<String>, word: String) {
-        ActivityUtils.goToDictionary(this, wordlist, word)
+    fun goToDictionary(wordlist: List<String>, word: String, intent: Intent) {
+        ActivityUtils.goToDictionary(this, wordlist, word, intent)
     }
 
 }

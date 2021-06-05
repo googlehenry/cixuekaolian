@@ -1,5 +1,6 @@
 package com.viastub.kao100.module.xue
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -7,6 +8,7 @@ import com.viastub.kao100.R
 import com.viastub.kao100.adapter.WordLineAdapter
 import com.viastub.kao100.base.BaseFragment
 import com.viastub.kao100.db.TeachingBookWord
+import com.viastub.kao100.module.ci.CiPage0Activity
 import kotlinx.android.synthetic.main.activity_xue_detail_page_frag_words.*
 
 class XuePage1FragmentWords(
@@ -37,7 +39,7 @@ class XuePage1FragmentWords(
         var wordItem = v?.getTag(R.id.word_line_holder)?.let { it as TeachingBookWord }
         var wordlist = bookWordItemsDb?.map { it.name }
         wordItem?.let {
-            goToDictionary(wordlist!!, it.name)
+            goToDictionary(wordlist!!, it.name, Intent(mContext, CiPage0Activity::class.java))
         }
     }
 
