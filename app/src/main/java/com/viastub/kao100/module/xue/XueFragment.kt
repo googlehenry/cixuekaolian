@@ -242,15 +242,7 @@ class XueFragment : BaseFragment(), View.OnClickListener {
         }
         isRefreshingList = true
 
-//        val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-//        dialogBuilder.setTitle("正在刷新列表...")
-//        dialogBuilder.setCancelable(false)
-//        dialogBuilder.setPositiveButton("确定") { dialog, which ->
-//            dialog.dismiss()
-//        }
-//        var dialog: AlertDialog? = null
         if (!silentMode) {
-//            dialog = dialogBuilder.show()
             downloadingDialog?.show()
         }
 
@@ -283,7 +275,6 @@ class XueFragment : BaseFragment(), View.OnClickListener {
                         }
                     }
 
-//                    dialog?.dismiss()
                     if (links.isNotEmpty()) {
                         downloadingId = 1
                         val url =

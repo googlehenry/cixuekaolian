@@ -35,7 +35,7 @@
         android:paddingTop="@dimen/dp_6"
         android:paddingRight="@dimen/dp_30"
         android:paddingBottom="@dimen/dp_6"
-        android:text="确定"
+        android:text="请稍等..."
         android:textColor="@color/white" />
 
 </RelativeLayout>
