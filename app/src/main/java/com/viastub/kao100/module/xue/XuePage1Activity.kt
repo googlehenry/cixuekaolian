@@ -282,9 +282,6 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
 
     }
 
@@ -358,8 +355,8 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
 
     //player_seekbar
     override fun onBackPressed() {
-        mediaPlayer?.stop()
         super.onBackPressed()
+        stopPlayer()
     }
 
     override fun updateProgress(secondary: Int, primary: Int, max: Int) {
@@ -368,6 +365,16 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
         teaching_book_unit_progress.secondaryProgress = secondary
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopPlayer()
+    }
+
+    private fun stopPlayer() {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
 }
 
 interface ProgressUpdatedListener {

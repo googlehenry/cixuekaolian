@@ -300,9 +300,6 @@ class CiPage0Activity : BaseActivity(), TextToSpeech.OnInitListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
     }
 
     private fun goToLinkInWebview(word: String) {

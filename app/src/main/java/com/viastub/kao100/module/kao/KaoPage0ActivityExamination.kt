@@ -185,9 +185,6 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
     }
     private fun loadCurrentQuestionTemplate() {
         val templateId = VariablesKao.availableTemplateIds!![VariablesKao.currentTemplateIdIdx]
@@ -734,6 +731,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
 
     private fun stopPlayer() {
         mediaPlayer?.stop()
+        mediaPlayer?.release()
         mediaPlayer = null
     }
 
@@ -843,5 +841,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopPlayer()
     }
 }

@@ -182,9 +182,6 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
 
     }
 
@@ -520,6 +517,7 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     private fun stopPlayer() {
         mediaPlayer?.stop()
+        mediaPlayer?.release()
         mediaPlayer = null
     }
 
@@ -754,5 +752,10 @@ class MyLianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         })
 
         startExamSummaryActivity(scoreEarned, right, wrong, missing, rate)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopPlayer()
     }
 }

@@ -163,9 +163,6 @@ class CiPage1Activity : BaseActivity() {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
     }
 
 

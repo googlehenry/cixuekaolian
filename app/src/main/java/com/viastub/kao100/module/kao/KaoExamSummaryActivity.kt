@@ -156,9 +156,6 @@ class KaoExamSummaryActivity : BaseActivity(), View.OnClickListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
     }
 
     private fun loadDb(exam: ExamSimulation) {

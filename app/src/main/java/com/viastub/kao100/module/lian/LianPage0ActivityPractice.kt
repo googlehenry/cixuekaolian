@@ -210,9 +210,6 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
             .attachTo(floating_buttons_menus)
             .build()
 
-        floating_buttons_menus.postDelayed({
-            floating_buttons_menus.performClick()
-        }, 200)
     }
 
     private fun loadCurrentQuestionTemplate(loadReviewMode: Boolean? = null) {
@@ -536,6 +533,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
     private fun stopPlayer() {
         mediaPlayer?.stop()
+        mediaPlayer?.release()
         mediaPlayer = null
     }
 
@@ -807,5 +805,10 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
                 })
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopPlayer()
     }
 }
