@@ -26,6 +26,7 @@ import com.viastub.kao100.module.my.MyCiHistoryPageActivity
 import com.viastub.kao100.module.my.MyCollectionHistoryPageActivity
 import com.viastub.kao100.module.my.MyPracticeHistoryPageActivity
 import com.viastub.kao100.utils.VariablesXue
+import com.yechaoa.yutilskt.LogUtilKt
 import kotlinx.android.synthetic.main.activity_kao_exam_summary.*
 import kotlinx.android.synthetic.main.activity_xue_chapter_page.*
 import kotlinx.android.synthetic.main.activity_xue_detail_page.*
@@ -324,10 +325,14 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
             if (it.duration > 0) {
                 var countDownTimer = object : CountDownTimer(it.duration.toLong(), 500) {
                     override fun onTick(millisUntilFinished: Long) {
-                        player_seekbar.max = (it.duration / 1000)
-                        player_seekbar.progress = (it.currentPosition / 1000)
-                        play_startText.text = formatTimeToMinutes(it.currentPosition)
-                        play_endText.text = formatTimeToMinutes(it.duration)
+                        try {
+                            player_seekbar.max = (it.duration / 1000)
+                            player_seekbar.progress = (it.currentPosition / 1000)
+                            play_startText.text = formatTimeToMinutes(it.currentPosition)
+                            play_endText.text = formatTimeToMinutes(it.duration)
+                        } catch (ex: IllegalStateException) {
+                            ex.message?.let { LogUtilKt.e(it) }
+                        }
                     }
 
                     override fun onFinish() {
@@ -336,6 +341,8 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
                 }
                 playerTimer = countDownTimer
             }
+
+
         }
 
     }
