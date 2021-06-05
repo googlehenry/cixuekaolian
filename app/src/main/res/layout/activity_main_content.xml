@@ -107,9 +107,11 @@
         android:layout_marginLeft="20dp" />
 
     <TextView
+        android:id="@+id/gif_daily_motto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="努力, 奋斗..."
+        android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_gravity="left|bottom"
         android:layout_marginBottom="100dp"

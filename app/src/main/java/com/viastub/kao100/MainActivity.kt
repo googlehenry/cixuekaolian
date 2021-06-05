@@ -61,6 +61,10 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this, MyDailyVideoActivity::class.java))
         }
 
+        gif_daily_motto.setOnClickListener {
+            startActivity(Intent(this, MyDailyVideoActivity::class.java))
+        }
+
         awaitAsync({
             val roomDb = RoomDB.get(applicationContext)
             BasicDataLoader().load(applicationContext, roomDb)
