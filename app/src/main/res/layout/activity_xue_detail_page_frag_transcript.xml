@@ -21,45 +21,26 @@
             tools:listitem="@layout/fragment_xue_item_transcript_line" />
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
+    <ImageView
         android:id="@+id/teaching_book_unit_page_prev"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginLeft="@dimen/dp_10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_5"
-        android:background="@drawable/shape_button_all_rounded"
+        android:gravity="center"
+        android:src="@drawable/ic_textbook_previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="2dp"
-            android:gravity="center"
-            android:src="@drawable/ic_xue_prev_page" />
-    </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
+    <ImageView
         android:id="@+id/teaching_book_unit_page_next"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginRight="@dimen/dp_10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_5"
-        android:background="@drawable/shape_button_all_rounded"
+        android:gravity="center"
+        android:src="@drawable/ic_textbook_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="2dp"
-            android:gravity="center"
-            android:src="@drawable/ic_xue_next_page" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
