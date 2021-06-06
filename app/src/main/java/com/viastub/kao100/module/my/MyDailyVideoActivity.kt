@@ -66,12 +66,6 @@ class MyDailyVideoActivity : BaseActivity() {
             videoPath = latest.videoLink
             video_title.text = latest.videoTitle
             video_desc.text = latest.videoDesc
-            if (!latest.videoImageCoverLink.isNullOrBlank()) {
-                video_cover_image_net.setImageURL(latest.videoImageCoverLink)
-            }
-            if (!latest.motto.isNullOrBlank()) {
-                video_motto.text = latest.motto
-            }
             video_player.setVideoPath(latest.videoLink)
             video_player.start()
         }

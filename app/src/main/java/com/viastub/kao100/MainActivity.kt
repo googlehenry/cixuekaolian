@@ -154,29 +154,35 @@ class MainActivity : BaseActivity() {
                     doAsync {
                         val roomDb = RoomDB.get(applicationContext)
                         RemoteAPIDataService.apis.signUpUser(it.toMap()).onErrorReturn {
-                            var errobody =
-                                (it as HttpException).response()?.errorBody()?.string()
-                            LogUtilKt.e("login erro:$errobody")
-                            if ((it as HttpException).response()?.code() == 400) {
-                                Gson().fromJson(errobody, UserSignupResponse::class.java)
-                            } else {
+                            try {
+                                var errobody =
+                                    (it as HttpException).response()?.errorBody()?.string()
+                                LogUtilKt.e("login erro:$errobody")
+                                if ((it as HttpException).response()?.code() == 400) {
+                                    Gson().fromJson(errobody, UserSignupResponse::class.java)
+                                } else {
+                                    UserSignupResponse(null, null, null)
+                                }
+                            } catch (ex: Exception) {
+                                ex.message?.let { it1 -> LogUtilKt.e(it1) }
                                 UserSignupResponse(null, null, null)
                             }
-                        }.subscribe { resp ->
-                            when (resp.code) {
-                                UserSignupResponseCode.validated.name -> {
-                                    roomDb.myUser().getById(1)?.let {
-                                        it.expiryInSeconds = resp.expiryInSeconds
-                                        accountExpiryInSeconds = it.expiryInSeconds
-                                        roomDb.myUser().update(it)
-                                    }
+                        }
+                            .subscribe { resp ->
+                                when (resp.code) {
+                                    UserSignupResponseCode.validated.name -> {
+                                        roomDb.myUser().getById(1)?.let {
+                                            it.expiryInSeconds = resp.expiryInSeconds
+                                            accountExpiryInSeconds = it.expiryInSeconds
+                                            roomDb.myUser().update(it)
+                                        }
 
-                                    runOnUiThread {
-                                        actForExpiryCheck(getCurrentFragment())
+                                        runOnUiThread {
+                                            actForExpiryCheck(getCurrentFragment())
+                                        }
                                     }
                                 }
                             }
-                        }
                     }
                 }
 

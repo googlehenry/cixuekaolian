@@ -44,18 +44,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/video_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="视屏标题"
-                android:textSize="18sp" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5">
 
                 <VideoView
                     android:id="@+id/video_player"
@@ -79,45 +71,41 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <TextView
-                android:id="@+id/video_motto"
+                android:id="@+id/video_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+                android:text="视屏标题"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/video_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="29dp"
                 android:layout_marginRight="@dimen/dp_10"
                 android:gravity="center"
                 android:text="视频描述:......." />
 
-            <com.viastub.kao100.wigets.NetImageView
-                android:id="@+id/video_cover_image_net"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_5" />
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="学神怎么学英语?"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="1.记单词:课本单词快速学习。\n2.学教材:教材为根本,考题源于教材。 \n3.多练习:勤做配套练习题目,巩固教材知识点。\n4.模拟题:足够模拟考试,消除考试的恐惧。\n5. 尤其:记不住的单词,做错的题目,未掌握的知识点笔记及时复习。"
+                android:textSize="@dimen/sp_14" />
+
         </LinearLayout>
+
 
 
     </LinearLayout>

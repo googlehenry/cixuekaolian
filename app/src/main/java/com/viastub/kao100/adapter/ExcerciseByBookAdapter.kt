@@ -22,7 +22,7 @@ class ExcerciseByBookAdapter(
     LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: PracticeBook) {
-        holder.setText(R.id.lian_book_item_seq, item.id.toString())
+        holder.setText(R.id.lian_book_item_seq, item.displaySeq.toString())
         holder.setText(R.id.lian_book_item_title, item.name)
 
         var groupIcon = holder.getView<ImageView>(R.id.lian_book_item_icon)

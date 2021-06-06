@@ -136,6 +136,33 @@
                 android:layout_below="@id/result_image" />
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"></LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="学神怎么学英语?"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="1.记单词:课本单词快速学习。\n2.学教材:教材为根本,考题源于教材。 \n3.多练习:勤做配套练习题目,巩固教材知识点。\n4.模拟题:足够模拟考试,消除考试的恐惧。\n5. 尤其:记不住的单词,做错的题目,未掌握的知识点笔记及时复习。"
+            android:textSize="@dimen/sp_14" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_margin="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/exam_study" />
+
     </LinearLayout>
 
 
