@@ -63,10 +63,6 @@ abstract class BaseActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     //Kotlin coroutine, to load data async
     fun <T> awaitAsync(dataAction: () -> T, uiAction: (result: T) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {

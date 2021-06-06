@@ -332,14 +332,7 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
 
         template.itemMainAudioPath?.let {
             if (!it.isNullOrBlank()) {
-                mediaPlayer = MediaPlayer.create(this, File(it).toUri())
-                mediaPlayer!!.setOnCompletionListener {
-                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                }
-                mediaPlayer!!.setOnErrorListener { mp, what, extra ->
-                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                    false
-                }
+                initPlayer(it)
             }
         }
 
@@ -363,6 +356,17 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
 
 
+    }
+
+    private fun initPlayer(path: String) {
+        mediaPlayer = MediaPlayer.create(this, File(path).toUri())
+        mediaPlayer!!.setOnCompletionListener {
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+        }
+        mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+            false
+        }
     }
 
     private fun refreshQuestionsFromDb(template: PracticeTemplate) {
@@ -512,6 +516,9 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
     var mediaPlayer: MediaPlayer? = null
 
     private fun plyDemoMp3Reading(audioFile: String) {
+        if (mediaPlayer == null) {
+            initPlayer(audioFile)
+        }
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
             lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
@@ -807,8 +814,8 @@ class LianPage0ActivityPractice : BaseActivity(), QuestionActionListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         stopPlayer()
     }
 }

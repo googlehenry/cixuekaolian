@@ -186,6 +186,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             .build()
 
     }
+
     private fun loadCurrentQuestionTemplate() {
         val templateId = VariablesKao.availableTemplateIds!![VariablesKao.currentTemplateIdIdx]
 
@@ -341,14 +342,7 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         }
         template.itemMainAudioPath?.let {
             if (it.isNotBlank()) {
-                mediaPlayer = MediaPlayer.create(this, File(it).toUri())
-                mediaPlayer!!.setOnCompletionListener {
-                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                }
-                mediaPlayer!!.setOnErrorListener { mp, what, extra ->
-                    lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
-                    false
-                }
+                initPlayer(it)
             }
         }
 
@@ -369,6 +363,17 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
             showExplanationForTemplate(template)
         }
 
+    }
+
+    private fun initPlayer(path: String) {
+        mediaPlayer = MediaPlayer.create(this, File(path).toUri())
+        mediaPlayer!!.setOnCompletionListener {
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+        }
+        mediaPlayer!!.setOnErrorListener { mp, what, extra ->
+            lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
+            false
+        }
     }
 
     private fun checkAnswers() {
@@ -708,6 +713,10 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
     var mediaPlayer: MediaPlayer? = null
 
     private fun plyDemoMp3Reading(audioFile: String) {
+        if (mediaPlayer == null) {
+            initPlayer(audioFile)
+        }
+
         if (mediaPlayer?.isPlaying == true) {
             mediaPlayer?.pause()
             lian_item_main_audio_start.setImageResource(R.drawable.shape_speaker_light)
@@ -843,8 +852,8 @@ class KaoPage0ActivityExamination : BaseActivity(), QuestionActionListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         stopPlayer()
     }
 }

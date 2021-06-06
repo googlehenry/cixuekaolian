@@ -141,16 +141,20 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
         }
 
         play_pause.setOnClickListener {
-            mediaPlayer?.let {
-                if (it.isPlaying) {
-                    play_pause.setImageResource(R.drawable.player_icon_play)
-                    it.pause()
-                    playerTimer?.cancel()
-                } else {
-                    play_pause.setImageResource(R.drawable.player_icon_pause)
-                    it.start()
-                    setPlayerUpTimer()
-                    playerTimer?.start()
+            if (mediaPlayer == null) {
+                playAnother(0)
+            } else {
+                mediaPlayer?.let {
+                    if (it.isPlaying) {
+                        play_pause.setImageResource(R.drawable.player_icon_play)
+                        it.pause()
+                        playerTimer?.cancel()
+                    } else {
+                        play_pause.setImageResource(R.drawable.player_icon_pause)
+                        it.start()
+                        setPlayerUpTimer()
+                        playerTimer?.start()
+                    }
                 }
             }
 
@@ -372,8 +376,8 @@ class XuePage1Activity : BaseActivity(), ProgressUpdatedListener {
         teaching_book_unit_progress.secondaryProgress = secondary
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         stopPlayer()
     }
 
